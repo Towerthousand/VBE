@@ -15,12 +15,16 @@ SOURCES += \
     $$PWD/graphics/Shader.cpp \
     $$PWD/graphics/ShaderProgram.cpp \
     $$PWD/audio/AudioManager.cpp \
-    $$PWD/audio/Effect.cpp \
+    $$PWD/audio/SoundEffect.cpp \
     $$PWD/audio/Music.cpp \
     $$PWD/input/InputManager.cpp \
     $$PWD/SceneMain/SceneMain.cpp \
     $$PWD/SceneMain/GameObject.cpp \
-    SceneMain/TriangleObject.cpp
+    SceneMain/TriangleObject.cpp \
+    graphics/Mesh.cpp \
+    graphics/Vertex.cpp \
+    graphics/Model.cpp \
+    graphics/Effect.cpp
 
 HEADERS += \
     $$PWD/Scene.hpp \
@@ -33,13 +37,17 @@ HEADERS += \
     $$PWD/graphics/Shader.hpp \
     $$PWD/graphics/ShaderProgram.hpp \
     $$PWD/audio/AudioManager.hpp \
-    $$PWD/audio/Effect.hpp \
+    $$PWD/audio/SoundEffect.hpp \
     $$PWD/audio/Music.hpp \
     $$PWD/input/InputManager.hpp \
     $$PWD/SceneMain/SceneMain.hpp \
     $$PWD/SceneMain/GameObject.hpp \
     $$PWD/glm/*.hpp \
-    SceneMain/TriangleObject.hpp
+    SceneMain/TriangleObject.hpp \
+    graphics/Mesh.hpp \
+    graphics/Vertex.hpp \
+    graphics/Model.hpp \
+    graphics/Effect.hpp
 
 OTHER_FILES += \
     $$PWD/shaders/sample.vert \

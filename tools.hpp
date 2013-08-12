@@ -72,13 +72,13 @@ struct FunctorCompare{
 };
 
 //Vertex of a voxel cube. Normals will be calculated during shading if needed
-struct Vertex {
-		Vertex(float vx = 0, float vy = 0, float  vz = 0,
-			   float cr = 1, float cg = 1, float cb = 1, float ca = 1) :
+struct OldVertex {
+		OldVertex(float vx = 0, float vy = 0, float  vz = 0,
+			   float cr = 1, float cg = 1, float cb = 1) :
 			vx(vx), vy(vy), vz(vz),
-			cr(cr), cg(cg), cb(cb), ca(ca) {}
+			cr(cr), cg(cg), cb(cb) {}
 		float vx,vy,vz;
-		float cr,cg,cb,ca;
+		float cr,cg,cb;
 };
 
 //prototype misc functions here (define in tools.cpp) and inlines.

@@ -12,12 +12,10 @@ SceneMain::~SceneMain() {
 
 bool SceneMain::loadResources() {
 	//shaders
-	ShaderProgram s;
-	if(!s.makeProgram("shaders/sample.vert","shaders/sample.frag"))
+	ShaderProgram* s = new ShaderProgram();
+	if(!s->makeProgram("shaders/sample.vert","shaders/sample.frag"))
 		return false;
 	shaders["SHADER"] = s;
-	s.bindLocation(0,"aVertexPos");
-	s.bindLocation(1,"aVertexColor");
 
 	parent.font().makeText("FPS","",100,vec2f(10,30),sf::Color::White,sf::Text::Bold,false);
 
@@ -43,8 +41,8 @@ void SceneMain::update(float deltaTime) {
 	++fpsCount;
 	debugCounter += deltaTime;
 	if (debugCounter > 1) {
-		//parent.font().getText("FPS").setString("FPS: " + toString(fpsCount));
-		parent.font().getText("FPS").setString("AUTOBINDINGS\n\n TO THE MAX");
+		parent.font().getText("FPS").setString("FPS: " + toString(fpsCount));
+		//parent.font().getText("FPS").setString("AUTOBINDINGS\n\n TO THE MAX");
 		debugCounter -= 1;
 		fpsCount = 0;
 	}
@@ -136,6 +134,10 @@ void SceneMain::onClose() {
 	for(std::list<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
 		if(*it != NULL)
 			delete *it;
+	outLog("* Deleting Shader Programs on SceneMain" );
+	for(std::map<std::string,ShaderProgram*>::iterator it = shaders.begin(); it != shaders.end(); ++it)
+		if((*it).second != NULL)
+			delete (*it).second;
 }
 
 void SceneMain::addObject(GameObject* object) {
@@ -143,5 +145,5 @@ void SceneMain::addObject(GameObject* object) {
 }
 
 const ShaderProgram &SceneMain::getShader(const std::string& ID) const {
-	return shaders.at(ID);
+	return *shaders.at(ID);
 }

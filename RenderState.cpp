@@ -1,4 +1,5 @@
 #include "RenderState.hpp"
+#include "graphics/ShaderProgram.hpp"
 
 RenderState::RenderState() {
 	model = mat4f(1.0);
@@ -11,7 +12,7 @@ RenderState::~RenderState() {
 
 void RenderState::initShaderUniforms(const ShaderProgram& shader) {
 	//Set up texture handles and texture matrices
-	shader.use();
+	shader.bind();
 	for (int i = 0; i < MAX_TEXTURES; ++i) {
 		std::string uniformID1 = "tex" + toString(i);
 		if(shader.getUniLoc(uniformID1) != -1)
@@ -23,7 +24,7 @@ void RenderState::initShaderUniforms(const ShaderProgram& shader) {
 }
 
 void RenderState::updateShaderUniforms(const ShaderProgram& shader) const { //change model or time depending vars
-	shader.use();
+	shader.bind();
 	if(shader.getUniLoc("modelViewProjectionMatrix") != -1)
 		shader.sendUniformMat4f("modelViewProjectionMatrix",projection*view*model);
 }

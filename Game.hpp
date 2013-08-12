@@ -30,7 +30,9 @@
 #include "input/InputManager.hpp"
 #include "SceneMain/SceneMain.hpp"
 #include "RenderState.hpp"
-
+#include "graphics/Mesh.hpp"
+#include "graphics/ShaderProgram.hpp"
+//#include "graphics/Effect.hpp"
 class Game {
 	public:
 		Game(); //creates window

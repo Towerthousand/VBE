@@ -1,7 +1,7 @@
 #ifndef AUDIOMANAGER_HPP
 #define AUDIOMANAGER_HPP
 #include "Music.hpp"
-#include "Effect.hpp"
+#include "SoundEffect.hpp"
 
 class AudioManager {
 	public:
@@ -15,7 +15,7 @@ class AudioManager {
 		void deleteEffect(const std::string& effectID);
 
 		std::map<std::string,Music*> musicBank;
-		std::map<std::string,Effect*> effectBank;
+		std::map<std::string,SoundEffect*> effectBank;
 };
 
 #endif // AUDIOMANAGER_HPP

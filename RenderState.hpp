@@ -1,7 +1,8 @@
 #ifndef RENDERSTATE_H
 #define RENDERSTATE_H
-#include "graphics/ShaderProgram.hpp"
+#include "tools.hpp"
 
+class ShaderProgram;
 class RenderState
 {
 	public:

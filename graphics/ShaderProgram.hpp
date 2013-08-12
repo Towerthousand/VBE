@@ -2,15 +2,31 @@
 #define SHADERMANAGER_HPP
 #include "Shader.hpp"
 
+class Uniform {
+	public:
+		Uniform(unsigned int size, GLint location) : size(size), location(location) {}
+		bool compare(char* val, unsigned int size);
+		void set(char* val, unsigned int size);
+
+	private:
+		unsigned int size;
+		GLint location;
+		char* lastValue;
+};
+
 class ShaderProgram {
 	public:
 		ShaderProgram();
 		~ShaderProgram();
 
-		bool makeProgram(const std::string& filePathVertex, const std::string& filePathFragment);
+		bool makeProgram(const std::string& vp_filename, const std::string& fp_filename);
+		void attachShader(Shader &sh);
+		bool link();
 		void bindLocation(uint index,const std::string& location);
-		void use() const;
+		void bind() const;
+		void unbind() const;
 		GLint getUniLoc(const std::string &uniformID) const;
+		void printInfoLog();
 
 		//FLOAT
 		void sendUniform1f(const std::string& uniformID
@@ -68,12 +84,10 @@ class ShaderProgram {
 		void sendUniformMat4f(const std::string& uniformID
 							  , const mat4f &mat) const;
 
-		std::string name;
-
 	private:
 		GLuint programHandle;
-		Shader vertex;
-		Shader fragment;
+		std::map<std::string,Uniform*> uniforms;
 };
 
-#endif // SHADERMANAGER_HPP
+
+#endif // SHADERPROGRAM_HPP

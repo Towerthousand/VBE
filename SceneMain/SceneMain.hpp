@@ -28,7 +28,7 @@ class SceneMain : public Scene {
 		bool loadResources();
 
 		std::list<GameObject*> objects;
-		std::map<std::string,ShaderProgram> shaders;
+		std::map<std::string,ShaderProgram*> shaders;
 		float debugCounter;
 		int fpsCount;
 };

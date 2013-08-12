@@ -2,6 +2,7 @@
 #define TRIANGLEOBJECT_HPP
 #include "GameObject.hpp"
 
+class Mesh;
 class TriangleObject : public GameObject {
 	public:
 		TriangleObject(SceneMain* parentScene, vec3f pos, vec3f scale);
@@ -11,8 +12,9 @@ class TriangleObject : public GameObject {
 		void updateMatrix();
 		void draw() const;
 	private:
-		uint vertexCount;
-		uint VBOHANDLE;
+		Model tri;
+		GLuint VBOHANDLE;
+		int vertexCount;
 };
 
 #endif // TRIANGLEOBJECT_HPP

@@ -2,11 +2,11 @@
 #define EFFECT_HPP
 #include "tools.hpp"
 
-class Effect
+class SoundEffect
 {
 	public:
-		Effect();
-		~Effect();
+		SoundEffect();
+		~SoundEffect();
 
 		sf::Sound& getEffect();
 		bool loadFromFile(const std::string& filePath);
@@ -15,4 +15,4 @@ class Effect
 		sf::SoundBuffer buffer;
 };
 
-#endif // EFFECT_HPP
+#endif // SOUNDEFFECT_HPP

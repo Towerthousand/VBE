@@ -37,7 +37,7 @@ bool AudioManager::loadEffect(const std::string &effectID, const std::string &fi
 		deleteEffect(effectID);
 	}
 	outLog("* Loading new sound effect: \"" + effectID + "\" from " + filePath );
-	Effect* newEffect = new Effect;
+	SoundEffect* newEffect = new SoundEffect;
 	if (!newEffect->loadFromFile(filePath)) {
 		outLog("#ERROR " + filePath + " didn't load");
 		return false;

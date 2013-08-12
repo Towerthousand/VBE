@@ -2,6 +2,7 @@
 #define GAMEOBJECT_HPP
 #include "tools.hpp"
 #include "Hitbox.hpp"
+#include "../graphics/Model.hpp"
 
 class SceneMain;
 class GameObject { //Static objects that have a position and rotation but don't move

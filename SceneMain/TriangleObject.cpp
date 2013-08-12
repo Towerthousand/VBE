@@ -1,25 +1,27 @@
 #include "TriangleObject.hpp"
 #include "../Game.hpp"
+
 TriangleObject::TriangleObject(SceneMain* parentScene, vec3f pos, vec3f scale) : GameObject(parentScene,pos,scale),
 	vertexCount(0), VBOHANDLE(0) {
+	//NEW WAY
+	std::vector<Vertex::Element> elements;
+	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
+	elements.push_back(Vertex::Element(Vertex::Attribute::Color    , Vertex::Element::Float, 3));
 
-	std::vector<Vertex> renderData;
-	//VERTEX FORMAT:             X     Y       Z      R    G    B    A
-	renderData.push_back(Vertex(-1.0, -0.577,  0.0,   0  , 0  , 1.0, 1.0));
-	renderData.push_back(Vertex( 1.0, -0.577,  0.0,   0  , 1.0, 0  , 1.0));
-	renderData.push_back(Vertex( 0.0,  1.155,  0.0,   1.0, 0  , 0  , 1.0));
+	Vertex::Format format(elements);
+	Mesh* mesh = new Mesh(format,0,false);
 
-	renderData.push_back(Vertex( 1.0, -0.577,  0.0,   0  , 1.0,   0, 1.0));
-	renderData.push_back(Vertex(-1.0, -0.577,  0.0,   0  , 0  , 1.0, 1.0));
-	renderData.push_back(Vertex( 0.0,  1.155,  0.0,   1.0, 0  ,   0, 1.0));
+	struct Vertex {
+			Vertex(vec3f pos, vec3f color) : pos(pos) , color(color) {}
+			vec3f pos,color;
+	};
+	std::vector<Vertex> data;
+	data.push_back(Vertex(vec3f(-1.0, -0.577,  0.0), vec3f(0.0, 0.0, 1.0)));
+	data.push_back(Vertex(vec3f( 1.0, -0.577,  0.0), vec3f(0.0, 1.0, 0.0)));
+	data.push_back(Vertex(vec3f( 0.0,  1.155,  0.0), vec3f(1.0, 0.0, 0.0)));
 
-	vertexCount = renderData.size();
-
-	glGenBuffers(1, (GLuint*) &VBOHANDLE);
-	glBindBuffer(GL_ARRAY_BUFFER, VBOHANDLE);
-	glBufferData(GL_ARRAY_BUFFER, vertexCount*sizeof(Vertex), &renderData[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+	mesh->setVertexData(&data[0],3);
+	this->tri.setMesh(mesh);
 }
 
 TriangleObject::~TriangleObject() {
@@ -40,22 +42,10 @@ void TriangleObject::updateMatrix() {
 void TriangleObject::draw() const {
 	mat4f poppedMat = parentScene->getState().model;
 	parentScene->getState().model = modelMatrix;
-	parentScene->getShader("SHADER").use();
+	parentScene->getShader("SHADER").bind();
 	parentScene->getState().updateShaderUniforms(parentScene->getShader("SHADER"));
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBOHANDLE);
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(3*sizeof(float)));
-	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	tri.draw();
 
 	parentScene->getState().model = poppedMat;
 }
