@@ -4,12 +4,12 @@
 
 class Uniform {
 	public:
-		Uniform(unsigned int count, GLint location) : size(0), count(count), location(location), lastValue(NULL) {}
-		bool compare(char* val, unsigned int size);
+		Uniform(unsigned int count, GLint location);
+		~Uniform();
+
 		void set(char* val, unsigned int size);
-		void log() {std::cout << size << " bytes per item in an array of "
-							  << count << " at location "
-							  << location << std::endl;}
+		bool compare(char* val, unsigned int size);
+		void log();
 
 	private:
 		unsigned int size;
@@ -88,9 +88,11 @@ class ShaderProgram {
 		void sendUniformMat4f(const std::string& uniformID
 							  , const mat4f &mat) const;
 
+		std::map<std::string,GLint> attributes;
+		std::map<std::string,Uniform*> uniforms;
+
 	private:
 		GLuint programHandle;
-		std::map<std::string,Uniform*> uniforms;
 };
 
 

@@ -1,5 +1,56 @@
 #include "ShaderProgram.hpp"
 
+Uniform::Uniform(unsigned int count, GLint location) :
+	size(0), count(count),
+	location(location), lastValue(NULL) {
+}
+
+Uniform::~Uniform() {
+}
+
+void Uniform::set(char *val, unsigned int size) {
+	bool update = false;
+	if(lastValue == NULL) {
+		this->size = size;
+		lastValue = new char[size];
+		update = true;
+	}
+	else {
+		if (this->size != size) {
+			outLog("#WARNING Trying to compare last value with a value of different size");
+			return;
+		}
+		for(unsigned int i = 0; i < size && !update; ++i)
+			if(lastValue[i] != val[i])
+				update = true;
+	}
+	if(update) {
+		//WAT DO? Me guardo el tipo de la uniform cuando cargo el programa
+		//y hago un switch gigante para saber que funcion toca llamar? :/ lleig
+	}
+}
+
+bool Uniform::compare(char *val, unsigned int size) {
+	if(lastValue == NULL)
+		return false;
+	else {
+		if (this->size != size) {
+			outLog("#WARNING Trying to compare last value with a value of different size");
+			return false;
+		}
+		for(unsigned int i = 0; i < size; ++i)
+			if(lastValue[i] != val[i])
+				return false;
+	}
+	return true;
+}
+
+void Uniform::log() {
+	std::cout << size << " bytes per item in an array of "
+								  << count << " at location "
+								  << location << std::endl;
+}
+
 ShaderProgram::ShaderProgram() : programHandle(0) {
 }
 
@@ -41,6 +92,36 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 		return false;
 	}
 	else outLog( " - Linked " + vp_filename + " and " + fp_filename + " successfully. PROGRAMID: " + toString(programHandle));
+	outLog("--------------");
+	// Query and store vertex attribute meta-data from the program
+	GLint activeAttributes;
+	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+	if (activeAttributes > 0) {
+		GLint length;
+		glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length);
+		if (length > 0) {
+			GLchar attribName[length + 1];
+			GLint attribSize;
+			GLenum attribType;
+			GLint attribLocation;
+			for (int i = 0; i < activeAttributes; ++i) {
+				// Query attribute info.
+				glGetActiveAttrib(programHandle, i, length, NULL, &attribSize, &attribType, attribName);
+				attribName[length] = '\0';
+
+				// Query the pre-assigned attribute location.
+				attribLocation = glGetAttribLocation(programHandle, attribName);
+
+				// Assign the vertex attribute mapping for the effect.
+				attributes[attribName] = attribLocation;
+			}
+		}
+	}
+
+	outLog("Printing attribute info:");
+	for(std::map<std::string,GLint>::iterator it = attributes.begin(); it != attributes.end(); ++it) {
+		outLog(it->first + " at location " + toString(it->second));
+	}
 
 	// Query and store uniforms from the program.
 	GLint activeUniforms;
@@ -81,6 +162,7 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 		outLog(it->first + ":");
 		it->second->log();
 	}
+	outLog("--------------");
 	return true;
 }
 
@@ -102,7 +184,6 @@ void ShaderProgram::bind() const {
 void ShaderProgram::unbind() const {
 	glUseProgram(0);
 }
-
 
 void ShaderProgram::bindLocation(uint index, const std::string &location) {
 	glBindAttribLocation(programHandle, index, (GLchar *)location.c_str());
