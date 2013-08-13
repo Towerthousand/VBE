@@ -25,8 +25,10 @@ void Uniform::set(char *val, unsigned int size) {
 				update = true;
 	}
 	if(update) {
-		//WAT DO? Me guardo el tipo de la uniform cuando cargo el programa
-		//y hago un switch gigante para saber que funcion toca llamar? :/ lleig
+		// WAT DO? Me guardo el tipo de la uniform cuando cargo el programa
+		// y hago un switch gigante para saber que funcion toca llamar? :/ lleig....
+		// me guardo un puntero a la funcion que toca llamar,
+		// deducida mientras parseo la uniform?
 	}
 }
 
