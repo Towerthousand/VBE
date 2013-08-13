@@ -4,12 +4,16 @@
 
 class Uniform {
 	public:
-		Uniform(unsigned int size, GLint location) : size(size), location(location) {}
+		Uniform(unsigned int count, GLint location) : size(0), count(count), location(location), lastValue(NULL) {}
 		bool compare(char* val, unsigned int size);
 		void set(char* val, unsigned int size);
+		void log() {std::cout << size << " bytes per item in an array of "
+							  << count << " at location "
+							  << location << std::endl;}
 
 	private:
 		unsigned int size;
+		unsigned int count;
 		GLint location;
 		char* lastValue;
 };

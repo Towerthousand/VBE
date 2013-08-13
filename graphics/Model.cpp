@@ -15,21 +15,21 @@ void Model::setMesh(Mesh* m) {
 void Model::draw() const {
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->getVertexBuffer());
 	int offset = 0;
-	for(int i = 0; i != mesh->getVertexFormat().elementCount(); ++i) {
+	for(unsigned int i = 0; i != mesh->getVertexFormat().elementCount(); ++i) {
 		const Vertex::Element& current = mesh->getVertexFormat().element(i);
 		glEnableVertexAttribArray(current.attr.ID());
 		glVertexAttribPointer(current.attr.ID(),
 							  current.size,
 							  current.type, GL_FALSE,
 							  mesh->getVertexSize(),
-							  (GLvoid*)(offset));
+							  (GLvoid*)long(offset));
 		offset += current.size*
 				  sizeof(mesh->getVertexFormat().element(i).type);
 	}
 
 	glDrawArrays(mesh->getPrimitiveType(), 0, mesh->getVertexCount());
 
-	for(int i = 0; i != mesh->getVertexFormat().elementCount(); ++i) {
+	for(unsigned int i = 0; i != mesh->getVertexFormat().elementCount(); ++i) {
 		glDisableVertexAttribArray(mesh->getVertexFormat().element(i).attr.ID());
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

@@ -1,10 +1,10 @@
 #include "ShaderProgram.hpp"
 
-ShaderProgram::ShaderProgram() : programHandle(NULL) {
+ShaderProgram::ShaderProgram() : programHandle(0) {
 }
 
 ShaderProgram::~ShaderProgram() {
-	if(programHandle != NULL) {
+	if(programHandle != 0) {
 		glDeleteProgram(programHandle);
 	}
 }
@@ -75,6 +75,11 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 				uniforms[uniformName] = uniform;
 			}
 		}
+	}
+	outLog("Printing uniform info:");
+	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
+		outLog(it->first + ":");
+		it->second->log();
 	}
 	return true;
 }
