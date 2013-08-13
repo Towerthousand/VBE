@@ -13,7 +13,7 @@ bool Shader::load(const std::string &filename) {
 	std::ifstream is;
 	is.open(filename, std::ios::in);
 	if (is.fail()) {
-		outLog("#ERROR Failed to get the contents from " + filename);
+		std::cout << "#ERROR Failed to get the contents from " << filename << std::endl;
 		return false;
 	}
 
@@ -58,6 +58,6 @@ void Shader::printInfoLog() const {
 	if (length > 1) {
 		char infoLog[length];
 		glGetShaderInfoLog(shaderHandle, length, NULL, infoLog);
-		outLog(infoLog);
+		std::cout << infoLog << std::endl;
 	}
 }

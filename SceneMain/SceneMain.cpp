@@ -23,7 +23,7 @@ bool SceneMain::loadResources() {
 }
 
 bool SceneMain::init() {
-	outLog("* Loading new scene: Main" );
+	std::cout << "* Loading new scene: Main" << std::endl;
 	if (!loadResources())
 		return false;
 	//Center mouse
@@ -32,7 +32,7 @@ bool SceneMain::init() {
 	getState().initShaderUniforms(getShader("SHADER"));
 	//add a new triangle
 	addObject(new TriangleObject(this,vec3f(0,0,0),vec3f(1)));
-	outLog("* Init was succesful" );
+	std::cout << "* Init was succesful" << std::endl;
 	return true;
 }
 
@@ -42,7 +42,6 @@ void SceneMain::update(float deltaTime) {
 	debugCounter += deltaTime;
 	if (debugCounter > 1) {
 		parent.font().getText("FPS").setString("FPS: " + toString(fpsCount));
-		//parent.font().getText("FPS").setString("AUTOBINDINGS\n\n TO THE MAX");
 		debugCounter -= 1;
 		fpsCount = 0;
 	}
@@ -130,11 +129,11 @@ void SceneMain::onMouseMoved(float deltaTime, int dx, int dy) {
 }
 
 void SceneMain::onClose() {
-	outLog("* Deleting GameObjects on SceneMain" );
+	std::cout << "* Deleting GameObjects on SceneMain" << std::endl;
 	for(std::list<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
 		if(*it != NULL)
 			delete *it;
-	outLog("* Deleting Shader Programs on SceneMain" );
+	std::cout << "* Deleting Shader Programs on SceneMain" << std::endl;
 	for(std::map<std::string,ShaderProgram*>::iterator it = shaders.begin(); it != shaders.end(); ++it)
 		if((*it).second != NULL)
 			delete (*it).second;

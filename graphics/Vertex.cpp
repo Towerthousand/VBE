@@ -30,7 +30,7 @@ namespace Vertex {
 	Attribute& Attribute::get(int id) {
 		if (!isAttrsInit) init();
 		if(!(id >= 0 && id < int(attributes.size()))) {
-			outLog("#ERROR BAD ATTRIB ID");
+			std::cout << "#ERROR BAD ATTRIB ID" << std::endl;
 			return *attributes[0];
 		}
 		return *attributes[id];
@@ -108,7 +108,7 @@ namespace Vertex {
 				case Element::UnsignedInt:   size = sizeof(unsigned int); break;
 				case Element::Float:         size = sizeof(float); break;
 				case Element::Fixed:         size = sizeof(int); break;
-				default: outLog("#ERROR NOT RECOGNISED TYPE");
+				default: std::cout << "#ERROR NOT RECOGNISED TYPE" << std::endl;
 			}
 
 			m_vertexSize += m_elements[i].size * size;

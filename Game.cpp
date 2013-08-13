@@ -14,7 +14,7 @@ Game::~Game() {
 
 // Init non-resource, general game frame stuff here.
 bool Game::init() {
-	outLog("* INIT GAME" );
+	std::cout << "* INIT GAME" << std::endl;
 
 	//Load game-wide resources
 	if (!loadResources())
@@ -34,7 +34,7 @@ bool Game::init() {
 	glEnable(GL_RESCALE_NORMAL);
 
 	//initialise game-wide logic and objects
-	outLog("* INIT GAME SUCCESFUL" );
+	std::cout << "* INIT GAME SUCCESFUL" << std::endl;
 	return true;
 }
 
@@ -194,7 +194,7 @@ void Game::close() {
 		delete currentScene;
 		currentScene = NULL;
 	}
-	outLog("* EXITING GAME" );
+	std::cout << "* EXITING GAME" << std::endl;
 	window.close();
 	isRunning = false;
 }

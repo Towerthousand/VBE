@@ -17,7 +17,7 @@ void Uniform::set(char *val, unsigned int size) {
 	}
 	else {
 		if (this->size != size) {
-			outLog("#WARNING Trying to compare last value with a value of different size");
+			std::cout << "#WARNING Trying to compare last value with a value of different size" << std::endl;
 			return;
 		}
 		for(unsigned int i = 0; i < size && !update; ++i)
@@ -37,7 +37,7 @@ bool Uniform::compare(char *val, unsigned int size) {
 		return false;
 	else {
 		if (this->size != size) {
-			outLog("#WARNING Trying to compare last value with a value of different size");
+			std::cout << "#WARNING Trying to compare last value with a value of different size" << std::endl;
 			return false;
 		}
 		for(unsigned int i = 0; i < size; ++i)
@@ -63,38 +63,38 @@ ShaderProgram::~ShaderProgram() {
 }
 
 bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::string &fp_filename) {
-	outLog("* Loading new vertex shader from " + vp_filename);
+	std::cout << "* Loading new vertex shader from " << vp_filename << std::endl;;
 	Shader vertex(GL_VERTEX_SHADER);
 	vertex.load(vp_filename);
 	if (!vertex.compile()) {
 		vertex.printInfoLog();
-		outLog("#ERROR Compile failed for vertex shader '" + vp_filename + "'.");
+		std::cout << "#ERROR Compile failed for vertex shader '" << vp_filename << "'." << std::endl;;
 		return false;
 	}
-	else outLog( " - Compiled " + vp_filename + " successfully.");
+	else std::cout << " - Compiled " << vp_filename << " successfully." << std::endl;;
 
-	outLog("* Loading new fragment shader from " + fp_filename);
+	std::cout << "* Loading new fragment shader from " << fp_filename << std::endl;;
 	Shader fragment(GL_FRAGMENT_SHADER);
 	fragment.load(fp_filename);
 	if (!fragment.compile()) {
 		fragment.printInfoLog();
-		outLog("#ERROR Compile failed for fragment shader '" + fp_filename + "'.");
+		std::cout << "#ERROR Compile failed for fragment shader '" << fp_filename << "'." << std::endl;
 		return false;
 	}
-	else outLog( " - Compiled " + fp_filename + " successfully.");
+	else std::cout <<  " - Compiled " << fp_filename << " successfully." << std::endl;
 
-	outLog("* Creating new shaderProgram with " + vp_filename + " and " + fp_filename);
+	std::cout << "* Creating new shaderProgram with " << vp_filename << " and " << fp_filename << std::endl;
 	programHandle = glCreateProgram();
 	attachShader(vertex);
 	attachShader(fragment);
 
 	if (!link()) {
 		printInfoLog();
-		outLog("#ERROR Linking program failed!");
+		std::cout << "#ERROR Linking program failed!" << std::endl;
 		return false;
 	}
-	else outLog( " - Linked " + vp_filename + " and " + fp_filename + " successfully. PROGRAMID: " + toString(programHandle));
-	outLog("--------------");
+	else std::cout <<  " - Linked " << vp_filename << " and " << fp_filename << " successfully. PROGRAMID: " << programHandle << std::endl;
+	std::cout << "--------------" << std::endl;
 	// Query and store vertex attribute meta-data from the program
 	GLint activeAttributes;
 	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
@@ -120,9 +120,9 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 		}
 	}
 
-	outLog("Printing attribute info:");
+	std::cout << "Printing attribute info:" << std::endl;
 	for(std::map<std::string,GLint>::iterator it = attributes.begin(); it != attributes.end(); ++it) {
-		outLog(it->first + " at location " + toString(it->second));
+		std::cout << it->first << " at location " << it->second << std::endl;
 	}
 
 	// Query and store uniforms from the program.
@@ -159,12 +159,12 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 			}
 		}
 	}
-	outLog("Printing uniform info:");
+	std::cout << "Printing uniform info:" << std::endl;
 	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
-		outLog(it->first + ":");
+		std::cout << it->first << ":" << std::endl;
 		it->second->log();
 	}
-	outLog("--------------");
+	std::cout << "--------------" << std::endl;
 	return true;
 }
 
@@ -201,7 +201,7 @@ void ShaderProgram::printInfoLog() {
 	if (length > 1) {
 		char infoLog[length];
 		glGetProgramInfoLog(programHandle, length, NULL, infoLog);
-		outLog(infoLog);
+		std::cout << infoLog << std::endl;
 	}
 }
 /////////////////////////////////////////////FLOATS
@@ -210,7 +210,7 @@ void ShaderProgram::sendUniform1f(const std::string& uniformID, float x) const {
 	bind();
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform1f(location, x);
@@ -220,7 +220,7 @@ void ShaderProgram::sendUniform2f(const std::string& uniformID
 								  , float x, float y) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform2f(location, x, y);
@@ -234,7 +234,7 @@ void ShaderProgram::sendUniform3f(const std::string& uniformID
 								  , float x, float y, float z) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform3f(location, x, y, z);
@@ -248,7 +248,7 @@ void ShaderProgram::sendUniform4f(const std::string& uniformID
 								  , float x, float y, float z, float w) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform4f(location, x, y, z, w);
@@ -263,7 +263,7 @@ void ShaderProgram::sendUniform4f(const std::string& uniformID, const vec4f& v) 
 void ShaderProgram::sendUniform1i(const std::string& uniformID, int x) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform1i(location, x);
@@ -273,7 +273,7 @@ void ShaderProgram::sendUniform2i(const std::string& uniformID
 								  , int x, int y) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform2i(location, x, y);
@@ -287,7 +287,7 @@ void ShaderProgram::sendUniform3i(const std::string& uniformID
 								  , int x, int y, int z) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform3i(location, x, y, z);
@@ -301,7 +301,7 @@ void ShaderProgram::sendUniform4i(const std::string& uniformID
 								  , int x, int y, int z, int w) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform4i(location, x, y, z, w);
@@ -316,7 +316,7 @@ void ShaderProgram::sendUniform4i(const std::string& uniformID, const vec4i& v) 
 void ShaderProgram::sendUniform1ui(const std::string& uniformID, uint x) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform1ui(location, x);
@@ -326,7 +326,7 @@ void ShaderProgram::sendUniform2ui(const std::string& uniformID
 								   , uint x, uint y) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform2ui(location, x, y);
@@ -340,7 +340,7 @@ void ShaderProgram::sendUniform3ui(const std::string& uniformID
 								   , uint x, uint y, uint z) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform3ui(location, x, y, z);
@@ -354,7 +354,7 @@ void ShaderProgram::sendUniform4ui(const std::string& uniformID
 								   , uint x, uint y, uint z, uint w) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniform4ui(location, x, y, z, w);
@@ -370,7 +370,7 @@ void ShaderProgram::sendUniformMat2f(const std::string& uniformID
 									 , const mat2f &mat) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(mat));
@@ -380,7 +380,7 @@ void ShaderProgram::sendUniformMat3f(const std::string& uniformID
 									 , const mat3f &mat) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(mat));
@@ -390,7 +390,7 @@ void ShaderProgram::sendUniformMat4f(const std::string& uniformID
 									 , const mat4f &mat) const {
 	GLint location = getUniLoc(uniformID);
 	if (location == -1) {
-		outLog("#ERROR When trying to get uniform: no uniform named " + uniformID);
+		std::cout << "#ERROR When trying to get uniform: no uniform named " << uniformID << std::endl;
 		return;
 	}
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));

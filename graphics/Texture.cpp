@@ -11,7 +11,7 @@ bool Texture::load(const std::string &filePath) {
 	//load image
 	sf::Image image;
 	if (!image.loadFromFile(filePath)) {
-		outLog("#ERROR " + filePath + " didn't load");
+		std::cout << "#ERROR " << filePath << " didn't load" << std::endl;
 		return false;
 	}
 	size = vec2i(image.getSize().x,image.getSize().y);

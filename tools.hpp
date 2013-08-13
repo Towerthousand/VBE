@@ -82,7 +82,6 @@ struct OldVertex {
 };
 
 //prototype misc functions here (define in tools.cpp) and inlines.
-inline void outLog(const std::string& msg) {std::cout << msg << std::endl;}
 std::string toString(float num);
 
 //defines (global settings and constants)

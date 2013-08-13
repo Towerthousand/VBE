@@ -6,18 +6,18 @@ Mesh::Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dy
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	if (glGetError()){
-		outLog("Failed to create VBO for mesh");
+		std::cout << "Failed to create VBO for mesh" << std::endl;
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	if (glGetError()) {
-		outLog("Failed to bind VBO for mesh");
+		std::cout << "Failed to bind VBO for mesh" << std::endl;
 		glDeleteBuffers(1, &vbo);
 	}
 
 	glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 	if (glGetError()) {
-		outLog("Failed to load VBO with vertex data");
+		std::cout << "Failed to load VBO with vertex data" << std::endl;
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glDeleteBuffers(1, &vbo);
 		return;
