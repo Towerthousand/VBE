@@ -15,7 +15,8 @@ bool SceneMain::loadResources() {
 	ShaderProgram* s = new ShaderProgram();
 	if(!s->makeProgram("shaders/sample.vert","shaders/sample.frag"))
 		return false;
-	shaders["SHADER"] = s;
+	//set up initial uniform values here
+	ShaderProgram::add("SHADER",s);
 
 	parent.font().makeText("FPS","",100,vec2f(10,30),sf::Color::White,sf::Text::Bold,false);
 
@@ -28,8 +29,6 @@ bool SceneMain::init() {
 		return false;
 	//Center mouse
 	sf::Mouse::setPosition(sf::Vector2i(SCRWIDTH/2,SCRHEIGHT/2),parent.getWindow());
-	//setup shaders
-	getState().initShaderUniforms(getShader("SHADER"));
 	//add a new triangle
 	addObject(new TriangleObject(this,vec3f(0,0,0),vec3f(1)));
 	std::cout << "* Init was succesful" << std::endl;
@@ -133,16 +132,9 @@ void SceneMain::onClose() {
 	for(std::list<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
 		if(*it != NULL)
 			delete *it;
-	std::cout << "* Deleting Shader Programs on SceneMain" << std::endl;
-	for(std::map<std::string,ShaderProgram*>::iterator it = shaders.begin(); it != shaders.end(); ++it)
-		if((*it).second != NULL)
-			delete (*it).second;
 }
 
 void SceneMain::addObject(GameObject* object) {
 	objects.push_back(object);
 }
 
-const ShaderProgram &SceneMain::getShader(const std::string& ID) const {
-	return *shaders.at(ID);
-}

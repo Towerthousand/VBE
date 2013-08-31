@@ -13,8 +13,6 @@ class TriangleObject : public GameObject {
 		void draw() const;
 	private:
 		Model tri;
-		int vertexCount;
-		GLuint VBOHANDLE;
 };
 
 #endif // TRIANGLEOBJECT_HPP

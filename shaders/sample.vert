@@ -1,9 +1,11 @@
+#version 420
+
 uniform mat4 modelViewProjectionMatrix;
 
-attribute vec3 a_position;
-attribute vec3 a_color;
+in vec3 a_position;
+in vec3 a_color;
 
-varying vec3 vColor;
+out vec3 vColor;
 
 void main () {
         gl_Position = modelViewProjectionMatrix * vec4(a_position,1.0);

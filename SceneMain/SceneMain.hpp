@@ -22,13 +22,11 @@ class SceneMain : public Scene {
 		void onClose(); //close scene-wide stuff
 
 		void addObject(GameObject* object);
-		const ShaderProgram& getShader(const std::string& ID) const;
 
 	private:
 		bool loadResources();
 
 		std::list<GameObject*> objects;
-		std::map<std::string,ShaderProgram*> shaders;
 		float debugCounter;
 		int fpsCount;
 };
