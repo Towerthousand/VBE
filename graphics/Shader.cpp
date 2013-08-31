@@ -9,7 +9,6 @@ Shader::~Shader() {
 }
 
 bool Shader::load(const std::string &filename) {
-
 	std::ifstream is;
 	is.open(filename, std::ios::in);
 	if (is.fail()) {
@@ -34,11 +33,6 @@ bool Shader::load(const std::string &filename) {
 	glShaderSource(shaderHandle, 1, &source, NULL);
 
 	return true;
-}
-
-bool Shader::compile(const std::string &filename) {
-	if (load(filename)) return compile();
-	return false;
 }
 
 bool Shader::compile() const {

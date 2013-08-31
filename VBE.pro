@@ -24,7 +24,6 @@ SOURCES += \
     graphics/Mesh.cpp \
     graphics/Vertex.cpp \
     graphics/Model.cpp \
-    graphics/Effect.cpp \
     graphics/Uniform.cpp
 
 HEADERS += \
@@ -48,7 +47,6 @@ HEADERS += \
     graphics/Mesh.hpp \
     graphics/Vertex.hpp \
     graphics/Model.hpp \
-    graphics/Effect.hpp \
     graphics/Uniform.hpp
 
 OTHER_FILES += \

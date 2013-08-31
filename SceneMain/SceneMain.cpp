@@ -68,8 +68,6 @@ void SceneMain::draw() const {
 	//models
 	for(std::list<GameObject*>::const_iterator it = objects.begin();it != objects.end(); ++it)
 		(*it)->draw();
-	glUseProgram(0);
-	glBindBuffer(GL_ARRAY_BUFFER,0);
 
 	//SFML draws (until window.popGLStates())
 	glDisable(GL_CULL_FACE);

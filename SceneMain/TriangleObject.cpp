@@ -61,9 +61,10 @@ void TriangleObject::draw() const {
 	parentScene->getState().model = modelMatrix;
 	mat4f transform = parentScene->getState().projection*parentScene->getState().view*parentScene->getState().model;
 
-	ShaderProgram::get("SHADER")->bind();
-	GLint location = glGetUniformLocation(3, (GLchar *)std::string("modelViewProjectionMatrix").c_str()); //dat 3 hardcoded
-	glUniformMatrix4fv(location, 1, GL_FALSE, &transform[0][0]);
+	ShaderProgram::useProgram("SHADER");
+	ShaderProgram::uniform("modelViewProjectionMatrix")->set(transform);
+	ShaderProgram::ready();
+
 	tri.draw();
 
 	parentScene->getState().model = poppedMat;
