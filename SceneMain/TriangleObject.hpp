@@ -1,8 +1,8 @@
 #ifndef TRIANGLEOBJECT_HPP
 #define TRIANGLEOBJECT_HPP
 #include "GameObject.hpp"
+#include "../graphics/Model.hpp"
 
-class Mesh;
 class TriangleObject : public GameObject {
 	public:
 		TriangleObject(SceneMain* parentScene, vec3f pos, vec3f scale);

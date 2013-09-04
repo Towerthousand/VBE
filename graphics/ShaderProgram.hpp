@@ -20,9 +20,10 @@ class ShaderProgram {
 
 	private:
 		void printInfoLog();
-		GLuint programHandle;
 		static ShaderProgram* currentProgram;
 		static std::map<std::string,ShaderProgram*> programs;
+
+		GLuint programHandle;
 };
 
 

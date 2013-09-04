@@ -12,8 +12,9 @@ class Model {
 		Mesh* getMesh() const { return mesh;}
 
 		void draw() const;
-	private:
+
 		mat4f modelMatrix;
+	private:
 		Mesh* mesh;
 		//EffectBinding binding;
 };

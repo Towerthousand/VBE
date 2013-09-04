@@ -50,8 +50,6 @@
 					Float         = GL_FLOAT,
 					Fixed         = GL_FIXED
 				};
-
-				Element();
 				Element(Attribute &attr, unsigned int type, unsigned int size);
 				Element(     int attrID, unsigned int type, unsigned int size);
 				Element(const Element& element);

@@ -67,9 +67,6 @@ namespace Vertex {
 		return *this;
 	}
 
-	Element::Element() : attr(Attribute::get(Attribute::Position)), type(Float), size(0) {
-	}
-
 	Element::Element(Attribute &attr, unsigned int type, unsigned int size)
 		: attr(attr), type(type), size(size) {
 

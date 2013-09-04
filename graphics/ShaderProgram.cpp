@@ -143,11 +143,10 @@ void ShaderProgram::printInfoLog() {
 }
 
 void ShaderProgram::useProgram(std::string name) {
-	currentProgram = programs.at(name);
-	GLint pr;
-	glGetIntegerv(GL_CURRENT_PROGRAM,&pr);
-	if(pr != currentProgram->programHandle) {
-		glUseProgram(currentProgram->programHandle);
+	ShaderProgram* newSP = programs.at(name);
+	if(currentProgram == NULL || newSP->programHandle != currentProgram->programHandle) {
+		currentProgram = newSP;
+		glUseProgram(newSP->programHandle);
 	}
 }
 

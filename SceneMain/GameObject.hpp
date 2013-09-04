@@ -1,8 +1,6 @@
 #ifndef GAMEOBJECT_HPP
 #define GAMEOBJECT_HPP
 #include "tools.hpp"
-#include "Hitbox.hpp"
-#include "../graphics/Model.hpp"
 
 class SceneMain;
 class GameObject { //Static objects that have a position and rotation but don't move
@@ -19,7 +17,6 @@ class GameObject { //Static objects that have a position and rotation but don't 
 		vec3f scale;
 	protected:
 		SceneMain* parentScene;
-		mat4f modelMatrix;
 };
 
 #endif // GAMEOBJECT_HPP

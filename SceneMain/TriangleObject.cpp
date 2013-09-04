@@ -1,4 +1,5 @@
 #include "TriangleObject.hpp"
+#include "SceneMain.hpp"
 #include "../Game.hpp"
 
 TriangleObject::TriangleObject(SceneMain* parentScene, vec3f pos, vec3f scale) : GameObject(parentScene,pos,scale) {
@@ -32,10 +33,11 @@ void TriangleObject::update(float deltaTime) {
 }
 
 void TriangleObject::updateMatrix() {
-	modelMatrix = mat4f(1.0);
-	modelMatrix = glm::translate(modelMatrix,vec3f(0,0,-2));
-	modelMatrix = glm::rotate(modelMatrix,GLOBALCLOCK.getElapsedTime().asSeconds()*100,vec3f(0,0,1));
-	modelMatrix = glm::scale(modelMatrix,scale);
+	mat4f m(1.0);
+	m = glm::translate(m,vec3f(0,0,-2));
+	m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*100,vec3f(0,0,1));
+	m = glm::scale(m,scale);
+	tri.modelMatrix = m;
 }
 
 void TriangleObject::draw() const {
@@ -57,15 +59,11 @@ void TriangleObject::draw() const {
 	//Effect::releaseEffect();	   //unbinds effect
 
 	//Now it is done by hand
-	mat4f poppedMat = parentScene->getState().model;
-	parentScene->getState().model = modelMatrix;
-	mat4f transform = parentScene->getState().projection*parentScene->getState().view*parentScene->getState().model;
+	mat4f transform = parentScene->getState().projection*parentScene->getState().view*tri.modelMatrix;
 
 	ShaderProgram::useProgram("SHADER");
 	ShaderProgram::uniform("modelViewProjectionMatrix")->set(transform);
 	ShaderProgram::ready();
 
 	tri.draw();
-
-	parentScene->getState().model = poppedMat;
 }

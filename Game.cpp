@@ -4,7 +4,7 @@ Game::Game() : currentScene(NULL), nextScene(NULL) {
 	window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Default,CONTEXT_SETTINGS_OPENGL);
 	window.setMouseCursorVisible(false);
 	window.setKeyRepeatEnabled(false);
-	window.setVerticalSyncEnabled(false);
+	window.setVerticalSyncEnabled(true);
 	WINDOWFOCUS = true;
 	glClearColor(0.0/255.0,0.0/255.0,0.0/255.0,1);
 }
@@ -40,8 +40,6 @@ bool Game::init() {
 
 // Load scene-independent resources here, return false if failed to load
 bool Game::loadResources () {
-	if (!fontManager.globalFont.loadFromFile("resources/helvetica.ttf"))
-		return false;
 	return true;
 }
 

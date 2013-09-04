@@ -3,8 +3,7 @@
 
 GameObject::GameObject(SceneMain* scene, const vec3f &pos, const vec3f &scale) :
 	isAlive(true), pos(pos), scale(scale),
-	parentScene(scene),
-	modelMatrix(mat4f(1.0)) {
+	parentScene(scene) {
 }
 
 GameObject::~GameObject() {

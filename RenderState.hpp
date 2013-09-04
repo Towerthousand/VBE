@@ -2,9 +2,7 @@
 #define RENDERSTATE_H
 #include "tools.hpp"
 
-class ShaderProgram;
-class RenderState
-{
+class RenderState {
 	public:
 		RenderState();
 		~RenderState();

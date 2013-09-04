@@ -18,8 +18,6 @@ bool SceneMain::loadResources() {
 	//set up initial uniform values here
 	ShaderProgram::add("SHADER",s);
 
-	parent.font().makeText("FPS","",100,vec2f(10,30),sf::Color::White,sf::Text::Bold,false);
-
 	return true;
 }
 
@@ -40,7 +38,7 @@ void SceneMain::update(float deltaTime) {
 	++fpsCount;
 	debugCounter += deltaTime;
 	if (debugCounter > 1) {
-		parent.font().getText("FPS").setString("FPS: " + toString(fpsCount));
+		std::cout << "FPS: " << fpsCount << ". Amount of GameObjects: " << objects.size() << std::endl;
 		debugCounter -= 1;
 		fpsCount = 0;
 	}
@@ -50,11 +48,8 @@ void SceneMain::update(float deltaTime) {
 	//Erase dead game objects
 	for(std::list<GameObject*>::iterator it = objects.begin(); it != objects.end();)
 		if (!(*it)->isAlive) {
-			std::list<GameObject*>::iterator it2 = it;
-			++it2;
 			delete *it;
-			objects.erase(it);
-			it = it2;
+			it = objects.erase(it);;
 		}
 		else
 			++it;
@@ -68,13 +63,6 @@ void SceneMain::draw() const {
 	//models
 	for(std::list<GameObject*>::const_iterator it = objects.begin();it != objects.end(); ++it)
 		(*it)->draw();
-
-	//SFML draws (until window.popGLStates())
-	glDisable(GL_CULL_FACE);
-	parent.getWindow().pushGLStates();
-	parent.getWindow().draw(parent.font().getText("FPS"));
-	parent.getWindow().popGLStates();
-	glEnable(GL_CULL_FACE);
 }
 
 void SceneMain::onKeyPressed(float deltaTime, sf::Keyboard::Key key) {
@@ -128,8 +116,7 @@ void SceneMain::onMouseMoved(float deltaTime, int dx, int dy) {
 void SceneMain::onClose() {
 	std::cout << "* Deleting GameObjects on SceneMain" << std::endl;
 	for(std::list<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
-		if(*it != NULL)
-			delete *it;
+		delete *it;
 }
 
 void SceneMain::addObject(GameObject* object) {

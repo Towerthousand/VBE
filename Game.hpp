@@ -25,12 +25,12 @@
 
 
 #include "graphics/TextureManager.hpp"
-#include "graphics/FontManager.hpp"
 #include "audio/AudioManager.hpp"
 #include "input/InputManager.hpp"
-#include "SceneMain/SceneMain.hpp"
+#include "Scene.hpp"
 #include "RenderState.hpp"
 #include "graphics/Mesh.hpp"
+#include "graphics/Model.hpp"
 #include "graphics/ShaderProgram.hpp"
 //#include "graphics/Effect.hpp"
 class Game {
@@ -50,7 +50,6 @@ class Game {
 
 		sf::RenderWindow &getWindow() { return window; }
 		TextureManager &textures() { return texManager; }
-		FontManager &font() { return fontManager; }
 		AudioManager &audio() { return audioManager; }
 		InputManager &input() { return inputManager; }
 		RenderState &state() { return renderState; }
@@ -96,7 +95,6 @@ class Game {
 
 		//managers
 		TextureManager texManager;
-		FontManager fontManager;
 		AudioManager audioManager;
 		InputManager inputManager;
 		RenderState renderState;

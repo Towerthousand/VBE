@@ -6,7 +6,6 @@ class Game;
 class RenderState;
 class InputManager;
 class TextureManager;
-class FontManager;
 class AudioManager;
 class Scene { //abstract
 	public:
@@ -26,7 +25,6 @@ class Scene { //abstract
 
 		InputManager &getInputs() const;
 		TextureManager &getTextures() const;
-		FontManager &getFonts() const;
 		AudioManager &getAudios() const;
 		RenderState &getState() const;
 	protected:
