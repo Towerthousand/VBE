@@ -1,5 +1,6 @@
 #include "Model.hpp"
 #include "Mesh.hpp"
+#include "../Game.hpp"
 
 Model::Model() : modelMatrix(mat4f(1.0)), mesh(NULL) {
 }
@@ -7,12 +8,8 @@ Model::Model() : modelMatrix(mat4f(1.0)), mesh(NULL) {
 Model::~Model() {
 }
 
-void Model::setMesh(Mesh* m) {
-	if (mesh != NULL) delete mesh;
-	mesh = m;
-}
-
 void Model::draw() const {
+	program->use();
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->getVertexBuffer());
 	int offset = 0;
 	for(unsigned int i = 0; i != mesh->getVertexFormat().elementCount(); ++i) {

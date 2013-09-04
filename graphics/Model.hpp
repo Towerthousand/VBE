@@ -2,20 +2,19 @@
 #define MODEL_HPP
 #include "tools.hpp"
 
+class ShaderProgram;
 class Mesh;
 class Model {
 	public:
 		Model();
 		~Model();
 
-		void setMesh(Mesh* m);
-		Mesh* getMesh() const { return mesh;}
-
 		void draw() const;
 
 		mat4f modelMatrix;
-	private:
 		Mesh* mesh;
+		ShaderProgram* program;
+	private:
 		//EffectBinding binding;
 };
 

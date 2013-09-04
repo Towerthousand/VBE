@@ -3,7 +3,7 @@
 #include "TriangleObject.hpp"
 
 SceneMain::SceneMain(Game &parent) :
-	Scene(parent),
+	Scene(parent), shaderExample(NULL),
 	debugCounter(0.0), fpsCount(0) {
 }
 
@@ -15,8 +15,7 @@ bool SceneMain::loadResources() {
 	ShaderProgram* s = new ShaderProgram();
 	if(!s->makeProgram("shaders/sample.vert","shaders/sample.frag"))
 		return false;
-	//set up initial uniform values here
-	ShaderProgram::add("SHADER",s);
+	shaderExample = s;
 
 	return true;
 }

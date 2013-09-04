@@ -21,7 +21,8 @@ TriangleObject::TriangleObject(SceneMain* parentScene, vec3f pos, vec3f scale) :
 	data.push_back(Vertex(vec3f( 0.0,  1.155,  0.0), vec3f(1.0, 0.0, 0.0)));
 
 	mesh->setVertexData(&data[0],data.size());
-	this->tri.setMesh(mesh);
+	this->tri.mesh = mesh;
+	this->tri.program = parentScene->shaderExample;
 }
 
 TriangleObject::~TriangleObject() {
@@ -41,29 +42,7 @@ void TriangleObject::updateMatrix() {
 }
 
 void TriangleObject::draw() const {
-	//ideally, this would be something like:
-	//Effect::useEffect("SHADER"); //binds the effect
-
-	//Effect::uniform("modelviewProjectionMatrix").set(transformMatrixAsMat4f);
-
-	//Effect::ready();             //sends all the uniforms from the renderstate
-	//							   //to the program if they exist and have changed, updates all the
-	//						       //openGL variables to match the renderstate.
-
-	//tri.draw();				   //creates a vertexBinding for this efffect if one didn't exist
-	//							   //with this mesh's vertexFormat. Once it has a binding, it uses it
-	//							   //to set the model-associated uniforms that exist in the shader and
-	//							   //have changed. Then it binds the vertex attributes that match
-	//							   //between the program and the vertex format, and draws.
-
-	//Effect::releaseEffect();	   //unbinds effect
-
-	//Now it is done by hand
 	mat4f transform = parentScene->getState().projection*parentScene->getState().view*tri.modelMatrix;
-
-	ShaderProgram::useProgram("SHADER");
-	ShaderProgram::uniform("modelViewProjectionMatrix")->set(transform);
-	ShaderProgram::ready();
-
+	tri.program->uniform("modelViewProjectionMatrix")->set(transform);
 	tri.draw();
 }
