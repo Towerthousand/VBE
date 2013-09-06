@@ -3,7 +3,7 @@
 #include "Mesh.hpp"
 
 ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
-	glGenBuffers(1, &vertexArrayObject);
+	glGenVertexArrays(1, &vertexArrayObject);
 	if (glGetError()){
 		std::cout << "Failed to create VAO for mesh" << std::endl;
 	}
@@ -13,7 +13,7 @@ ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
 	glBindVertexArray(vertexArrayObject);
 	if (glGetError()) {
 		std::cout << "Failed to bind VAO with id " << vertexArrayObject << std::endl;
-		glDeleteBuffers(1, &vertexArrayObject);
+		glDeleteVertexArrays(1, &vertexArrayObject);
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER,mesh->getVertexBuffer());
