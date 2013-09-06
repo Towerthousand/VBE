@@ -2,7 +2,7 @@ TEMPLATE = app
 CONFIG -= qt
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL
 INCLUDEPATH += $$PWD/
-QMAKE_CXXFLAGS += -std=c++11 -O3
+QMAKE_CXXFLAGS += -std=c++11
 SOURCES += \
     $$PWD/main.cpp \
     $$PWD/Game.cpp \
@@ -23,7 +23,8 @@ SOURCES += \
     graphics/Mesh.cpp \
     graphics/Vertex.cpp \
     graphics/Model.cpp \
-    graphics/Uniform.cpp
+    graphics/Uniform.cpp \
+    graphics/ShaderBinding.cpp
 
 HEADERS += \
     $$PWD/Scene.hpp \
@@ -45,7 +46,8 @@ HEADERS += \
     graphics/Mesh.hpp \
     graphics/Vertex.hpp \
     graphics/Model.hpp \
-    graphics/Uniform.hpp
+    graphics/Uniform.hpp \
+    graphics/ShaderBinding.hpp
 
 OTHER_FILES += \
     $$PWD/shaders/sample.vert \

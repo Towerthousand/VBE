@@ -1,4 +1,5 @@
 #include "Mesh.hpp"
+#include "ShaderProgram.hpp"
 
 Mesh::Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dynamic)
 	: vertexFormat(vertexFormat), vertexCount(vertexCount), vertexBuffer(0), primitiveType(TRIANGLES),
@@ -23,6 +24,24 @@ Mesh::Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dy
 		return;
 	}
 	vertexBuffer = vbo;
+}
+
+Mesh::~Mesh() {
+	if(vertexBuffer != 0) {
+		glDeleteBuffers(1,&vertexBuffer);
+	}
+}
+
+void Mesh::draw(ShaderProgram* program) {
+	GLuint handle = program->getHandle();
+	if(bindingsCache.find(handle) == bindingsCache.end()) {
+		bindingsCache.insert(std::pair<GLuint,const ShaderBinding*>(handle,new ShaderBinding(program, this)));
+	}
+	const ShaderBinding* binding = bindingsCache.at(handle);
+	program->use();
+	binding->bindVAO();
+	glDrawArrays(primitiveType, 0, vertexCount);
+	binding->unbindVAO();
 }
 
 const Vertex::Format& Mesh::getVertexFormat() const {
@@ -55,9 +74,7 @@ void Mesh::setPrimitiveType(Mesh::PrimitiveType type) {
 
 void Mesh::setVertexData(void* vertexData, unsigned int newVertexCount) {
 	vertexCount = newVertexCount;
-	GLint oldbuff;
-	glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &oldbuff);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, vertexData, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, oldbuff);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

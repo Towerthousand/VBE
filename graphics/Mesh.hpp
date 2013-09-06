@@ -1,11 +1,11 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 #include "Vertex.hpp"
+#include "ShaderBinding.hpp"
 
 class Mesh {
 	public:
-		enum PrimitiveType
-		{
+		enum PrimitiveType {
 			TRIANGLES = GL_TRIANGLES,
 			TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
 			LINES = GL_LINES,
@@ -14,6 +14,9 @@ class Mesh {
 		};
 
 		Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dynamic = false);
+		~Mesh();
+
+		void draw(ShaderProgram* program);
 
 		const Vertex::Format& getVertexFormat() const;
 		unsigned int getVertexCount() const;
@@ -26,7 +29,7 @@ class Mesh {
 		void setVertexData(void* vertexData, unsigned int newVertexCount);
 
 	protected:
-
+		std::map<GLuint,const ShaderBinding*> bindingsCache;
 		const Vertex::Format vertexFormat;
 		unsigned int vertexCount;
 		GLuint vertexBuffer;

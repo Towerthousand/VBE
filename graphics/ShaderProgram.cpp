@@ -1,7 +1,7 @@
 #include "ShaderProgram.hpp"
 #include "Uniform.hpp"
 
-GLint ShaderProgram::current(0);
+GLuint ShaderProgram::current(0);
 
 ShaderProgram::ShaderProgram() : programHandle(0) {
 }
@@ -141,16 +141,16 @@ void ShaderProgram::printInfoLog() {
 	}
 }
 
-void ShaderProgram::use() {
+void ShaderProgram::use() const {
 	if(current != programHandle) {
 		current = programHandle;
 		glUseProgram(programHandle);
 	}
-	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
+	for(std::map<std::string,Uniform*>::const_iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
 		it->second->ready();
 	}
 }
 
-Uniform* ShaderProgram::uniform(std::string name) {
+Uniform* ShaderProgram::uniform(std::string name) const {
 	return uniforms.at(name);
 }

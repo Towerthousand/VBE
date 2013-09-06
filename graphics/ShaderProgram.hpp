@@ -9,15 +9,16 @@ class ShaderProgram {
 		~ShaderProgram();
 
 		bool makeProgram(const std::string& vp_filename, const std::string& fp_filename);
+		GLuint getHandle() const {return programHandle;}
 
-		void use();
-		Uniform* uniform(std::string name);
+		void use() const;
+		Uniform* uniform(std::string name) const;
 
 		std::map<std::string,GLint> attributes;
 		std::map<std::string,Uniform*> uniforms;
 
 	private:
-		static GLint current;
+		static GLuint current;
 
 		void printInfoLog();
 		GLuint programHandle;

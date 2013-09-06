@@ -5,15 +5,15 @@
 TriangleObject::TriangleObject(SceneMain* parentScene, vec3f pos, vec3f scale) : GameObject(parentScene,pos,scale) {
 	//NEW WAY
 	std::vector<Vertex::Element> elements;
-	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
 	elements.push_back(Vertex::Element(Vertex::Attribute::Color    , Vertex::Element::Float, 3));
+	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
 
 	Vertex::Format format(elements);
 	Mesh* mesh = new Mesh(format,0,false);
 
 	struct Vertex {
 			Vertex(vec3f pos, vec3f color) : pos(pos) , color(color) {}
-			vec3f pos,color;
+			vec3f color,pos;
 	};
 	std::vector<Vertex> data;
 	data.push_back(Vertex(vec3f(-1.0, -0.577,  0.0), vec3f(0.0, 0.0, 1.0)));
@@ -36,7 +36,7 @@ void TriangleObject::update(float deltaTime) {
 void TriangleObject::updateMatrix() {
 	mat4f m(1.0);
 	m = glm::translate(m,vec3f(0,0,-2));
-	m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*100,vec3f(0,0,1));
+	m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*50,vec3f(0,0,1));
 	m = glm::scale(m,scale);
 	tri.modelMatrix = m;
 }

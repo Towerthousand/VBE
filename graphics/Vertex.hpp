@@ -10,6 +10,7 @@
 				static Attribute& get(const std::string &name);
 
 				int ID();
+				bool hasName(const std::string &name) const;
 
 				bool operator == (const Attribute& a) const;
 				bool operator != (const Attribute& a) const;
@@ -69,6 +70,7 @@
 				~Format();
 
 				const Element& element(unsigned int index) const;
+				unsigned int offset(unsigned int index) const;
 				unsigned int elementCount() const;
 				unsigned int vertexSize() const;
 				bool operator == (const Format& f) const;
@@ -76,6 +78,7 @@
 
 			private:
 				std::vector<Element> m_elements;
+				std::vector<unsigned int> offsets;
 				unsigned int m_vertexSize;
 		};
 

@@ -9,7 +9,6 @@ class GameObject { //Static objects that have a position and rotation but don't 
 		virtual ~GameObject();
 
 		virtual void update(float deltaTime);
-		virtual void updateMatrix();
 		virtual void draw() const;
 
 		bool isAlive;

@@ -51,6 +51,13 @@ namespace Vertex {
 		return id;
 	}
 
+	bool Attribute::hasName(const std::string &name) const {
+		std::map<std::string,Attribute*>::const_iterator it = names.find(name);
+		if(it != names.end() && it->second->ID() == id)
+			return true;
+		return false;
+	}
+
 	bool Attribute::operator == (const Attribute& a) const {
 		return id == a.id;
 	}
@@ -93,8 +100,10 @@ namespace Vertex {
 	}
 
 	Format::Format(const std::vector<Element> &elements)
-		: m_elements(elements), m_vertexSize(0) {
-		for (unsigned int i = 0, count = m_elements.size(); i < count; ++i) {
+		: m_elements(elements), offsets(elements.size(),0), m_vertexSize(0) {
+		unsigned int offset = 0;
+		for (unsigned int i = 0; i < m_elements.size(); ++i) {
+			offsets[i] = offset;
 			unsigned int size = 4;
 			switch(m_elements[i].type) {
 				case Element::Byte:          size = sizeof(char); break;
@@ -107,9 +116,9 @@ namespace Vertex {
 				case Element::Fixed:         size = sizeof(int); break;
 				default: std::cout << "#ERROR NOT RECOGNISED TYPE" << std::endl;
 			}
-
-			m_vertexSize += m_elements[i].size * size;
+			offset += m_elements[i].size * size;
 		}
+		m_vertexSize = offset;
 	}
 
 	Format::~Format() {
@@ -117,6 +126,10 @@ namespace Vertex {
 
 	const Element& Format::element(unsigned int index) const {
 		return m_elements[index];
+	}
+
+	unsigned int Format::offset(unsigned int index) const {
+		return offsets[index];
 	}
 
 	unsigned int Format::elementCount() const {

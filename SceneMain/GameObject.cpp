@@ -12,8 +12,5 @@ GameObject::~GameObject() {
 void GameObject::update(float deltaTime) {
 }
 
-void GameObject::updateMatrix() {
-}
-
 void GameObject::draw() const {
 }

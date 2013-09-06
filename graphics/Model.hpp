@@ -14,8 +14,6 @@ class Model {
 		mat4f modelMatrix;
 		Mesh* mesh;
 		ShaderProgram* program;
-	private:
-		//EffectBinding binding;
 };
 
 #endif // MODEL_HPP
