@@ -3,8 +3,7 @@
 #include "Game.hpp"
 #include <cmath>
 
-vec3f HuetoRGB(float h)
-{
+vec3f HuetoRGB(float h) {
     float r, g, b;
     h /= ( 2.0 * M_PI * (1.0 / 6.0) );
     int i = floor( h );
@@ -12,8 +11,7 @@ vec3f HuetoRGB(float h)
     float q = 1 - 1 * f;
     float t = 1 - 1 * ( 1 - f );
 
-    switch( i )
-    {
+	switch( i ) {
         case 0: r = 1; g = t; b = 0; break;
         case 1: r = q; g = 1; b = 0; break;
         case 2: r = 0; g = 1; b = t; break;
@@ -33,7 +31,7 @@ RegularPolygonObject::RegularPolygonObject(SceneMain* parentScene, ShaderProgram
     elements.push_back(Vertex::Element(Vertex::Attribute::Color    , Vertex::Element::Float, 3));
 
     Vertex::Format format(elements);
-    Mesh* mesh = new Mesh(format,0,false);
+	Mesh* mesh = new Mesh(format,0,false);
 
     struct Vertex {
             Vertex(vec3f pos, vec3f color) : pos(pos) , color(color) {}
@@ -44,9 +42,9 @@ RegularPolygonObject::RegularPolygonObject(SceneMain* parentScene, ShaderProgram
     float angleStep = 2.0 * M_PI * (1.0f/sides);
     std::vector<Vertex> data;
     for (unsigned int i = 0; i < sides; ++i) {
-        data.push_back(Vertex(vec3f(0.0, 0.0, 0.0) + pos, vec3f(1.0, 1.0, 1.0)));
-        data.push_back(Vertex(vec3f(std::cos(angle), std::sin(angle),0.0) + pos, HuetoRGB(angle))); angle += angleStep;
-        data.push_back(Vertex(vec3f(std::cos(angle), std::sin(angle),0.0) + pos, HuetoRGB(angle)));
+		data.push_back(Vertex(vec3f(0.0, 0.0, 0.0), vec3f(1.0, 1.0, 1.0)));
+		data.push_back(Vertex(vec3f(std::cos(angle), std::sin(angle),0.0), HuetoRGB(angle))); angle += angleStep;
+		data.push_back(Vertex(vec3f(std::cos(angle), std::sin(angle),0.0), HuetoRGB(angle)));
     }
 
     mesh->setVertexData(&data[0],data.size());
@@ -68,7 +66,7 @@ void RegularPolygonObject::update(float deltaTime) {
 
 void RegularPolygonObject::updateMatrix() {
     mat4f m(1.0);
-    m = glm::translate(m,vec3f(0,0,0));
+	m = glm::translate(m,pos);
     m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*50,vec3f(0,0,1));
     m = glm::scale(m,scale);
     poly.modelMatrix = m;
