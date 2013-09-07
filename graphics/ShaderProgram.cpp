@@ -10,6 +10,9 @@ ShaderProgram::~ShaderProgram() {
 	if(programHandle != 0) {
 		glDeleteProgram(programHandle);
 	}
+	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
+		delete it->second;
+	}
 }
 
 bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::string &fp_filename) {

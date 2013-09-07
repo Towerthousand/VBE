@@ -20,15 +20,15 @@ TriangleObject::TriangleObject(SceneMain* parentScene, ShaderProgram *program, v
 	data.push_back(Vertex(vec3f( 0.0,  1.155,  0.0), vec3f(1.0, 0.0, 0.0)));
 
 	mesh->setVertexData(&data[0],data.size());
-	this->tri.mesh = mesh;
+	tri.mesh = mesh;
     if (program == NULL)
-        this->tri.program = parentScene->shaderExample;
+		tri.program = parentScene->shaderExample;
     else
-        this->tri.program = program;
+		tri.program = program;
 }
 
 TriangleObject::~TriangleObject() {
-
+	delete tri.mesh;
 }
 
 void TriangleObject::update(float deltaTime) {

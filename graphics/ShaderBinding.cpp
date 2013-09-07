@@ -8,8 +8,6 @@ ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
 		std::cout << "Failed to create VAO for mesh" << std::endl;
 	}
 
-    //program->use();
-
 	glBindVertexArray(vertexArrayObject);
 	if (glGetError()) {
 		std::cout << "Failed to bind VAO with id " << vertexArrayObject << std::endl;
@@ -36,7 +34,7 @@ ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
 }
 
 ShaderBinding::~ShaderBinding() {
-	glDeleteBuffers(1, &vertexArrayObject);
+	glDeleteVertexArrays(1, &vertexArrayObject);
 }
 
 void ShaderBinding::bindVAO() const {

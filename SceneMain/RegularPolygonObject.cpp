@@ -48,15 +48,15 @@ RegularPolygonObject::RegularPolygonObject(SceneMain* parentScene, ShaderProgram
     }
 
     mesh->setVertexData(&data[0],data.size());
-    this->poly.mesh = mesh;
+	poly.mesh = mesh;
     if (program == NULL)
-        this->poly.program = parentScene->shaderExample;
+		poly.program = parentScene->shaderExample;
     else
-        this->poly.program = program;
+		poly.program = program;
 }
 
 RegularPolygonObject::~RegularPolygonObject() {
-
+	delete poly.mesh;
 }
 
 void RegularPolygonObject::update(float deltaTime) {

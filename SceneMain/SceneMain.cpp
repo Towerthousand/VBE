@@ -138,6 +138,8 @@ void SceneMain::onClose() {
 	std::cout << "* Deleting GameObjects on SceneMain" << std::endl;
 	for(std::list<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
 		delete *it;
+	delete shaderExample;
+	delete shaderExample2;
 }
 
 void SceneMain::addObject(GameObject* object) {

@@ -32,6 +32,9 @@ Mesh::~Mesh() {
 	if(vertexBuffer != 0) {
 		glDeleteBuffers(1,&vertexBuffer);
 	}
+	for(std::map<GLuint,const ShaderBinding*>::iterator it = bindingsCache.begin(); it != bindingsCache.end(); ++it) {
+		delete it->second;
+	}
 }
 
 void Mesh::draw(ShaderProgram* program) {
