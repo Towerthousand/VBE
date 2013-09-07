@@ -1,6 +1,7 @@
 #include "SceneMain.hpp"
 #include "Game.hpp"
 #include "TriangleObject.hpp"
+#include "RegularPolygonObject.hpp"
 
 SceneMain::SceneMain(Game &parent) :
 	Scene(parent), shaderExample(NULL),
@@ -17,6 +18,11 @@ bool SceneMain::loadResources() {
 		return false;
 	shaderExample = s;
 
+    ShaderProgram* s2 = new ShaderProgram();
+    if(!s2->makeProgram("shaders/sample2.vert","shaders/sample2.frag"))
+        return false;
+    shaderExample2 = s2;
+
 	return true;
 }
 
@@ -27,7 +33,8 @@ bool SceneMain::init() {
 	//Center mouse
 	sf::Mouse::setPosition(sf::Vector2i(SCRWIDTH/2,SCRHEIGHT/2),parent.getWindow());
 	//add a new triangle
-	addObject(new TriangleObject(this,vec3f(0,0,0),vec3f(1)));
+    addObject(new       TriangleObject(this,shaderExample, vec3f( 1.0f, 0.0f,-3.0f), vec3f(1.0f)));
+    addObject(new RegularPolygonObject(this,shaderExample2,vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6));
 	std::cout << "* Init was succesful" << std::endl;
 	return true;
 }
@@ -65,6 +72,8 @@ void SceneMain::draw() const {
 }
 
 void SceneMain::onKeyPressed(float deltaTime, sf::Keyboard::Key key) {
+    (void) deltaTime; //unused parameter
+
 	switch(key) {
 		case sf::Keyboard::Escape:
 			parent.close();
@@ -75,6 +84,8 @@ void SceneMain::onKeyPressed(float deltaTime, sf::Keyboard::Key key) {
 }
 
 void SceneMain::onKeyDown(float deltaTime, sf::Keyboard::Key key) {
+    (void) deltaTime; //unused parameter
+
 	switch(key) {
 		default:
 			break;
@@ -82,6 +93,8 @@ void SceneMain::onKeyDown(float deltaTime, sf::Keyboard::Key key) {
 }
 
 void SceneMain::onKeyReleased(float deltaTime, sf::Keyboard::Key key) {
+    (void) deltaTime; //unused parameter
+
 	switch(key) {
 		default:
 			break;
@@ -89,6 +102,8 @@ void SceneMain::onKeyReleased(float deltaTime, sf::Keyboard::Key key) {
 }
 
 void SceneMain::onMouseButtonPressed(float deltaTime, sf::Mouse::Button button) {
+    (void) deltaTime; //unused parameter
+
 	switch(button) {
 		default:
 			break;
@@ -96,6 +111,8 @@ void SceneMain::onMouseButtonPressed(float deltaTime, sf::Mouse::Button button) 
 }
 
 void SceneMain::onMouseButtonDown(float deltaTime, sf::Mouse::Button button) {
+    (void) deltaTime; //unused parameter
+
 	switch(button) {
 		default:
 			break;
@@ -103,6 +120,8 @@ void SceneMain::onMouseButtonDown(float deltaTime, sf::Mouse::Button button) {
 }
 
 void SceneMain::onMouseButtonReleased(float deltaTime, sf::Mouse::Button button) {
+    (void) deltaTime; //unused parameter
+
 	switch(button) {
 		default:
 			break;
@@ -110,6 +129,9 @@ void SceneMain::onMouseButtonReleased(float deltaTime, sf::Mouse::Button button)
 }
 
 void SceneMain::onMouseMoved(float deltaTime, int dx, int dy) {
+    (void) deltaTime; //unused parameter
+    (void) dx; //unused parameter
+    (void) dy; //unused parameter
 }
 
 void SceneMain::onClose() {

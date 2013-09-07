@@ -24,7 +24,8 @@ SOURCES += \
     graphics/Vertex.cpp \
     graphics/Model.cpp \
     graphics/Uniform.cpp \
-    graphics/ShaderBinding.cpp
+    graphics/ShaderBinding.cpp \
+    SceneMain/RegularPolygonObject.cpp
 
 HEADERS += \
     $$PWD/Scene.hpp \
@@ -47,8 +48,11 @@ HEADERS += \
     graphics/Vertex.hpp \
     graphics/Model.hpp \
     graphics/Uniform.hpp \
-    graphics/ShaderBinding.hpp
+    graphics/ShaderBinding.hpp \
+    SceneMain/RegularPolygonObject.hpp
 
 OTHER_FILES += \
     $$PWD/shaders/sample.vert \
-    $$PWD/shaders/sample.frag
+    $$PWD/shaders/sample.frag \
+    shaders/sample2.vert \
+    shaders/sample2.frag

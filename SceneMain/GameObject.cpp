@@ -10,6 +10,7 @@ GameObject::~GameObject() {
 }
 
 void GameObject::update(float deltaTime) {
+    (void) deltaTime;
 }
 
 void GameObject::draw() const {
