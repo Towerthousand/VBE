@@ -67,7 +67,7 @@ void RegularPolygonObject::update(float deltaTime) {
 void RegularPolygonObject::updateMatrix() {
     mat4f m(1.0);
 	m = glm::translate(m,pos);
-    m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*50,vec3f(0,0,1));
+	m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*50,vec3f(0,0,1));
     m = glm::scale(m,scale);
     poly.modelMatrix = m;
 }

@@ -33,8 +33,8 @@ bool SceneMain::init() {
 	//Center mouse
 	sf::Mouse::setPosition(sf::Vector2i(SCRWIDTH/2,SCRHEIGHT/2),parent.getWindow());
 	//add a new triangle
-    addObject(new       TriangleObject(this,shaderExample, vec3f( 1.0f, 0.0f,-3.0f), vec3f(1.0f)));
-    addObject(new RegularPolygonObject(this,shaderExample2,vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6));
+	addObject(new       TriangleObject(this,shaderExample , vec3f( 1.0f, 0.0f,-3.0f), vec3f(1.0f)));
+	addObject(new RegularPolygonObject(this,shaderExample2, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6));
 	std::cout << "* Init was succesful" << std::endl;
 	return true;
 }

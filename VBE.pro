@@ -8,7 +8,6 @@ SOURCES += \
     $$PWD/Game.cpp \
     $$PWD/tools.cpp \
     $$PWD/Scene.cpp \
-    $$PWD/RenderState.cpp \
     $$PWD/graphics/Texture.cpp \
     $$PWD/graphics/TextureManager.cpp \
     $$PWD/graphics/Shader.cpp \
@@ -31,7 +30,6 @@ HEADERS += \
     $$PWD/Scene.hpp \
     $$PWD/Game.hpp \
     $$PWD/tools.hpp \
-    $$PWD/RenderState.hpp \
     $$PWD/graphics/Texture.hpp \
     $$PWD/graphics/TextureManager.hpp \
     $$PWD/graphics/Shader.hpp \

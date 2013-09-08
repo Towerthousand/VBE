@@ -28,11 +28,16 @@
 #include "audio/AudioManager.hpp"
 #include "input/InputManager.hpp"
 #include "Scene.hpp"
-#include "RenderState.hpp"
 #include "graphics/Mesh.hpp"
 #include "graphics/Model.hpp"
 #include "graphics/ShaderProgram.hpp"
-//#include "graphics/Effect.hpp"
+
+struct RenderState {
+		RenderState() : model(1.0f), view(1.0f), projection(1.0f) {}
+		~RenderState() {}
+		mat4f model,view,projection;
+};
+
 class Game {
 	public:
 		Game(); //creates window
