@@ -71,27 +71,6 @@ class Game {
 		void draw(); // calls currentScene.draw()
 		bool loadResources (); // loads game-wide resources. only called
 							   // by init() once
-		void onKeyPressed(float deltaTime, const sf::Keyboard::Key &key);
-										// currentScene.onKeyPressed
-										// (deltaTime, key)
-		void onKeyDown(float deltaTime, const sf::Keyboard::Key &key);
-										// currentScene.onKeyDown
-										// (deltaTime, key)
-		void onKeyReleased(float deltaTime, const sf::Keyboard::Key &key);
-										// currentScene.onKeyReleased
-										// (deltaTime, key)
-		void onMouseButtonPressed(float deltaTime, const sf::Mouse::Button &button);
-										// currentScene.onMouseButtonPressed
-										// (deltaTime, button)
-		void onMouseButtonDown(float deltaTime, const sf::Mouse::Button &button);
-										// currentScene.onMouseButtonDown
-										// (deltaTime, button)
-		void onMouseButtonReleased(float deltaTime, const sf::Mouse::Button &button);
-										// currentScene.onMouseButtonReleased
-										// (deltaTime, button)
-		void onMouseMoved(float deltaTime, int dx, int dy);
-										// currentScene.onMouseMoved
-										// (deltaTime)
 
 		//context
 		sf::RenderWindow window;
