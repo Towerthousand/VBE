@@ -32,12 +32,6 @@
 #include "graphics/Model.hpp"
 #include "graphics/ShaderProgram.hpp"
 
-struct RenderState {
-		RenderState() : model(1.0f), view(1.0f), projection(1.0f) {}
-		~RenderState() {}
-		mat4f model,view,projection;
-};
-
 class Game {
 	public:
 		Game(); //creates window
@@ -54,10 +48,6 @@ class Game {
 					  // first, saves game-wide stuff first.
 
 		sf::RenderWindow &getWindow() { return window; }
-		TextureManager &textures() { return texManager; }
-		AudioManager &audio() { return audioManager; }
-		InputManager &input() { return inputManager; }
-		RenderState &state() { return renderState; }
 		
 		bool isRunning;
 	private:
@@ -76,12 +66,6 @@ class Game {
 		sf::RenderWindow window;
 		Scene* currentScene;
 		Scene* nextScene;
-
-		//managers
-		TextureManager texManager;
-		AudioManager audioManager;
-		InputManager inputManager;
-		RenderState renderState;
 };
 
 #endif //GAME_HPP

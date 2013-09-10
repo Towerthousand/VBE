@@ -5,17 +5,17 @@
 
 class AudioManager {
 	public:
+		static bool loadMusic(const std::string& trackID, const std::string& filePath);
+		static void deleteMusic(const std::string& trackID);
+
+		static bool loadEffect(const std::string& effectID, const std::string& filePath);
+		static void deleteEffect(const std::string& effectID);
+
+		static std::map<std::string,Music*> musicBank;
+		static std::map<std::string,SoundEffect*> effectBank;
+	private:
 		AudioManager();
 		~AudioManager();
-
-		bool loadMusic(const std::string& trackID, const std::string& filePath);
-		void deleteMusic(const std::string& trackID);
-
-		bool loadEffect(const std::string& effectID, const std::string& filePath);
-		void deleteEffect(const std::string& effectID);
-
-		std::map<std::string,Music*> musicBank;
-		std::map<std::string,SoundEffect*> effectBank;
 };
 
 #endif // AUDIOMANAGER_HPP

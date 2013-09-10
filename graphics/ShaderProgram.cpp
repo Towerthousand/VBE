@@ -19,7 +19,8 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 	//LOAD AND COMPILE VERTEX SHADER
 	std::cout << "* Loading new vertex shader from " << vp_filename << std::endl;;
 	Shader vertex(GL_VERTEX_SHADER);
-	vertex.load(vp_filename);
+	if(!vertex.load(vp_filename))
+		return false;
 	if (!vertex.compile()) {
 		vertex.printInfoLog();
 		std::cout << "#ERROR Compile failed for vertex shader '" << vp_filename << "'." << std::endl;;
@@ -30,7 +31,8 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 	//LOAD AND COMPILE FRAGMENT SHADER
 	std::cout << "* Loading new fragment shader from " << fp_filename << std::endl;;
 	Shader fragment(GL_FRAGMENT_SHADER);
-	fragment.load(fp_filename);
+	if(!fragment.load(fp_filename))
+		return false;
 	if (!fragment.compile()) {
 		fragment.printInfoLog();
 		std::cout << "#ERROR Compile failed for fragment shader '" << fp_filename << "'." << std::endl;

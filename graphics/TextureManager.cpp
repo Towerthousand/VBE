@@ -1,5 +1,7 @@
 #include "TextureManager.hpp"
 
+std::map<std::string,Texture*> TextureManager::textureBank;
+
 TextureManager::TextureManager() {
 }
 

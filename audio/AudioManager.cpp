@@ -1,5 +1,8 @@
 #include "AudioManager.hpp"
 
+std::map<std::string,Music*> AudioManager::musicBank;
+std::map<std::string,SoundEffect*> AudioManager::effectBank;
+
 AudioManager::AudioManager() {
 }
 

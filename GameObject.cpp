@@ -1,7 +1,7 @@
 #include "GameObject.hpp"
-#include "SceneMain.hpp"
+#include "Scene.hpp"
 
-GameObject::GameObject(SceneMain* scene, const vec3f &pos, const vec3f &scale) :
+GameObject::GameObject(Scene* scene, const vec3f &pos, const vec3f &scale) :
 	isAlive(true), pos(pos), scale(scale),
 	parentScene(scene) {
 }

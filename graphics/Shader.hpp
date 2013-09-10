@@ -8,7 +8,6 @@ class Shader {
 		~Shader();
 
 		bool load(const std::string &filename);
-		bool compile(const std::string &filename);
 		bool compile() const;
 
 		void attach(GLuint program) const;

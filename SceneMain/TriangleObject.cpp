@@ -2,29 +2,33 @@
 #include "SceneMain.hpp"
 #include "../Game.hpp"
 
-TriangleObject::TriangleObject(SceneMain* parentScene, ShaderProgram *program, vec3f pos, vec3f scale) : GameObject(parentScene,pos,scale) {
+TriangleObject::TriangleObject(Scene* parentScene, ShaderProgram *program, vec3f pos, vec3f scale) : GameObject(parentScene,pos,scale) {
 	std::vector<Vertex::Element> elements;
     elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
 	elements.push_back(Vertex::Element(Vertex::Attribute::Color    , Vertex::Element::Float, 3));
+	elements.push_back(Vertex::Element(Vertex::Attribute::TexCoord , Vertex::Element::Float, 2));
 
 	Vertex::Format format(elements);
 	Mesh* mesh = new Mesh(format,0,false);
 
 	struct Vertex {
-			Vertex(vec3f pos, vec3f color) : pos(pos) , color(color) {}
-            vec3f pos,color;
+			Vertex(vec3f pos, vec3f color, vec2f tex) : pos(pos) , color(color), tex(tex) {}
+			vec3f pos,color;
+			vec2f tex;
 	};
+
 	std::vector<Vertex> data;
-	data.push_back(Vertex(vec3f(-1.0, -0.577,  0.0), vec3f(0.0, 0.0, 1.0)));
-	data.push_back(Vertex(vec3f( 1.0, -0.577,  0.0), vec3f(0.0, 1.0, 0.0)));
-	data.push_back(Vertex(vec3f( 0.0,  1.155,  0.0), vec3f(1.0, 0.0, 0.0)));
+	data.push_back(Vertex(vec3f(-1.0, -1.0,  0.0), vec3f(0.0, 0.0, 1.0), vec2f(0.0,10.0)));
+	data.push_back(Vertex(vec3f( 1.0, -1.0,  0.0), vec3f(0.0, 1.0, 0.0), vec2f(10.0,10.0)));
+	data.push_back(Vertex(vec3f(-1.0,  1.0,  0.0), vec3f(1.0, 0.0, 0.0), vec2f(0.0,0.0)));
+
+	data.push_back(Vertex(vec3f( 1.0, -1.0,  0.0), vec3f(0.0, 0.0, 1.0), vec2f(10.0,10.0)));
+	data.push_back(Vertex(vec3f( 1.0,  1.0,  0.0), vec3f(0.0, 1.0, 0.0), vec2f(10.0,0.0)));
+	data.push_back(Vertex(vec3f(-1.0,  1.0,  0.0), vec3f(1.0, 0.0, 0.0), vec2f(0.0,0.0)));
 
 	mesh->setVertexData(&data[0],data.size());
 	tri.mesh = mesh;
-    if (program == NULL)
-		tri.program = parentScene->shaderExample;
-    else
-		tri.program = program;
+	tri.program = program;
 }
 
 TriangleObject::~TriangleObject() {
@@ -46,6 +50,8 @@ void TriangleObject::updateMatrix() {
 
 void TriangleObject::draw() const {
 	mat4f transform = parentScene->getState().projection*parentScene->getState().view*tri.modelMatrix;
+	TextureManager::useTexture("textest",  GL_TEXTURE2);
+	tri.program->uniform("sampler")->set(2);
 	tri.program->uniform("modelViewProjectionMatrix")->set(transform);
 	tri.draw();
 }

@@ -1,9 +1,7 @@
 #include "Scene.hpp"
 #include "Game.hpp"
 
-Scene::Scene(Game &parent) : parent(parent) {}
+Scene::Scene(Game &parent) : GameObject(NULL,vec3f(0.0),vec3f(1.0)), parent(parent) {}
 Scene::~Scene() {}
-RenderState& Scene::getState() const { return parent.state(); }
-InputManager& Scene::getInputs() const { return parent.input(); }
-TextureManager& Scene::getTextures() const { return parent.textures(); }
-AudioManager& Scene::getAudios() const { return parent.audio(); }
+void Scene::addObject(GameObject *object) {objects.push_back(object);}
+RenderState& Scene::getState() const { return state; }

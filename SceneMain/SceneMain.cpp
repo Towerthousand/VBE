@@ -1,5 +1,5 @@
 #include "SceneMain.hpp"
-#include "Game.hpp"
+#include "../Game.hpp"
 #include "TriangleObject.hpp"
 #include "RegularPolygonObject.hpp"
 
@@ -13,7 +13,7 @@ SceneMain::SceneMain(Game &parent) :
 		parent.isRunning = false;
 	}
 	//Center mouse
-	sf::Mouse::setPosition(sf::Vector2i(SCRWIDTH/2,SCRHEIGHT/2),parent.getWindow());
+	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,parent.getWindow());
 	//add a new triangle
 	addObject(new       TriangleObject(this,shaderExample , vec3f( 1.0f, 0.0f,-3.0f), vec3f(1.0f)));
 	addObject(new RegularPolygonObject(this,shaderExample2, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6));
@@ -34,15 +34,19 @@ SceneMain::~SceneMain() {
 bool SceneMain::loadResources() {
 	//shaders
 	ShaderProgram* s = new ShaderProgram();
-	if(!s->makeProgram("shaders/sample.vert","shaders/sample.frag"))
+	if(!s->makeProgram("data/shaders/sample.vert","data/shaders/sample.frag"))
 		return false;
 	shaderExample = s;
 
 	ShaderProgram* s2 = new ShaderProgram();
-	if(!s2->makeProgram("shaders/sample2.vert","shaders/sample2.frag"))
+	if(!s2->makeProgram("data/shaders/sample2.vert","data/shaders/sample2.frag"))
 		return false;
 	shaderExample2 = s2;
-
+	//textures
+	if(!TextureManager::loadTexture("textest","data/tex.png"))
+		return false;
+	if(!TextureManager::loadTexture("textest2","data/tex2.png"))
+		return false;
 	return true;
 }
 
@@ -76,9 +80,5 @@ void SceneMain::draw() const {
 	//models
 	for(std::list<GameObject*>::const_iterator it = objects.begin();it != objects.end(); ++it)
 		(*it)->draw();
-}
-
-void SceneMain::addObject(GameObject* object) {
-	objects.push_back(object);
 }
 

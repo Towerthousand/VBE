@@ -77,45 +77,7 @@ void Game::update(float deltaTime) {
 	// - Closing window
 	// - Resizing window & viewport
 	// - Updating window focus
-	inputManager.update();
-	sf::Event event;
-	while(window.pollEvent(event)) {
-		switch(event.type) {
-			case sf::Event::Closed:
-				isRunning = false;
-				break;
-			case sf::Event::Resized:
-				inputManager.resizeWindow(event.size.height,event.size.width,
-										  renderState.projection);
-				break;
-			case sf::Event::GainedFocus:
-				inputManager.gainFocus();
-				break;
-			case sf::Event::LostFocus:
-				inputManager.loseFocus();
-				break;
-			case sf::Event::MouseButtonPressed:
-				inputManager.pressMouse(event.mouseButton.button);
-				break;
-			case sf::Event::MouseButtonReleased:
-				inputManager.releaseMouse(event.mouseButton.button);
-				break;
-			case sf::Event::MouseMoved:
-				inputManager.moveMouse(event.mouseMove.x,event.mouseMove.y);
-				break;
-			case sf::Event::KeyPressed:
-				if(event.key.code == sf::Keyboard::Escape)
-					isRunning = false;
-				inputManager.pressKey(event.key.code);
-				break;
-			case sf::Event::KeyReleased:
-				inputManager.releaseKey(event.key.code);
-				break;
-			default:
-				break;
-		}
-	}
-
+	InputManager::update(isRunning,window);
 	//Scene logic updating
 	if (currentScene != NULL)
 		currentScene->update(deltaTime);

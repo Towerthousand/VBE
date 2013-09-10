@@ -24,7 +24,7 @@ vec3f HuetoRGB(float h) {
     return vec3f(r,g,b);
 }
 
-RegularPolygonObject::RegularPolygonObject(SceneMain* parentScene, ShaderProgram* program, vec3f pos, vec3f scale, unsigned int sides) : GameObject(parentScene, pos, scale) {
+RegularPolygonObject::RegularPolygonObject(Scene* parentScene, ShaderProgram* program, vec3f pos, vec3f scale, unsigned int sides) : GameObject(parentScene, pos, scale) {
 
     std::vector<Vertex::Element> elements;
     elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
@@ -49,10 +49,7 @@ RegularPolygonObject::RegularPolygonObject(SceneMain* parentScene, ShaderProgram
 
     mesh->setVertexData(&data[0],data.size());
 	poly.mesh = mesh;
-    if (program == NULL)
-		poly.program = parentScene->shaderExample;
-    else
-		poly.program = program;
+	poly.program = program;
 }
 
 RegularPolygonObject::~RegularPolygonObject() {

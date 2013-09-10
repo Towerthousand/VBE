@@ -7,6 +7,9 @@ class Uniform {
 		Uniform(unsigned int count, GLenum type, GLint location);
 		~Uniform();
 
+		void set(int val);
+		void set(std::vector<int> val);
+
 		void set(float val);
 		void set(std::vector<float> val);
 

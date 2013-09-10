@@ -17,14 +17,14 @@ SOURCES += \
     $$PWD/audio/Music.cpp \
     $$PWD/input/InputManager.cpp \
     $$PWD/SceneMain/SceneMain.cpp \
-    $$PWD/SceneMain/GameObject.cpp \
-    SceneMain/TriangleObject.cpp \
-    graphics/Mesh.cpp \
-    graphics/Vertex.cpp \
-    graphics/Model.cpp \
-    graphics/Uniform.cpp \
-    graphics/ShaderBinding.cpp \
-    SceneMain/RegularPolygonObject.cpp
+	$$PWD/GameObject.cpp \
+	$$PWD/SceneMain/TriangleObject.cpp \
+	$$PWD/graphics/Mesh.cpp \
+	$$PWD/graphics/Vertex.cpp \
+	$$PWD/graphics/Model.cpp \
+	$$PWD/graphics/Uniform.cpp \
+	$$PWD/graphics/ShaderBinding.cpp \
+	$$PWD/SceneMain/RegularPolygonObject.cpp
 
 HEADERS += \
     $$PWD/Scene.hpp \
@@ -39,18 +39,18 @@ HEADERS += \
     $$PWD/audio/Music.hpp \
     $$PWD/input/InputManager.hpp \
     $$PWD/SceneMain/SceneMain.hpp \
-    $$PWD/SceneMain/GameObject.hpp \
+	$$PWD/GameObject.hpp \
     $$PWD/glm/*.hpp \
-    SceneMain/TriangleObject.hpp \
-    graphics/Mesh.hpp \
-    graphics/Vertex.hpp \
-    graphics/Model.hpp \
-    graphics/Uniform.hpp \
-    graphics/ShaderBinding.hpp \
-    SceneMain/RegularPolygonObject.hpp
+	$$PWD/SceneMain/TriangleObject.hpp \
+	$$PWD/graphics/Mesh.hpp \
+	$$PWD/graphics/Vertex.hpp \
+	$$PWD/graphics/Model.hpp \
+	$$PWD/graphics/Uniform.hpp \
+	$$PWD/graphics/ShaderBinding.hpp \
+	$$PWD/SceneMain/RegularPolygonObject.hpp
 
 OTHER_FILES += \
-    $$PWD/shaders/sample.vert \
-    $$PWD/shaders/sample.frag \
-    shaders/sample2.vert \
-    shaders/sample2.frag
+	$$PWD/data/shaders/sample.vert \
+	$$PWD/data/shaders/sample.frag \
+	$$PWD/data/shaders/sample2.vert \
+	$$PWD/data/shaders/sample2.frag

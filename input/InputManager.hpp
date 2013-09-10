@@ -4,34 +4,31 @@
 
 class InputManager {
 	public:
+		static void update(bool& isGameRunning, sf::Window& window);
+		static bool isKeyPressed(sf::Keyboard::Key k);
+		static bool isKeyDown(sf::Keyboard::Key k);
+		static bool isKeyReleased(sf::Keyboard::Key k);
+
+		static bool isMousePressed(sf::Mouse::Button b);
+		static bool isMouseDown(sf::Mouse::Button b);
+		static bool isMouseReleased(sf::Mouse::Button b);
+
+		static void setMousePos(int x, int y, sf::Window &Window);
+
+		static std::set<sf::Keyboard::Key> keysPressed;
+		static std::set<sf::Keyboard::Key> keysDown;
+		static std::set<sf::Keyboard::Key> keysReleased;
+
+		static std::set<sf::Mouse::Button> mouseButtonsPressed;
+		static std::set<sf::Mouse::Button> mouseButtonsDown;
+		static std::set<sf::Mouse::Button> mouseButtonsReleased;
+
+	private:
+		static bool focus;
+		static vec2i lastMousePos;
+		static vec2i mouseDisplacement;
 		InputManager();
 		~InputManager();
-		void pressKey(sf::Keyboard::Key key);
-		void releaseKey(sf::Keyboard::Key key);
-		void pressMouse(sf::Mouse::Button key);
-		void releaseMouse(sf::Mouse::Button key);
-		void moveMouse(int dx, int dy);
-		void setMousePos(int x, int y);
-
-		void gainFocus();
-		void loseFocus();
-
-		void resizeWindow(int newHeight, int newWidth, mat4f &mat);
-
-		void update();
-
-		std::set<sf::Keyboard::Key> keysPressed;
-		std::set<sf::Keyboard::Key> keysDown;
-		std::set<sf::Keyboard::Key> keysReleased;
-
-		std::set<sf::Mouse::Button> mouseButtonsPressed;
-		std::set<sf::Mouse::Button> mouseButtonsDown;
-		std::set<sf::Mouse::Button> mouseButtonsReleased;
-
-		vec2i lastMousePos;
-		vec2i mouseDisplacement;
-
-		bool focus;
 };
 
 #endif // INPUTMANAGER_HPP
