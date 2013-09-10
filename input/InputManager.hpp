@@ -5,13 +5,13 @@
 class InputManager {
 	public:
 		static void update(bool& isGameRunning, sf::Window& window);
-		static bool isKeyPressed(sf::Keyboard::Key k);
-		static bool isKeyDown(sf::Keyboard::Key k);
-		static bool isKeyReleased(sf::Keyboard::Key k);
+		static bool isKeyPressed(sf::Keyboard::Key k) {return (keysPressed.find(k) != keysPressed.end());}
+		static bool isKeyDown(sf::Keyboard::Key k) {return (keysDown.find(k) != keysDown.end());}
+		static bool isKeyReleased(sf::Keyboard::Key k) {return (keysReleased.find(k) != keysReleased.end());}
 
-		static bool isMousePressed(sf::Mouse::Button b);
-		static bool isMouseDown(sf::Mouse::Button b);
-		static bool isMouseReleased(sf::Mouse::Button b);
+		static bool isMousePressed(sf::Mouse::Button b) {return (mouseButtonsPressed.find(b) != mouseButtonsPressed.end());}
+		static bool isMouseDown(sf::Mouse::Button b) {return (mouseButtonsDown.find(b) != mouseButtonsDown.end());}
+		static bool isMouseReleased(sf::Mouse::Button b) {return (mouseButtonsReleased.find(b) != mouseButtonsReleased.end());}
 
 		static void setMousePos(int x, int y, sf::Window &Window);
 
