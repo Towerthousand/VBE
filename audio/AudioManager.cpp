@@ -1,7 +1,7 @@
 #include "AudioManager.hpp"
 
-std::map<std::string,Music*> AudioManager::musicBank;
-std::map<std::string,SoundEffect*> AudioManager::effectBank;
+std::map<std::string,sf::Music*> AudioManager::musicBank;
+std::map<std::string,std::pair<sf::SoundBuffer*,sf::Sound*>> AudioManager::effectBank;
 
 AudioManager::AudioManager() {
 }
@@ -10,13 +10,13 @@ AudioManager::~AudioManager() {
 }
 
 bool AudioManager::loadMusic(const std::string &trackID, const std::string &filePath) {
-	if (musicBank.count(trackID) != 0) {
+	if (musicBank.find(trackID) != musicBank.end()) {
 		std::cout << "#WARNING " << trackID << " already loaded! Overwriting.." << std::endl;
 		deleteMusic(trackID);
 	}
 	std::cout << "* Loading new music track: \"" << trackID << "\" from " << filePath << std::endl;
-	Music * newTrack = new Music;
-	if (!newTrack->loadFromFile(filePath)) {
+	sf::Music * newTrack = new sf::Music();
+	if (!newTrack->openFromFile(filePath)) {
 		std::cout << "#ERROR " << filePath << " didn't load" << std::endl;
 		return false;
 	}
@@ -25,7 +25,7 @@ bool AudioManager::loadMusic(const std::string &trackID, const std::string &file
 }
 
 void AudioManager::deleteMusic(const std::string &trackID) {
-	if (musicBank.count(trackID) != 0) {
+	if (musicBank.find(trackID) != musicBank.end()) {
 		std::cout << "* Deleting music track \"" << trackID << "\"" << std::endl;
 		delete musicBank[trackID];
 		musicBank.erase(trackID);
@@ -35,24 +35,26 @@ void AudioManager::deleteMusic(const std::string &trackID) {
 }
 
 bool AudioManager::loadEffect(const std::string &effectID, const std::string &filePath) {
-	if (effectBank.count(effectID) != 0) {
+	if (effectBank.find(effectID) != effectBank.end()) {
 		std::cout << "#WARNING " << effectID << " already loaded! Overwriting.." << std::endl;
 		deleteEffect(effectID);
 	}
 	std::cout << "* Loading new sound effect: \"" << effectID << "\" from " + filePath << std::endl;
-	SoundEffect* newEffect = new SoundEffect;
-	if (!newEffect->loadFromFile(filePath)) {
+	std::pair<sf::SoundBuffer*,sf::Sound*> newEffect = std::pair<sf::SoundBuffer*,sf::Sound*>(new sf::SoundBuffer(),new sf::Sound());
+	if (!newEffect.first->loadFromFile(filePath)) {
 		std::cout << "#ERROR " << filePath << " didn't load" << std::endl;
 		return false;
 	}
+	newEffect.second->setBuffer(*newEffect.first);
 	effectBank[effectID] = newEffect;
 	return true;
 }
 
 void AudioManager::deleteEffect(const std::string &effectID) {
-	if (effectBank.count(effectID) != 0) {
+	if (effectBank.find(effectID) != effectBank.end()) {
 		std::cout << "* Deleting sound effect \"" << effectID << "\"" << std::endl;
-		delete effectBank[effectID];
+		delete effectBank[effectID].first;
+		delete effectBank[effectID].second;
 		effectBank.erase(effectID);
 	}
 	else

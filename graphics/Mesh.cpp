@@ -14,7 +14,7 @@ Mesh::Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dy
 	if (glGetError()) {
 		std::cout << "Failed to bind VBO for mesh" << std::endl;
 		glDeleteBuffers(1, &vbo);
-        return;
+		return;
 	}
 
 	glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);

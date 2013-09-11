@@ -38,29 +38,29 @@ class Game {
 		~Game();
 		bool init(); // inits game-wide stuff here (init and resource loading)
 		void run(); // won't run if Game::init() isn't called first
-					// contains main loop, calls update() and draw()
+		// contains main loop, calls update() and draw()
 		void setScene(Scene * scene); // sets nextScene to scene, which will
-									  // move into currentScene on next update()
-									  // so that there is no update() of one
-									  // scene followed by a draw() method
-									  // of a different scene.
+		// move into currentScene on next update()
+		// so that there is no update() of one
+		// scene followed by a draw() method
+		// of a different scene.
 		void close(); // closes app completely, closing the current scene (if there is)
-					  // first, saves game-wide stuff first.
+		// first, saves game-wide stuff first.
 
 		sf::RenderWindow &getWindow() { return window; }
 		
 		bool isRunning;
 	private:
 		void update(float deltaTime); // changes scene if necessary
-									  // updates fps
-									  // checks for window events
-									  // updates input with
-									  // Game::onMouseButtonPressed(); and
-									  // Game::onKeyPressed();
-									  // calls currentScene.update(deltaTime)
+		// updates fps
+		// checks for window events
+		// updates input with
+		// Game::onMouseButtonPressed(); and
+		// Game::onKeyPressed();
+		// calls currentScene.update(deltaTime)
 		void draw(); // calls currentScene.draw()
 		bool loadResources (); // loads game-wide resources. only called
-							   // by init() once
+		// by init() once
 
 		//context
 		sf::RenderWindow window;

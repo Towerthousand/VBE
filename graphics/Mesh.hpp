@@ -14,7 +14,7 @@ class Mesh {
 		};
 
 		Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dynamic = false);
-        virtual ~Mesh();
+		virtual ~Mesh();
 
 		void draw(ShaderProgram* program);
 

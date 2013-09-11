@@ -4,7 +4,7 @@
 
 TriangleObject::TriangleObject(Scene* parentScene, ShaderProgram *program, vec3f pos, vec3f scale) : GameObject(parentScene,pos,scale) {
 	std::vector<Vertex::Element> elements;
-    elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
+	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
 	elements.push_back(Vertex::Element(Vertex::Attribute::Color    , Vertex::Element::Float, 3));
 	elements.push_back(Vertex::Element(Vertex::Attribute::TexCoord , Vertex::Element::Float, 2));
 
@@ -36,7 +36,7 @@ TriangleObject::~TriangleObject() {
 }
 
 void TriangleObject::update(float deltaTime) {
-    (void) deltaTime;
+	(void) deltaTime;
 	updateMatrix();
 }
 

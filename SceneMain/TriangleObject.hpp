@@ -6,7 +6,7 @@
 class TriangleObject : public GameObject {
 	public:
 		TriangleObject(Scene* parentScene, ShaderProgram* program, vec3f pos, vec3f scale);
-        virtual ~TriangleObject();
+		virtual ~TriangleObject();
 
 		void update(float deltaTime);
 		void updateMatrix();

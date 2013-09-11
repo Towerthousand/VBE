@@ -11,10 +11,8 @@ SOURCES += \
     $$PWD/graphics/Texture.cpp \
     $$PWD/graphics/TextureManager.cpp \
     $$PWD/graphics/Shader.cpp \
-    $$PWD/graphics/ShaderProgram.cpp \
-    $$PWD/audio/AudioManager.cpp \
-    $$PWD/audio/SoundEffect.cpp \
-    $$PWD/audio/Music.cpp \
+	$$PWD/graphics/ShaderProgram.cpp \
+	$$PWD/audio/AudioManager.cpp \
     $$PWD/input/InputManager.cpp \
     $$PWD/SceneMain/SceneMain.cpp \
 	$$PWD/GameObject.cpp \
@@ -34,9 +32,7 @@ HEADERS += \
     $$PWD/graphics/TextureManager.hpp \
     $$PWD/graphics/Shader.hpp \
     $$PWD/graphics/ShaderProgram.hpp \
-    $$PWD/audio/AudioManager.hpp \
-    $$PWD/audio/SoundEffect.hpp \
-    $$PWD/audio/Music.hpp \
+	$$PWD/audio/AudioManager.hpp \
     $$PWD/input/InputManager.hpp \
     $$PWD/SceneMain/SceneMain.hpp \
 	$$PWD/GameObject.hpp \
