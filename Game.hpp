@@ -26,6 +26,7 @@
 
 #include "graphics/TextureManager.hpp"
 #include "graphics/MeshManager.hpp"
+#include "graphics/ShaderManager.hpp"
 #include "audio/AudioManager.hpp"
 #include "input/InputManager.hpp"
 #include "Scene.hpp"

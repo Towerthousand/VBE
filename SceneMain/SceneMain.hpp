@@ -14,8 +14,6 @@ class SceneMain : public Scene {
 		void draw() const;
 
 	private:
-		ShaderProgram* shaderExample; //I have not done a shader manager yet :/
-		ShaderProgram* shaderExample2;
 		bool loadResources();
 		float debugCounter;
 		int fpsCount;

@@ -23,7 +23,8 @@ SOURCES += \
 	$$PWD/graphics/Uniform.cpp \
 	$$PWD/graphics/ShaderBinding.cpp \
 	$$PWD/SceneMain/RegularPolygonObject.cpp \
-	$$PWD/graphics/MeshManager.cpp
+	$$PWD/graphics/MeshManager.cpp \
+    graphics/ShaderManager.cpp
 
 HEADERS += \
     $$PWD/Scene.hpp \
@@ -45,7 +46,8 @@ HEADERS += \
 	$$PWD/graphics/Uniform.hpp \
 	$$PWD/graphics/ShaderBinding.hpp \
 	$$PWD/SceneMain/RegularPolygonObject.hpp \
-	$$PWD/graphics/MeshManager.hpp
+	$$PWD/graphics/MeshManager.hpp \
+    graphics/ShaderManager.hpp
 
 OTHER_FILES += \
 	$$PWD/data/shaders/sample.vert \

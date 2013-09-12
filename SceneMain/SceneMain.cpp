@@ -4,7 +4,7 @@
 #include "RegularPolygonObject.hpp"
 
 SceneMain::SceneMain(Game &parent) :
-	Scene(parent), shaderExample(NULL),
+	Scene(parent),
 	debugCounter(0.0), fpsCount(0) {
 	//SCENE INIT
 	std::cout << "* Loading new scene: Main" << std::endl;
@@ -16,8 +16,8 @@ SceneMain::SceneMain(Game &parent) :
 	//Center mouse
 	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,parent.getWindow());
 	//add a new triangle
-	addObject(new       TriangleObject(this,shaderExample , vec3f( 1.0f, 0.0f,-3.0f), vec3f(1.0f)));
-	addObject(new RegularPolygonObject(this,shaderExample2, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6));
+	addObject(new       TriangleObject(this , vec3f( 1.0f, 0.0f,-3.0f), vec3f(1.0f)));
+	addObject(new RegularPolygonObject(this, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6));
 	std::cout << "* Init done" << std::endl;
 }
 
@@ -26,10 +26,6 @@ SceneMain::~SceneMain() {
 	std::cout << "* Deleting GameObjects on SceneMain" << std::endl;
 	for(std::list<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
 		delete *it;
-	if(shaderExample != NULL)
-		delete shaderExample;
-	if(shaderExample2 != NULL)
-		delete shaderExample2;
 }
 
 bool SceneMain::loadResources() {
@@ -37,12 +33,12 @@ bool SceneMain::loadResources() {
 	ShaderProgram* s = new ShaderProgram();
 	if(!s->makeProgram("data/shaders/sample.vert","data/shaders/sample.frag"))
 		return false;
-	shaderExample = s;
+	ShaderManager::add("sample",s);
 
-	ShaderProgram* s2 = new ShaderProgram();
-	if(!s2->makeProgram("data/shaders/sample2.vert","data/shaders/sample2.frag"))
+	s = new ShaderProgram();
+	if(!s->makeProgram("data/shaders/sample2.vert","data/shaders/sample2.frag"))
 		return false;
-	shaderExample2 = s2;
+	ShaderManager::add("sample2",s);
 	//textures
 	if(!TextureManager::loadTexture("textest","data/tex.png"))
 		return false;

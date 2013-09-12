@@ -1,5 +1,5 @@
-#ifndef SHADERMANAGER_HPP
-#define SHADERMANAGER_HPP
+#ifndef SHADERPROGRAM_HPP
+#define SHADERPROGRAM_HPP
 #include "Shader.hpp"
 #include "Uniform.hpp"
 

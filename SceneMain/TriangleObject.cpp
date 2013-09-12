@@ -2,13 +2,12 @@
 #include "SceneMain.hpp"
 #include "../Game.hpp"
 
-TriangleObject::TriangleObject(Scene* parentScene, ShaderProgram *program, vec3f pos, vec3f scale) : GameObject(parentScene,pos,scale) {
+TriangleObject::TriangleObject(Scene* parentScene, vec3f pos, vec3f scale) : GameObject(parentScene,pos,scale) {
 	tri.mesh = MeshManager::get("tri");
-	tri.program = program;
+	tri.program = ShaderManager::get("sample");
 }
 
 TriangleObject::~TriangleObject() {
-	delete tri.mesh;
 }
 
 void TriangleObject::update(float deltaTime) {
