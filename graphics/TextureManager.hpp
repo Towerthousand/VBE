@@ -5,9 +5,9 @@
 class Texture;
 class TextureManager{
 	public:
-		static bool loadTexture(const std::string& textureID, const std::string& filePath);
-		static void useTexture(const std::string& textureID, GLenum texUnit);
-		static void deleteTexture(const std::string& textureID);
+		static bool load(const std::string& textureID, const std::string& filePath);
+		static void use(const std::string& textureID, GLenum texUnit);
+		static void erase(const std::string& textureID);
 		static void clear();
 	private:
 		TextureManager();

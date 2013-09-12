@@ -59,10 +59,6 @@ std::string toString(float num);
 #define ZNEAR 0.01f
 #define ZFAR 1000.0f
 
-//texture settings
-#define MAX_TEXTURES 1 //max number of currently used textures
-#define TEXSIZE 8 //size of block textures
-
 //global variables
 extern int SCRWIDTH;
 extern int SCRHEIGHT;

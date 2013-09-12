@@ -14,7 +14,9 @@ class Mesh {
 		};
 
 		Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dynamic = false);
-		virtual ~Mesh();
+		Mesh(const std::string &filename, bool dynamic = false);
+		~Mesh();
+		bool loadFromFile(const std::string& filename);
 
 		void draw(ShaderProgram* program);
 
@@ -28,9 +30,10 @@ class Mesh {
 		void setPrimitiveType(Mesh::PrimitiveType type);
 		void setVertexData(void* vertexData, unsigned int newVertexCount);
 
-	protected:
+	private:
+		void makeVBO();
 		std::map<GLuint,const ShaderBinding*> bindingsCache;
-		const Vertex::Format vertexFormat;
+		Vertex::Format vertexFormat;
 		unsigned int vertexCount;
 		GLuint vertexBuffer;
 		PrimitiveType primitiveType;

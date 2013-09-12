@@ -9,10 +9,10 @@ TextureManager::TextureManager() {
 TextureManager::~TextureManager() {
 }
 
-bool TextureManager::loadTexture(const std::string& textureID, const std::string& filePath) {
+bool TextureManager::load(const std::string& textureID, const std::string& filePath) {
 	if (textureBank.count(textureID) != 0) {
 		std::cout << "#WARNING \"" << textureID << "\" already loaded! Overwriting texture.." << std::endl;
-		deleteTexture(textureID);
+		erase(textureID);
 	}
 	std::cout << "* Loading new texture: \"" << textureID << "\" from " << filePath << std::endl;
 	Texture* newTexture = new Texture();
@@ -22,13 +22,13 @@ bool TextureManager::loadTexture(const std::string& textureID, const std::string
 	return true;
 }
 
-void TextureManager::useTexture(const std::string& textureID, GLenum texUnit) {
+void TextureManager::use(const std::string& textureID, GLenum texUnit) {
 	glActiveTexture(texUnit);
 	textureBank.at(textureID)->bind();
 	glActiveTexture(GL_TEXTURE0);
 }
 
-void TextureManager::deleteTexture(const std::string& textureID) {
+void TextureManager::erase(const std::string& textureID) {
 	assert(textureBank.find(textureID) != textureBank.end());
 	delete textureBank.at(textureID);
 	textureBank.erase(textureID);
@@ -37,5 +37,5 @@ void TextureManager::deleteTexture(const std::string& textureID) {
 
 void TextureManager::clear() {
 	while(!textureBank.empty())
-		deleteTexture(textureBank.begin()->first);
+		erase(textureBank.begin()->first);
 }

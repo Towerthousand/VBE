@@ -6,7 +6,7 @@
 class ShaderProgram;
 class ShaderManager {
 	public:
-		static void add(std::string programID,ShaderProgram* program);
+		static bool load(std::string programID, std::string vert, std::string frag);
 		static ShaderProgram* get(std::string programID);
 		static void erase(std::string programID);
 		static void	clear();

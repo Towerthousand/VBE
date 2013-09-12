@@ -9,9 +9,13 @@ ShaderManager::ShaderManager() {
 ShaderManager::~ShaderManager() {
 }
 
-void ShaderManager::add(std::string programID,ShaderProgram* program) {
+bool ShaderManager::load(std::string programID,std::string vert, std::string frag) {
 	assert(programs.find(programID) == programs.end());
-	programs.insert(std::pair<std::string,ShaderProgram*>(programID,program));
+	ShaderProgram* p = new ShaderProgram();
+	if(!p->makeProgram(vert,frag))
+		return false;
+	programs.insert(std::pair<std::string,ShaderProgram*>(programID,p));
+	return true;
 }
 
 ShaderProgram* ShaderManager::get(std::string programID) {
