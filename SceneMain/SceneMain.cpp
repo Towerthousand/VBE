@@ -11,6 +11,7 @@ SceneMain::SceneMain(Game &parent) :
 	if (!loadResources()) {
 		std::cout << "Could not load resources for SceneMain" << std::endl;
 		parent.isRunning = false;
+		return;
 	}
 	//Center mouse
 	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,parent.getWindow());
@@ -47,6 +48,29 @@ bool SceneMain::loadResources() {
 		return false;
 	if(!TextureManager::loadTexture("textest2","data/tex2.png"))
 		return false;
+	//Create meshes
+	std::vector<Vertex::Element> elements;
+	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
+	elements.push_back(Vertex::Element(Vertex::Attribute::Color    , Vertex::Element::Float, 3));
+	elements.push_back(Vertex::Element(Vertex::Attribute::TexCoord , Vertex::Element::Float, 2));
+
+	struct Vert {
+			Vert(vec3f pos, vec3f color, vec2f tex) : pos(pos) , color(color), tex(tex) {}
+			vec3f pos,color;
+			vec2f tex;
+	};
+
+	std::vector<Vert> data;
+	data.push_back(Vert(vec3f(-1.0, -1.0,  0.0), vec3f(0.0, 0.0, 1.0), vec2f(0.0,10.0)));
+	data.push_back(Vert(vec3f( 1.0, -1.0,  0.0), vec3f(0.0, 1.0, 0.0), vec2f(10.0,10.0)));
+	data.push_back(Vert(vec3f(-1.0,  1.0,  0.0), vec3f(1.0, 0.0, 0.0), vec2f(0.0,0.0)));
+	data.push_back(Vert(vec3f( 1.0, -1.0,  0.0), vec3f(0.0, 1.0, 0.0), vec2f(10.0,10.0)));
+	data.push_back(Vert(vec3f( 1.0,  1.0,  0.0), vec3f(0.0, 0.0, 1.0), vec2f(10.0,0.0)));
+	data.push_back(Vert(vec3f(-1.0,  1.0,  0.0), vec3f(1.0, 0.0, 0.0), vec2f(0.0,0.0)));
+
+	Mesh* mesh = new Mesh(Vertex::Format(elements),0,false);
+	mesh->setVertexData(&data[0],data.size());
+	MeshManager::add("tri",mesh);
 	return true;
 }
 
