@@ -16,8 +16,7 @@ SceneMain::SceneMain(Game &parent) :
 	//Center mouse
 	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,parent.getWindow());
 	//add a new triangle
-	for(float x = 0.0f;x < 2.5f; x += 0.25f)
-		addObject(new       TriangleObject(this , vec3f( 1.0f, 1.0f-x,-3.0f), vec3f(0.1f)));
+	addObject(new       TriangleObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.1f)));
 	addObject(new RegularPolygonObject(this, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6));
 	std::cout << "* Init done" << std::endl;
 }
@@ -36,10 +35,10 @@ bool SceneMain::loadResources() {
 	if(!ShaderManager::load("sample2","data/shaders/sample2.vert","data/shaders/sample2.frag"))
 		return false;
 	//textures
-	if(!TextureManager::load("cubetex","data/cubetex.png"))
+	if(!TextureManager::load("cubetex","data/10x10tex.png"))
 		return false;
 	//Create meshes
-	MeshManager::add("cube",new Mesh("data/cube.obj"));
+	MeshManager::add("cube",new Mesh("data/10x10.obj"));
 	return true;
 }
 
