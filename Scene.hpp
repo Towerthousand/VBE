@@ -12,20 +12,18 @@ struct RenderState {
 class Game;
 class Scene : public GameObject{ //abstract
 	public:
-		Scene(Game &parent); //should NOT do anything apart from being called
+		Scene(Game &parent);
 		virtual ~Scene();
 
-		virtual void update(float deltaTime) = 0; //called by parent on parent.update()
-		virtual void draw() const = 0; //called by parent on parent.draw()
-		virtual void addObject(GameObject* object);
+		virtual void update(float deltaTime) = 0;
+		virtual void draw() const = 0;
 
 		RenderState &getState() const;
 	protected:
-		virtual bool loadResources() = 0; //load stuff with managers
+		virtual bool loadResources() = 0;
 
 		Game& parent;
 		mutable RenderState state;
-		std::list<GameObject*> objects;
 };
 
 #endif // SCENE_HPP

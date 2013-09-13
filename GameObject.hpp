@@ -10,12 +10,14 @@ class GameObject { //Static objects that have a position and rotation but don't 
 
 		virtual void update(float deltaTime);
 		virtual void draw() const;
+		virtual void addObject(GameObject* object);
 
 		bool isAlive;
 		vec3f pos;
 		vec3f scale;
 	protected:
 		Scene* parentScene;
+		std::list<GameObject*> objects;
 };
 
 #endif // GAMEOBJECT_HPP

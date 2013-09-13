@@ -15,3 +15,7 @@ void GameObject::update(float deltaTime) {
 
 void GameObject::draw() const {
 }
+
+void GameObject::addObject(GameObject *object) {
+	objects.push_back(object);
+}
