@@ -1,8 +1,8 @@
 #ifndef SHADERPROGRAM_HPP
 #define SHADERPROGRAM_HPP
-#include "Shader.hpp"
-#include "Uniform.hpp"
+#include "../tools.hpp"
 
+class Uniform;
 class ShaderProgram {
 	public:
 		ShaderProgram();
@@ -12,7 +12,7 @@ class ShaderProgram {
 		GLuint getHandle() const {return programHandle;}
 
 		void use() const;
-		Uniform* uniform(std::string name) const;
+		Uniform* uniform(const std::string& name) const;
 
 		std::map<std::string,GLint> attributes;
 		std::map<std::string,Uniform*> uniforms;

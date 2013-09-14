@@ -9,16 +9,16 @@ MeshManager::MeshManager() {
 MeshManager::~MeshManager() {
 }
 
-void MeshManager::add(std::string meshID,Mesh* mesh) {
+void MeshManager::add(const std::string &meshID, Mesh* mesh) {
 	assert(meshes.find(meshID) == meshes.end());
 	meshes.insert(std::pair<std::string,Mesh*>(meshID,mesh));
 }
 
-Mesh* MeshManager::get(std::string meshID) {
+Mesh* MeshManager::get(const std::string &meshID) {
 	return meshes.at(meshID);
 }
 
-void MeshManager::erase(std::string meshID) {
+void MeshManager::erase(const std::string &meshID) {
 	assert(meshes.find(meshID) != meshes.end());
 	delete meshes.at(meshID);
 	meshes.erase(meshID);

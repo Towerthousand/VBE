@@ -1,6 +1,6 @@
 #ifndef SHADERBINDING_HPP
 #define SHADERBINDING_HPP
-#include "tools.hpp"
+#include "../tools.hpp"
 
 class Mesh;
 class ShaderProgram;

@@ -31,16 +31,16 @@ Uniform::~Uniform() {
 }
 
 void Uniform::set(int val) {assert(type == GL_INT || type == GL_SAMPLER_2D);setBytes((char*)&val);}
-void Uniform::set(std::vector<int> val) {assert(type == GL_INT || type == GL_SAMPLER_2D);assert(val.size() == count);setBytes((char*)&val[0]);}
+void Uniform::set(const std::vector<int> &val) {assert(type == GL_INT || type == GL_SAMPLER_2D);assert(val.size() == count);setBytes((char*)&val[0]);}
 
 void Uniform::set(float val) {assert(type == GL_FLOAT);setBytes((char*)&val);}
-void Uniform::set(std::vector<float> val) {assert(type == GL_FLOAT);assert(val.size() == count);setBytes((char*)&val[0]);}
+void Uniform::set(const std::vector<float> &val) {assert(type == GL_FLOAT);assert(val.size() == count);setBytes((char*)&val[0]);}
 
-void Uniform::set(vec3f val) {assert(type == GL_FLOAT_VEC3);setBytes((char*)&val[0]);}
-void Uniform::set(std::vector<vec3f> val) {assert(type == GL_FLOAT_VEC3);assert(val.size() == count);setBytes((char*)&val[0][0]);}
+void Uniform::set(const vec3f &val) {assert(type == GL_FLOAT_VEC3);setBytes((char*)&val[0]);}
+void Uniform::set(const std::vector<vec3f> &val) {assert(type == GL_FLOAT_VEC3);assert(val.size() == count);setBytes((char*)&val[0][0]);}
 
-void Uniform::set(mat4f val) {assert(type == GL_FLOAT_MAT4);setBytes((char*)&val[0][0]);}
-void Uniform::set(std::vector<mat4f> val) {assert(type == GL_FLOAT_MAT4);assert(val.size() == count);setBytes((char*)&val[0][0][0]);}
+void Uniform::set(const mat4f &val) {assert(type == GL_FLOAT_MAT4);setBytes((char*)&val[0][0]);}
+void Uniform::set(const std::vector<mat4f> &val) {assert(type == GL_FLOAT_MAT4);assert(val.size() == count);setBytes((char*)&val[0][0][0]);}
 
 void Uniform::ready() { //assumes program is binded already. Only to be called by ShaderProgram
 	if(!dirty) return;
@@ -55,7 +55,7 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 	}
 }
 
-void Uniform::setBytes(char* val) {
+void Uniform::setBytes(const char *val) {
 	if(!compare(val)) {
 		for(unsigned int i = 0; i < lastValue.size(); ++i)
 			lastValue[i] = val[i];
@@ -63,7 +63,7 @@ void Uniform::setBytes(char* val) {
 	}
 }
 
-bool Uniform::compare(char *val) const {
+bool Uniform::compare(const char *val) const {
 	for(unsigned int i = 0; i < lastValue.size(); ++i)
 		if(lastValue[i] != val[i])
 			return false;

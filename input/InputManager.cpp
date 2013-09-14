@@ -18,7 +18,7 @@ InputManager::InputManager() {
 InputManager::~InputManager() {
 }
 
-void InputManager::update(bool &isGameRunning, sf::Window& window) {
+void InputManager::update(bool &isGameRunning,sf::Window &window) {
 	keysPressed = std::set<sf::Keyboard::Key>();
 	keysReleased = std::set<sf::Keyboard::Key>();
 	mouseButtonsPressed = std::set<sf::Mouse::Button>();

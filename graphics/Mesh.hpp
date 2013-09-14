@@ -1,8 +1,9 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 #include "Vertex.hpp"
-#include "ShaderBinding.hpp"
 
+class ShaderBinding;
+class ShaderProgram;
 class Mesh {
 	public:
 		enum PrimitiveType {
@@ -13,12 +14,12 @@ class Mesh {
 			POINTS = GL_POINTS
 		};
 
-		Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dynamic = false);
+		Mesh(const Vertex::Format &vertexFormat, unsigned int vertexCount, bool dynamic = false);
 		Mesh(const std::string &filename, bool dynamic = false);
 		~Mesh();
-		bool loadFromFile(const std::string& filename);
+		bool loadFromFile(const std::string &filename);
 
-		void draw(ShaderProgram* program);
+		void draw(const ShaderProgram* program);
 
 		const Vertex::Format& getVertexFormat() const;
 		unsigned int getVertexCount() const;

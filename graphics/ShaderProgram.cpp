@@ -1,5 +1,6 @@
 #include "ShaderProgram.hpp"
 #include "Uniform.hpp"
+#include "Shader.hpp"
 
 GLuint ShaderProgram::current(0);
 
@@ -156,6 +157,6 @@ void ShaderProgram::use() const {
 	}
 }
 
-Uniform* ShaderProgram::uniform(std::string name) const {
+Uniform* ShaderProgram::uniform(const std::string &name) const {
 	return uniforms.at(name);
 }

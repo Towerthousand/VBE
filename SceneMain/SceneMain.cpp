@@ -35,7 +35,7 @@ bool SceneMain::loadResources() {
 	if(!ShaderManager::load("sample2","data/shaders/sample2.vert","data/shaders/sample2.frag"))
 		return false;
 	//textures
-	if(!TextureManager::load("cubetex","data/10x10tex.png"))
+	if(!TextureManager::load("cubetex","data/10x10tex.png",2))
 		return false;
 	//Create meshes
 	MeshManager::add("cube",new Mesh("data/10x10.obj"));

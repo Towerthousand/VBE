@@ -4,7 +4,7 @@
 
 class InputManager {
 	public:
-		static void update(bool& isGameRunning, sf::Window& window);
+		static void update(bool& isGameRunning, sf::Window &window);
 		static bool isKeyPressed(sf::Keyboard::Key k) {return (keysPressed.find(k) != keysPressed.end());}
 		static bool isKeyDown(sf::Keyboard::Key k) {return (keysDown.find(k) != keysDown.end());}
 		static bool isKeyReleased(sf::Keyboard::Key k) {return (keysReleased.find(k) != keysReleased.end());}

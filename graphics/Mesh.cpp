@@ -1,5 +1,6 @@
 #include "Mesh.hpp"
 #include "ShaderProgram.hpp"
+#include "ShaderBinding.hpp"
 
 Mesh::Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dynamic)
 	: vertexFormat(vertexFormat), vertexCount(vertexCount), vertexBuffer(0), primitiveType(TRIANGLES),
@@ -89,7 +90,7 @@ bool Mesh::loadFromFile(const std::string& filename) {
 	return true;
 }
 
-void Mesh::draw(ShaderProgram* program) {
+void Mesh::draw(const ShaderProgram *program) {
 	GLuint handle = program->getHandle();
 	if(bindingsCache.find(handle) == bindingsCache.end()) {
 		bindingsCache.insert(std::pair<GLuint,const ShaderBinding*>(handle,new ShaderBinding(program, this)));

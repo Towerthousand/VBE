@@ -1,6 +1,6 @@
 #include "Texture.hpp"
 
-Texture::Texture(): handle(0), size(0,0){
+Texture::Texture(unsigned int slot): handle(0), slot(slot), size(0,0){
 }
 
 Texture::~Texture(){
@@ -35,6 +35,7 @@ bool Texture::load(const std::string &filePath) {
 }
 
 void Texture::bind() const {
+	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, handle);
 }
 
@@ -48,6 +49,14 @@ void Texture::setWrap(GLenum wrap) const {
 	bind();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
+}
+
+void Texture::setSlot(unsigned int newSlot) {
+	slot = newSlot;
+}
+
+unsigned int Texture::getSlot() {
+	return slot;
 }
 
 GLuint Texture::getHandle() const {

@@ -2,7 +2,7 @@
 #include "SceneMain.hpp"
 #include "../Game.hpp"
 
-TriangleObject::TriangleObject(Scene* parentScene, vec3f pos, vec3f scale) : GameObject(parentScene,pos,scale) {
+TriangleObject::TriangleObject(Scene* parentScene,  const vec3f &pos, const vec3f &scale) : GameObject(parentScene,pos,scale) {
 	tri.mesh = MeshManager::get("cube");
 	tri.program = ShaderManager::get("sample");
 }
@@ -25,7 +25,7 @@ void TriangleObject::updateMatrix() {
 
 void TriangleObject::draw() const {
 	mat4f transform = parentScene->getState().projection*parentScene->getState().view*tri.modelMatrix;
-	TextureManager::use("cubetex",  GL_TEXTURE2);
+	TextureManager::get("cubetex")->bind();
 	tri.program->uniform("sampler")->set(2);
 	tri.program->uniform("modelViewProjectionMatrix")->set(transform);
 	tri.draw();

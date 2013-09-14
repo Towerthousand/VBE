@@ -1,6 +1,6 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
-#include "tools.hpp"
+#include "../tools.hpp"
 
 class ShaderProgram;
 class Mesh;

@@ -1,6 +1,6 @@
 #ifndef SHADER_HPP
 #define SHADER_HPP
-#include "tools.hpp"
+#include "../tools.hpp"
 
 class Shader {
 	public:
