@@ -13,6 +13,9 @@ class InputManager {
 		static bool isMouseDown(sf::Mouse::Button b) {return (mouseButtonsDown.find(b) != mouseButtonsDown.end());}
 		static bool isMouseReleased(sf::Mouse::Button b) {return (mouseButtonsReleased.find(b) != mouseButtonsReleased.end());}
 
+		static vec2i getMousePos() {return lastMousePos;}
+		static vec2i getMouseDisplacement() {return mouseDisplacement;}
+
 		static void setMousePos(int x, int y, sf::Window &Window);
 
 		static std::set<sf::Keyboard::Key> keysPressed;
