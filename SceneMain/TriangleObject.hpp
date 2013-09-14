@@ -5,7 +5,7 @@
 
 class TriangleObject : public GameObject {
 	public:
-		TriangleObject(Scene* parentScene, const vec3f &pos, const vec3f &scale);
+		TriangleObject(GameObject* parent, const vec3f &pos, const vec3f &scale);
 		virtual ~TriangleObject();
 
 		void update(float deltaTime);

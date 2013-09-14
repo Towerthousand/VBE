@@ -1,10 +1,9 @@
 #ifndef SCENEMAIN_HPP
 #define SCENEMAIN_HPP
-#include "../Scene.hpp"
+#include "../GameObject.hpp"
 
-class GameObject;
-class ShaderProgram;
-class SceneMain : public Scene {
+class Game;
+class SceneMain : public GameObject {
 	public:
 		//virtual overrides
 		SceneMain(Game &parent);
@@ -17,6 +16,7 @@ class SceneMain : public Scene {
 		bool loadResources();
 		float debugCounter;
 		int fpsCount;
+		Game& parentGame;
 };
 
 #endif // SCENEMAIN_HPP

@@ -43,12 +43,7 @@ void Uniform::set(const std::vector<vec3f> &val) {assert(type == GL_FLOAT_VEC3);
 void Uniform::set(const mat4f &val) {assert(type == GL_FLOAT_MAT4);setBytes((char*)&val[0][0]);}
 void Uniform::set(const std::vector<mat4f> &val) {assert(type == GL_FLOAT_MAT4);assert(val.size() == count);setBytes((char*)&val[0][0][0]);}
 
-void Uniform::set(const Texture* val) {
-	assert(type == GL_SAMPLER_2D);
-	val->bind();
-	unsigned int slot = val->getSlot();
-	setBytes((char*)&slot);
-}
+void Uniform::set(const Texture* val) {assert(type == GL_SAMPLER_2D); val->bind();unsigned int slot = val->getSlot();setBytes((char*)&slot);}
 
 void Uniform::ready() { //assumes program is binded already. Only to be called by ShaderProgram
 	if(!dirty) return;

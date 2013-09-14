@@ -91,7 +91,7 @@ void Game::draw() {
 }
 
 // Change scene so that on next this->update(), this->currentScene will be replaced
-void Game::setScene (Scene * scene) {
+void Game::setScene(GameObject *scene) {
 	if(nextScene != NULL)
 		delete nextScene;
 	nextScene = scene;

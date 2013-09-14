@@ -29,7 +29,8 @@
 #include "graphics/ShaderManager.hpp"
 #include "audio/AudioManager.hpp"
 #include "input/InputManager.hpp"
-#include "Scene.hpp"
+#include "RenderState.hpp"
+#include "GameObject.hpp"
 #include "graphics/Mesh.hpp"
 #include "graphics/Model.hpp"
 #include "graphics/ShaderProgram.hpp"
@@ -43,13 +44,13 @@ class Game {
 		bool init(); // inits game-wide stuff here (init and resource loading)
 		void run(); // won't run if Game::init() isn't called first
 		// contains main loop, calls update() and draw()
-		void setScene(Scene * scene); // sets nextScene to scene, which will
+		void setScene(GameObject* scene); // sets nextScene to scene, which will
 		// move into currentScene on next update()
 		// so that there is no update() of one
 		// scene followed by a draw() method
 		// of a different scene.
 		void close(); // closes app completely, closing the current scene (if there is)
-		// first, saves game-wide stuff first.
+		// , saves game-wide stuff first.
 
 		sf::RenderWindow &getWindow() { return window; }
 		
@@ -58,9 +59,7 @@ class Game {
 		void update(float deltaTime); // changes scene if necessary
 		// updates fps
 		// checks for window events
-		// updates input with
-		// Game::onMouseButtonPressed(); and
-		// Game::onKeyPressed();
+		// updates input
 		// calls currentScene.update(deltaTime)
 		void draw(); // calls currentScene.draw()
 		bool loadResources (); // loads game-wide resources. only called
@@ -68,8 +67,8 @@ class Game {
 
 		//context
 		sf::RenderWindow window;
-		Scene* currentScene;
-		Scene* nextScene;
+		GameObject* currentScene;
+		GameObject* nextScene;
 };
 
 #endif //GAME_HPP

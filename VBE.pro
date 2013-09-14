@@ -6,8 +6,7 @@ QMAKE_CXXFLAGS += -std=c++11
 SOURCES += \
     $$PWD/main.cpp \
     $$PWD/Game.cpp \
-    $$PWD/tools.cpp \
-    $$PWD/Scene.cpp \
+	$$PWD/tools.cpp \
     $$PWD/graphics/Texture.cpp \
     $$PWD/graphics/TextureManager.cpp \
     $$PWD/graphics/Shader.cpp \
@@ -24,10 +23,10 @@ SOURCES += \
 	$$PWD/graphics/ShaderBinding.cpp \
 	$$PWD/SceneMain/RegularPolygonObject.cpp \
 	$$PWD/graphics/MeshManager.cpp \
-    graphics/ShaderManager.cpp
+	$$PWD/graphics/ShaderManager.cpp \
+	$$PWD/RenderState.cpp
 
 HEADERS += \
-    $$PWD/Scene.hpp \
     $$PWD/Game.hpp \
     $$PWD/tools.hpp \
     $$PWD/graphics/Texture.hpp \
@@ -47,7 +46,8 @@ HEADERS += \
 	$$PWD/graphics/ShaderBinding.hpp \
 	$$PWD/SceneMain/RegularPolygonObject.hpp \
 	$$PWD/graphics/MeshManager.hpp \
-    graphics/ShaderManager.hpp
+	$$PWD/graphics/ShaderManager.hpp \
+	$$PWD/RenderState.hpp
 
 OTHER_FILES += \
 	$$PWD/data/shaders/sample.vert \

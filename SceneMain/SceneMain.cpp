@@ -4,8 +4,8 @@
 #include "RegularPolygonObject.hpp"
 
 SceneMain::SceneMain(Game &parent) :
-	Scene(parent),
-	debugCounter(0.0), fpsCount(0) {
+	GameObject(NULL,vec3f(0.0),vec3f(1.0)),
+	debugCounter(0.0), fpsCount(0), parentGame(parent) {
 	//SCENE INIT
 	std::cout << "* Loading new scene: Main" << std::endl;
 	if (!loadResources()) {
@@ -66,9 +66,9 @@ void SceneMain::update(float deltaTime) {
 
 void SceneMain::draw() const {
 	//calculate perspective matrix
-	getState().projection = glm::perspective(FOV,float(SCRWIDTH)/float(SCRHEIGHT),ZNEAR,ZFAR);
+	RenderState::projection = glm::perspective(FOV,float(SCRWIDTH)/float(SCRHEIGHT),ZNEAR,ZFAR);
 	//Move matrix to position (according to player)
-	getState().view = mat4f(1.0);
+	RenderState::view = mat4f(1.0);
 	//models
 	for(std::list<GameObject*>::const_iterator it = objects.begin();it != objects.end(); ++it)
 		(*it)->draw();
