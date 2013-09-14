@@ -11,7 +11,7 @@ class Texture
 		void setFilter(GLenum filter) const;
 		void setWrap(GLenum wrap) const;
 		void setSlot(unsigned int newSlot);
-		unsigned int getSlot();
+		unsigned int getSlot() const;
 		int getWidth() const;
 		int getHeight() const;
 		void bind() const;

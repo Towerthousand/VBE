@@ -1,5 +1,4 @@
 #include "TriangleObject.hpp"
-#include "SceneMain.hpp"
 #include "../Game.hpp"
 
 TriangleObject::TriangleObject(Scene* parentScene,  const vec3f &pos, const vec3f &scale) : GameObject(parentScene,pos,scale) {
@@ -25,8 +24,7 @@ void TriangleObject::updateMatrix() {
 
 void TriangleObject::draw() const {
 	mat4f transform = parentScene->getState().projection*parentScene->getState().view*tri.modelMatrix;
-	TextureManager::get("cubetex")->bind();
-	tri.program->uniform("sampler")->set(2);
+	tri.program->uniform("sampler")->set(TextureManager::get("cubetex"));
 	tri.program->uniform("modelViewProjectionMatrix")->set(transform);
 	tri.draw();
 }

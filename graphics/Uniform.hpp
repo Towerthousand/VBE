@@ -2,6 +2,7 @@
 #define UNIFORM_HPP
 #include "../tools.hpp"
 
+class Texture;
 class Uniform {
 	public:
 		Uniform(unsigned int count, GLenum type, GLint location);
@@ -18,6 +19,8 @@ class Uniform {
 
 		void set(const mat4f &val);
 		void set(const std::vector<mat4f> &val);
+
+		void set(const Texture* val);
 
 		void log();
 

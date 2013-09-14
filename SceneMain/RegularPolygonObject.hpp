@@ -1,8 +1,7 @@
 #ifndef REGULARPOLYGONOBJECT_HPP
 #define REGULARPOLYGONOBJECT_HPP
-
 #include "../GameObject.hpp"
-#include "graphics/Model.hpp"
+#include "../graphics/Model.hpp"
 
 class RegularPolygonObject : public GameObject {
 	public:

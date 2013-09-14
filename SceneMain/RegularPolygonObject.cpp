@@ -1,7 +1,5 @@
 #include "RegularPolygonObject.hpp"
-#include "SceneMain.hpp"
-#include "Game.hpp"
-#include <cmath>
+#include "../Game.hpp"
 
 vec3f HuetoRGB(float h) {
 	float r, g, b;

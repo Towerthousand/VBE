@@ -55,7 +55,7 @@ void Texture::setSlot(unsigned int newSlot) {
 	slot = newSlot;
 }
 
-unsigned int Texture::getSlot() {
+unsigned int Texture::getSlot() const {
 	return slot;
 }
 
