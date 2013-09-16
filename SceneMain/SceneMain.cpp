@@ -6,6 +6,7 @@
 SceneMain::SceneMain(Game &parent) :
 	GameObject(NULL,vec3f(0.0),vec3f(1.0)),
 	debugCounter(0.0), fpsCount(0), parentGame(parent) {
+	this->setName("SCENE");
 	//SCENE INIT
 	std::cout << "* Loading new scene: Main" << std::endl;
 	if (!loadResources()) {
@@ -18,6 +19,7 @@ SceneMain::SceneMain(Game &parent) :
 	//add a new triangle
 	addObject(new       TriangleObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.1f)));
 	addObject(new RegularPolygonObject(this, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6));
+
 	std::cout << "* Init done" << std::endl;
 }
 
