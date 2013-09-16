@@ -22,10 +22,6 @@ SceneMain::SceneMain(Game &parent) :
 }
 
 SceneMain::~SceneMain() {
-	//SECENE CLOSE
-	std::cout << "* Deleting GameObjects on SceneMain" << std::endl;
-	for(std::list<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
-		delete *it;
 }
 
 bool SceneMain::loadResources() {
@@ -43,25 +39,22 @@ bool SceneMain::loadResources() {
 }
 
 void SceneMain::update(float deltaTime) {
-
 	++fpsCount;
 	debugCounter += deltaTime;
 	if (debugCounter > 1) {
-		std::cout << "FPS: " << fpsCount << ". Amount of GameObjects: " << objects.size() << std::endl;
+		std::cout << "FPS: " << fpsCount << ". Amount of GameObjects: " << children.size() << std::endl;
 		debugCounter -= 1;
 		fpsCount = 0;
 	}
-	for(std::list<GameObject*>::iterator it = objects.begin();it != objects.end(); ++it) {
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end();) {
 		(*it)->update(deltaTime);
-	}
-	//Erase dead game objects
-	for(std::list<GameObject*>::iterator it = objects.begin(); it != objects.end();)
 		if (!(*it)->isAlive) {
 			delete *it;
-			it = objects.erase(it);;
+			it = children.erase(it);;
 		}
 		else
 			++it;
+	}
 }
 
 void SceneMain::draw() const {
@@ -70,7 +63,7 @@ void SceneMain::draw() const {
 	//Move matrix to position (according to player)
 	RenderState::view = mat4f(1.0);
 	//models
-	for(std::list<GameObject*>::const_iterator it = objects.begin();it != objects.end(); ++it)
+	for(std::list<GameObject*>::const_iterator it = children.begin();it != children.end(); ++it)
 		(*it)->draw();
 }
 

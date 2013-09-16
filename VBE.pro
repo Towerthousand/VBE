@@ -37,7 +37,7 @@ HEADERS += \
     $$PWD/input/InputManager.hpp \
     $$PWD/SceneMain/SceneMain.hpp \
 	$$PWD/GameObject.hpp \
-    $$PWD/glm/*.hpp \
+	$$PWD/glm/*.hpp \
 	$$PWD/SceneMain/TriangleObject.hpp \
 	$$PWD/graphics/Mesh.hpp \
 	$$PWD/graphics/Vertex.hpp \

@@ -6,6 +6,8 @@ GameObject::GameObject(GameObject* parent, const vec3f &pos, const vec3f &scale)
 }
 
 GameObject::~GameObject() {
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		delete *it;
 }
 
 void GameObject::update(float deltaTime) {
@@ -16,5 +18,5 @@ void GameObject::draw() const {
 }
 
 void GameObject::addObject(GameObject *object) {
-	objects.push_back(object);
+	children.push_back(object);
 }

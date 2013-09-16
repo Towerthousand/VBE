@@ -1,29 +1,6 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-//	THIS IS THE SFML BINDING OF MY ENGINE. DESIGNED TO WORK ON IT'S OWN CLASS. USAGE:
-//	 - Create a class MyScene that inherits from Scene.hpp
-//	   It has all types of methods for input & game loop: Key & Mouse input,
-//	   Update for logic, Draw for openGL and SFML calls to draw, init, loadResources
-//	   to load stuff (use the managers as to load) and an onClose method. It is pretty
-//	   straightforward.
-//   - Then, on main, just do this:
-//
-//	#include "Game.hpp"
-//  #include "MyScene.hpp"
-//
-//	int main() {
-//		Game myGame;
-//		if(myGame.init()) {
-//			myGame.setScene(new MyScene(myGame));
-//			myGame.run();
-//		}
-//		return 0;
-//	}
-//   - It will run right off the bat. Screen size is set to fullscreen (max resolution
-//     available), but you can tweak that in Game::Game() and tools.cpp
-
-
 #include "graphics/TextureManager.hpp"
 #include "graphics/MeshManager.hpp"
 #include "graphics/ShaderManager.hpp"
@@ -39,36 +16,22 @@
 
 class Game {
 	public:
-		Game(); //creates window
+		Game();
 		~Game();
-		bool init(); // inits game-wide stuff here (init and resource loading)
-		void run(); // won't run if Game::init() isn't called first
-		// contains main loop, calls update() and draw()
-		void setScene(GameObject* scene); // sets nextScene to scene, which will
-		// move into currentScene on next update()
-		// so that there is no update() of one
-		// scene followed by a draw() method
-		// of a different scene.
-		void close(); // closes app completely, closing the current scene (if there is)
-		// , saves game-wide stuff first.
+		bool init();
+		void run();
+		void setRoot(GameObject* newRoot);
 
 		sf::RenderWindow &getWindow() { return window; }
 		
 		bool isRunning;
 	private:
-		void update(float deltaTime); // changes scene if necessary
-		// updates fps
-		// checks for window events
-		// updates input
-		// calls currentScene.update(deltaTime)
-		void draw(); // calls currentScene.draw()
-		bool loadResources (); // loads game-wide resources. only called
-		// by init() once
+		void update(float deltaTime);
+		void draw();
+		bool loadResources ();
 
-		//context
 		sf::RenderWindow window;
-		GameObject* currentScene;
-		GameObject* nextScene;
+		GameObject* root;
 };
 
 #endif //GAME_HPP
