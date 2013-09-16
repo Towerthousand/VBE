@@ -5,7 +5,6 @@
 class Game;
 class SceneMain : public GameObject {
 	public:
-		//virtual overrides
 		SceneMain(Game &parent);
 		~SceneMain();
 

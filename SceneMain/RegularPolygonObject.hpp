@@ -6,7 +6,7 @@
 class RegularPolygonObject : public GameObject {
 	public:
 		RegularPolygonObject(GameObject* parent, const vec3f &pos, const vec3f &scale, unsigned int sides);
-		virtual ~RegularPolygonObject();
+		~RegularPolygonObject();
 
 		void update(float deltaTime);
 		void updateMatrix();
