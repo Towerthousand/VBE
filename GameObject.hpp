@@ -2,7 +2,7 @@
 #define GAMEOBJECT_HPP
 #include "tools.hpp"
 
-class GameObject { //Static objects that have a position and rotation but don't move
+class GameObject { //scenegraph nodes
 	public:
 		GameObject(GameObject* parent, const vec3f &pos, const vec3f &scale);
 		virtual ~GameObject();
@@ -31,7 +31,6 @@ class GameObject { //Static objects that have a position and rotation but don't 
 			}
 			return NULL;
 		}
-
 		static GameObject* getObjectByName(std::string name);
 		static GameObject* getObjectByID(int id);
 
@@ -43,11 +42,14 @@ class GameObject { //Static objects that have a position and rotation but don't 
 		GameObject* parent;
 		std::list<GameObject*> children;
 	private:
+		void doUpdate(float deltaTime);
+		void doDraw();
 		std::string name;
 		static int idCounter;
 		static std::map<std::string,GameObject*> nameMap;
 		static std::map<int,GameObject*> idMap;
 
+		friend class Game;
 };
 
 #endif // GAMEOBJECT_HPP

@@ -17,13 +17,14 @@ void TriangleObject::update(float deltaTime) {
 void TriangleObject::updateMatrix() {
 	mat4f m(1.0);
 	m = glm::translate(m,pos);
-	m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*90,vec3f(0,1,0));
+	//m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*90,vec3f(0,1,0));
 	m = glm::scale(m,scale);
 	tri.modelMatrix = m;
 }
 
 void TriangleObject::draw() const {
-	mat4f transform = RenderState::projection*RenderState::view*tri.modelMatrix;
+	RenderState::model *= tri.modelMatrix;
+	mat4f transform = RenderState::projection*RenderState::view*RenderState::model;
 	tri.program->uniform("sampler")->set(TextureManager::get("cubetex"));
 	tri.program->uniform("modelViewProjectionMatrix")->set(transform);
 	tri.draw();

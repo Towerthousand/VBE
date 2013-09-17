@@ -66,7 +66,8 @@ void RegularPolygonObject::updateMatrix() {
 }
 
 void RegularPolygonObject::draw() const {
-	mat4f transform = RenderState::projection*RenderState::view*poly.modelMatrix;
+	RenderState::model *= poly.modelMatrix;
+	mat4f transform = RenderState::projection*RenderState::view*RenderState::model;
 	poly.program->uniform("modelViewProjectionMatrix")->set(transform);
 	poly.draw();
 }

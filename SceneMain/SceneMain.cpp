@@ -3,22 +3,24 @@
 #include "TriangleObject.hpp"
 #include "RegularPolygonObject.hpp"
 
-SceneMain::SceneMain(Game &parent) :
+SceneMain::SceneMain() :
 	GameObject(NULL,vec3f(0.0),vec3f(1.0)),
-	debugCounter(0.0), fpsCount(0), parentGame(parent) {
+	debugCounter(0.0), fpsCount(0) {
 	this->setName("SCENE");
 	//SCENE INIT
 	std::cout << "* Loading new scene: Main" << std::endl;
 	if (!loadResources()) {
 		std::cout << "Could not load resources for SceneMain" << std::endl;
-		parent.isRunning = false;
+		Game::isRunning = false;
 		return;
 	}
 	//Center mouse
-	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,parent.getWindow());
+	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,Game::getWindow());
 	//add a new triangle
-	addObject(new       TriangleObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.1f)));
-	addObject(new RegularPolygonObject(this, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6));
+	addObject(new TriangleObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
+	RegularPolygonObject* tri = new RegularPolygonObject(this, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
+	addObject(tri);
+	tri->addObject(new TriangleObject(tri,vec3f(0,-10,0),vec3f(0.5)));
 
 	std::cout << "* Init done" << std::endl;
 }
@@ -48,24 +50,12 @@ void SceneMain::update(float deltaTime) {
 		debugCounter -= 1;
 		fpsCount = 0;
 	}
-	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end();) {
-		(*it)->update(deltaTime);
-		if (!(*it)->isAlive) {
-			delete *it;
-			it = children.erase(it);;
-		}
-		else
-			++it;
-	}
 }
 
 void SceneMain::draw() const {
 	//calculate perspective matrix
 	RenderState::projection = glm::perspective(FOV,float(SCRWIDTH)/float(SCRHEIGHT),ZNEAR,ZFAR);
 	//Move matrix to position (according to player)
-	RenderState::view = mat4f(1.0);
-	//models
-	for(std::list<GameObject*>::const_iterator it = children.begin();it != children.end(); ++it)
-		(*it)->draw();
+	RenderState::view = glm::translate(mat4f(1.0),vec3f(0,0,-10));
 }
 

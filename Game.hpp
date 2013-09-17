@@ -16,22 +16,30 @@
 
 class Game {
 	public:
+		static bool init();
+		static void run();
+		static void setRoot(GameObject* newRoot);
+		static void close();
+
+		static sf::RenderWindow &getWindow() { return window; }
+		
+		static bool isRunning;
+	private:
+		static void update(float deltaTime);
+		static void draw();
+		static bool loadResources ();
+
+		static sf::RenderWindow window;
+		static GameObject* root;
+
+//		struct drawTask {
+//				RenderState::RenderInstance state;
+//				GameObject* node;
+//		};
+//      static std::priority_queue<..> drawTasks;
+
 		Game();
 		~Game();
-		bool init();
-		void run();
-		void setRoot(GameObject* newRoot);
-
-		sf::RenderWindow &getWindow() { return window; }
-		
-		bool isRunning;
-	private:
-		void update(float deltaTime);
-		void draw();
-		bool loadResources ();
-
-		sf::RenderWindow window;
-		GameObject* root;
 };
 
 #endif //GAME_HPP

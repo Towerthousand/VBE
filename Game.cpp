@@ -1,31 +1,32 @@
 #include "Game.hpp"
 
-Game::Game() : root(NULL){
-	window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Default,CONTEXT_SETTINGS_OPENGL);
-	window.setMouseCursorVisible(false);
-	window.setKeyRepeatEnabled(false);
-	window.setVerticalSyncEnabled(true);
-	WINDOWFOCUS = true;
-	glClearColor(0.0/255.0,0.0/255.0,0.0/255.0,1);
+bool Game::isRunning = false;
+sf::RenderWindow Game::window;
+GameObject* Game::root = NULL;
+
+Game::Game(){
 }
 
 Game::~Game() {
-	if(root != NULL)
-		delete root;
-	std::cout << "* EXITING GAME" << std::endl;
-	window.close();
 }
 
 // Init non-resource, general game stuff here.
 bool Game::init() {
 	std::cout << "* INIT GAME" << std::endl;
 
+	window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Default,CONTEXT_SETTINGS_OPENGL);
+	window.setMouseCursorVisible(false);
+	window.setKeyRepeatEnabled(false);
+	window.setVerticalSyncEnabled(true);
+
+	glClearColor(0.0/255.0,0.0/255.0,0.0/255.0,1);
+
 	//Load game-wide resources
 	if (!loadResources())
 		return false;
 	isRunning = true;
 
-	//GL stuff..
+	//GL stuff..: root(NULL)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_ALPHA_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -65,13 +66,22 @@ void Game::setRoot(GameObject *newRoot) {
 void Game::update(float deltaTime) {
 	InputManager::update(isRunning,window);
 	if(root != NULL)
-		root->update(deltaTime);
+		root->doUpdate(deltaTime);
 }
 
 // Draw scenegraph
 void Game::draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if(root != NULL)
-		root->draw();
+		root->doDraw();
 	window.display();
+}
+
+//Free resources, delete scenegraph nodes and close windows
+void Game::close() {
+	isRunning = false;
+	if(root != NULL)
+		delete root;
+	std::cout << "* EXITING GAME" << std::endl;
+	window.close();
 }

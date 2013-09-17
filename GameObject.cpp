@@ -1,4 +1,5 @@
 #include "GameObject.hpp"
+#include "RenderState.hpp"
 
 std::map<std::string,GameObject*> GameObject::nameMap;
 std::map<int,GameObject*> GameObject::idMap;
@@ -46,4 +47,25 @@ GameObject* GameObject::getObjectByName(std::string name) {
 
 GameObject* GameObject::getObjectByID(int id) {
 	return idMap.at(id);
+}
+
+void GameObject::doUpdate(float deltaTime) {
+	update(deltaTime);
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end();) {
+		(*it)->doUpdate(deltaTime);
+		if (!(*it)->isAlive) {
+			delete *it;
+			it = children.erase(it);;
+		}
+		else
+			++it;
+	}
+}
+
+void GameObject::doDraw() {
+	RenderState::push();
+	this->draw();
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		(*it)->doDraw();
+	RenderState::pop();
 }

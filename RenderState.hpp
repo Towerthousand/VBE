@@ -7,7 +7,10 @@ class RenderState {
 		static mat4f model;
 		static mat4f view;
 		static mat4f projection;
+		static void push();
+		static void pop();
 	private:
+		static std::stack<mat4f> modelStack;
 		RenderState();
 		~RenderState();
 };

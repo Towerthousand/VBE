@@ -1,10 +1,9 @@
 #include "Game.hpp"
 #include "SceneMain/SceneMain.hpp"
 int main() {
-	Game myGame;
-	if(myGame.init()) {
-		myGame.setRoot(new SceneMain(myGame));
-		myGame.run();
+	if(Game::init()) {
+		Game::setRoot(new SceneMain());
+		Game::run();
 	}
 	return 42;
 }

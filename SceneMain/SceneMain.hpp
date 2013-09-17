@@ -5,7 +5,7 @@
 class Game;
 class SceneMain : public GameObject {
 	public:
-		SceneMain(Game &parent);
+		SceneMain();
 		~SceneMain();
 
 		void update(float deltaTime);
@@ -15,7 +15,6 @@ class SceneMain : public GameObject {
 		bool loadResources();
 		float debugCounter;
 		int fpsCount;
-		Game& parentGame;
 };
 
 #endif // SCENEMAIN_HPP
