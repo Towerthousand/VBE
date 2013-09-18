@@ -33,6 +33,7 @@ class GameObject { //scenegraph nodes
 		}
 		static GameObject* getObjectByName(std::string name);
 		static GameObject* getObjectByID(int id);
+		static int getObjectCount();
 
 		vec3f pos;
 		vec3f scale;
@@ -46,6 +47,7 @@ class GameObject { //scenegraph nodes
 		void doDraw();
 		std::string name;
 		static int idCounter;
+		static int objectCount;
 		static std::map<std::string,GameObject*> nameMap;
 		static std::map<int,GameObject*> idMap;
 

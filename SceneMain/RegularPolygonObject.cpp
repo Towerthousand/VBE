@@ -50,6 +50,7 @@ RegularPolygonObject::RegularPolygonObject(GameObject *parent, const vec3f &pos,
 }
 
 RegularPolygonObject::~RegularPolygonObject() {
+	delete poly.mesh;
 }
 
 void RegularPolygonObject::update(float deltaTime) {

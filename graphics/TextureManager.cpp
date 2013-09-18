@@ -10,6 +10,7 @@ TextureManager::~TextureManager() {
 }
 
 bool TextureManager::load(const std::string& textureID, const std::string& filePath, unsigned int slot) {
+	std::cout << "* Loading new texture with ID " << textureID << " from " << filePath << " with initial slot " << slot <<  std::endl;
 	if (textureBank.count(textureID) != 0) {
 		std::cout << "#WARNING \"" << textureID << "\" already loaded! Overwriting texture.." << std::endl;
 		erase(textureID);
@@ -26,6 +27,7 @@ Texture* TextureManager::get(const std::string& textureID) {
 }
 
 void TextureManager::erase(const std::string& textureID) {
+	std::cout << "* Deleting texture with ID " << textureID << std::endl;
 	delete textureBank.at(textureID);
 	textureBank.erase(textureID);
 }

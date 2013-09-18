@@ -32,11 +32,11 @@ class Game {
 		static sf::RenderWindow window;
 		static GameObject* root;
 
-//		struct drawTask {
-//				RenderState::RenderInstance state;
-//				GameObject* node;
-//		};
-//      static std::priority_queue<..> drawTasks;
+		struct drawTask {
+				RenderState::RenderInstance state;
+				GameObject* node;
+		};
+		static std::priority_queue<std::pair<int,drawTask>> priorityDraws;
 
 		Game();
 		~Game();

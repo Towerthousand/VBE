@@ -1,5 +1,6 @@
 #include "TriangleObject.hpp"
 #include "../Game.hpp"
+#include "RegularPolygonObject.hpp"
 
 TriangleObject::TriangleObject(GameObject* parent,  const vec3f &pos, const vec3f &scale) : GameObject(parent,pos,scale) {
 	tri.mesh = MeshManager::get("cube");
@@ -17,7 +18,6 @@ void TriangleObject::update(float deltaTime) {
 void TriangleObject::updateMatrix() {
 	mat4f m(1.0);
 	m = glm::translate(m,pos);
-	//m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*90,vec3f(0,1,0));
 	m = glm::scale(m,scale);
 	tri.modelMatrix = m;
 }

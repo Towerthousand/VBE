@@ -10,7 +10,7 @@ MeshManager::~MeshManager() {
 }
 
 void MeshManager::add(const std::string &meshID, Mesh* mesh) {
-	assert(meshes.find(meshID) == meshes.end());
+	std::cout << "* Adding mesh with ID " << meshID << std::endl;
 	meshes.insert(std::pair<std::string,Mesh*>(meshID,mesh));
 }
 
@@ -19,14 +19,12 @@ Mesh* MeshManager::get(const std::string &meshID) {
 }
 
 void MeshManager::erase(const std::string &meshID) {
-	assert(meshes.find(meshID) != meshes.end());
+	std::cout << "* Deleting mesh with ID " << meshID << std::endl;
 	delete meshes.at(meshID);
 	meshes.erase(meshID);
 }
 
 void MeshManager::clear() {
-	for(std::map<std::string,Mesh*>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
-		delete it->second;
-	}
-	meshes.clear();
+	while(!meshes.empty())
+		erase(meshes.begin()->first);
 }

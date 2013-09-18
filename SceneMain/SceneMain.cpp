@@ -17,15 +17,20 @@ SceneMain::SceneMain() :
 	//Center mouse
 	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,Game::getWindow());
 	//add a new triangle
-	addObject(new TriangleObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
 	RegularPolygonObject* tri = new RegularPolygonObject(this, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
 	addObject(tri);
 	tri->addObject(new TriangleObject(tri,vec3f(0,-10,0),vec3f(0.5)));
+	addObject(new TriangleObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
 
 	std::cout << "* Init done" << std::endl;
 }
 
 SceneMain::~SceneMain() {
+	std::cout << "* Deleting resources on Main scene" << std::endl;
+	TextureManager::clear();
+	MeshManager::clear();
+	ShaderManager::clear();
+	std::cout << "* Exiting Main scene" << std::endl;
 }
 
 bool SceneMain::loadResources() {
@@ -46,7 +51,11 @@ void SceneMain::update(float deltaTime) {
 	++fpsCount;
 	debugCounter += deltaTime;
 	if (debugCounter > 1) {
-		std::cout << "FPS: " << fpsCount << ". Amount of GameObjects: " << children.size() << std::endl;
+		std::cout << "FPS: " << fpsCount << ". Amount of GameObjects: " << GameObject::getObjectCount() << std::endl;
+		if(GLOBALCLOCK.getElapsedTime().asSeconds() > 4 && children.size() > 1) {
+			delete *children.begin();
+			children.erase(children.begin());
+		}
 		debugCounter -= 1;
 		fpsCount = 0;
 	}

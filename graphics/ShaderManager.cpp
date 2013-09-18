@@ -10,7 +10,7 @@ ShaderManager::~ShaderManager() {
 }
 
 bool ShaderManager::load(const std::string &programID, const std::string &vert, const std::string &frag) {
-	assert(programs.find(programID) == programs.end());
+	std::cout << "* Loading new ShaderProgram with ID " << programID << " from " << vert << " and " << frag << std::endl;
 	ShaderProgram* p = new ShaderProgram();
 	if(!p->makeProgram(vert,frag))
 		return false;
@@ -23,14 +23,12 @@ ShaderProgram* ShaderManager::get(const std::string &programID) {
 }
 
 void ShaderManager::erase(const std::string& programID) {
-	assert(programs.find(programID) != programs.end());
+	std::cout << "* Deleting ShaderProgram with ID " << programID << std::endl;
 	delete programs.at(programID);
 	programs.erase(programID);
 }
 
 void ShaderManager::clear() {
-	for(std::map<std::string,ShaderProgram*>::iterator it = programs.begin(); it != programs.end(); ++it) {
-		delete it->second;
-	}
-	programs.clear();
+	while(!programs.empty())
+		erase(programs.begin()->first);
 }

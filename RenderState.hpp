@@ -4,9 +4,13 @@
 
 class RenderState {
 	public:
-		static mat4f model;
-		static mat4f view;
-		static mat4f projection;
+		struct RenderInstance {
+				RenderInstance() : model(1.0), view(1.0), projection(1.0) {}
+				~RenderInstance() {}
+				mat4f model, view, projection;
+		};
+
+		static mat4f model, view, projection;
 		static void push();
 		static void pop();
 	private:
