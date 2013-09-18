@@ -20,14 +20,13 @@
 #include <vector>
 #include <list>
 #include <cmath>
+#include <cstring>
 #include <stack>
 #include <queue>
 
 //GLM (openGL Math)
 #include <glm/glm.hpp> // vec3, vec4, ivec4, mat4 (core)
 #include <glm/gtc/matrix_transform.hpp> // translate, rotate, scale, perspective
-#include <glm/gtc/type_ptr.hpp> // value_ptr
-#include <glm/gtc/noise.hpp> //noise
 
 //math typedefs
 typedef glm::detail::tvec4<int> vec4i;
