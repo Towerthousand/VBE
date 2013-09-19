@@ -67,7 +67,7 @@ std::string toString(float num);
 
 //defines (global settings and constants)
 #define WINDOW_TITLE "Engine"
-#define CONTEXT_SETTINGS_OPENGL sf::ContextSettings(32,32,0,4,2)
+#define CONTEXT_SETTINGS_OPENGL sf::ContextSettings(32,32,0,2,4)
 #define DEG_TO_RAD ((2*M_PI)/360.0f)
 
 //frustum settings

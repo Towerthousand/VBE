@@ -1,6 +1,6 @@
-#version 420
+#version 120
 
-in vec3 vColor;
+varying vec3 vColor;
 
 void main() {
     float m = max(vColor.r, max(vColor.g, vColor.b));
