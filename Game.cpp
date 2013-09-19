@@ -1,8 +1,10 @@
 #include "Game.hpp"
 
 bool Game::isRunning = false;
+int Game::drawLayer = 0;
 sf::RenderWindow Game::window;
 GameObject* Game::root = NULL;
+std::priority_queue<std::pair<int,Game::DrawTask>,std::vector<std::pair<int,Game::DrawTask>>,Game::FunctorCompare> Game::priorityDraws;
 
 Game::Game(){
 }
@@ -62,6 +64,12 @@ void Game::setRoot(GameObject *newRoot) {
 	root = newRoot;
 }
 
+// Postpone a part of the scenegraph for late drawing
+void Game::addDrawTask(RenderState::RenderInstance state, GameObject* object) {
+	DrawTask task(state,object);
+	priorityDraws.push(std::pair<int,DrawTask>(object->drawPriority,task));
+}
+
 // Update scenegraph
 void Game::update(float deltaTime) {
 	InputManager::update(isRunning,window);
@@ -72,8 +80,19 @@ void Game::update(float deltaTime) {
 // Draw scenegraph
 void Game::draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	if(root != NULL)
+	drawLayer = 0;
+	RenderState::reset();
+	if(root != NULL) //first pass (drawPriority of 0)
 		root->doDraw();
+	while(!priorityDraws.empty()) { //other drawPriorities
+		++drawLayer;
+		while(!priorityDraws.empty() && priorityDraws.top().first == drawLayer) {
+			DrawTask task = priorityDraws.top().second;
+			RenderState::setState(task.state);
+			task.object->doDraw();
+			priorityDraws.pop();
+		}
+	}
 	window.display();
 }
 

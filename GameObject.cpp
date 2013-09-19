@@ -1,5 +1,6 @@
 #include "GameObject.hpp"
 #include "RenderState.hpp"
+#include "Game.hpp"
 
 std::map<std::string,GameObject*> GameObject::nameMap;
 std::map<int,GameObject*> GameObject::idMap;
@@ -8,7 +9,7 @@ int GameObject::objectCount = 0;
 
 GameObject::GameObject(GameObject* parent, const vec3f &pos, const vec3f &scale) :
 	pos(pos), scale(scale), id(idCounter++), isAlive(true),
-	parent(parent), name("") {
+	parent(parent), drawPriority(0), name("") {
 	++objectCount;
 	idMap.insert(std::pair<int,GameObject*>(id,this));
 }
@@ -38,6 +39,17 @@ void GameObject::setName(std::string newName) {
 		if(!name.empty()) nameMap.erase(name);
 		name = newName;
 	}
+}
+
+void GameObject::setDrawPriority(int newPriority) {
+	assert(newPriority <= newPriority || parent == NULL || parent->getDrawPriority() <= newPriority);
+	drawPriority = newPriority;
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		(*it)->setDrawPriority(newPriority);
+}
+
+int GameObject::getDrawPriority() {
+	return drawPriority;
 }
 
 std::string GameObject::getName() {
@@ -70,9 +82,16 @@ void GameObject::doUpdate(float deltaTime) {
 }
 
 void GameObject::doDraw() {
-	RenderState::push();
-	this->draw();
-	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-		(*it)->doDraw();
-	RenderState::pop();
+	assert(drawPriority >= Game::drawLayer);
+	if(drawPriority == Game::drawLayer) {
+		RenderState::push();
+		this->draw();
+		for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+			(*it)->doDraw();
+		RenderState::pop();
+	}
+	else {
+		RenderState::RenderInstance currState = RenderState::getCurrent();
+		Game::addDrawTask(currState,this);
+	}
 }

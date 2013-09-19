@@ -18,3 +18,19 @@ void RenderState::pop() {
 	modelStack.pop();
 	model = modelStack.top();
 }
+
+RenderState::RenderInstance RenderState::getCurrent() {
+	return RenderInstance(model,view,projection);
+}
+
+void RenderState::setState(RenderState::RenderInstance newState) {
+	modelStack = std::stack<mat4f>({mat4f(newState.model)});
+	model = modelStack.top();
+	view = newState.view;
+	projection = newState.projection;
+}
+
+void RenderState::reset() {
+	model = view = projection = mat4f(1.0);
+	modelStack = std::stack<mat4f>({mat4f(1.0)});
+}

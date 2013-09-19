@@ -5,7 +5,8 @@
 class RenderState {
 	public:
 		struct RenderInstance {
-				RenderInstance() : model(1.0), view(1.0), projection(1.0) {}
+				RenderInstance(const mat4f& model, const mat4f& view, const mat4f& projection)
+					: model(model), view(view), projection(projection) {}
 				~RenderInstance() {}
 				mat4f model, view, projection;
 		};
@@ -13,6 +14,9 @@ class RenderState {
 		static mat4f model, view, projection;
 		static void push();
 		static void pop();
+		static RenderInstance getCurrent();
+		static void setState(RenderInstance newState);
+		static void reset();
 	private:
 		static std::stack<mat4f> modelStack;
 		RenderState();

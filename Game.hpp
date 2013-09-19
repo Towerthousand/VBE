@@ -15,6 +15,18 @@
 #include "graphics/Uniform.hpp"
 
 class Game {
+		struct DrawTask {
+				DrawTask(RenderState::RenderInstance state, GameObject* object)
+					: state(state), object(object) {}
+				~DrawTask() {}
+				RenderState::RenderInstance state;
+				GameObject* object;
+		};
+		struct FunctorCompare{
+				bool operator()(const std::pair<int,DrawTask> &a, const std::pair<int,DrawTask> &b) {
+					return (a.first < b.first);
+				}
+		};
 	public:
 		static bool init();
 		static void run();
@@ -29,14 +41,13 @@ class Game {
 		static void draw();
 		static bool loadResources ();
 
+		static void addDrawTask(RenderState::RenderInstance state, GameObject* object);
+		static int drawLayer;
 		static sf::RenderWindow window;
 		static GameObject* root;
+		static std::priority_queue<std::pair<int,DrawTask>,std::vector<std::pair<int,DrawTask>>,FunctorCompare> priorityDraws;
 
-		struct drawTask {
-				RenderState::RenderInstance state;
-				GameObject* node;
-		};
-		static std::priority_queue<std::pair<int,drawTask>> priorityDraws;
+		friend class GameObject;
 
 		Game();
 		~Game();

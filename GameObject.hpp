@@ -11,6 +11,8 @@ class GameObject { //scenegraph nodes
 		virtual void draw() const;
 		virtual void addObject(GameObject* object);
 		void setName(std::string newName);
+		void setDrawPriority(int newPriority);
+		int getDrawPriority();
 		std::string getName();
 
 		template<class T>
@@ -45,6 +47,7 @@ class GameObject { //scenegraph nodes
 	private:
 		void doUpdate(float deltaTime);
 		void doDraw();
+		int drawPriority;
 		std::string name;
 		static int idCounter;
 		static int objectCount;
