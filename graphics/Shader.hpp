@@ -14,6 +14,6 @@ class Shader {
 		void printInfoLog() const;
 
 	private:
-		GLuint m_shaderHandle;
+		GLuint shaderHandle;
 };
 #endif // SHADER_HPP

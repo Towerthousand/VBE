@@ -33,18 +33,18 @@ class Game {
 		static void setRoot(GameObject* newRoot);
 		static void close();
 
-		static sf::RenderWindow &getWindow() { return s_window; }
+		static sf::RenderWindow &getWindow() { return window; }
 		
-		static bool s_isRunning;
+		static bool isRunning;
 	private:
 		static void update(float deltaTime);
 		static void draw();
 		static bool loadResources ();
 
 		static void addDrawTask(RenderState::RenderInstance state, GameObject* object);
-		static int s_drawLayer;
-		static sf::RenderWindow s_window;
-		static GameObject* s_root;
+		static int drawLayer;
+		static sf::RenderWindow window;
+		static GameObject* root;
 		static std::priority_queue<std::pair<int,DrawTask>,std::vector<std::pair<int,DrawTask>>,FunctorCompare> priorityDraws;
 
 		friend class GameObject;

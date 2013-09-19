@@ -11,7 +11,7 @@ SceneMain::SceneMain() :
 	std::cout << "* Loading new scene: Main" << std::endl;
 	if (!loadResources()) {
 		std::cout << "Could not load resources for SceneMain" << std::endl;
-		Game::s_isRunning = false;
+		Game::isRunning = false;
 		return;
 	}
 	//Center mouse
@@ -61,8 +61,8 @@ void SceneMain::update(float deltaTime) {
 
 void SceneMain::draw() const {
 	//calculate perspective matrix
-	RenderState::s_projection = glm::perspective(FOV,float(SCRWIDTH)/float(SCRHEIGHT),ZNEAR,ZFAR);
+	RenderState::projection = glm::perspective(FOV,float(SCRWIDTH)/float(SCRHEIGHT),ZNEAR,ZFAR);
 	//Move matrix to position (according to player)
-	RenderState::s_view = glm::translate(mat4f(1.0),vec3f(0,0,-10));
+	RenderState::view = glm::translate(mat4f(1.0),vec3f(0,0,-10));
 }
 

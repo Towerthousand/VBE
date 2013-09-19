@@ -5,14 +5,14 @@
 
 class TexturedObject : public GameObject {
 	public:
-		TexturedObject(GameObject* m_parent, const vec3f &m_pos, const vec3f &m_scale);
+		TexturedObject(GameObject* parent, const vec3f &pos, const vec3f &scale);
 		~TexturedObject();
 
 		void update(float deltaTime);
 		void updateMatrix();
 		void draw() const;
 	private:
-		Model m_tri;
+		Model tri;
 };
 
 #endif // TEXTUREDOBJECT_HPP

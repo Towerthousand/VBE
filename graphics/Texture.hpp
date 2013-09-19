@@ -18,10 +18,10 @@ class Texture
 	private:
 		GLuint getHandle() const;
 		bool load(const std::string& filePath);
-		GLuint m_sampler;
-		GLuint m_handle;
-		unsigned int m_slot;
-		vec2i m_size;
+		GLuint sampler;
+		GLuint handle;
+		unsigned int slot;
+		vec2i size;
 
 		friend class TextureManager;
 };

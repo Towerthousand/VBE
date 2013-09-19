@@ -16,8 +16,8 @@ namespace Vertex {
 			bool operator != (const Attribute& a) const;
 
 			typedef std::set<std::string>::const_iterator iterator;
-			iterator begin() { return m_attrNames.begin();}
-			iterator end()   { return m_attrNames.end();  }
+			iterator begin() { return attrNames.begin();}
+			iterator end()   { return attrNames.end();  }
 
 			Attribute& addName(const std::string &name);
 
@@ -30,13 +30,13 @@ namespace Vertex {
 
 		private:
 			Attribute(int ID);
-			int m_id;
+			int id;
 
 			static void init(); //add default attributes
-			static bool s_isAttrsInit; //added default attributes?
-			static std::map<std::string, Attribute*> s_names; //the names of each attribute and the attribute it points to
-			static std::vector<Attribute*> s_attributes; //all the attributes
-			std::set<std::string> m_attrNames; //all the names this attribute can have
+			static bool isAttrsInit; //added default attributes?
+			static std::map<std::string, Attribute*> names; //the names of each attribute and the attribute it points to
+			static std::vector<Attribute*> attributes; //all the attributes
+			std::set<std::string> attrNames; //al the names this attribute can have
 	};
 
 	class Element {
@@ -59,9 +59,9 @@ namespace Vertex {
 			bool operator == (const Element& e) const;
 			bool operator != (const Element& e) const;
 
-			Attribute &m_attr;
-			unsigned int m_type;
-			unsigned int m_size;
+			Attribute &attr;
+			unsigned int type;
+			unsigned int size;
 	};
 
 	class Format {
@@ -78,7 +78,7 @@ namespace Vertex {
 
 		private:
 			std::vector<Element> m_elements;
-			std::vector<unsigned int> m_offsets;
+			std::vector<unsigned int> offsets;
 			unsigned int m_vertexSize;
 	};
 

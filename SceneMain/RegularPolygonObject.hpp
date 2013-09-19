@@ -5,14 +5,14 @@
 
 class RegularPolygonObject : public GameObject {
 	public:
-		RegularPolygonObject(GameObject* m_parent, const vec3f &m_pos, const vec3f &m_scale, unsigned int sides);
+		RegularPolygonObject(GameObject* parent, const vec3f &pos, const vec3f &scale, unsigned int sides);
 		~RegularPolygonObject();
 
 		void update(float deltaTime);
 		void updateMatrix();
 		void draw() const;
 	private:
-		Model m_poly;
+		Model poly;
 };
 
 #endif // REGULARPOLYGONOBJECT_HPP

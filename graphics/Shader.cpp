@@ -1,11 +1,11 @@
 #include "Shader.hpp"
 
 Shader::Shader(GLenum type) {
-	m_shaderHandle = glCreateShader(type);
+	shaderHandle = glCreateShader(type);
 }
 
 Shader::~Shader() {
-	glDeleteShader(m_shaderHandle);
+	glDeleteShader(shaderHandle);
 }
 
 bool Shader::load(const std::string &filename) {
@@ -30,30 +30,30 @@ bool Shader::load(const std::string &filename) {
 
 	buffer[length] = '\0';
 	const char *source = buffer;
-	glShaderSource(m_shaderHandle, 1, &source, NULL);
+	glShaderSource(shaderHandle, 1, &source, NULL);
 
 	return true;
 }
 
 bool Shader::compile() const {
 	GLint status;
-	glCompileShader(m_shaderHandle);
-	glGetShaderiv(m_shaderHandle, GL_COMPILE_STATUS, &status);
+	glCompileShader(shaderHandle);
+	glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &status);
 	return status == GL_TRUE;
 }
 
 void Shader::attach(GLuint program) const {
-	VBE_ASSERT(program != 0, "Trying to attach shader with id " << m_shaderHandle << " to null program")
-	glAttachShader(program, m_shaderHandle);
+	VBE_ASSERT(program != 0, "Trying to attach shader with id " << shaderHandle << " to null program")
+	glAttachShader(program, shaderHandle);
 }
 
 void Shader::printInfoLog() const {
-	VBE_ASSERT(m_shaderHandle != 0, "Trying to query null shader")
+	VBE_ASSERT(shaderHandle != 0, "Trying to query null shader")
 	int length = 0;
-	glGetShaderiv(m_shaderHandle, GL_INFO_LOG_LENGTH, &length);
+	glGetShaderiv(shaderHandle, GL_INFO_LOG_LENGTH, &length);
 	if (length > 1) {
 		char infoLog[length];
-		glGetShaderInfoLog(m_shaderHandle, length, NULL, infoLog);
+		glGetShaderInfoLog(shaderHandle, length, NULL, infoLog);
 		std::cout << infoLog << std::endl;
 	}
 }

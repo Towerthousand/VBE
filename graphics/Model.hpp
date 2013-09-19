@@ -11,9 +11,9 @@ class Model {
 
 		void draw() const;
 
-		mat4f m_modelMatrix;
-		Mesh* m_mesh;
-		ShaderProgram* m_program;
+		mat4f modelMatrix;
+		Mesh* mesh;
+		ShaderProgram* program;
 };
 
 #endif // MODEL_HPP

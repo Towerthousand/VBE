@@ -10,7 +10,7 @@ class ShaderManager {
 		static void erase(const std::string& programID);
 		static void	clear();
 	private:
-		static std::map<std::string,ShaderProgram*> s_programs;
+		static std::map<std::string,ShaderProgram*> programs;
 		ShaderManager();
 		~ShaderManager();
 };

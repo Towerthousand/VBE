@@ -57,5 +57,4 @@ OTHER_FILES += \
 	$$PWD/data/shaders/sample.vert \
 	$$PWD/data/shaders/sample.frag \
 	$$PWD/data/shaders/sample2.vert \
-	$$PWD/data/shaders/sample2.frag \
-    format.txt
+	$$PWD/data/shaders/sample2.frag

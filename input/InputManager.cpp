@@ -8,9 +8,9 @@ std::set<sf::Mouse::Button> InputManager::mouseButtonsPressed;
 std::set<sf::Mouse::Button> InputManager::mouseButtonsDown;
 std::set<sf::Mouse::Button> InputManager::mouseButtonsReleased;
 
-bool InputManager::s_focus(true);
-vec2i InputManager::s_lastMousePos(0,0);
-vec2i InputManager::s_mouseDisplacement(0,0);
+bool InputManager::focus(true);
+vec2i InputManager::lastMousePos(0,0);
+vec2i InputManager::mouseDisplacement(0,0);
 
 InputManager::InputManager() {
 }
@@ -23,8 +23,8 @@ void InputManager::update(bool &isGameRunning,sf::Window &window) {
 	keysReleased = std::set<sf::Keyboard::Key>();
 	mouseButtonsPressed = std::set<sf::Mouse::Button>();
 	mouseButtonsReleased = std::set<sf::Mouse::Button>();
-	s_lastMousePos += s_mouseDisplacement;
-	s_mouseDisplacement = vec2i(0,0);
+	lastMousePos += mouseDisplacement;
+	mouseDisplacement = vec2i(0,0);
 	sf::Event event;
 	while(window.pollEvent(event)) {
 		switch(event.type) {
@@ -37,10 +37,10 @@ void InputManager::update(bool &isGameRunning,sf::Window &window) {
 				glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 				break;
 			case sf::Event::GainedFocus:
-				s_focus = true;
+				focus = true;
 				break;
 			case sf::Event::LostFocus:
-				s_focus = false;
+				focus = false;
 				break;
 			case sf::Event::MouseButtonPressed:
 				mouseButtonsPressed.insert(event.mouseButton.button);
@@ -51,7 +51,7 @@ void InputManager::update(bool &isGameRunning,sf::Window &window) {
 				mouseButtonsDown.erase(event.mouseButton.button);
 				break;
 			case sf::Event::MouseMoved:
-				s_mouseDisplacement = vec2i(event.mouseMove.x,event.mouseMove.y) - s_lastMousePos;
+				mouseDisplacement = vec2i(event.mouseMove.x,event.mouseMove.y) - lastMousePos;
 				break;
 			case sf::Event::KeyPressed:
 				if(event.key.code == sf::Keyboard::Escape)
@@ -71,6 +71,6 @@ void InputManager::update(bool &isGameRunning,sf::Window &window) {
 
 void InputManager::setMousePos(int x, int y, sf::Window& window) {
 	sf::Mouse::setPosition(sf::Vector2i(x,y),window);
-	s_lastMousePos = vec2i(x,y);
-	s_mouseDisplacement = vec2i(0,0);
+	lastMousePos = vec2i(x,y);
+	mouseDisplacement = vec2i(0,0);
 }
