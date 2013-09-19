@@ -72,8 +72,8 @@ std::string toString(float num);
 
 //frustum settings
 #define FOV 60.0f //degrees
-#define ZNEAR 0.01f
-#define ZFAR 1000.0f
+#define ZNEAR 0.1f
+#define ZFAR 100.0f
 
 //global variables
 extern int SCRWIDTH;

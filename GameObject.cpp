@@ -32,6 +32,7 @@ void GameObject::draw() const {
 
 void GameObject::addObject(GameObject *object) {
 	children.push_back(object);
+	object->setDrawPriority(drawPriority);
 }
 
 void GameObject::setName(std::string newName) {

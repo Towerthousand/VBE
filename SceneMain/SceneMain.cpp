@@ -1,6 +1,6 @@
 #include "SceneMain.hpp"
 #include "../Game.hpp"
-#include "TriangleObject.hpp"
+#include "TexturedObject.hpp"
 #include "RegularPolygonObject.hpp"
 
 SceneMain::SceneMain() :
@@ -17,13 +17,12 @@ SceneMain::SceneMain() :
 	//Center mouse
 	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,Game::getWindow());
 	//add a new triangle
-	RegularPolygonObject* tri = new RegularPolygonObject(this, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
-	addObject(tri);
-	TriangleObject* tri2 = new TriangleObject(tri,vec3f(0,-10,0),vec3f(0.5));
-	tri->addObject(tri2);
-	tri->setDrawPriority(1);
-	tri2->setDrawPriority(2);
-	addObject(new TriangleObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
+	RegularPolygonObject* poly = new RegularPolygonObject(this, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
+	addObject(poly);
+	TexturedObject* house = new TexturedObject(poly,vec3f(0,-10,0),vec3f(0.5));
+	poly->setDrawPriority(0);
+	poly->addObject(house);
+	addObject(new TexturedObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
 
 	std::cout << "* Init done" << std::endl;
 }
@@ -55,10 +54,6 @@ void SceneMain::update(float deltaTime) {
 	debugCounter += deltaTime;
 	if (debugCounter > 1) {
 		std::cout << "FPS: " << fpsCount << ". Amount of GameObjects: " << GameObject::getObjectCount() << std::endl;
-		if(GLOBALCLOCK.getElapsedTime().asSeconds() > 4 && children.size() > 1) {
-			delete *children.begin();
-			children.erase(children.begin());
-		}
 		debugCounter -= 1;
 		fpsCount = 0;
 	}

@@ -19,7 +19,7 @@ SOURCES += \
     $$PWD/input/InputManager.cpp \
     $$PWD/SceneMain/SceneMain.cpp \
 	$$PWD/GameObject.cpp \
-	$$PWD/SceneMain/TriangleObject.cpp \
+	$$PWD/SceneMain/TexturedObject.cpp \
 	$$PWD/graphics/Mesh.cpp \
 	$$PWD/graphics/Vertex.cpp \
 	$$PWD/graphics/Model.cpp \
@@ -34,7 +34,7 @@ HEADERS += \
     $$PWD/Game.hpp \
     $$PWD/tools.hpp \
     $$PWD/graphics/Texture.hpp \
-    $$PWD/graphics/TextureManager.hpp \
+	$$PWD/graphics/TextureManager.hpp \
     $$PWD/graphics/Shader.hpp \
     $$PWD/graphics/ShaderProgram.hpp \
 	$$PWD/audio/AudioManager.hpp \
@@ -42,7 +42,7 @@ HEADERS += \
     $$PWD/SceneMain/SceneMain.hpp \
 	$$PWD/GameObject.hpp \
 	$$PWD/glm/*.hpp \
-	$$PWD/SceneMain/TriangleObject.hpp \
+	$$PWD/SceneMain/TexturedObject.hpp \
 	$$PWD/graphics/Mesh.hpp \
 	$$PWD/graphics/Vertex.hpp \
 	$$PWD/graphics/Model.hpp \
