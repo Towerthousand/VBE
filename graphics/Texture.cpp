@@ -1,6 +1,7 @@
 #include "Texture.hpp"
 
 Texture::Texture(unsigned int slot): handle(0), slot(slot), size(0,0){
+	VBE_ASSERT(slot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << slot << ". Maximum is " << GL_MAX_TEXTURE_UNITS)
 }
 
 Texture::~Texture(){
@@ -35,6 +36,7 @@ bool Texture::load(const std::string &filePath) {
 }
 
 void Texture::bind() const {
+	VBE_ASSERT(handle !=0, "Trying to bind null texture into slot " << slot);
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, handle);
 }
@@ -52,6 +54,7 @@ void Texture::setWrap(GLenum wrap) const {
 }
 
 void Texture::setSlot(unsigned int newSlot) {
+	VBE_ASSERT(newSlot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << newSlot << ". Maximum is " << GL_MAX_TEXTURE_UNITS)
 	slot = newSlot;
 }
 

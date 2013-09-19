@@ -91,6 +91,7 @@ bool Mesh::loadFromFile(const std::string& filename) {
 }
 
 void Mesh::draw(const ShaderProgram *program) {
+	VBE_ASSERT(program->getHandle() != 0, "Program not assigned at the time of this mesh's draw")
 	GLuint handle = program->getHandle();
 	if(bindingsCache.find(handle) == bindingsCache.end()) {
 		bindingsCache.insert(std::pair<GLuint,const ShaderBinding*>(handle,new ShaderBinding(program, this)));
@@ -140,24 +141,10 @@ void Mesh::setVertexData(void* vertexData, unsigned int newVertexCount) {
 void Mesh::makeVBO() {
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
-	if (glGetError()){
-		std::cout << "Failed to create VBO for mesh" << std::endl;
-	}
-
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create VBO for mesh")
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	if (glGetError()) {
-		std::cout << "Failed to bind VBO for mesh" << std::endl;
-		glDeleteBuffers(1, &vbo);
-		return;
-	}
-
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to bind VBO for mesh")
 	glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-	if (glGetError()) {
-		std::cout << "Failed to load VBO with empty vertex data" << std::endl;
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glDeleteBuffers(1, &vbo);
-		return;
-	}
-
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to load VBO with empty vertex data")
 	vertexBuffer = vbo;
 }

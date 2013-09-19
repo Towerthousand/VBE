@@ -29,11 +29,8 @@ namespace Vertex {
 
 	Attribute& Attribute::get(int id) {
 		if (!isAttrsInit) init();
-		if(!(id >= 0 && id < int(attributes.size()))) {
-			std::cout << "#ERROR BAD ATTRIB ID" << std::endl;
-			return *attributes[0];
-		}
-		return *attributes[id];
+		VBE_ASSERT(id >= 0 && id < int(attributes.size()), "Bad attrib id: " << id)
+		return *attributes.at(id);
 	}
 
 	Attribute& Attribute::get(const std::string &name) {
@@ -114,7 +111,7 @@ namespace Vertex {
 				case Element::UnsignedInt:   size = sizeof(unsigned int); break;
 				case Element::Float:         size = sizeof(float); break;
 				case Element::Fixed:         size = sizeof(int); break;
-				default: std::cout << "#ERROR NOT RECOGNISED TYPE" << std::endl;
+				default: VBE_ASSERT(0, "Not a knownt element type " << m_elements[i].type) break;
 			}
 			offset += m_elements[i].size * size;
 		}
@@ -144,8 +141,7 @@ namespace Vertex {
 		if (m_elements.size() != f.m_elements.size())
 			return false;
 
-		for (unsigned int i = 0, count = m_elements.size(); i < count; ++i)
-		{
+		for (unsigned int i = 0, count = m_elements.size(); i < count; ++i) {
 			if (m_elements[i] != f.m_elements[i])
 				return false;
 		}

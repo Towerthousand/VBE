@@ -138,6 +138,7 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 }
 
 void ShaderProgram::printInfoLog() {
+	VBE_ASSERT(programHandle != 0, "Trying to query null program")
 	int length = 0;
 	glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &length);
 	if (length > 1) {
@@ -148,6 +149,7 @@ void ShaderProgram::printInfoLog() {
 }
 
 void ShaderProgram::use() const {
+	VBE_ASSERT(programHandle != 0, "Trying to use null program")
 	if(current != programHandle) {
 		current = programHandle;
 		glUseProgram(programHandle);
@@ -158,5 +160,6 @@ void ShaderProgram::use() const {
 }
 
 Uniform* ShaderProgram::uniform(const std::string &name) const {
+	VBE_ASSERT(uniforms.find(name) != uniforms.end(), "Trying to retrieve unexisting uniform " << name)
 	return uniforms.at(name);
 }

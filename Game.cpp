@@ -19,7 +19,7 @@ bool Game::init() {
 	window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Default,CONTEXT_SETTINGS_OPENGL);
 	window.setMouseCursorVisible(false);
 	window.setKeyRepeatEnabled(false);
-	window.setVerticalSyncEnabled(true);
+	window.setVerticalSyncEnabled(false);
 
 	glClearColor(0.0/255.0,0.0/255.0,0.0/255.0,1);
 
@@ -73,17 +73,17 @@ void Game::addDrawTask(RenderState::RenderInstance state, GameObject* object) {
 // Update scenegraph
 void Game::update(float deltaTime) {
 	InputManager::update(isRunning,window);
-	if(root != NULL)
-		root->doUpdate(deltaTime);
+	VBE_ASSERT(root != NULL, "Null scenegraph root")
+	root->doUpdate(deltaTime);
 }
 
 // Draw scenegraph
 void Game::draw() {
+	VBE_ASSERT(root != NULL, "Null scenegraph root")
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	drawLayer = 0;
 	RenderState::reset();
-	if(root != NULL) //first pass (drawPriority of 0)
-		root->doDraw();
+	root->doDraw();
 	while(!priorityDraws.empty()) { //other drawPriorities
 		++drawLayer;
 		while(!priorityDraws.empty() && priorityDraws.top().first == drawLayer) {
@@ -98,9 +98,10 @@ void Game::draw() {
 
 //Free resources, delete scenegraph nodes and close windows
 void Game::close() {
+	VBE_ASSERT(root != NULL, "Null scenegraph root")
 	isRunning = false;
-	if(root != NULL)
-		delete root;
+	delete root;
+	root = NULL;
 	std::cout << "* EXITING GAME" << std::endl;
 	window.close();
 }

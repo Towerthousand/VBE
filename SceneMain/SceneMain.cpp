@@ -22,7 +22,7 @@ SceneMain::SceneMain() :
 	TriangleObject* tri2 = new TriangleObject(tri,vec3f(0,-10,0),vec3f(0.5));
 	tri->addObject(tri2);
 	tri->setDrawPriority(1);
-	tri2->setDrawPriority(10);
+	tri2->setDrawPriority(2);
 	addObject(new TriangleObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
 
 	std::cout << "* Init done" << std::endl;

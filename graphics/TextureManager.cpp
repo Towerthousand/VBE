@@ -10,11 +10,8 @@ TextureManager::~TextureManager() {
 }
 
 bool TextureManager::load(const std::string& textureID, const std::string& filePath, unsigned int slot) {
+	VBE_ASSERT(textureBank.find(textureID) == textureBank.end(), "Failed to load texture. Texture " << textureID << " already exists")
 	std::cout << "* Loading new texture with ID " << textureID << " from " << filePath << " with initial slot " << slot <<  std::endl;
-	if (textureBank.count(textureID) != 0) {
-		std::cout << "#WARNING \"" << textureID << "\" already loaded! Overwriting texture.." << std::endl;
-		erase(textureID);
-	}
 	Texture* newTexture = new Texture(slot);
 	if (!newTexture->load(filePath))
 		return false;
@@ -23,10 +20,12 @@ bool TextureManager::load(const std::string& textureID, const std::string& fileP
 }
 
 Texture* TextureManager::get(const std::string& textureID) {
+	VBE_ASSERT(textureBank.find(textureID) != textureBank.end(), "Failed to get texture. Texture " << textureID << " doesn't exist")
 	return textureBank.at(textureID);
 }
 
 void TextureManager::erase(const std::string& textureID) {
+	VBE_ASSERT(textureBank.find(textureID) != textureBank.end(), "Failed to erase texture. Texture " << textureID << " doesn't exist")
 	std::cout << "* Deleting texture with ID " << textureID << std::endl;
 	delete textureBank.at(textureID);
 	textureBank.erase(textureID);

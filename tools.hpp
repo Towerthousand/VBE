@@ -1,6 +1,20 @@
 #ifndef TOOLS_HPP
 #define TOOLS_HPP
 
+#ifdef __DEBUG
+#define VBE_ASSERT(expression, string) do \
+	{ \
+		if(!(expression)) { \
+			std::cout << "ASSERT FAILED, STOPPING " << std::endl;\
+			std::cout << "Reason: " << string << std::endl; \
+			assert(0); \
+			std::exit(-1); \
+		} \
+	} while (0);
+#else
+#define VBE_ASSERT(expression, string)
+#endif
+
 //OpenGL (Open Graphics Library)
 #define GL_GLEXT_PROTOTYPES 1
 #include <GL/gl.h> //core

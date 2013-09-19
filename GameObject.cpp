@@ -42,7 +42,8 @@ void GameObject::setName(std::string newName) {
 }
 
 void GameObject::setDrawPriority(int newPriority) {
-	assert(newPriority >= drawPriority || parent == NULL || parent->getDrawPriority() <= newPriority);
+	VBE_ASSERT(newPriority >= drawPriority || parent == NULL || parent->getDrawPriority() <= newPriority,
+			   "Invalid priority for gameobject with id " << this->id)
 	drawPriority = newPriority;
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->setDrawPriority(newPriority);
@@ -82,7 +83,7 @@ void GameObject::doUpdate(float deltaTime) {
 }
 
 void GameObject::doDraw() {
-	assert(drawPriority >= Game::drawLayer);
+	VBE_ASSERT(drawPriority >= Game::drawLayer, "Draw priority is messed up. Internal error (?). Object id: " << this->id)
 	if(drawPriority == Game::drawLayer) {
 		RenderState::push();
 		this->draw();

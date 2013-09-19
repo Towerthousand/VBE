@@ -1,3 +1,7 @@
+CONFIG(debug,debug|release) {
+  DEFINES += "__DEBUG=true"
+}
+
 TEMPLATE = app
 CONFIG -= qt
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL

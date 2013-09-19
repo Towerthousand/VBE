@@ -22,7 +22,7 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 			size = sizeof(GLint);
 			break;
 		default:
-			break;
+			VBE_ASSERT(false, "Unreconised uniform type " << type) break;
 	}
 	size *= count;
 	lastValue = std::vector<char>(size,0);
@@ -31,19 +31,50 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 Uniform::~Uniform() {
 }
 
-void Uniform::set(int val) {assert(type == GL_INT || type == GL_SAMPLER_2D);setBytes((char*)&val);}
-void Uniform::set(const std::vector<int> &val) {assert(type == GL_INT || type == GL_SAMPLER_2D);assert(val.size() == count);setBytes((char*)&val[0]);}
+void Uniform::set(int val) {
+	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location)
+	setBytes((char*)&val);
+}
+void Uniform::set(const std::vector<int> &val) {
+	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	setBytes((char*)&val[0]);
+}
 
-void Uniform::set(float val) {assert(type == GL_FLOAT);setBytes((char*)&val);}
-void Uniform::set(const std::vector<float> &val) {assert(type == GL_FLOAT);assert(val.size() == count);setBytes((char*)&val[0]);}
+void Uniform::set(float val) {
+	VBE_ASSERT(type == GL_FLOAT, "Wrong uniform type. Location " << this->location)
+	setBytes((char*)&val);
+}
+void Uniform::set(const std::vector<float> &val) {
+	VBE_ASSERT(type == GL_FLOAT, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	setBytes((char*)&val[0]);}
 
-void Uniform::set(const vec3f &val) {assert(type == GL_FLOAT_VEC3);setBytes((char*)&val[0]);}
-void Uniform::set(const std::vector<vec3f> &val) {assert(type == GL_FLOAT_VEC3);assert(val.size() == count);setBytes((char*)&val[0][0]);}
+void Uniform::set(const vec3f &val) {
+	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location)
+	setBytes((char*)&val[0]);
+}
+void Uniform::set(const std::vector<vec3f> &val) {
+	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	setBytes((char*)&val[0][0]);
+}
 
-void Uniform::set(const mat4f &val) {assert(type == GL_FLOAT_MAT4);setBytes((char*)&val[0][0]);}
-void Uniform::set(const std::vector<mat4f> &val) {assert(type == GL_FLOAT_MAT4);assert(val.size() == count);setBytes((char*)&val[0][0][0]);}
+void Uniform::set(const mat4f &val) {
+	VBE_ASSERT(type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->location)
+	setBytes((char*)&val[0][0]);
+}
+void Uniform::set(const std::vector<mat4f> &val) {
+	VBE_ASSERT(type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	setBytes((char*)&val[0][0][0]);
+}
 
-void Uniform::set(const Texture* val) {assert(type == GL_SAMPLER_2D); val->bind();unsigned int slot = val->getSlot();setBytes((char*)&slot);}
+void Uniform::set(const Texture* val) {
+	VBE_ASSERT(type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location)
+	val->bind();
+	unsigned int slot = val->getSlot();
+	setBytes((char*)&slot);}
 
 void Uniform::ready() { //assumes program is binded already. Only to be called by ShaderProgram
 	if(!dirty) return;
@@ -54,7 +85,9 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 		case GL_FLOAT_MAT4:	glUniformMatrix4fv(location,count,GL_FALSE,(GLfloat*)&lastValue[0]); break;
 		case GL_INT:		glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
 		case GL_SAMPLER_2D:	glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
-		default: break;
+		default:
+			VBE_ASSERT(false, "Unreconised uniform type " << type)
+			break;
 	}
 }
 
@@ -84,7 +117,7 @@ void Uniform::log() {
 		case GL_FLOAT_MAT4: std::cout << "GL_FLOAT_MAT4"; break;
 		case GL_INT: std::cout << "GL_INT"; break;
 		case GL_SAMPLER_2D: std::cout << "GL_SAMPLER_2D"; break;
-		default: break;
+		default: std::cout << "UNKNOWN_TYPE"; break;
 	}
 	std::cout << std::endl;
 }
