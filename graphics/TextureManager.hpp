@@ -12,7 +12,7 @@ class TextureManager{
 	private:
 		TextureManager();
 		~TextureManager();
-		static std::map<std::string,Texture*> textureBank;
+		static std::map<std::string,Texture*> s_textureBank;
 };
 
 #endif // TEXTUREMANAGER_HPP

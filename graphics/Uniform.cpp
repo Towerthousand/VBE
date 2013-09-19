@@ -3,7 +3,7 @@
 #include "Texture.hpp"
 
 Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
-	dirty(true), count(count), type(type), location(location) {
+	m_dirty(true), m_count(count), m_type(type), m_location(location) {
 	unsigned int size = 0;
 	switch(type) {
 		case GL_FLOAT:
@@ -25,93 +25,93 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 			VBE_ASSERT(false, "Unreconised uniform type " << type) break;
 	}
 	size *= count;
-	lastValue = std::vector<char>(size,0);
+	m_lastValue = std::vector<char>(size,0);
 }
 
 Uniform::~Uniform() {
 }
 
 void Uniform::set(int val) {
-	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(m_type == GL_INT || m_type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->m_location)
 	setBytes((char*)&val);
 }
 void Uniform::set(const std::vector<int> &val) {
-	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location)
-	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	VBE_ASSERT(m_type == GL_INT || m_type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->m_location)
+	VBE_ASSERT(val.size() == m_count, "Wrong vector size. Location " << this->m_location)
 	setBytes((char*)&val[0]);
 }
 
 void Uniform::set(float val) {
-	VBE_ASSERT(type == GL_FLOAT, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(m_type == GL_FLOAT, "Wrong uniform type. Location " << this->m_location)
 	setBytes((char*)&val);
 }
 void Uniform::set(const std::vector<float> &val) {
-	VBE_ASSERT(type == GL_FLOAT, "Wrong uniform type. Location " << this->location)
-	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	VBE_ASSERT(m_type == GL_FLOAT, "Wrong uniform type. Location " << this->m_location)
+	VBE_ASSERT(val.size() == m_count, "Wrong vector size. Location " << this->m_location)
 	setBytes((char*)&val[0]);}
 
 void Uniform::set(const vec3f &val) {
-	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(m_type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->m_location)
 	setBytes((char*)&val[0]);
 }
 void Uniform::set(const std::vector<vec3f> &val) {
-	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location)
-	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	VBE_ASSERT(m_type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->m_location)
+	VBE_ASSERT(val.size() == m_count, "Wrong vector size. Location " << this->m_location)
 	setBytes((char*)&val[0][0]);
 }
 
 void Uniform::set(const mat4f &val) {
-	VBE_ASSERT(type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(m_type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->m_location)
 	setBytes((char*)&val[0][0]);
 }
 void Uniform::set(const std::vector<mat4f> &val) {
-	VBE_ASSERT(type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->location)
-	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	VBE_ASSERT(m_type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->m_location)
+	VBE_ASSERT(val.size() == m_count, "Wrong vector size. Location " << this->m_location)
 	setBytes((char*)&val[0][0][0]);
 }
 
 void Uniform::set(const Texture* val) {
-	VBE_ASSERT(type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(m_type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->m_location)
 	val->bind();
 	unsigned int slot = val->getSlot();
 	setBytes((char*)&slot);}
 
 void Uniform::ready() { //assumes program is binded already. Only to be called by ShaderProgram
-	if(!dirty) return;
-	dirty = false;
-	switch(type) {
-		case GL_FLOAT:		glUniform1fv(location,count,(GLfloat*)&lastValue[0]); break;
-		case GL_FLOAT_VEC3:	glUniform3fv(location,count,(GLfloat*)&lastValue[0]); break;
-		case GL_FLOAT_MAT4:	glUniformMatrix4fv(location,count,GL_FALSE,(GLfloat*)&lastValue[0]); break;
-		case GL_INT:		glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
-		case GL_SAMPLER_2D:	glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
+	if(!m_dirty) return;
+	m_dirty = false;
+	switch(m_type) {
+		case GL_FLOAT:		glUniform1fv(m_location,m_count,(GLfloat*)&m_lastValue[0]); break;
+		case GL_FLOAT_VEC3:	glUniform3fv(m_location,m_count,(GLfloat*)&m_lastValue[0]); break;
+		case GL_FLOAT_MAT4:	glUniformMatrix4fv(m_location,m_count,GL_FALSE,(GLfloat*)&m_lastValue[0]); break;
+		case GL_INT:		glUniform1iv(m_location,m_count,(GLint*)&m_lastValue[0]); break;
+		case GL_SAMPLER_2D:	glUniform1iv(m_location,m_count,(GLint*)&m_lastValue[0]); break;
 		default:
-			VBE_ASSERT(false, "Unreconised uniform type " << type)
+			VBE_ASSERT(false, "Unreconised uniform type " << m_type)
 			break;
 	}
 }
 
 void Uniform::setBytes(const char *val) {
 	if(!compare(val)) {
-		for(unsigned int i = 0; i < lastValue.size(); ++i)
-			lastValue[i] = val[i];
-		dirty = true;
+		for(unsigned int i = 0; i < m_lastValue.size(); ++i)
+			m_lastValue[i] = val[i];
+		m_dirty = true;
 	}
 }
 
 bool Uniform::compare(const char *val) const {
-	for(unsigned int i = 0; i < lastValue.size(); ++i)
-		if(lastValue[i] != val[i])
+	for(unsigned int i = 0; i < m_lastValue.size(); ++i)
+		if(m_lastValue[i] != val[i])
 			return false;
 	return true;
 }
 
 void Uniform::log() {
-	std::cout << "Array of "		 << count
-			  << " at location "	 << location
-			  << ", with a size of " << lastValue.size()/count
+	std::cout << "Array of "		 << m_count
+			  << " at location "	 << m_location
+			  << ", with a size of " << m_lastValue.size()/m_count
 			  <<" bytes per item and of type " ;
-	switch(type) {
+	switch(m_type) {
 		case GL_FLOAT: std::cout << "GL_FLOAT"; break;
 		case GL_FLOAT_VEC3: std::cout << "GL_FLOAT_VEC3"; break;
 		case GL_FLOAT_MAT4: std::cout << "GL_FLOAT_MAT4"; break;

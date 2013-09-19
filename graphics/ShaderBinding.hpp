@@ -12,7 +12,7 @@ class ShaderBinding {
 		void bindVAO() const;
 		void unbindVAO() const;
 	private:
-		GLuint vertexArrayObject;
+		GLuint m_vertexArrayObject;
 };
 
 #endif // SHADERBINDING_HPP

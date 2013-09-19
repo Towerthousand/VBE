@@ -29,11 +29,11 @@ class Uniform {
 		void setBytes(const char* val);
 		bool compare(const char* val) const;
 
-		bool dirty;
-		unsigned int count;
-		GLenum type;
-		GLint location;
-		std::vector<char> lastValue;
+		bool m_dirty;
+		unsigned int m_count;
+		GLenum m_type;
+		GLint m_location;
+		std::vector<char> m_lastValue;
 
 		friend class ShaderProgram;
 };

@@ -13,8 +13,8 @@ class InputManager {
 		static bool isMouseDown(sf::Mouse::Button b) {return (mouseButtonsDown.find(b) != mouseButtonsDown.end());}
 		static bool isMouseReleased(sf::Mouse::Button b) {return (mouseButtonsReleased.find(b) != mouseButtonsReleased.end());}
 
-		static vec2i getMousePos() {return lastMousePos;}
-		static vec2i getMouseDisplacement() {return mouseDisplacement;}
+		static vec2i getMousePos() {return s_lastMousePos;}
+		static vec2i getMouseDisplacement() {return s_mouseDisplacement;}
 
 		static void setMousePos(int x, int y, sf::Window &Window);
 
@@ -27,9 +27,9 @@ class InputManager {
 		static std::set<sf::Mouse::Button> mouseButtonsReleased;
 
 	private:
-		static bool focus;
-		static vec2i lastMousePos;
-		static vec2i mouseDisplacement;
+		static bool s_focus;
+		static vec2i s_lastMousePos;
+		static vec2i s_mouseDisplacement;
 		InputManager();
 		~InputManager();
 };

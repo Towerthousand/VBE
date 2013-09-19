@@ -1,11 +1,11 @@
 #include "Texture.hpp"
 
-Texture::Texture(unsigned int slot): handle(0), slot(slot), size(0,0){
+Texture::Texture(unsigned int slot): m_handle(0), m_slot(slot), m_size(0,0){
 	VBE_ASSERT(slot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << slot << ". Maximum is " << GL_MAX_TEXTURE_UNITS)
 }
 
 Texture::~Texture(){
-	glDeleteTextures(1,(GLuint*) &handle);
+	glDeleteTextures(1,(GLuint*) &m_handle);
 }
 
 bool Texture::load(const std::string &filePath) {
@@ -15,12 +15,12 @@ bool Texture::load(const std::string &filePath) {
 		std::cout << "#ERROR " << filePath << " didn't load" << std::endl;
 		return false;
 	}
-	size = vec2i(image.getSize().x,image.getSize().y);
+	m_size = vec2i(image.getSize().x,image.getSize().y);
 	
 	//get handle
 	GLuint tex_handle;
 	glGenTextures(1, &tex_handle);
-	handle = tex_handle;
+	m_handle = tex_handle;
 	
 	//bind handle and set to image
 	bind();
@@ -36,9 +36,9 @@ bool Texture::load(const std::string &filePath) {
 }
 
 void Texture::bind() const {
-	VBE_ASSERT(handle !=0, "Trying to bind null texture into slot " << slot);
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, handle);
+	VBE_ASSERT(m_handle !=0, "Trying to bind null texture into slot " << m_slot);
+	glActiveTexture(GL_TEXTURE0 + m_slot);
+	glBindTexture(GL_TEXTURE_2D, m_handle);
 }
 
 void Texture::setFilter(GLenum filter) const {
@@ -55,20 +55,20 @@ void Texture::setWrap(GLenum wrap) const {
 
 void Texture::setSlot(unsigned int newSlot) {
 	VBE_ASSERT(newSlot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << newSlot << ". Maximum is " << GL_MAX_TEXTURE_UNITS)
-	slot = newSlot;
+	m_slot = newSlot;
 }
 
 unsigned int Texture::getSlot() const {
-	return slot;
+	return m_slot;
 }
 
 GLuint Texture::getHandle() const {
-	return handle;
+	return m_handle;
 }
 
 int Texture::getWidth() const {
-	return size.x;
+	return m_size.x;
 }
 int Texture::getHeight() const {
-	return size.y;
+	return m_size.y;
 }

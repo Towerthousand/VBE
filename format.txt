@@ -1,0 +1,7 @@
+Suggested formatting:
+
+Classes in PascalCasing
+Members and member functions in camelCasing
+Members have m_ prefix. Static members have s_ instead.
+Initial braces go at the end of the line
+4-wide spacing, tabs only.

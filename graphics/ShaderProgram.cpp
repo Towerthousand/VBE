@@ -2,16 +2,16 @@
 #include "Uniform.hpp"
 #include "Shader.hpp"
 
-GLuint ShaderProgram::current(0);
+GLuint ShaderProgram::s_current(0);
 
-ShaderProgram::ShaderProgram() : programHandle(0) {
+ShaderProgram::ShaderProgram() : m_programHandle(0) {
 }
 
 ShaderProgram::~ShaderProgram() {
-	if(programHandle != 0) {
-		glDeleteProgram(programHandle);
+	if(m_programHandle != 0) {
+		glDeleteProgram(m_programHandle);
 	}
-	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
+	for(std::map<std::string,Uniform*>::iterator it = m_uniforms.begin(); it != m_uniforms.end(); ++it) {
 		delete it->second;
 	}
 }
@@ -43,29 +43,29 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 
 	//CREATE THE PROGRAM
 	std::cout << "* Creating new shaderProgram with " << vp_filename << " and " << fp_filename << std::endl;
-	programHandle = glCreateProgram();
+	m_programHandle = glCreateProgram();
 
 	//ATTACH AND LINK
-	vertex.attach(programHandle);
-	fragment.attach(programHandle);
-	glLinkProgram(programHandle);
+	vertex.attach(m_programHandle);
+	fragment.attach(m_programHandle);
+	glLinkProgram(m_programHandle);
 
 	//CHECK FOR LINK SUCCESS
 	GLint success;
-	glGetProgramiv(programHandle, GL_LINK_STATUS, &success);
+	glGetProgramiv(m_programHandle, GL_LINK_STATUS, &success);
 	if (success != GL_TRUE) {
 		printInfoLog();
 		std::cout << "#ERROR Linking program failed!" << std::endl;
 		return false;
 	}
-	else std::cout <<  " - Linked " << vp_filename << " and " << fp_filename << " successfully. PROGRAMID: " << programHandle << std::endl;
+	else std::cout <<  " - Linked " << vp_filename << " and " << fp_filename << " successfully. PROGRAMID: " << m_programHandle << std::endl;
 
 	//RETRIEVE ATTRIBUTE DATA
 	GLint activeAttributes;
-	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+	glGetProgramiv(m_programHandle, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
 	if (activeAttributes > 0) {
 		GLint length;
-		glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length);
+		glGetProgramiv(m_programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length);
 		if (length > 0) {
 			GLchar attribName[length + 1];
 			GLint attribSize;
@@ -73,24 +73,24 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 			GLint attribLocation;
 			for (int i = 0; i < activeAttributes; ++i) {
 				// Query attribute info.
-				glGetActiveAttrib(programHandle, i, length, NULL, &attribSize, &attribType, attribName);
+				glGetActiveAttrib(m_programHandle, i, length, NULL, &attribSize, &attribType, attribName);
 				attribName[length] = '\0';
 
 				// Query the pre-assigned attribute location.
-				attribLocation = glGetAttribLocation(programHandle, attribName);
+				attribLocation = glGetAttribLocation(m_programHandle, attribName);
 
 				// Assign the vertex attribute mapping for the effect.
-				attributes[attribName] = attribLocation;
+				m_attributes[attribName] = attribLocation;
 			}
 		}
 	}
 
 	//RETRIEVE UNIFORM INFO
 	GLint activeUniforms;
-	glGetProgramiv(programHandle, GL_ACTIVE_UNIFORMS, &activeUniforms);
+	glGetProgramiv(m_programHandle, GL_ACTIVE_UNIFORMS, &activeUniforms);
 	if (activeUniforms > 0) {
 		GLint length;
-		glGetProgramiv(programHandle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length);
+		glGetProgramiv(m_programHandle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length);
 		if (length > 0) {
 			GLchar uniformName[length + 1];
 			GLint uniformSize;
@@ -98,7 +98,7 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 			GLint uniformLocation;
 			for (int i = 0; i < activeUniforms; ++i) {
 				// Query uniform info.
-				glGetActiveUniform(programHandle, i, length, NULL, &uniformSize, &uniformType, uniformName);
+				glGetActiveUniform(m_programHandle, i, length, NULL, &uniformSize, &uniformType, uniformName);
 				uniformName[length] = '\0';  // null terminate
 				if (uniformSize > 1 && length > 3) {
 					// This is an array uniform. I'm stripping array indexers off it since GL does not
@@ -112,10 +112,10 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 				}
 
 				// Query the pre-assigned uniform location.
-				uniformLocation = glGetUniformLocation(programHandle, uniformName);
+				uniformLocation = glGetUniformLocation(m_programHandle, uniformName);
 				Uniform* uniform = new Uniform(uniformSize, uniformType, uniformLocation);
 
-				uniforms[uniformName] = uniform;
+				m_uniforms[uniformName] = uniform;
 			}
 		}
 	}
@@ -123,13 +123,13 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 	//PRINT ATTRIBUTE INFO
 	std::cout << "--------------" << std::endl;
 	std::cout << "Printing attribute info:" << std::endl;
-	for(std::map<std::string,GLint>::iterator it = attributes.begin(); it != attributes.end(); ++it) {
+	for(std::map<std::string,GLint>::iterator it = m_attributes.begin(); it != m_attributes.end(); ++it) {
 		std::cout << it->first << " at location " << it->second << std::endl;
 	}
 
 	//PRINT UNIFORM INFO
 	std::cout << "Printing uniform info:" << std::endl;
-	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
+	for(std::map<std::string,Uniform*>::iterator it = m_uniforms.begin(); it != m_uniforms.end(); ++it) {
 		std::cout << it->first << ":" << std::endl;
 		it->second->log();
 	}
@@ -138,28 +138,28 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 }
 
 void ShaderProgram::printInfoLog() {
-	VBE_ASSERT(programHandle != 0, "Trying to query null program")
+	VBE_ASSERT(m_programHandle != 0, "Trying to query null program")
 	int length = 0;
-	glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &length);
+	glGetProgramiv(m_programHandle, GL_INFO_LOG_LENGTH, &length);
 	if (length > 1) {
 		char infoLog[length];
-		glGetProgramInfoLog(programHandle, length, NULL, infoLog);
+		glGetProgramInfoLog(m_programHandle, length, NULL, infoLog);
 		std::cout << infoLog << std::endl;
 	}
 }
 
 void ShaderProgram::use() const {
-	VBE_ASSERT(programHandle != 0, "Trying to use null program")
-	if(current != programHandle) {
-		current = programHandle;
-		glUseProgram(programHandle);
+	VBE_ASSERT(m_programHandle != 0, "Trying to use null program")
+	if(s_current != m_programHandle) {
+		s_current = m_programHandle;
+		glUseProgram(m_programHandle);
 	}
-	for(std::map<std::string,Uniform*>::const_iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
+	for(std::map<std::string,Uniform*>::const_iterator it = m_uniforms.begin(); it != m_uniforms.end(); ++it) {
 		it->second->ready();
 	}
 }
 
 Uniform* ShaderProgram::uniform(const std::string &name) const {
-	VBE_ASSERT(uniforms.find(name) != uniforms.end(), "Trying to retrieve unexisting uniform " << name)
-	return uniforms.at(name);
+	VBE_ASSERT(m_uniforms.find(name) != m_uniforms.end(), "Trying to retrieve unexisting uniform " << name)
+	return m_uniforms.at(name);
 }

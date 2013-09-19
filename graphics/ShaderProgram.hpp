@@ -9,19 +9,19 @@ class ShaderProgram {
 		~ShaderProgram();
 
 		bool makeProgram(const std::string& vp_filename, const std::string& fp_filename);
-		GLuint getHandle() const {return programHandle;}
+		GLuint getHandle() const {return m_programHandle;}
 
 		void use() const;
 		Uniform* uniform(const std::string& name) const;
 
-		std::map<std::string,GLint> attributes;
-		std::map<std::string,Uniform*> uniforms;
+		std::map<std::string,GLint> m_attributes;
+		std::map<std::string,Uniform*> m_uniforms;
 
 	private:
-		static GLuint current;
+		static GLuint s_current;
 
 		void printInfoLog();
-		GLuint programHandle;
+		GLuint m_programHandle;
 };
 
 

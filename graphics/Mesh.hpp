@@ -34,11 +34,11 @@ class Mesh {
 	private:
 		void makeVBO();
 		std::map<GLuint,const ShaderBinding*> bindingsCache;
-		Vertex::Format vertexFormat;
-		unsigned int vertexCount;
-		GLuint vertexBuffer;
-		PrimitiveType primitiveType;
-		bool dynamic;
+		Vertex::Format m_vertexFormat;
+		unsigned int m_vertexCount;
+		GLuint m_vertexBuffer;
+		PrimitiveType m_primitiveType;
+		bool m_dynamic;
 };
 
 #endif // MESH_HPP

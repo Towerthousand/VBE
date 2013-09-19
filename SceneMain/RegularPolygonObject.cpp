@@ -45,12 +45,12 @@ RegularPolygonObject::RegularPolygonObject(GameObject *parent, const vec3f &pos,
 	}
 
 	mesh->setVertexData(&data[0],data.size());
-	poly.mesh = mesh;
-	poly.program = ShaderManager::get("sample2");
+	m_poly.m_mesh = mesh;
+	m_poly.m_program = ShaderManager::get("sample2");
 }
 
 RegularPolygonObject::~RegularPolygonObject() {
-	delete poly.mesh;
+	delete m_poly.m_mesh;
 }
 
 void RegularPolygonObject::update(float deltaTime) {
@@ -60,15 +60,15 @@ void RegularPolygonObject::update(float deltaTime) {
 
 void RegularPolygonObject::updateMatrix() {
 	mat4f m(1.0);
-	m = glm::translate(m,pos);
+	m = glm::translate(m,m_pos);
 	m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*50,vec3f(0,0,1));
-	m = glm::scale(m,scale);
-	poly.modelMatrix = m;
+	m = glm::scale(m,m_scale);
+	m_poly.m_modelMatrix = m;
 }
 
 void RegularPolygonObject::draw() const {
-	RenderState::model *= poly.modelMatrix;
-	mat4f transform = RenderState::projection*RenderState::view*RenderState::model;
-	poly.program->uniform("modelViewProjectionMatrix")->set(transform);
-	poly.draw();
+	RenderState::s_model *= m_poly.m_modelMatrix;
+	mat4f transform = RenderState::s_projection*RenderState::s_view*RenderState::s_model;
+	m_poly.m_program->uniform("modelViewProjectionMatrix")->set(transform);
+	m_poly.draw();
 }

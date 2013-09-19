@@ -3,14 +3,14 @@
 #include "ShaderBinding.hpp"
 
 Mesh::Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dynamic)
-	: vertexFormat(vertexFormat), vertexCount(vertexCount), vertexBuffer(0), primitiveType(TRIANGLES),
-	  dynamic(dynamic) {
+	: m_vertexFormat(vertexFormat), m_vertexCount(vertexCount), m_vertexBuffer(0), m_primitiveType(TRIANGLES),
+	  m_dynamic(dynamic) {
 	makeVBO();
 }
 
 Mesh::Mesh(const std::string &filename, bool dynamic)
-	: vertexFormat(std::vector<Vertex::Element>()), vertexCount(0), vertexBuffer(0), primitiveType(TRIANGLES),
-	  dynamic(dynamic){
+	: m_vertexFormat(std::vector<Vertex::Element>()), m_vertexCount(0), m_vertexBuffer(0), m_primitiveType(TRIANGLES),
+	  m_dynamic(dynamic){
 	if (!loadFromFile(filename)) {
 		std::cout << "Could not load mesh from " << filename <<
 					 ". VBO will not be generated for this mesh" << std::endl;
@@ -19,8 +19,8 @@ Mesh::Mesh(const std::string &filename, bool dynamic)
 }
 
 Mesh::~Mesh() {
-	if(vertexBuffer != 0) {
-		glDeleteBuffers(1,&vertexBuffer);
+	if(m_vertexBuffer != 0) {
+		glDeleteBuffers(1,&m_vertexBuffer);
 	}
 	for(std::map<GLuint,const ShaderBinding*>::iterator it = bindingsCache.begin(); it != bindingsCache.end(); ++it) {
 		delete it->second;
@@ -85,7 +85,7 @@ bool Mesh::loadFromFile(const std::string& filename) {
 	}
 
 	makeVBO();
-	vertexFormat = Vertex::Format(elements);
+	m_vertexFormat = Vertex::Format(elements);
 	setVertexData(&data[0],data.size());
 	return true;
 }
@@ -99,42 +99,42 @@ void Mesh::draw(const ShaderProgram *program) {
 	const ShaderBinding* binding = bindingsCache.at(handle);
 	program->use();
 	binding->bindVAO();
-	glDrawArrays(primitiveType, 0, vertexCount);
+	glDrawArrays(m_primitiveType, 0, m_vertexCount);
 	binding->unbindVAO();
 }
 
 const Vertex::Format& Mesh::getVertexFormat() const {
-	return vertexFormat;
+	return m_vertexFormat;
 }
 
 unsigned int Mesh::getVertexCount() const {
-	return vertexCount;
+	return m_vertexCount;
 }
 
 unsigned int Mesh::getVertexSize() const {
-	return vertexFormat.vertexSize();
+	return m_vertexFormat.vertexSize();
 }
 
 bool Mesh::isDynamic() const {
-	return dynamic;
+	return m_dynamic;
 }
 
 GLuint Mesh::getVertexBuffer() const {
-	return vertexBuffer;
+	return m_vertexBuffer;
 }
 
 Mesh::PrimitiveType Mesh::getPrimitiveType() const {
-	return primitiveType;
+	return m_primitiveType;
 }
 
 void Mesh::setPrimitiveType(Mesh::PrimitiveType type) {
-	primitiveType = type;
+	m_primitiveType = type;
 }
 
 void Mesh::setVertexData(void* vertexData, unsigned int newVertexCount) {
-	vertexCount = newVertexCount;
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, vertexData, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+	m_vertexCount = newVertexCount;
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, m_vertexFormat.vertexSize() * m_vertexCount, vertexData, m_dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -144,7 +144,7 @@ void Mesh::makeVBO() {
 	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create VBO for mesh")
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to bind VBO for mesh")
-	glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_vertexFormat.vertexSize() * m_vertexCount, NULL, m_dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to load VBO with empty vertex data")
-	vertexBuffer = vbo;
+	m_vertexBuffer = vbo;
 }

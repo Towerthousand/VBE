@@ -10,7 +10,7 @@ class MeshManager {
 		static void erase(const std::string& meshID);
 		static void	clear();
 	private:
-		static std::map<std::string,Mesh*> meshes;
+		static std::map<std::string,Mesh*> s_meshes;
 		MeshManager();
 		~MeshManager();
 };

@@ -4,7 +4,7 @@
 
 class GameObject { //scenegraph nodes
 	public:
-		GameObject(GameObject* parent, const vec3f &pos, const vec3f &scale);
+		GameObject(GameObject* m_parent, const vec3f &pos, const vec3f &scale);
 		virtual ~GameObject();
 
 		virtual void update(float deltaTime);
@@ -19,7 +19,7 @@ class GameObject { //scenegraph nodes
 		void getAllObjectsOfType(std::vector<T*> &v) {
 			T* p = dynamic_cast<T*>(this);
 			if(p) v.push_back(p);
-			for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+			for(std::list<GameObject*>::iterator it = m_children.begin(); it != m_children.end(); ++it)
 				(*it)->getAllObjectsOfType<T>(v);
 		}
 
@@ -27,32 +27,32 @@ class GameObject { //scenegraph nodes
 		T* getFirstObjectOfType() {
 			T* p = dynamic_cast<T*>(this);
 			if(p) return p;
-			for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+			for(std::list<GameObject*>::iterator it = m_children.begin(); it != m_children.end(); ++it) {
 				p = (*it)->getFirstObjectOfType<T>();
 				if(p) return p;
 			}
 			return NULL;
 		}
-		static GameObject* getObjectByName(std::string name);
-		static GameObject* getObjectByID(int id);
+		static GameObject* getObjectByName(std::string m_name);
+		static GameObject* getObjectByID(int m_id);
 		static int getObjectCount();
 
-		vec3f pos;
-		vec3f scale;
-		const int id;
-		bool isAlive;
+		vec3f m_pos;
+		vec3f m_scale;
+		const int m_id;
+		bool m_isAlive;
 	protected:
-		GameObject* parent;
-		std::list<GameObject*> children;
+		GameObject* m_parent;
+		std::list<GameObject*> m_children;
 	private:
 		void doUpdate(float deltaTime);
 		void doDraw();
-		int drawPriority;
-		std::string name;
-		static int idCounter;
-		static int objectCount;
-		static std::map<std::string,GameObject*> nameMap;
-		static std::map<int,GameObject*> idMap;
+		int m_drawPriority;
+		std::string m_name;
+		static int s_idCounter;
+		static int s_objectCount;
+		static std::map<std::string,GameObject*> s_nameMap;
+		static std::map<int,GameObject*> s_idMap;
 
 		friend class Game;
 };
