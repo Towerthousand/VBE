@@ -42,7 +42,7 @@ void GameObject::setName(std::string newName) {
 }
 
 void GameObject::setDrawPriority(int newPriority) {
-	assert(newPriority <= newPriority || parent == NULL || parent->getDrawPriority() <= newPriority);
+	assert(newPriority >= drawPriority || parent == NULL || parent->getDrawPriority() <= newPriority);
 	drawPriority = newPriority;
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->setDrawPriority(newPriority);

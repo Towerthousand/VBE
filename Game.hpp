@@ -24,7 +24,7 @@ class Game {
 		};
 		struct FunctorCompare{
 				bool operator()(const std::pair<int,DrawTask> &a, const std::pair<int,DrawTask> &b) {
-					return (a.first < b.first);
+					return (a.first > b.first);
 				}
 		};
 	public:
