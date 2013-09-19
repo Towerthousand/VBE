@@ -77,9 +77,9 @@ namespace Vertex {
 			bool operator != (const Format& f) const;
 
 		private:
-			std::vector<Element> m_elements;
+			std::vector<Element> elements;
 			std::vector<unsigned int> offsets;
-			unsigned int m_vertexSize;
+			unsigned int vertSize;
 	};
 
 } // namespace Vertex

@@ -97,12 +97,12 @@ namespace Vertex {
 	}
 
 	Format::Format(const std::vector<Element> &elements)
-		: m_elements(elements), offsets(elements.size(),0), m_vertexSize(0) {
+		: elements(elements), offsets(elements.size(),0), vertSize(0) {
 		unsigned int offset = 0;
-		for (unsigned int i = 0; i < m_elements.size(); ++i) {
+		for (unsigned int i = 0; i < elements.size(); ++i) {
 			offsets[i] = offset;
 			unsigned int size = 4;
-			switch(m_elements[i].type) {
+			switch(elements[i].type) {
 				case Element::Byte:          size = sizeof(char); break;
 				case Element::UnsignedByte:  size = sizeof(unsigned char); break;
 				case Element::Short:         size = sizeof(short); break;
@@ -111,18 +111,18 @@ namespace Vertex {
 				case Element::UnsignedInt:   size = sizeof(unsigned int); break;
 				case Element::Float:         size = sizeof(float); break;
 				case Element::Fixed:         size = sizeof(int); break;
-				default: VBE_ASSERT(0, "Not a knownt element type " << m_elements[i].type) break;
+				default: VBE_ASSERT(0, "Not a knownt element type " << elements[i].type) break;
 			}
-			offset += m_elements[i].size * size;
+			offset += elements[i].size * size;
 		}
-		m_vertexSize = offset;
+		vertSize = offset;
 	}
 
 	Format::~Format() {
 	}
 
 	const Element& Format::element(unsigned int index) const {
-		return m_elements[index];
+		return elements[index];
 	}
 
 	unsigned int Format::offset(unsigned int index) const {
@@ -130,19 +130,19 @@ namespace Vertex {
 	}
 
 	unsigned int Format::elementCount() const {
-		return m_elements.size();
+		return elements.size();
 	}
 
 	unsigned int Format::vertexSize() const {
-		return m_vertexSize;
+		return vertSize;
 	}
 
 	bool Format::operator == (const Format& f) const {
-		if (m_elements.size() != f.m_elements.size())
+		if (elements.size() != f.elements.size())
 			return false;
 
-		for (unsigned int i = 0, count = m_elements.size(); i < count; ++i) {
-			if (m_elements[i] != f.m_elements[i])
+		for (unsigned int i = 0, count = elements.size(); i < count; ++i) {
+			if (elements[i] != f.elements[i])
 				return false;
 		}
 
