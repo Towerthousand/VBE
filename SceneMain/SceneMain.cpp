@@ -2,6 +2,7 @@
 #include "../Game.hpp"
 #include "TexturedObject.hpp"
 #include "RegularPolygonObject.hpp"
+#include "PerspectiveCamera.hpp"
 
 SceneMain::SceneMain() :
 	GameObject(NULL,vec3f(0.0),vec3f(1.0)),
@@ -17,12 +18,16 @@ SceneMain::SceneMain() :
 	//Center mouse
 	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,Game::getWindow());
 	//add a new triangle
-	RegularPolygonObject* poly = new RegularPolygonObject(this, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
-	addObject(poly);
+
+	PerspectiveCamera* cam = new PerspectiveCamera(this);
+
+	RegularPolygonObject* poly = new RegularPolygonObject(cam, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
+	cam->addObject(poly);
 	TexturedObject* house = new TexturedObject(poly,vec3f(0,-10,0),vec3f(0.5));
 	poly->setDrawPriority(0);
 	poly->addObject(house);
-	addObject(new TexturedObject(this, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
+
+	cam->addObject(new TexturedObject(cam, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
 
 	std::cout << "* Init done" << std::endl;
 }
@@ -59,10 +64,4 @@ void SceneMain::update(float deltaTime) {
 	}
 }
 
-void SceneMain::draw() const {
-	//calculate perspective matrix
-	RenderState::projection = glm::perspective(FOV,float(SCRWIDTH)/float(SCRHEIGHT),ZNEAR,ZFAR);
-	//Move matrix to position (according to player)
-	RenderState::view = glm::translate(mat4f(1.0),vec3f(0,0,-10));
-}
 

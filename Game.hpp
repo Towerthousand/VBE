@@ -41,11 +41,8 @@ class Game {
 		static void draw();
 		static bool loadResources ();
 
-		static void addDrawTask(RenderState::RenderInstance state, GameObject* object);
-		static int drawLayer;
 		static sf::RenderWindow window;
 		static GameObject* root;
-		static std::priority_queue<std::pair<int,DrawTask>,std::vector<std::pair<int,DrawTask>>,FunctorCompare> priorityDraws;
 
 		friend class GameObject;
 

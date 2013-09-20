@@ -9,7 +9,6 @@ class SceneMain : public GameObject {
 		~SceneMain();
 
 		void update(float deltaTime);
-		void draw() const;
 
 	private:
 		bool loadResources();

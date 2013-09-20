@@ -28,7 +28,8 @@ SOURCES += \
 	$$PWD/SceneMain/RegularPolygonObject.cpp \
 	$$PWD/graphics/MeshManager.cpp \
 	$$PWD/graphics/ShaderManager.cpp \
-	$$PWD/RenderState.cpp
+	$$PWD/RenderState.cpp \
+    SceneMain/PerspectiveCamera.cpp
 
 HEADERS += \
     $$PWD/Game.hpp \
@@ -51,7 +52,8 @@ HEADERS += \
 	$$PWD/SceneMain/RegularPolygonObject.hpp \
 	$$PWD/graphics/MeshManager.hpp \
 	$$PWD/graphics/ShaderManager.hpp \
-	$$PWD/RenderState.hpp
+	$$PWD/RenderState.hpp \
+    SceneMain/PerspectiveCamera.hpp
 
 OTHER_FILES += \
 	$$PWD/data/shaders/sample.vert \

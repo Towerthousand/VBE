@@ -9,7 +9,7 @@ int GameObject::objectCount = 0;
 
 GameObject::GameObject(GameObject* parent, const vec3f &pos, const vec3f &scale) :
 	pos(pos), scale(scale), id(idCounter++), isAlive(true),
-	parent(parent), drawPriority(0), name("") {
+	parent(parent), drawPriority(0), name(""), transform(1.0f) {
 	++objectCount;
 	idMap.insert(std::pair<int,GameObject*>(id,this));
 }
@@ -70,6 +70,13 @@ int GameObject::getObjectCount() {
 	return objectCount;
 }
 
+void GameObject::calcFullTransform(mat4f parentFullTransform)
+{
+	fullTransform = parentFullTransform * transform;
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		(*it)->calcFullTransform(fullTransform);
+}
+
 void GameObject::doUpdate(float deltaTime) {
 	update(deltaTime);
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end();) {
@@ -84,16 +91,7 @@ void GameObject::doUpdate(float deltaTime) {
 }
 
 void GameObject::doDraw() {
-	VBE_ASSERT(drawPriority >= Game::drawLayer, "Draw priority is messed up. Internal error (?). Object id: " << this->id)
-	if(drawPriority == Game::drawLayer) {
-		RenderState::push();
-		this->draw();
-		for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-			(*it)->doDraw();
-		RenderState::pop();
-	}
-	else {
-		RenderState::RenderInstance currState = RenderState::getCurrent();
-		Game::addDrawTask(currState,this);
-	}
+	this->draw();
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		(*it)->doDraw();
 }

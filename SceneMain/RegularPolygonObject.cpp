@@ -63,12 +63,10 @@ void RegularPolygonObject::updateMatrix() {
 	m = glm::translate(m,pos);
 	m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*50,vec3f(0,0,1));
 	m = glm::scale(m,scale);
-	poly.modelMatrix = m;
+	transform = m;
 }
 
 void RegularPolygonObject::draw() const {
-	RenderState::model *= poly.modelMatrix;
-	mat4f transform = RenderState::projection*RenderState::view*RenderState::model;
-	poly.program->uniform("modelViewProjectionMatrix")->set(transform);
+	poly.program->uniform("modelViewProjectionMatrix")->set(fullTransform);
 	poly.draw();
 }

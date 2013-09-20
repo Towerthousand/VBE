@@ -19,13 +19,11 @@ void TexturedObject::updateMatrix() {
 	mat4f m(1.0);
 	m = glm::translate(m,pos);
 	m = glm::scale(m,scale);
-	tri.modelMatrix = m;
+	transform = m;
 }
 
 void TexturedObject::draw() const {
-	RenderState::model *= tri.modelMatrix;
-	mat4f transform = RenderState::projection*RenderState::view*RenderState::model;
 	tri.program->uniform("sampler")->set(TextureManager::get("cubetex"));
-	tri.program->uniform("modelViewProjectionMatrix")->set(transform);
+	tri.program->uniform("modelViewProjectionMatrix")->set(fullTransform);
 	tri.draw();
 }

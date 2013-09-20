@@ -37,8 +37,14 @@ class GameObject { //scenegraph nodes
 		static GameObject* getObjectByID(int id);
 		static int getObjectCount();
 
+		mat4f transform;
+		mat4f fullTransform;
+		void calcFullTransform(mat4f parentFullTransform);
+
+		//Esto habria que quitarlo (?)
 		vec3f pos;
 		vec3f scale;
+
 		const int id;
 		bool isAlive;
 	protected:
@@ -49,6 +55,7 @@ class GameObject { //scenegraph nodes
 		void doDraw();
 		int drawPriority;
 		std::string name;
+
 		static int idCounter;
 		static int objectCount;
 		static std::map<std::string,GameObject*> nameMap;

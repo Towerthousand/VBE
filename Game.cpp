@@ -1,10 +1,9 @@
 #include "Game.hpp"
 
 bool Game::isRunning = false;
-int Game::drawLayer = 0;
+
 sf::RenderWindow Game::window;
 GameObject* Game::root = NULL;
-std::priority_queue<std::pair<int,Game::DrawTask>,std::vector<std::pair<int,Game::DrawTask>>,Game::FunctorCompare> Game::priorityDraws;
 
 Game::Game(){
 }
@@ -64,41 +63,28 @@ void Game::setRoot(GameObject *newRoot) {
 	root = newRoot;
 }
 
-// Postpone a part of the scenegraph for late drawing
-void Game::addDrawTask(RenderState::RenderInstance state, GameObject* object) {
-	DrawTask task(state,object);
-	priorityDraws.push(std::pair<int,DrawTask>(object->drawPriority,task));
-}
-
 // Update scenegraph
 void Game::update(float deltaTime) {
 	InputManager::update(isRunning,window);
-	VBE_ASSERT(root != NULL, "Null scenegraph root")
+	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	root->doUpdate(deltaTime);
 }
 
 // Draw scenegraph
 void Game::draw() {
-	VBE_ASSERT(root != NULL, "Null scenegraph root")
+	VBE_ASSERT(root != NULL, "Null scenegraph root");
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	drawLayer = 0;
-	RenderState::reset();
+
+	root->calcFullTransform(mat4f(1.0f));
 	root->doDraw();
-	while(!priorityDraws.empty()) { //other drawPriorities
-		++drawLayer;
-		while(!priorityDraws.empty() && priorityDraws.top().first == drawLayer) {
-			DrawTask task = priorityDraws.top().second;
-			RenderState::setState(task.state);
-			task.object->doDraw();
-			priorityDraws.pop();
-		}
-	}
+
 	window.display();
 }
 
 //Free resources, delete scenegraph nodes and close windows
 void Game::close() {
-	VBE_ASSERT(root != NULL, "Null scenegraph root")
+	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	isRunning = false;
 	delete root;
 	root = NULL;
