@@ -22,7 +22,8 @@ vec3f HuetoRGB(float h) {
 	return vec3f(r,g,b);
 }
 
-RegularPolygonObject::RegularPolygonObject(GameObject *parent, const vec3f &pos, const vec3f &scale, unsigned int sides) : GameObject(parent, pos, scale) {
+RegularPolygonObject::RegularPolygonObject(GameObject *parent, const vec3f &pos, const vec3f &scale, unsigned int sides)
+	: GameObject(parent), pos(pos), scale(scale) {
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
 	elements.push_back(Vertex::Element(Vertex::Attribute::Color    , Vertex::Element::Float, 3));

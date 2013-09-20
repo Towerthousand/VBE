@@ -11,6 +11,8 @@ class RegularPolygonObject : public GameObject {
 		void update(float deltaTime);
 		void updateMatrix();
 		void draw() const;
+
+		vec3f pos, scale;
 	private:
 		Model poly;
 };

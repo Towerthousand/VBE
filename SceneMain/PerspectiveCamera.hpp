@@ -3,10 +3,10 @@
 
 #include "GameObject.hpp"
 
-class PerspectiveCamera : public GameObject
-{
+class PerspectiveCamera : public GameObject {
 	public:
-		PerspectiveCamera(GameObject* parent);
+		PerspectiveCamera(GameObject* parent, vec3f pos);
+		vec3f pos;
 };
 
 #endif // PERSPECTIVECAMERA_HPP

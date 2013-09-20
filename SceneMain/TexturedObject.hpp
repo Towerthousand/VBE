@@ -11,6 +11,9 @@ class TexturedObject : public GameObject {
 		void update(float deltaTime);
 		void updateMatrix();
 		void draw() const;
+
+		vec3f pos;
+		vec3f scale;
 	private:
 		Model tri;
 };

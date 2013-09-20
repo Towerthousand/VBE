@@ -4,7 +4,7 @@
 
 class GameObject { //scenegraph nodes
 	public:
-		GameObject(GameObject* parent, const vec3f &pos, const vec3f &scale);
+		GameObject(GameObject* parent);
 		virtual ~GameObject();
 
 		virtual void update(float deltaTime);
@@ -36,18 +36,14 @@ class GameObject { //scenegraph nodes
 		static GameObject* getObjectByName(std::string name);
 		static GameObject* getObjectByID(int id);
 		static int getObjectCount();
-
-		mat4f transform;
 		void calcFullTransform(mat4f parentFullTransform);
-
-		vec3f pos;
-		vec3f scale;
 
 		const int id;
 		bool isAlive;
 	protected:
 		GameObject* parent;
 		std::list<GameObject*> children;
+		mat4f transform;
 		mat4f fullTransform;
 	private:
 		void doUpdate(float deltaTime);

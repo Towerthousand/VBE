@@ -5,8 +5,7 @@
 #include "PerspectiveCamera.hpp"
 
 SceneMain::SceneMain() :
-	GameObject(NULL,vec3f(0.0),vec3f(1.0)),
-	debugCounter(0.0), fpsCount(0) {
+	GameObject(NULL), debugCounter(0.0), fpsCount(0) {
 	this->setName("SCENE");
 	//SCENE INIT
 	std::cout << "* Loading new scene: Main" << std::endl;
@@ -17,10 +16,8 @@ SceneMain::SceneMain() :
 	}
 	//Center mouse
 	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,Game::getWindow());
-	//add a new triangle
 
-	PerspectiveCamera* cam = new PerspectiveCamera(this);
-
+	PerspectiveCamera* cam = new PerspectiveCamera(this, vec3f(0,0,-10));
 	RegularPolygonObject* poly = new RegularPolygonObject(cam, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
 	cam->addObject(poly);
 	TexturedObject* house = new TexturedObject(poly,vec3f(0,-10,0),vec3f(0.5));
@@ -59,7 +56,7 @@ void SceneMain::update(float deltaTime) {
 	debugCounter += deltaTime;
 	if (debugCounter > 1) {
 		std::cout << "FPS: " << fpsCount << ". Amount of GameObjects: " << GameObject::getObjectCount() << std::endl;
-		debugCounter -= 1;
+		debugCounter--;
 		fpsCount = 0;
 	}
 }

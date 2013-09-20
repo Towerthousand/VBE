@@ -7,9 +7,9 @@ std::map<int,GameObject*> GameObject::idMap;
 int GameObject::idCounter = 1;
 int GameObject::objectCount = 0;
 
-GameObject::GameObject(GameObject* parent, const vec3f &pos, const vec3f &scale) :
-	transform(1.0f), pos(pos), scale(scale), id(idCounter++), isAlive(true),
-	parent(parent), fullTransform(1.0), drawPriority(0), name("") {
+GameObject::GameObject(GameObject* parent) :
+	id(idCounter++), isAlive(true), parent(parent),
+	transform(1.0f), fullTransform(1.0), drawPriority(0), name("") {
 	++objectCount;
 	idMap.insert(std::pair<int,GameObject*>(id,this));
 }
