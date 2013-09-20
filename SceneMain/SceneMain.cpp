@@ -26,8 +26,8 @@ SceneMain::SceneMain() :
 	TexturedObject* house = new TexturedObject(poly,vec3f(0,-10,0),vec3f(0.5));
 	poly->setDrawPriority(0);
 	poly->addObject(house);
-
 	cam->addObject(new TexturedObject(cam, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
+	addObject(cam);
 
 	std::cout << "* Init done" << std::endl;
 }

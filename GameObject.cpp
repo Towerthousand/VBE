@@ -8,8 +8,8 @@ int GameObject::idCounter = 1;
 int GameObject::objectCount = 0;
 
 GameObject::GameObject(GameObject* parent, const vec3f &pos, const vec3f &scale) :
-	pos(pos), scale(scale), id(idCounter++), isAlive(true),
-	parent(parent), drawPriority(0), name(""), transform(1.0f) {
+	transform(1.0f), pos(pos), scale(scale), id(idCounter++), isAlive(true),
+	parent(parent), fullTransform(1.0), drawPriority(0), name("") {
 	++objectCount;
 	idMap.insert(std::pair<int,GameObject*>(id,this));
 }
@@ -70,8 +70,7 @@ int GameObject::getObjectCount() {
 	return objectCount;
 }
 
-void GameObject::calcFullTransform(mat4f parentFullTransform)
-{
+void GameObject::calcFullTransform(mat4f parentFullTransform) {
 	fullTransform = parentFullTransform * transform;
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->calcFullTransform(fullTransform);

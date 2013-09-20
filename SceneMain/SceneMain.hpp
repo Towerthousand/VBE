@@ -7,7 +7,6 @@ class SceneMain : public GameObject {
 	public:
 		SceneMain();
 		~SceneMain();
-
 		void update(float deltaTime);
 
 	private:

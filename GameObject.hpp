@@ -38,10 +38,8 @@ class GameObject { //scenegraph nodes
 		static int getObjectCount();
 
 		mat4f transform;
-		mat4f fullTransform;
 		void calcFullTransform(mat4f parentFullTransform);
 
-		//Esto habria que quitarlo (?)
 		vec3f pos;
 		vec3f scale;
 
@@ -50,6 +48,7 @@ class GameObject { //scenegraph nodes
 	protected:
 		GameObject* parent;
 		std::list<GameObject*> children;
+		mat4f fullTransform;
 	private:
 		void doUpdate(float deltaTime);
 		void doDraw();

@@ -78,7 +78,6 @@ void Game::draw() {
 
 	root->calcFullTransform(mat4f(1.0f));
 	root->doDraw();
-
 	window.display();
 }
 
