@@ -1,5 +1,4 @@
 #include "GameObject.hpp"
-#include "RenderState.hpp"
 #include "Game.hpp"
 
 std::map<std::string,GameObject*> GameObject::nameMap;
@@ -32,7 +31,6 @@ void GameObject::draw() const {
 
 void GameObject::addObject(GameObject *object) {
 	children.push_back(object);
-	object->setDrawPriority(drawPriority);
 }
 
 void GameObject::setName(std::string newName) {
@@ -43,11 +41,8 @@ void GameObject::setName(std::string newName) {
 }
 
 void GameObject::setDrawPriority(int newPriority) {
-	VBE_ASSERT(newPriority >= drawPriority || parent == NULL || parent->getDrawPriority() <= newPriority,
-			   "Invalid priority for gameobject with id " << this->id)
 	drawPriority = newPriority;
-	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-		(*it)->setDrawPriority(newPriority);
+	//TODO: update Game set to take this into account
 }
 
 int GameObject::getDrawPriority() {
@@ -82,7 +77,7 @@ void GameObject::doUpdate(float deltaTime) {
 		(*it)->doUpdate(deltaTime);
 		if (!(*it)->isAlive) {
 			delete *it;
-			it = children.erase(it);;
+			it = children.erase(it);
 		}
 		else
 			++it;

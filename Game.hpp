@@ -6,7 +6,6 @@
 #include "graphics/ShaderManager.hpp"
 #include "audio/AudioManager.hpp"
 #include "input/InputManager.hpp"
-#include "RenderState.hpp"
 #include "GameObject.hpp"
 #include "graphics/Mesh.hpp"
 #include "graphics/Model.hpp"
@@ -15,15 +14,10 @@
 #include "graphics/Uniform.hpp"
 
 class Game {
-		struct DrawTask {
-				DrawTask(RenderState::RenderInstance state, GameObject* object)
-					: state(state), object(object) {}
-				~DrawTask() {}
-				RenderState::RenderInstance state;
-				GameObject* object;
-		};
 		struct FunctorCompare{
-				bool operator()(const std::pair<int,DrawTask> &a, const std::pair<int,DrawTask> &b) {
+				bool operator()(const std::pair<int,GameObject*> &a, const std::pair<int,GameObject*> &b) {
+					if(a.first == b.first)
+						return (a.second > b.second);
 					return (a.first > b.first);
 				}
 		};
@@ -43,6 +37,7 @@ class Game {
 
 		static sf::RenderWindow window;
 		static GameObject* root;
+		static std::set<std::pair<int,GameObject*>,FunctorCompare> drawTasks;
 
 		friend class GameObject;
 

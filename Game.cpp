@@ -4,6 +4,7 @@ bool Game::isRunning = false;
 
 sf::RenderWindow Game::window;
 GameObject* Game::root = NULL;
+std::set<std::pair<int,GameObject*>,Game::FunctorCompare> Game::drawTasks;
 
 Game::Game(){
 }
@@ -73,9 +74,7 @@ void Game::update(float deltaTime) {
 // Draw scenegraph
 void Game::draw() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	root->calcFullTransform(mat4f(1.0f));
 	root->doDraw();
 	window.display();
