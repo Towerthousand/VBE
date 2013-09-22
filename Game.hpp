@@ -15,10 +15,10 @@
 
 class Game {
 		struct FunctorCompare{
-				bool operator()(const std::pair<int,GameObject*> &a, const std::pair<int,GameObject*> &b) {
-					if(a.first == b.first)
-						return (a.second > b.second);
-					return (a.first > b.first);
+				bool operator()(const GameObject* a, const GameObject* b) {
+					if(a->drawPriority == b->drawPriority)
+						return (a > b);
+					return (a->drawPriority > b->drawPriority);
 				}
 		};
 	public:
@@ -37,7 +37,7 @@ class Game {
 
 		static sf::RenderWindow window;
 		static GameObject* root;
-		static std::set<std::pair<int,GameObject*>,FunctorCompare> drawTasks;
+		static std::set<GameObject*,FunctorCompare> drawTasks;
 
 		friend class GameObject;
 

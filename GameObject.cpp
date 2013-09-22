@@ -9,14 +9,14 @@ int GameObject::objectCount = 0;
 GameObject::GameObject(GameObject* parent) :
 	id(idCounter++), isAlive(true), parent(parent),
 	transform(1.0f), fullTransform(1.0), drawPriority(0), name("") {
-	Game::drawTasks.insert(std::pair<int,GameObject*>(drawPriority,this));
+	Game::drawTasks.insert(this);
 	++objectCount;
 	idMap.insert(std::pair<int,GameObject*>(id,this));
 }
 
 GameObject::~GameObject() {
 	--objectCount;
-	Game::drawTasks.erase(std::pair<int,GameObject*>(drawPriority,this));
+	Game::drawTasks.erase(this);
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		delete *it;
 	if(!name.empty())
@@ -43,9 +43,9 @@ void GameObject::setName(std::string newName) {
 }
 
 void GameObject::setDrawPriority(int newPriority) {
-	Game::drawTasks.erase(std::pair<int,GameObject*>(drawPriority,this));
+	Game::drawTasks.erase(this);
 	drawPriority = newPriority;
-	Game::drawTasks.insert(std::pair<int,GameObject*>(drawPriority,this));
+	Game::drawTasks.insert(this);
 }
 
 int GameObject::getDrawPriority() {

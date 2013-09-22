@@ -4,7 +4,7 @@ bool Game::isRunning = false;
 
 sf::RenderWindow Game::window;
 GameObject* Game::root = NULL;
-std::set<std::pair<int,GameObject*>,Game::FunctorCompare> Game::drawTasks;
+std::set<GameObject*,Game::FunctorCompare> Game::drawTasks;
 
 Game::Game(){
 }
@@ -76,8 +76,8 @@ void Game::draw() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	root->calcFullTransform(mat4f(1.0f));
-	for(std::set<std::pair<int,GameObject*>,FunctorCompare>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
-		(*it).second->draw();
+	for(std::set<GameObject*,FunctorCompare>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
+		(*it)->draw();
 	window.display();
 }
 
