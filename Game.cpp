@@ -76,7 +76,8 @@ void Game::draw() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	root->calcFullTransform(mat4f(1.0f));
-	root->doDraw();
+	for(std::set<std::pair<int,GameObject*>,FunctorCompare>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
+		(*it).second->draw();
 	window.display();
 }
 

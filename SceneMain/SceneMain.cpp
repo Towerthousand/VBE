@@ -20,12 +20,13 @@ SceneMain::SceneMain() :
 	PerspectiveCamera* cam = new PerspectiveCamera(this, vec3f(0,0,-10));
 	RegularPolygonObject* poly = new RegularPolygonObject(cam, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
 	cam->addObject(poly);
-	TexturedObject* house = new TexturedObject(poly,vec3f(0,-10,0),vec3f(0.5));
-	poly->setDrawPriority(0);
+	TexturedObject* house = new TexturedObject(poly,vec3f(0,-10,0),vec3f(0.5f));
+	TexturedObject* house2 = new TexturedObject(cam, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f));
 	poly->addObject(house);
-	cam->addObject(new TexturedObject(cam, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f)));
+	cam->addObject(house2);
 	addObject(cam);
-
+	house->setDrawPriority(1);
+	house2->setDrawPriority(0);
 	std::cout << "* Init done" << std::endl;
 }
 

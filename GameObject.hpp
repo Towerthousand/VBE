@@ -36,7 +36,6 @@ class GameObject { //scenegraph nodes
 		static GameObject* getObjectByName(std::string name);
 		static GameObject* getObjectByID(int id);
 		static int getObjectCount();
-		void calcFullTransform(mat4f parentFullTransform);
 
 		const int id;
 		bool isAlive;
@@ -46,8 +45,8 @@ class GameObject { //scenegraph nodes
 		mat4f transform;
 		mat4f fullTransform;
 	private:
+		void calcFullTransform(mat4f parentFullTransform);
 		void doUpdate(float deltaTime);
-		void doDraw();
 		int drawPriority;
 		std::string name;
 
