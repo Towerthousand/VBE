@@ -1,7 +1,7 @@
 CONFIG(debug,debug|release) {
-  DEFINES += "__DEBUG=true" "__LOG=true"
+  DEFINES += "__DEBUG" "__LOG"
 }
-#DEFINES += "__DLOG=true"
+#DEFINES += "__DLOG"
 
 #__DEBUG will make asserts on all risky operations, and will output a detailed error message if it fails
 #__LOG will output all VBE_LOG(..). This is general (important) info such as resource loading, etc
