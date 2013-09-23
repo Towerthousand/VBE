@@ -18,31 +18,31 @@ ShaderProgram::~ShaderProgram() {
 
 bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::string &fp_filename) {
 	//LOAD AND COMPILE VERTEX SHADER
-	std::cout << "* Loading new vertex shader from " << vp_filename << std::endl;;
+	VBE_DLOG("* Loading new vertex shader from " << vp_filename );
 	Shader vertex(GL_VERTEX_SHADER);
 	if(!vertex.load(vp_filename))
 		return false;
 	if (!vertex.compile()) {
 		vertex.printInfoLog();
-		std::cout << "#ERROR Compile failed for vertex shader '" << vp_filename << "'." << std::endl;;
+		VBE_LOG("#ERROR Compile failed for vertex shader '" << vp_filename << "'." );
 		return false;
 	}
-	else std::cout << " - Compiled " << vp_filename << " successfully." << std::endl;;
+	else {VBE_DLOG(" - Compiled " << vp_filename << " successfully." );}
 
 	//LOAD AND COMPILE FRAGMENT SHADER
-	std::cout << "* Loading new fragment shader from " << fp_filename << std::endl;;
+	VBE_DLOG("* Loading new fragment shader from " << fp_filename );
 	Shader fragment(GL_FRAGMENT_SHADER);
 	if(!fragment.load(fp_filename))
 		return false;
 	if (!fragment.compile()) {
 		fragment.printInfoLog();
-		std::cout << "#ERROR Compile failed for fragment shader '" << fp_filename << "'." << std::endl;
+		VBE_LOG("#ERROR Compile failed for fragment shader '" << fp_filename << "'." );
 		return false;
 	}
-	else std::cout <<  " - Compiled " << fp_filename << " successfully." << std::endl;
+	else {VBE_DLOG( " - Compiled " << fp_filename << " successfully." );}
 
 	//CREATE THE PROGRAM
-	std::cout << "* Creating new shaderProgram with " << vp_filename << " and " << fp_filename << std::endl;
+	VBE_DLOG("* Creating new shaderProgram with " << vp_filename << " and " << fp_filename );
 	programHandle = glCreateProgram();
 
 	//ATTACH AND LINK
@@ -55,10 +55,10 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 	glGetProgramiv(programHandle, GL_LINK_STATUS, &success);
 	if (success != GL_TRUE) {
 		printInfoLog();
-		std::cout << "#ERROR Linking program failed!" << std::endl;
+		VBE_LOG("#ERROR Linking program failed!" );
 		return false;
 	}
-	else std::cout <<  " - Linked " << vp_filename << " and " << fp_filename << " successfully. PROGRAMID: " << programHandle << std::endl;
+	else {VBE_DLOG( " - Linked " << vp_filename << " and " << fp_filename << " successfully. PROGRAMID: " << programHandle );}
 
 	//RETRIEVE ATTRIBUTE DATA
 	GLint activeAttributes;
@@ -121,35 +121,35 @@ bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 	}
 
 	//PRINT ATTRIBUTE INFO
-	std::cout << "--------------" << std::endl;
-	std::cout << "Printing attribute info:" << std::endl;
+	VBE_DLOG("--------------" );
+	VBE_DLOG("Printing attribute info:" );
 	for(std::map<std::string,GLint>::iterator it = attributes.begin(); it != attributes.end(); ++it) {
-		std::cout << it->first << " at location " << it->second << std::endl;
+		VBE_DLOG(it->first << " at location " << it->second );
 	}
 
 	//PRINT UNIFORM INFO
-	std::cout << "Printing uniform info:" << std::endl;
+	VBE_DLOG("Printing uniform info:" );
 	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
-		std::cout << it->first << ":" << std::endl;
+		VBE_DLOG(it->first << ":" );
 		it->second->log();
 	}
-	std::cout << "--------------" << std::endl;
+	VBE_DLOG("--------------" );
 	return true;
 }
 
 void ShaderProgram::printInfoLog() {
-	VBE_ASSERT(programHandle != 0, "Trying to query null program")
+	VBE_ASSERT(programHandle != 0, "Trying to query null program");
 	int length = 0;
 	glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &length);
 	if (length > 1) {
 		char infoLog[length];
 		glGetProgramInfoLog(programHandle, length, NULL, infoLog);
-		std::cout << infoLog << std::endl;
+		VBE_LOG(infoLog );
 	}
 }
 
 void ShaderProgram::use() const {
-	VBE_ASSERT(programHandle != 0, "Trying to use null program")
+	VBE_ASSERT(programHandle != 0, "Trying to use null program");
 	if(current != programHandle) {
 		current = programHandle;
 		glUseProgram(programHandle);
@@ -160,6 +160,7 @@ void ShaderProgram::use() const {
 }
 
 Uniform* ShaderProgram::uniform(const std::string &name) const {
-	VBE_ASSERT(uniforms.find(name) != uniforms.end(), "Trying to retrieve unexisting uniform " << name)
+	VBE_ASSERT(uniforms.find(name) != uniforms.end(), "Trying to retrieve unexisting uniform " << name);
+	VBE_ASSERT(programHandle != 0, "Trying to retrieve uniform from null program");
 	return uniforms.at(name);
 }

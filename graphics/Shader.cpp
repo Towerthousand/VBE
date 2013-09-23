@@ -12,7 +12,7 @@ bool Shader::load(const std::string &filename) {
 	std::ifstream is;
 	is.open(filename, std::ios::in);
 	if (is.fail()) {
-		std::cout << "#ERROR Failed to get the contents from " << filename << std::endl;
+		VBE_LOG("#ERROR Failed to get the contents from " << filename );
 		return false;
 	}
 
@@ -43,17 +43,17 @@ bool Shader::compile() const {
 }
 
 void Shader::attach(GLuint program) const {
-	VBE_ASSERT(program != 0, "Trying to attach shader with id " << shaderHandle << " to null program")
+	VBE_ASSERT(program != 0, "Trying to attach shader with id " << shaderHandle << " to null program");
 	glAttachShader(program, shaderHandle);
 }
 
 void Shader::printInfoLog() const {
-	VBE_ASSERT(shaderHandle != 0, "Trying to query null shader")
+	VBE_ASSERT(shaderHandle != 0, "Trying to query null shader");
 	int length = 0;
 	glGetShaderiv(shaderHandle, GL_INFO_LOG_LENGTH, &length);
 	if (length > 1) {
 		char infoLog[length];
 		glGetShaderInfoLog(shaderHandle, length, NULL, infoLog);
-		std::cout << infoLog << std::endl;
+		VBE_LOG(infoLog );
 	}
 }

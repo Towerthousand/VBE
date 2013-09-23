@@ -13,6 +13,7 @@ Mesh::Mesh(const std::string &filename, bool dynamic)
 	  dynamic(dynamic){
 	bool loadSuccess = loadFromFile(filename);
 	VBE_ASSERT(loadSuccess,"Could not load mesh from " << filename << ". VBO will not be generated for this mesh");
+	(void) loadSuccess;
 }
 
 Mesh::~Mesh() {
@@ -38,7 +39,7 @@ bool Mesh::loadFromFile(const std::string& filename) {
 
 	std::ifstream in(filename.c_str(), std::ifstream::in);
 	if (!in) {
-		std::cout << "Cannot open " << filename << std::endl;
+		VBE_LOG("Cannot open " << filename );
 		return false;
 	}
 
@@ -88,7 +89,8 @@ bool Mesh::loadFromFile(const std::string& filename) {
 }
 
 void Mesh::draw(const ShaderProgram *program) {
-	VBE_ASSERT(program->getHandle() != 0, "Program not assigned at the time of this mesh's draw")
+	VBE_ASSERT(program->getHandle() != 0, "Null program when about to draw mesh");
+	VBE_ASSERT(vertexBuffer != 0, "Null vertex buffer when about to draw mesh");
 	GLuint handle = program->getHandle();
 	if(bindingsCache.find(handle) == bindingsCache.end()) {
 		bindingsCache.insert(std::pair<GLuint,const ShaderBinding*>(handle,new ShaderBinding(program, this)));
@@ -129,6 +131,7 @@ void Mesh::setPrimitiveType(Mesh::PrimitiveType type) {
 }
 
 void Mesh::setVertexData(void* vertexData, unsigned int newVertexCount) {
+	VBE_ASSERT(vertexBuffer != 0, "Null vertex buffer when about to push data");
 	vertexCount = newVertexCount;
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, vertexData, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
@@ -138,10 +141,10 @@ void Mesh::setVertexData(void* vertexData, unsigned int newVertexCount) {
 void Mesh::makeVBO() {
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create VBO for mesh")
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create VBO for mesh");
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to bind VBO for mesh")
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to bind VBO for mesh");
 	glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to load VBO with empty vertex data")
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to load VBO with empty vertex data");
 	vertexBuffer = vbo;
 }

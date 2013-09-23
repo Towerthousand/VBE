@@ -1,7 +1,7 @@
 #include "Texture.hpp"
 
 Texture::Texture(unsigned int slot): handle(0), slot(slot), size(0,0){
-	VBE_ASSERT(slot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << slot << ". Maximum is " << GL_MAX_TEXTURE_UNITS)
+	VBE_ASSERT(slot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << slot << ". Maximum is " << GL_MAX_TEXTURE_UNITS);
 }
 
 Texture::~Texture(){
@@ -12,7 +12,7 @@ bool Texture::load(const std::string &filePath) {
 	//load image
 	sf::Image image;
 	if (!image.loadFromFile(filePath)) {
-		std::cout << "#ERROR " << filePath << " didn't load" << std::endl;
+		VBE_LOG("#ERROR " << filePath << " didn't load" );
 		return false;
 	}
 	size = vec2i(image.getSize().x,image.getSize().y);
@@ -54,7 +54,7 @@ void Texture::setWrap(GLenum wrap) const {
 }
 
 void Texture::setSlot(unsigned int newSlot) {
-	VBE_ASSERT(newSlot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << newSlot << ". Maximum is " << GL_MAX_TEXTURE_UNITS)
+	VBE_ASSERT(newSlot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << newSlot << ". Maximum is " << GL_MAX_TEXTURE_UNITS);
 	slot = newSlot;
 }
 

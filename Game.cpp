@@ -14,7 +14,7 @@ Game::~Game() {
 
 // Init non-resource, general game stuff here.
 bool Game::init() {
-	std::cout << "* INIT GAME" << std::endl;
+	VBE_LOG("* INIT GAME");
 
 	window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Default,CONTEXT_SETTINGS_OPENGL);
 	window.setMouseCursorVisible(false);
@@ -39,7 +39,7 @@ bool Game::init() {
 	glEnable(GL_CULL_FACE); //enable backface culling
 	glCullFace(GL_BACK);
 
-	std::cout << "* INIT GAME SUCCESFUL" << std::endl;
+	VBE_LOG("* INIT GAME SUCCESFUL");
 	return true;
 }
 
@@ -87,12 +87,12 @@ void Game::close() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	delete root;
 	root = NULL;
-	std::cout << "* EXITING GAME: CLEARING RESOURCES" << std::endl;
+	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
 	TextureManager::clear();
 	MeshManager::clear();
 	AudioManager::clear();
 	ShaderManager::clear();
 	window.close();
 	isRunning = false;
-	std::cout << "* EXIT GAME SUCCESFUL" << std::endl;
+	VBE_LOG("* EXIT GAME SUCCESFUL" );
 }

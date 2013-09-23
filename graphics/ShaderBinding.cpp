@@ -3,11 +3,12 @@
 #include "Mesh.hpp"
 
 ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
-	std::cout << "* New shaderbinding between program with pointer " << program << " and mesh with pointer " << mesh << std::endl;
+	VBE_ASSERT(mesh->getVertexBuffer() != 0, "Null vertex buffer when about to make binding;");
+	VBE_DLOG("* New shaderbinding between program with pointer " << program << " and mesh with pointer " << mesh );
 	glGenVertexArrays(1, &vertexArrayObject);
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create VAO for mesh")
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create VAO for mesh");
 	glBindVertexArray(vertexArrayObject);
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to bind VAO with id " << vertexArrayObject)
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to bind VAO with id " << vertexArrayObject);
 	glBindBuffer(GL_ARRAY_BUFFER,mesh->getVertexBuffer());
 	const Vertex::Format format = mesh->getVertexFormat();
 	for(std::map<std::string,GLint>::const_iterator it = program->attributes.begin(); it != program->attributes.end(); ++it) {
@@ -31,6 +32,7 @@ ShaderBinding::~ShaderBinding() {
 }
 
 void ShaderBinding::bindVAO() const {
+	VBE_ASSERT(vertexArrayObject != 0, "Null VAO when about to bind");
 	glBindVertexArray(vertexArrayObject);
 }
 

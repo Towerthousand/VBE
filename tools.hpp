@@ -2,7 +2,7 @@
 #define TOOLS_HPP
 
 #ifdef __DEBUG
-#define VBE_ASSERT(expression, string) do \
+  #define VBE_ASSERT(expression, string) do \
 	{ \
 		if(!(expression)) { \
 			std::cout << "ASSERT FAILED, STOPPING " << std::endl;\
@@ -12,7 +12,17 @@
 		} \
 	} while (0);
 #else
-#define VBE_ASSERT(expression, string)
+  #define VBE_ASSERT(expression, string)
+#endif
+#ifdef __LOG
+  #define VBE_LOG(log) std::cout << log << std::endl;
+#else
+  #define VBE_LOG(log)
+#endif
+#ifdef __DLOG
+  #define VBE_DLOG(log) VBE_LOG(log)
+#else
+  #define VBE_DLOG(log)
 #endif
 
 //OpenGL (Open Graphics Library)
@@ -35,8 +45,6 @@
 #include <list>
 #include <cmath>
 #include <cstring>
-#include <stack>
-#include <queue>
 
 //GLM (openGL Math)
 #include <glm/glm.hpp> // vec3, vec4, ivec4, mat4 (core)

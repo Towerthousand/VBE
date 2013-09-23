@@ -29,7 +29,7 @@ namespace Vertex {
 
 	Attribute& Attribute::get(int id) {
 		if (!isAttrsInit) init();
-		VBE_ASSERT(id >= 0 && id < int(attributes.size()), "Bad attrib id: " << id)
+		VBE_ASSERT(id >= 0 && id < int(attributes.size()), "Bad attrib id: " << id);
 		return *attributes.at(id);
 	}
 
@@ -111,7 +111,7 @@ namespace Vertex {
 				case Element::UnsignedInt:   size = sizeof(unsigned int); break;
 				case Element::Float:         size = sizeof(float); break;
 				case Element::Fixed:         size = sizeof(int); break;
-				default: VBE_ASSERT(0, "Not a knownt element type " << elements[i].type) break;
+				default: VBE_ASSERT(0, "Not a knownt element type " << elements[i].type); break;
 			}
 			offset += elements[i].size * size;
 		}

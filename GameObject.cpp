@@ -41,8 +41,7 @@ void GameObject::setName(std::string newName) {
 		if(!name.empty()) nameMap.erase(name);
 		name = newName;
 	}
-	else
-		std::cout << "#WARNING Can't set name for node " << this << ". This name is already in use." << std::endl;
+	else {VBE_LOG("#WARNING Can't set name for node " << this << ". This name is already in use." );}
 }
 
 void GameObject::setDrawPriority(int newPriority) {

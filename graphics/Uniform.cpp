@@ -22,7 +22,7 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 			size = sizeof(GLint);
 			break;
 		default:
-			VBE_ASSERT(false, "Unreconised uniform type " << type) break;
+			VBE_ASSERT(false, "Unrecognised uniform type " << type); break;
 	}
 	size *= count;
 	lastValue = std::vector<char>(size,0);
@@ -32,46 +32,46 @@ Uniform::~Uniform() {
 }
 
 void Uniform::set(int val) {
-	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
 	setBytes((char*)&val);
 }
 void Uniform::set(const std::vector<int> &val) {
-	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location)
-	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
 	setBytes((char*)&val[0]);
 }
 
 void Uniform::set(float val) {
-	VBE_ASSERT(type == GL_FLOAT, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(type == GL_FLOAT, "Wrong uniform type. Location " << this->location);
 	setBytes((char*)&val);
 }
 void Uniform::set(const std::vector<float> &val) {
-	VBE_ASSERT(type == GL_FLOAT, "Wrong uniform type. Location " << this->location)
-	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	VBE_ASSERT(type == GL_FLOAT, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
 	setBytes((char*)&val[0]);}
 
 void Uniform::set(const vec3f &val) {
-	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location);
 	setBytes((char*)&val[0]);
 }
 void Uniform::set(const std::vector<vec3f> &val) {
-	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location)
-	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
 	setBytes((char*)&val[0][0]);
 }
 
 void Uniform::set(const mat4f &val) {
-	VBE_ASSERT(type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->location);
 	setBytes((char*)&val[0][0]);
 }
 void Uniform::set(const std::vector<mat4f> &val) {
-	VBE_ASSERT(type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->location)
-	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location)
+	VBE_ASSERT(type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
 	setBytes((char*)&val[0][0][0]);
 }
 
 void Uniform::set(const Texture* val) {
-	VBE_ASSERT(type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location)
+	VBE_ASSERT(type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
 	val->bind();
 	unsigned int slot = val->getSlot();
 	setBytes((char*)&slot);}
@@ -86,7 +86,7 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 		case GL_INT:		glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
 		case GL_SAMPLER_2D:	glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
 		default:
-			VBE_ASSERT(false, "Unreconised uniform type " << type)
+			VBE_ASSERT(false, "Unrecognised uniform type " << type);
 			break;
 	}
 }
@@ -107,17 +107,16 @@ bool Uniform::compare(const char *val) const {
 }
 
 void Uniform::log() {
-	std::cout << "Array of "		 << count
+	VBE_DLOG("Array of "		 << count
 			  << " at location "	 << location
 			  << ", with a size of " << lastValue.size()/count
-			  <<" bytes per item and of type " ;
+			  <<" bytes per item and of type ");
 	switch(type) {
-		case GL_FLOAT: std::cout << "GL_FLOAT"; break;
-		case GL_FLOAT_VEC3: std::cout << "GL_FLOAT_VEC3"; break;
-		case GL_FLOAT_MAT4: std::cout << "GL_FLOAT_MAT4"; break;
-		case GL_INT: std::cout << "GL_INT"; break;
-		case GL_SAMPLER_2D: std::cout << "GL_SAMPLER_2D"; break;
-		default: std::cout << "UNKNOWN_TYPE"; break;
+		case GL_FLOAT: VBE_DLOG("GL_FLOAT"); break;
+		case GL_FLOAT_VEC3: VBE_DLOG("GL_FLOAT_VEC3"); break;
+		case GL_FLOAT_MAT4: VBE_DLOG("GL_FLOAT_MAT4"); break;
+		case GL_INT: VBE_DLOG("GL_INT"); break;
+		case GL_SAMPLER_2D: VBE_DLOG("GL_SAMPLER_2D"); break;
+		default: VBE_DLOG("UNKNOWN_TYPE"); break;
 	}
-	std::cout << std::endl;
 }

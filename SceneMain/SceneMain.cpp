@@ -9,7 +9,7 @@ SceneMain::SceneMain() :
 	this->setName("SCENE");
 	//SCENE INIT
 	if (!loadResources()) {
-		std::cout << "Could not load resources for SceneMain" << std::endl;
+		VBE_LOG("Could not load resources for SceneMain" );
 		Game::isRunning = false;
 		return;
 	}
@@ -53,7 +53,7 @@ void SceneMain::update(float deltaTime) {
 	++fpsCount;
 	debugCounter += deltaTime;
 	if (debugCounter > 1) {
-		std::cout << "FPS: " << fpsCount << ". Amount of GameObjects: " << GameObject::getObjectCount() << std::endl;
+		VBE_LOG("FPS: " << fpsCount << ". Amount of GameObjects: " << GameObject::getObjectCount() );
 		debugCounter--;
 		fpsCount = 0;
 	}

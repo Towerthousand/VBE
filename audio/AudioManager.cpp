@@ -10,11 +10,11 @@ AudioManager::~AudioManager() {
 }
 
 bool AudioManager::loadMusic(const std::string &trackID, const std::string &filePath) {
-	VBE_ASSERT(musicBank.find(trackID) == musicBank.end(), "Loading failed: track " << trackID << " already exists")
-	std::cout << "* Loading new music track: \"" << trackID << "\" from " << filePath << std::endl;
+	VBE_ASSERT(musicBank.find(trackID) == musicBank.end(), "Loading failed: track " << trackID << " already exists");
+	VBE_LOG("* Loading new music track: \"" << trackID << "\" from " << filePath );
 	sf::Music * newTrack = new sf::Music();
 	if (!newTrack->openFromFile(filePath)) {
-		std::cout << "#ERROR " << filePath << " didn't load" << std::endl;
+		VBE_LOG("#ERROR " << filePath << " didn't load" );
 		return false;
 	}
 	musicBank.insert(std::pair<std::string,sf::Music*>(trackID,newTrack));
@@ -22,18 +22,18 @@ bool AudioManager::loadMusic(const std::string &trackID, const std::string &file
 }
 
 void AudioManager::eraseMusic(const std::string &trackID) {
-	VBE_ASSERT(musicBank.find(trackID) != musicBank.end(), "Deleting failed: track " << trackID << " doesn't exist")
-	std::cout << "* Deleting music track \"" << trackID << "\"" << std::endl;
+	VBE_ASSERT(musicBank.find(trackID) != musicBank.end(), "Deleting failed: track " << trackID << " doesn't exist");
+	VBE_LOG("* Deleting music track \"" << trackID << "\"" );
 	delete musicBank.at(trackID);
 	musicBank.erase(trackID);
 }
 
 bool AudioManager::loadEffect(const std::string &effectID, const std::string &filePath) {
-	VBE_ASSERT(effectBank.find(effectID) == effectBank.end(), "Loading failed: effect " << effectID << " already exists")
-	std::cout << "* Loading new sound effect: \"" << effectID << "\" from " + filePath << std::endl;
+	VBE_ASSERT(effectBank.find(effectID) == effectBank.end(), "Loading failed: effect " << effectID << " already exists");
+	VBE_LOG("* Loading new sound effect: \"" << effectID << "\" from " + filePath );
 	std::pair<sf::SoundBuffer*,sf::Sound*> newEffect = std::pair<sf::SoundBuffer*,sf::Sound*>(new sf::SoundBuffer(),new sf::Sound());
 	if (!newEffect.first->loadFromFile(filePath)) {
-		std::cout << "#ERROR " << filePath << " didn't load" << std::endl;
+		VBE_LOG("#ERROR " << filePath << " didn't load" );
 		return false;
 	}
 	newEffect.second->setBuffer(*newEffect.first);
@@ -42,8 +42,8 @@ bool AudioManager::loadEffect(const std::string &effectID, const std::string &fi
 }
 
 void AudioManager::eraseEffect(const std::string &effectID) {
-	VBE_ASSERT(effectBank.find(effectID) != effectBank.end(), "Deleting failed: effect " << effectID << " doesn't exist")
-	std::cout << "* Deleting sound effect \"" << effectID << "\"" << std::endl;
+	VBE_ASSERT(effectBank.find(effectID) != effectBank.end(), "Deleting failed: effect " << effectID << " doesn't exist");
+	VBE_LOG("* Deleting sound effect \"" << effectID << "\"" );
 	delete effectBank.at(effectID).first;
 	delete effectBank.at(effectID).second;
 	effectBank.erase(effectID);

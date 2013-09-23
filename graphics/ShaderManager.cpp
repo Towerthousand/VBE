@@ -10,8 +10,8 @@ ShaderManager::~ShaderManager() {
 }
 
 bool ShaderManager::load(const std::string &programID, const std::string &vert, const std::string &frag) {
-	VBE_ASSERT(programs.find(programID) == programs.end(), "Failed to load program. Program " << programID << " already exists")
-	std::cout << "* Loading new ShaderProgram with ID " << programID << " from " << vert << " and " << frag << std::endl;
+	VBE_ASSERT(programs.find(programID) == programs.end(), "Failed to load program. Program " << programID << " already exists");
+	VBE_LOG("* Loading new ShaderProgram with ID " << programID << " from " << vert << " and " << frag );
 	ShaderProgram* p = new ShaderProgram();
 	if(!p->makeProgram(vert,frag))
 		return false;
@@ -20,13 +20,13 @@ bool ShaderManager::load(const std::string &programID, const std::string &vert, 
 }
 
 ShaderProgram* ShaderManager::get(const std::string &programID) {
-	VBE_ASSERT(programs.find(programID) != programs.end(), "Failed to get program. Program " << programID << " doesn't exist")
+	VBE_ASSERT(programs.find(programID) != programs.end(), "Failed to get program. Program " << programID << " doesn't exist");
 	return programs.at(programID);
 }
 
 void ShaderManager::erase(const std::string& programID) {
-	VBE_ASSERT(programs.find(programID) != programs.end(), "Failed to erase program. Program " << programID << " doesn't exist")
-	std::cout << "* Deleting ShaderProgram with ID " << programID << std::endl;
+	VBE_ASSERT(programs.find(programID) != programs.end(), "Failed to erase program. Program " << programID << " doesn't exist");
+	VBE_LOG("* Deleting ShaderProgram with ID " << programID );
 	delete programs.at(programID);
 	programs.erase(programID);
 }
