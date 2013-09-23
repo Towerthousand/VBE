@@ -3,7 +3,7 @@
 #include "Mesh.hpp"
 
 ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
-	std::cout << "New shaderbinding between program with pointer " << program << " and mesh with pointer " << mesh << std::endl;
+	std::cout << "* New shaderbinding between program with pointer " << program << " and mesh with pointer " << mesh << std::endl;
 	glGenVertexArrays(1, &vertexArrayObject);
 	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create VAO for mesh")
 	glBindVertexArray(vertexArrayObject);

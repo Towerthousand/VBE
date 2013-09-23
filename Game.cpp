@@ -56,6 +56,7 @@ void Game::run() {
 		update(deltaTime);
 		draw();
 	}
+	close();
 }
 
 // Set root for the scenegraph
@@ -84,9 +85,14 @@ void Game::draw() {
 //Free resources, delete scenegraph nodes and close windows
 void Game::close() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
-	isRunning = false;
 	delete root;
 	root = NULL;
-	std::cout << "* EXITING GAME" << std::endl;
+	std::cout << "* EXITING GAME: CLEARING RESOURCES" << std::endl;
+	TextureManager::clear();
+	MeshManager::clear();
+	AudioManager::clear();
+	ShaderManager::clear();
 	window.close();
+	isRunning = false;
+	std::cout << "* EXIT GAME SUCCESFUL" << std::endl;
 }

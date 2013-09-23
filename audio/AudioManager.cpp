@@ -21,7 +21,7 @@ bool AudioManager::loadMusic(const std::string &trackID, const std::string &file
 	return true;
 }
 
-void AudioManager::deleteMusic(const std::string &trackID) {
+void AudioManager::eraseMusic(const std::string &trackID) {
 	VBE_ASSERT(musicBank.find(trackID) != musicBank.end(), "Deleting failed: track " << trackID << " doesn't exist")
 	std::cout << "* Deleting music track \"" << trackID << "\"" << std::endl;
 	delete musicBank.at(trackID);
@@ -41,10 +41,18 @@ bool AudioManager::loadEffect(const std::string &effectID, const std::string &fi
 	return true;
 }
 
-void AudioManager::deleteEffect(const std::string &effectID) {
+void AudioManager::eraseEffect(const std::string &effectID) {
 	VBE_ASSERT(effectBank.find(effectID) != effectBank.end(), "Deleting failed: effect " << effectID << " doesn't exist")
 	std::cout << "* Deleting sound effect \"" << effectID << "\"" << std::endl;
 	delete effectBank.at(effectID).first;
 	delete effectBank.at(effectID).second;
 	effectBank.erase(effectID);
+}
+
+
+void AudioManager::clear() {
+	while(!effectBank.empty())
+		eraseEffect(effectBank.begin()->first);
+	while(!musicBank.empty())
+		eraseMusic(musicBank.begin()->first);
 }

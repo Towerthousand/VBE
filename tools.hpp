@@ -7,7 +7,7 @@
 		if(!(expression)) { \
 			std::cout << "ASSERT FAILED, STOPPING " << std::endl;\
 			std::cout << "Reason: " << string << std::endl; \
-			assert(0); \
+			assert(expression); \
 			std::exit(-1); \
 		} \
 	} while (0);

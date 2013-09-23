@@ -36,13 +36,17 @@ void GameObject::addObject(GameObject *object) {
 }
 
 void GameObject::setName(std::string newName) {
+	if(name == newName) return;
 	if(nameMap.insert(std::pair<std::string,GameObject*>(newName,this)).second) {
 		if(!name.empty()) nameMap.erase(name);
 		name = newName;
 	}
+	else
+		std::cout << "#WARNING Can't set name for node " << this << ". This name is already in use." << std::endl;
 }
 
 void GameObject::setDrawPriority(int newPriority) {
+	if(drawPriority == newPriority) return;
 	Game::drawTasks.erase(this);
 	drawPriority = newPriority;
 	Game::drawTasks.insert(this);

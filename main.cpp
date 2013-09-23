@@ -4,7 +4,6 @@ int main() {
 	if(Game::init()) {
 		Game::setRoot(new SceneMain());
 		Game::run();
-		Game::close();
 	}
 	return 42;
 }

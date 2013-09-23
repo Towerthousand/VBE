@@ -8,7 +8,6 @@ SceneMain::SceneMain() :
 	GameObject(NULL), debugCounter(0.0), fpsCount(0) {
 	this->setName("SCENE");
 	//SCENE INIT
-	std::cout << "* Loading new scene: Main" << std::endl;
 	if (!loadResources()) {
 		std::cout << "Could not load resources for SceneMain" << std::endl;
 		Game::isRunning = false;
@@ -27,15 +26,13 @@ SceneMain::SceneMain() :
 	addObject(cam);
 	house->setDrawPriority(1);
 	house2->setDrawPriority(0);
-	std::cout << "* Init done" << std::endl;
 }
 
 SceneMain::~SceneMain() {
-	std::cout << "* Deleting resources on Main scene" << std::endl;
 	TextureManager::clear();
 	MeshManager::clear();
 	ShaderManager::clear();
-	std::cout << "* Exiting Main scene" << std::endl;
+	AudioManager::clear();
 }
 
 bool SceneMain::loadResources() {

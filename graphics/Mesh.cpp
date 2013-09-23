@@ -11,11 +11,8 @@ Mesh::Mesh(const Vertex::Format& vertexFormat, unsigned int vertexCount, bool dy
 Mesh::Mesh(const std::string &filename, bool dynamic)
 	: vertexFormat(std::vector<Vertex::Element>()), vertexCount(0), vertexBuffer(0), primitiveType(TRIANGLES),
 	  dynamic(dynamic){
-	if (!loadFromFile(filename)) {
-		std::cout << "Could not load mesh from " << filename <<
-					 ". VBO will not be generated for this mesh" << std::endl;
-		return;
-	}
+	bool loadSuccess = loadFromFile(filename);
+	VBE_ASSERT(loadSuccess,"Could not load mesh from " << filename << ". VBO will not be generated for this mesh");
 }
 
 Mesh::~Mesh() {
