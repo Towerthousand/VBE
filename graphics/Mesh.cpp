@@ -99,7 +99,6 @@ void Mesh::draw(const ShaderProgram *program) {
 	program->use();
 	binding->bindVAO();
 	glDrawArrays(primitiveType, 0, vertexCount);
-	binding->unbindVAO();
 }
 
 const Vertex::Format& Mesh::getVertexFormat() const {

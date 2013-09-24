@@ -2,6 +2,8 @@
 #include "ShaderProgram.hpp"
 #include "Mesh.hpp"
 
+GLuint ShaderBinding::currentVAO = 0;
+
 ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
 	VBE_ASSERT(mesh->getVertexBuffer() != 0, "Null vertex buffer when about to make binding;");
 	VBE_DLOG("* New shaderbinding between program with pointer " << program << " and mesh with pointer " << mesh );
@@ -33,9 +35,8 @@ ShaderBinding::~ShaderBinding() {
 
 void ShaderBinding::bindVAO() const {
 	VBE_ASSERT(vertexArrayObject != 0, "Null VAO when about to bind");
-	glBindVertexArray(vertexArrayObject);
-}
-
-void ShaderBinding::unbindVAO() const {
-	glBindVertexArray(0);
+	if(vertexArrayObject != currentVAO) {
+		glBindVertexArray(vertexArrayObject);
+		currentVAO = vertexArrayObject;
+	}
 }

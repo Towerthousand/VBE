@@ -5,7 +5,7 @@
 
 class TexturedObject : public GameObject {
 	public:
-		TexturedObject(GameObject* parent, const vec3f &pos, const vec3f &scale);
+		TexturedObject(const vec3f &pos, const vec3f &scale);
 		~TexturedObject();
 
 		void update(float deltaTime);

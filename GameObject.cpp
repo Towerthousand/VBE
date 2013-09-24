@@ -6,8 +6,8 @@ std::map<int,GameObject*> GameObject::idMap;
 int GameObject::idCounter = 1;
 int GameObject::objectCount = 0;
 
-GameObject::GameObject(GameObject* parent) :
-	id(idCounter++), isAlive(true), parent(parent),
+GameObject::GameObject() :
+	id(idCounter++), isAlive(true), parent(NULL),
 	transform(1.0f), fullTransform(1.0), drawPriority(0), name("") {
 	Game::drawTasks.insert(this);
 	++objectCount;
@@ -32,6 +32,7 @@ void GameObject::draw() const {
 }
 
 void GameObject::addObject(GameObject *object) {
+	object->parent = this;
 	children.push_back(object);
 }
 
@@ -88,4 +89,19 @@ void GameObject::doUpdate(float deltaTime) {
 		else
 			++it;
 	}
+}
+
+bool GameObject::checkTree(GameObject* root, int& nulls) {
+	GameObject* parent = root->parent;
+	if(parent != NULL) {
+		int count;
+		for(std::list<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end(); ++it)
+			if(*it == root) ++count;
+		if(count != 1) return false;
+	}
+	else ++nulls;
+	if(nulls > 1) return false;
+	for(std::list<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+		if(!checkTree(*it,nulls)) return false;
+	return true;
 }

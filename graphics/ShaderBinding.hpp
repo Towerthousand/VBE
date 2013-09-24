@@ -10,8 +10,8 @@ class ShaderBinding {
 		~ShaderBinding();
 
 		void bindVAO() const;
-		void unbindVAO() const;
 	private:
+		static GLuint currentVAO;
 		GLuint vertexArrayObject;
 };
 

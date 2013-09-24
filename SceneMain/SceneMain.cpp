@@ -4,8 +4,7 @@
 #include "RegularPolygonObject.hpp"
 #include "PerspectiveCamera.hpp"
 
-SceneMain::SceneMain() :
-	GameObject(NULL), debugCounter(0.0), fpsCount(0) {
+SceneMain::SceneMain() : debugCounter(0.0), fpsCount(0) {
 	this->setName("SCENE");
 	//SCENE INIT
 	if (!loadResources()) {
@@ -16,16 +15,16 @@ SceneMain::SceneMain() :
 	//Center mouse
 	InputManager::setMousePos(SCRWIDTH/2,SCRHEIGHT/2,Game::getWindow());
 
-	PerspectiveCamera* cam = new PerspectiveCamera(this, vec3f(0,0,-10));
-	RegularPolygonObject* poly = new RegularPolygonObject(cam, vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
+	PerspectiveCamera* cam = new PerspectiveCamera(vec3f(0,0,-10));
+	RegularPolygonObject* poly = new RegularPolygonObject(vec3f(-1.0f, 0.0f,-3.0f), vec3f(1.0f), 6);
 	cam->addObject(poly);
-	TexturedObject* house = new TexturedObject(poly,vec3f(0,-10,0),vec3f(0.5f));
-	TexturedObject* house2 = new TexturedObject(cam, vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f));
+	TexturedObject* house = new TexturedObject(vec3f(0,-10,0),vec3f(0.5f));
+	TexturedObject* house2 = new TexturedObject(vec3f( 1.0f, 0.0f,-3.0f), vec3f(0.5f));
 	poly->addObject(house);
 	cam->addObject(house2);
 	addObject(cam);
-	house->setDrawPriority(1);
-	house2->setDrawPriority(0);
+	house->setDrawPriority(0);
+	house2->setDrawPriority(1);
 }
 
 SceneMain::~SceneMain() {

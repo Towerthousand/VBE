@@ -4,7 +4,7 @@
 
 class GameObject { //scenegraph nodes
 	public:
-		GameObject(GameObject* parent);
+		GameObject();
 		virtual ~GameObject();
 
 		virtual void update(float deltaTime);
@@ -56,6 +56,12 @@ class GameObject { //scenegraph nodes
 		static std::map<int,GameObject*> idMap;
 
 		friend class Game;
+
+	public:
+		// debug function. Checks all nodes are childs of their parents (only once)
+		// and that not more than one null parent exists (the root object)
+		static bool checkTree(GameObject* root, int& nulls);
+
 };
 
 #endif // GAMEOBJECT_HPP

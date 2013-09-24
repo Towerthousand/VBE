@@ -34,8 +34,6 @@ bool Game::init() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glDepthFunc(GL_LEQUAL);
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_CULL_FACE); //enable backface culling
 	glCullFace(GL_BACK);
 
@@ -70,6 +68,10 @@ void Game::update(float deltaTime) {
 	InputManager::update(isRunning,window);
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	root->doUpdate(deltaTime);
+	int nulls = 0;
+	if(!GameObject::checkTree(Game::root, nulls)) {
+		VBE_LOG("WTF");
+	}
 }
 
 // Draw scenegraph

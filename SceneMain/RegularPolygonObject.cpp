@@ -22,8 +22,8 @@ vec3f HuetoRGB(float h) {
 	return vec3f(r,g,b);
 }
 
-RegularPolygonObject::RegularPolygonObject(GameObject *parent, const vec3f &pos, const vec3f &scale, unsigned int sides)
-	: GameObject(parent), pos(pos), scale(scale) {
+RegularPolygonObject::RegularPolygonObject(const vec3f &pos, const vec3f &scale, unsigned int sides)
+	: pos(pos), scale(scale) {
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
 	elements.push_back(Vertex::Element(Vertex::Attribute::Color    , Vertex::Element::Float, 3));
@@ -62,7 +62,7 @@ void RegularPolygonObject::update(float deltaTime) {
 void RegularPolygonObject::updateMatrix() {
 	mat4f m(1.0);
 	m = glm::translate(m,pos);
-	m = glm::rotate(m,GLOBALCLOCK.getElapsedTime().asSeconds()*50,vec3f(0,0,1));
+	m = glm::rotate(m,95.0f,vec3f(0,0,1));
 	m = glm::scale(m,scale);
 	transform = m;
 }

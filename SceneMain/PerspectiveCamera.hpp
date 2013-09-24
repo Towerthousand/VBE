@@ -5,7 +5,7 @@
 
 class PerspectiveCamera : public GameObject {
 	public:
-		PerspectiveCamera(GameObject* parent, vec3f pos);
+		PerspectiveCamera(vec3f pos);
 		vec3f pos;
 };
 

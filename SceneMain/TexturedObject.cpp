@@ -2,7 +2,7 @@
 #include "../Game.hpp"
 #include "RegularPolygonObject.hpp"
 
-TexturedObject::TexturedObject(GameObject* parent,  const vec3f &pos, const vec3f &scale) : GameObject(parent), pos(pos), scale(scale) {
+TexturedObject::TexturedObject(const vec3f &pos, const vec3f &scale) : pos(pos), scale(scale) {
 	tri.mesh = MeshManager::get("cube");
 	tri.program = ShaderManager::get("sample");
 }
