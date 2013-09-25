@@ -26,7 +26,7 @@ ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
 			}
 		}
 	}
-	glBindVertexArray(0);
+	glBindVertexArray(currentVAO);
 }
 
 ShaderBinding::~ShaderBinding() {
