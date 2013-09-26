@@ -18,6 +18,7 @@ class Texture
 	private:
 		GLuint getHandle() const;
 		bool load(const std::string& filePath);
+		//bool load(const char* pixels, unsigned int sizeX, unsigned int sizeY)
 		GLuint sampler;
 		GLuint handle;
 		unsigned int slot;
