@@ -32,8 +32,15 @@ void GameObject::draw() const {
 }
 
 void GameObject::addObject(GameObject *object) {
+	VBE_ASSERT(object->parent == NULL, "Trying to add a node that already has a parent. Remove it from it's parent first.");
 	object->parent = this;
 	children.push_back(object);
+}
+
+void GameObject::removeFromParent() {
+	VBE_ASSERT(parent != NULL, "Trying to remove node from null parent. Add it to a parent node first.");
+	parent->children.remove(this);
+	parent = NULL;
 }
 
 void GameObject::setName(std::string newName) {

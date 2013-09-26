@@ -10,12 +10,12 @@
 			assert(expression); \
 			std::exit(-1); \
 		} \
-	} while (0);
+	} while (0)
 #else
   #define VBE_ASSERT(expression, string)
 #endif
 #ifdef __LOG
-  #define VBE_LOG(log) std::cout << log << std::endl;
+  #define VBE_LOG(log) std::cout << log << std::endl
 #else
   #define VBE_LOG(log)
 #endif

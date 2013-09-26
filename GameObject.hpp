@@ -9,7 +9,8 @@ class GameObject { //scenegraph nodes
 
 		virtual void update(float deltaTime);
 		virtual void draw() const;
-		virtual void addObject(GameObject* object);
+		void addObject(GameObject* object);
+		void removeFromParent();
 		void setName(std::string newName);
 		void setDrawPriority(int newPriority);
 		int getDrawPriority();
