@@ -1,5 +1,4 @@
 *.o
-VoxelGame
 *.user
 Makefile
-VBE
+*~
