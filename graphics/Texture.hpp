@@ -17,8 +17,8 @@ class Texture
 		void bind() const;
 	private:
 		GLuint getHandle() const;
-		bool load(const std::string& filePath);
-		//bool load(const char* pixels, unsigned int sizeX, unsigned int sizeY)
+		bool loadFromFile(const std::string& filePath);
+		bool loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY); //assumes RGBA format
 		GLuint sampler;
 		GLuint handle;
 		unsigned int slot;

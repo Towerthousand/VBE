@@ -8,7 +8,7 @@ Texture::~Texture(){
 	glDeleteTextures(1,(GLuint*) &handle);
 }
 
-bool Texture::load(const std::string &filePath) {
+bool Texture::loadFromFile(const std::string &filePath) {
 	//load image
 	sf::Image image;
 	if (!image.loadFromFile(filePath)) {
@@ -35,25 +35,24 @@ bool Texture::load(const std::string &filePath) {
 	return true;
 }
 
-//bool Texture::load(const char* pixels, unsigned int sizeX, unsigned int sizeY) {
+bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY) {
+	//get handle
+	GLuint tex_handle;
+	glGenTextures(1, &tex_handle);
+	handle = tex_handle;
 
-//	//get handle
-//	GLuint tex_handle;
-//	glGenTextures(1, &tex_handle);
-//	handle = tex_handle;
-
-//	//bind handle and set to image
-//	bind();
-//	glTexImage2D(
-//				GL_TEXTURE_2D, 0, GL_RGBA,
-//				image.getSize().x, image.getSize().y,
-//				0,
-//				GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr()
-//				);
-//	setFilter(GL_NEAREST);
-//	setWrap(GL_REPEAT);
-//	return true;
-//}
+	//bind handle and set to image
+	bind();
+	glTexImage2D(
+				GL_TEXTURE_2D, 0, GL_RGBA,
+				sizeX, sizeY,
+				0,
+				GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*) pixels
+				);
+	setFilter(GL_NEAREST);
+	setWrap(GL_REPEAT);
+	return true;
+}
 
 void Texture::bind() const {
 	VBE_ASSERT(handle !=0, "Trying to bind null texture into slot " << slot);

@@ -13,7 +13,17 @@ bool TextureManager::load(const std::string& textureID, const std::string& fileP
 	VBE_ASSERT(textureBank.find(textureID) == textureBank.end(), "Failed to load texture. Texture " << textureID << " already exists");
 	VBE_LOG("* Loading new texture with ID " << textureID << " from " << filePath << " with initial slot " << slot);
 	Texture* newTexture = new Texture(slot);
-	if (!newTexture->load(filePath))
+	if (!newTexture->loadFromFile(filePath))
+		return false;
+	textureBank.insert(std::pair<std::string,Texture*>(textureID,newTexture));
+	return true;
+}
+
+bool TextureManager::loadRaw(const std::string& textureID, const void* pixels, unsigned int sizeX, unsigned int sizeY, unsigned int slot) {
+	VBE_ASSERT(textureBank.find(textureID) == textureBank.end(), "Failed to load texture. Texture " << textureID << " already exists");
+	VBE_LOG("* Loading new texture with ID " << textureID << " from raw data with initial slot " << slot);
+	Texture* newTexture = new Texture(slot);
+	if (!newTexture->loadRawRGBA8888(pixels,sizeX,sizeY))
 		return false;
 	textureBank.insert(std::pair<std::string,Texture*>(textureID,newTexture));
 	return true;

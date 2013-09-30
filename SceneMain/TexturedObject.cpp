@@ -23,7 +23,7 @@ void TexturedObject::updateMatrix() {
 }
 
 void TexturedObject::draw() const {
-	tri.program->uniform("sampler")->set(TextureManager::get("cubetex"));
+	tri.program->uniform("sampler")->set(TextureManager::get("lol"));
 	tri.program->uniform("modelViewProjectionMatrix")->set(fullTransform);
 	tri.draw();
 }

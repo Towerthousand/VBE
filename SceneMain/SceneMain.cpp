@@ -43,6 +43,16 @@ bool SceneMain::loadResources() {
 	//textures
 	if(!TextureManager::load("cubetex","data/10x10tex.png",2))
 		return false;
+	struct rgba {
+			rgba() : r(255), g(255), b(255), a(255) {}
+			~rgba() {}
+			unsigned char r,g,b,a;
+	};
+
+	std::vector<rgba> pixels(4,rgba());
+	pixels[0].g = pixels[0].b = pixels[3].g = pixels[3].b = 0;
+	if(!TextureManager::loadRaw("lol",&pixels[0],2,2,5))
+		return false;
 	//Create meshes
 	MeshManager::add("cube",new Mesh("data/10x10.obj"));
 	return true;
