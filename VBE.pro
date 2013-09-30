@@ -49,4 +49,5 @@ HEADERS += \
 	$$PWD/graphics/ShaderBinding.hpp \
 	$$PWD/graphics/MeshManager.hpp \
 	$$PWD/graphics/ShaderManager.hpp \
+    VBE/includes.hpp
 

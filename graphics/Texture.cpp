@@ -30,7 +30,7 @@ bool Texture::loadFromFile(const std::string &filePath) {
 				0,
 				GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr()
 				);
-	setFilter(GL_NEAREST);
+	setFilter(GL_LINEAR);
 	setWrap(GL_REPEAT);
 	return true;
 }

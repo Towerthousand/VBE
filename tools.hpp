@@ -63,6 +63,7 @@ typedef glm::detail::tvec2<int> vec2i;
 typedef glm::detail::tvec2<float> vec2f;
 typedef glm::detail::tvec2<double> vec2d;
 typedef glm::detail::tvec2<uint> vec2ui;
+typedef glm::detail::tvec2<bool> vec2b;
 typedef glm::detail::tmat2x2<float> mat2f;
 typedef glm::detail::tmat3x3<float> mat3f;
 typedef glm::detail::tmat4x4<float> mat4f;
@@ -70,23 +71,20 @@ typedef glm::detail::tmat2x2<double> mat2d;
 typedef glm::detail::tmat3x3<double> mat3d;
 typedef glm::detail::tmat4x4<double> mat4d;
 
-//prototype misc functions here (define in tools.cpp) and inlines.
-std::string toString(float num);
-
 //defines (global settings and constants)
-#define WINDOW_TITLE "Engine"
-#define CONTEXT_SETTINGS_OPENGL sf::ContextSettings(32,32,0,4,2)
-#define DEG_TO_RAD ((2*M_PI)/360.0f)
+extern std::string WINDOW_TITLE;
+extern sf::ContextSettings CONTEXT_SETTINGS_OPENGL;
+extern const float DEG_TO_RAD;
 
 //frustum settings
-#define FOV 60.0f //degrees
-#define ZNEAR 0.1f
-#define ZFAR 100.0f
+extern float FOV;
+extern float ZNEAR;
+extern float ZFAR;
 
 //global variables
 extern int SCRWIDTH;
 extern int SCRHEIGHT;
 extern bool WINDOWFOCUS;
-extern sf::Clock GLOBALCLOCK;
+extern const sf::Clock GLOBALCLOCK;
 
 #endif // TOOLS_HPP
