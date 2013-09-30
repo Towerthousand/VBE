@@ -8,9 +8,10 @@ class Texture
 		Texture(unsigned int slot);
 		~Texture();
 
-		void setFilter(GLenum filter) const;
+		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap) const;
 		void setSlot(unsigned int newSlot);
+		void generateMipmap();
 		unsigned int getSlot() const;
 		int getWidth() const;
 		int getHeight() const;

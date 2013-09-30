@@ -17,22 +17,7 @@ bool Texture::loadFromFile(const std::string &filePath) {
 	}
 	size = vec2i(image.getSize().x,image.getSize().y);
 	
-	//get handle
-	GLuint tex_handle;
-	glGenTextures(1, &tex_handle);
-	handle = tex_handle;
-	
-	//bind handle and set to image
-	bind();
-	glTexImage2D(
-				GL_TEXTURE_2D, 0, GL_RGBA,
-				image.getSize().x, image.getSize().y,
-				0,
-				GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr()
-				);
-	setFilter(GL_LINEAR);
-	setWrap(GL_REPEAT);
-	return true;
+	return loadRawRGBA8888(image.getPixelsPtr(),image.getSize().x,image.getSize().y);
 }
 
 bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY) {
@@ -49,7 +34,8 @@ bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned i
 				0,
 				GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*) pixels
 				);
-	setFilter(GL_NEAREST);
+
+	setFilter(GL_LINEAR, GL_LINEAR);
 	setWrap(GL_REPEAT);
 	return true;
 }
@@ -60,10 +46,10 @@ void Texture::bind() const {
 	glBindTexture(GL_TEXTURE_2D, handle);
 }
 
-void Texture::setFilter(GLenum filter) const {
+void Texture::setFilter(GLenum min, GLenum mag) {
 	bind();
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag);
 }
 
 void Texture::setWrap(GLenum wrap) const {
@@ -75,6 +61,11 @@ void Texture::setWrap(GLenum wrap) const {
 void Texture::setSlot(unsigned int newSlot) {
 	VBE_ASSERT(newSlot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << newSlot << ". Maximum is " << GL_MAX_TEXTURE_UNITS);
 	slot = newSlot;
+}
+
+void Texture::generateMipmap() {
+	bind();
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 unsigned int Texture::getSlot() const {
