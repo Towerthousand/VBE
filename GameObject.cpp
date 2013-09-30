@@ -101,7 +101,7 @@ void GameObject::doUpdate(float deltaTime) {
 bool GameObject::checkTree(GameObject* root, int& nulls) {
 	GameObject* parent = root->parent;
 	if(parent != NULL) {
-		int count;
+		int count = 0;
 		for(std::list<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end(); ++it)
 			if(*it == root) ++count;
 		if(count != 1) return false;
