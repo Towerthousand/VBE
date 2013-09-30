@@ -14,14 +14,14 @@ LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL
 INCLUDEPATH += $$PWD/
 QMAKE_CXXFLAGS += -std=c++11
 SOURCES += \
-    $$PWD/Game.cpp \
+	$$PWD/Game.cpp \
 	$$PWD/tools.cpp \
-    $$PWD/graphics/Texture.cpp \
-    $$PWD/graphics/TextureManager.cpp \
-    $$PWD/graphics/Shader.cpp \
+	$$PWD/graphics/Texture.cpp \
+	$$PWD/graphics/TextureManager.cpp \
+	$$PWD/graphics/Shader.cpp \
 	$$PWD/graphics/ShaderProgram.cpp \
 	$$PWD/audio/AudioManager.cpp \
-    $$PWD/input/InputManager.cpp \
+	$$PWD/input/InputManager.cpp \
 	$$PWD/GameObject.cpp \
 	$$PWD/graphics/Mesh.cpp \
 	$$PWD/graphics/Vertex.cpp \
@@ -32,14 +32,14 @@ SOURCES += \
 	$$PWD/graphics/ShaderManager.cpp \
 
 HEADERS += \
-    $$PWD/Game.hpp \
-    $$PWD/tools.hpp \
-    $$PWD/graphics/Texture.hpp \
+	$$PWD/Game.hpp \
+	$$PWD/tools.hpp \
+	$$PWD/graphics/Texture.hpp \
 	$$PWD/graphics/TextureManager.hpp \
-    $$PWD/graphics/Shader.hpp \
-    $$PWD/graphics/ShaderProgram.hpp \
+	$$PWD/graphics/Shader.hpp \
+	$$PWD/graphics/ShaderProgram.hpp \
 	$$PWD/audio/AudioManager.hpp \
-    $$PWD/input/InputManager.hpp \
+	$$PWD/input/InputManager.hpp \
 	$$PWD/GameObject.hpp \
 	$$PWD/glm/*.hpp \
 	$$PWD/graphics/Mesh.hpp \

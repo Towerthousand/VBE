@@ -1,6 +1,6 @@
 #ifndef AUDIOMANAGER_HPP
 #define AUDIOMANAGER_HPP
-#include "../tools.hpp"
+#include "tools.hpp"
 
 class AudioManager {
 	public:
