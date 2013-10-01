@@ -8,7 +8,7 @@ Texture::~Texture(){
 	glDeleteTextures(1,(GLuint*) &handle);
 }
 
-bool Texture::loadFromFile(const std::string &filePath) {
+bool Texture::loadFromFile(const std::string &filePath, bool mipmap) {
 	//load image
 	sf::Image image;
 	if (!image.loadFromFile(filePath)) {
@@ -17,10 +17,11 @@ bool Texture::loadFromFile(const std::string &filePath) {
 	}
 	size = vec2i(image.getSize().x,image.getSize().y);
 	
-	return loadRawRGBA8888(image.getPixelsPtr(),image.getSize().x,image.getSize().y);
+	return loadRawRGBA8888(image.getPixelsPtr(),image.getSize().x,image.getSize().y, mipmap);
 }
 
-bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY) {
+bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY, bool mipmap) {
+	VBE_ASSERT(handle == 0, "Trying to load onto an already in use texture instance");
 	//get handle
 	GLuint tex_handle;
 	glGenTextures(1, &tex_handle);
@@ -35,7 +36,13 @@ bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned i
 				GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*) pixels
 				);
 
-	setFilter(GL_LINEAR, GL_LINEAR);
+	if(mipmap) {
+		glGenerateMipmap(GL_TEXTURE_2D);
+		setFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+	}
+	else
+		setFilter(GL_LINEAR, GL_LINEAR);
+
 	setWrap(GL_REPEAT);
 	return true;
 }
@@ -61,11 +68,6 @@ void Texture::setWrap(GLenum wrap) const {
 void Texture::setSlot(unsigned int newSlot) {
 	VBE_ASSERT(newSlot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << newSlot << ". Maximum is " << GL_MAX_TEXTURE_UNITS);
 	slot = newSlot;
-}
-
-void Texture::generateMipmap() {
-	bind();
-	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 unsigned int Texture::getSlot() const {

@@ -1,8 +1,8 @@
-#ifndef INPUTMANAGER_HPP
-#define INPUTMANAGER_HPP
+#ifndef INPUT_HPP
+#define INPUT_HPP
 #include "tools.hpp"
 
-class InputManager {
+class Input {
 	public:
 		static void update(bool& isGameRunning, sf::Window &window);
 		static bool isKeyPressed(sf::Keyboard::Key k) {return (keysPressed.find(k) != keysPressed.end());}
@@ -30,8 +30,8 @@ class InputManager {
 		static bool focus;
 		static vec2i lastMousePos;
 		static vec2i mouseDisplacement;
-		InputManager();
-		~InputManager();
+		Input();
+		~Input();
 };
 
 #endif // INPUTMANAGER_HPP

@@ -17,29 +17,26 @@ SOURCES += \
 	$$PWD/Game.cpp \
 	$$PWD/tools.cpp \
 	$$PWD/graphics/Texture.cpp \
-	$$PWD/graphics/TextureManager.cpp \
 	$$PWD/graphics/Shader.cpp \
 	$$PWD/graphics/ShaderProgram.cpp \
 	$$PWD/audio/AudioManager.cpp \
-	$$PWD/input/InputManager.cpp \
+	$$PWD/input/Input.cpp \
 	$$PWD/GameObject.cpp \
 	$$PWD/graphics/Mesh.cpp \
 	$$PWD/graphics/Vertex.cpp \
 	$$PWD/graphics/Model.cpp \
 	$$PWD/graphics/Uniform.cpp \
 	$$PWD/graphics/ShaderBinding.cpp \
-	$$PWD/graphics/MeshManager.cpp \
-	$$PWD/graphics/ShaderManager.cpp \
+	$$PWD/Manager.cpp
 
 HEADERS += \
 	$$PWD/Game.hpp \
 	$$PWD/tools.hpp \
 	$$PWD/graphics/Texture.hpp \
-	$$PWD/graphics/TextureManager.hpp \
 	$$PWD/graphics/Shader.hpp \
 	$$PWD/graphics/ShaderProgram.hpp \
 	$$PWD/audio/AudioManager.hpp \
-	$$PWD/input/InputManager.hpp \
+	$$PWD/input/Input.hpp \
 	$$PWD/GameObject.hpp \
 	$$PWD/glm/*.hpp \
 	$$PWD/graphics/Mesh.hpp \
@@ -47,7 +44,6 @@ HEADERS += \
 	$$PWD/graphics/Model.hpp \
 	$$PWD/graphics/Uniform.hpp \
 	$$PWD/graphics/ShaderBinding.hpp \
-	$$PWD/graphics/MeshManager.hpp \
-	$$PWD/graphics/ShaderManager.hpp \
-    VBE/includes.hpp
+	$$PWD/includes.hpp \
+	$$PWD/Manager.hpp
 

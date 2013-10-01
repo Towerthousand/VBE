@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "Manager.hpp"
 
 bool Game::isRunning = false;
 
@@ -65,7 +66,7 @@ void Game::setRoot(GameObject *newRoot) {
 
 // Update scenegraph
 void Game::update(float deltaTime) {
-	InputManager::update(isRunning,window);
+	Input::update(isRunning,window);
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	root->doUpdate(deltaTime);
 	//int nulls = 0;
@@ -89,10 +90,10 @@ void Game::close() {
 	delete root;
 	root = NULL;
 	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
-	TextureManager::clear();
-	MeshManager::clear();
+	TEXTURES.clear();
+	MESHES.clear();
 	AudioManager::clear();
-	ShaderManager::clear();
+	PROGRAMS.clear();
 	window.close();
 	isRunning = false;
 	VBE_LOG("* EXIT GAME SUCCESFUL" );

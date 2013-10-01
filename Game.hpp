@@ -1,11 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "graphics/TextureManager.hpp"
-#include "graphics/MeshManager.hpp"
-#include "graphics/ShaderManager.hpp"
 #include "audio/AudioManager.hpp"
-#include "input/InputManager.hpp"
+#include "input/Input.hpp"
 #include "GameObject.hpp"
 #include "graphics/Mesh.hpp"
 #include "graphics/Model.hpp"
