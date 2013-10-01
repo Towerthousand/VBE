@@ -29,6 +29,10 @@ class Manager {
 			resources.erase(resID);
 		}
 
+		bool exists(const std::string& resID) {
+			return (resources.find(resID) != resources.end());
+		}
+
 		void clear() {
 			while(!resources.empty())
 				erase(resources.begin()->first);
