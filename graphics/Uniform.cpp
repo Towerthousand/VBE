@@ -12,6 +12,9 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_FLOAT_VEC3:
 			size = sizeof(GLfloat)*3;
 			break;
+		case GL_FLOAT_VEC4:
+			size = sizeof(GLfloat)*4;
+			break;
 		case GL_FLOAT_MAT4:
 			size = sizeof(GLfloat)*16;
 			break;
@@ -48,7 +51,8 @@ void Uniform::set(float val) {
 void Uniform::set(const std::vector<float> &val) {
 	VBE_ASSERT(type == GL_FLOAT, "Wrong uniform type. Location " << this->location);
 	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
-	setBytes((char*)&val[0]);}
+	setBytes((char*)&val[0]);
+}
 
 void Uniform::set(const vec3f &val) {
 	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location);
@@ -56,6 +60,16 @@ void Uniform::set(const vec3f &val) {
 }
 void Uniform::set(const std::vector<vec3f> &val) {
 	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
+	setBytes((char*)&val[0][0]);
+}
+
+void Uniform::set(const vec4f &val) {
+	VBE_ASSERT(type == GL_FLOAT_VEC4, "Wrong uniform type. Location " << this->location);
+	setBytes((char*)&val[0]);
+}
+void Uniform::set(const std::vector<vec4f> &val) {
+	VBE_ASSERT(type == GL_FLOAT_VEC4, "Wrong uniform type. Location " << this->location);
 	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
 	setBytes((char*)&val[0][0]);
 }
@@ -74,7 +88,8 @@ void Uniform::set(const Texture* val) {
 	VBE_ASSERT(type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
 	val->bind();
 	unsigned int slot = val->getSlot();
-	setBytes((char*)&slot);}
+	setBytes((char*)&slot);
+}
 
 void Uniform::ready() { //assumes program is binded already. Only to be called by ShaderProgram
 	if(!dirty) return;
@@ -82,6 +97,7 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 	switch(type) {
 		case GL_FLOAT:		glUniform1fv(location,count,(GLfloat*)&lastValue[0]); break;
 		case GL_FLOAT_VEC3:	glUniform3fv(location,count,(GLfloat*)&lastValue[0]); break;
+		case GL_FLOAT_VEC4:	glUniform4fv(location,count,(GLfloat*)&lastValue[0]); break;
 		case GL_FLOAT_MAT4:	glUniformMatrix4fv(location,count,GL_FALSE,(GLfloat*)&lastValue[0]); break;
 		case GL_INT:		glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
 		case GL_SAMPLER_2D:	glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
@@ -114,6 +130,7 @@ void Uniform::log() {
 	switch(type) {
 		case GL_FLOAT: VBE_DLOG("GL_FLOAT"); break;
 		case GL_FLOAT_VEC3: VBE_DLOG("GL_FLOAT_VEC3"); break;
+		case GL_FLOAT_VEC4: VBE_DLOG("GL_FLOAT_VEC4"); break;
 		case GL_FLOAT_MAT4: VBE_DLOG("GL_FLOAT_MAT4"); break;
 		case GL_INT: VBE_DLOG("GL_INT"); break;
 		case GL_SAMPLER_2D: VBE_DLOG("GL_SAMPLER_2D"); break;
