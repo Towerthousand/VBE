@@ -91,10 +91,10 @@ void Game::close() {
 	delete root;
 	root = NULL;
 	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
-	TEXTURES.clear();
-	MESHES.clear();
+	Textures.clear();
+	Meshes.clear();
 	AudioManager::clear();
-	PROGRAMS.clear();
+	Programs.clear();
 	window.close();
 	isRunning = false;
 	VBE_LOG("* EXIT GAME SUCCESFUL" );

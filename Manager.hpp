@@ -42,8 +42,8 @@ class Manager {
 };
 
 //default Managers
-extern Manager<Texture> TEXTURES;
-extern Manager<Mesh> MESHES;
-extern Manager<ShaderProgram> PROGRAMS;
+extern Manager<Texture> Textures;
+extern Manager<Mesh> Meshes;
+extern Manager<ShaderProgram> Programs;
 
 #endif // MANAGER_HPP
