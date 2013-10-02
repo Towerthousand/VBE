@@ -35,6 +35,7 @@ void GameObject::addObject(GameObject *object) {
 	VBE_ASSERT(object->parent == NULL, "Trying to add a node that already has a parent. Remove it from it's parent first.");
 	object->parent = this;
 	children.push_back(object);
+	onObjectAdd(object);
 }
 
 void GameObject::removeFromParent() {
@@ -77,6 +78,10 @@ GameObject* GameObject::getObjectByID(int id) {
 
 int GameObject::getObjectCount() {
 	return objectCount;
+}
+
+void GameObject::onObjectAdd(GameObject* object) {
+	(void) object;
 }
 
 void GameObject::calcFullTransform(mat4f parentFullTransform) {

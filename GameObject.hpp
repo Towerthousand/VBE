@@ -41,6 +41,8 @@ class GameObject { //scenegraph nodes
 		const int id;
 		bool isAlive;
 	protected:
+		virtual void onObjectAdd(GameObject* object);
+
 		GameObject* parent;
 		std::list<GameObject*> children;
 		mat4f transform;
