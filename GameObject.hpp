@@ -7,14 +7,22 @@ class GameObject { //scenegraph nodes
 		GameObject();
 		virtual ~GameObject();
 
+		static GameObject* getObjectByName(std::string name);
+		static GameObject* getObjectByID(int id);
+		static int getObjectCount();
+
 		virtual void update(float deltaTime);
 		virtual void draw() const;
+
 		void addObject(GameObject* object);
 		void removeFromParent();
+
 		void setName(std::string newName);
 		void setDrawPriority(int newPriority);
-		int getDrawPriority();
+		void setUpdatePriority(int newPriority);
 		std::string getName();
+		int getDrawPriority();
+		int getUpdatePriority();
 
 		template<class T>
 		void getAllObjectsOfType(std::vector<T*> &v) {
@@ -34,9 +42,6 @@ class GameObject { //scenegraph nodes
 			}
 			return NULL;
 		}
-		static GameObject* getObjectByName(std::string name);
-		static GameObject* getObjectByID(int id);
-		static int getObjectCount();
 
 		const int id;
 		bool isAlive;
@@ -49,8 +54,8 @@ class GameObject { //scenegraph nodes
 		mat4f fullTransform;
 	private:
 		void calcFullTransform(mat4f parentFullTransform);
-		void doUpdate(float deltaTime);
 		int drawPriority;
+		int updatePriority;
 		std::string name;
 
 		static int idCounter;

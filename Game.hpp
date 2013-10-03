@@ -11,11 +11,18 @@
 #include "graphics/Uniform.hpp"
 
 class Game {
-		struct FunctorCompare{
+		struct FunctorCompareDraw{
 				bool operator()(const GameObject* a, const GameObject* b) {
 					if(a->drawPriority == b->drawPriority)
-						return (a > b);
+						return (a->id > b->id);
 					return (a->drawPriority > b->drawPriority);
+				}
+		};
+		struct FunctorCompareUpdate{
+				bool operator()(const GameObject* a, const GameObject* b) {
+					if(a->updatePriority == b->updatePriority)
+						return (a->id > b->id);
+					return (a->updatePriority > b->updatePriority);
 				}
 		};
 	public:
@@ -34,7 +41,8 @@ class Game {
 
 		static sf::RenderWindow window;
 		static GameObject* root;
-		static std::set<GameObject*,FunctorCompare> drawTasks;
+		static std::set<GameObject*,FunctorCompareDraw> drawTasks;
+		static std::set<GameObject*,FunctorCompareUpdate> updateTasks;
 
 		friend class GameObject;
 

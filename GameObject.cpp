@@ -8,8 +8,10 @@ int GameObject::objectCount = 0;
 
 GameObject::GameObject() :
 	id(idCounter++), isAlive(true), parent(NULL),
-	transform(1.0f), fullTransform(1.0), drawPriority(0), name("") {
+	transform(1.0f), fullTransform(1.0), drawPriority(0),
+	updatePriority(0), name("") {
 	Game::drawTasks.insert(this);
+	Game::updateTasks.insert(this);
 	++objectCount;
 	idMap.insert(std::pair<int,GameObject*>(id,this));
 }
@@ -17,6 +19,7 @@ GameObject::GameObject() :
 GameObject::~GameObject() {
 	--objectCount;
 	Game::drawTasks.erase(this);
+	Game::updateTasks.erase(this);
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		delete *it;
 	if(!name.empty())
@@ -60,12 +63,23 @@ void GameObject::setDrawPriority(int newPriority) {
 	Game::drawTasks.insert(this);
 }
 
-int GameObject::getDrawPriority() {
-	return drawPriority;
+void GameObject::setUpdatePriority(int newPriority) {
+	if(updatePriority == newPriority) return;
+	Game::updateTasks.erase(this);
+	updatePriority = newPriority;
+	Game::updateTasks.insert(this);
 }
 
 std::string GameObject::getName() {
 	return name;
+}
+
+int GameObject::getDrawPriority() {
+	return drawPriority;
+}
+
+int GameObject::getUpdatePriority() {
+	return updatePriority;
 }
 
 GameObject* GameObject::getObjectByName(std::string name) {
@@ -88,19 +102,6 @@ void GameObject::calcFullTransform(mat4f parentFullTransform) {
 	fullTransform = parentFullTransform * transform;
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->calcFullTransform(fullTransform);
-}
-
-void GameObject::doUpdate(float deltaTime) {
-	update(deltaTime);
-	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end();) {
-		(*it)->doUpdate(deltaTime);
-		if (!(*it)->isAlive) {
-			delete *it;
-			it = children.erase(it);
-		}
-		else
-			++it;
-	}
 }
 
 bool GameObject::checkTree(GameObject* root, int& nulls) {

@@ -5,7 +5,8 @@ bool Game::isRunning = false;
 
 sf::RenderWindow Game::window;
 GameObject* Game::root = NULL;
-std::set<GameObject*,Game::FunctorCompare> Game::drawTasks;
+std::set<GameObject*,Game::FunctorCompareDraw> Game::drawTasks;
+std::set<GameObject*,Game::FunctorCompareUpdate> Game::updateTasks;
 
 Game::Game(){
 }
@@ -69,7 +70,11 @@ void Game::setRoot(GameObject *newRoot) {
 void Game::update(float deltaTime) {
 	Input::update(isRunning,window);
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
-	root->doUpdate(deltaTime);
+	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it) {
+		(*it)->update(deltaTime);
+		if(!(*it)->isAlive)
+			delete(*it);
+	}
 	//int nulls = 0;
 	//if(!GameObject::checkTree(Game::root, nulls))
 	//	VBE_ASSERT(0,"SCENEGRAPH ERROR!");
@@ -80,7 +85,7 @@ void Game::draw() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	root->calcFullTransform(mat4f(1.0f));
-	for(std::set<GameObject*,FunctorCompare>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
+	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
 		(*it)->draw();
 	window.display();
 }

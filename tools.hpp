@@ -25,6 +25,7 @@
   #define VBE_DLOG(log)
 #endif
 
+
 //OpenGL (Open Graphics Library)
 #define GL_GLEXT_PROTOTYPES 1
 #include <GL/gl.h> //core
