@@ -14,15 +14,15 @@ class Game {
 		struct FunctorCompareDraw{
 				bool operator()(const GameObject* a, const GameObject* b) {
 					if(a->drawPriority == b->drawPriority)
-						return (a->id > b->id);
-					return (a->drawPriority > b->drawPriority);
+						return (a->id < b->id);
+					return (a->drawPriority < b->drawPriority);
 				}
 		};
 		struct FunctorCompareUpdate{
 				bool operator()(const GameObject* a, const GameObject* b) {
 					if(a->updatePriority == b->updatePriority)
-						return (a->id > b->id);
-					return (a->updatePriority > b->updatePriority);
+						return (a->id < b->id);
+					return (a->updatePriority < b->updatePriority);
 				}
 		};
 	public:

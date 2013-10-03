@@ -69,11 +69,16 @@ void Game::setRoot(GameObject *newRoot) {
 // Update scenegraph
 void Game::update(float deltaTime) {
 	Input::update(isRunning,window);
+	VBE_LOG("START");
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
-	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it) {
+	for(std::set<GameObject*,FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it)
 		(*it)->update(deltaTime);
-		if(!(*it)->isAlive)
-			delete(*it);
+
+	for(std::set<GameObject*,FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end();) {
+		if(!(*it)->isAlive) {
+			delete toDelete;
+		}
+		else ++it;
 	}
 	//int nulls = 0;
 	//if(!GameObject::checkTree(Game::root, nulls))
