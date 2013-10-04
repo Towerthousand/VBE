@@ -2,6 +2,7 @@
 #define GAMEOBJECT_HPP
 #include "tools.hpp"
 
+class Game;
 class GameObject { //scenegraph nodes
 	public:
 		GameObject();
@@ -9,14 +10,12 @@ class GameObject { //scenegraph nodes
 
 		static GameObject* getObjectByName(std::string name);
 		static GameObject* getObjectByID(int id);
-		static int getObjectCount();
 
 		virtual void update(float deltaTime);
 		virtual void draw() const;
 
 		void addObject(GameObject* object);
 		void removeFromParent();
-
 		void setName(std::string newName);
 		void setDrawPriority(int newPriority);
 		void setUpdatePriority(int newPriority);
@@ -52,16 +51,12 @@ class GameObject { //scenegraph nodes
 		std::list<GameObject*> children;
 		mat4f transform;
 		mat4f fullTransform;
+		Game* game;
 	private:
 		void calcFullTransform(mat4f parentFullTransform);
 		int drawPriority;
 		int updatePriority;
 		std::string name;
-
-		static int idCounter;
-		static int objectCount;
-		static std::map<std::string,GameObject*> nameMap;
-		static std::map<int,GameObject*> idMap;
 
 		friend class Game;
 

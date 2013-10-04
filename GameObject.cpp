@@ -1,30 +1,22 @@
 #include "GameObject.hpp"
 #include "Game.hpp"
 
-std::map<std::string,GameObject*> GameObject::nameMap;
-std::map<int,GameObject*> GameObject::idMap;
-int GameObject::idCounter = 1;
-int GameObject::objectCount = 0;
-
-GameObject::GameObject() :
-	id(idCounter++), isAlive(true), parent(NULL),
-	transform(1.0f), fullTransform(1.0), drawPriority(0),
+GameObject::GameObject() : id(Game::i()->objectCount++), isAlive(true), parent(NULL),
+	transform(1.0f), fullTransform(1.0), game(Game::i()), drawPriority(0),
 	updatePriority(0), name("") {
-	Game::drawTasks.insert(this);
-	Game::updateTasks.insert(this);
-	++objectCount;
-	idMap.insert(std::pair<int,GameObject*>(id,this));
+	game->objectCount++;
+	game->attachObject(this);
+	game->idMap.insert(std::pair<int,GameObject*>(id,this));
 }
 
 GameObject::~GameObject() {
-	--objectCount;
-	Game::drawTasks.erase(this);
-	Game::updateTasks.erase(this);
+	--game->objectCount;
+	game->deattachObject(this);
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		delete *it;
 	if(!name.empty())
-		nameMap.erase(name);
-	idMap.erase(id);
+		game->nameMap.erase(name);
+	game->idMap.erase(id);
 }
 
 void GameObject::update(float deltaTime) {
@@ -49,8 +41,8 @@ void GameObject::removeFromParent() {
 
 void GameObject::setName(std::string newName) {
 	if(name == newName) return;
-	if(nameMap.insert(std::pair<std::string,GameObject*>(newName,this)).second) {
-		if(!name.empty()) nameMap.erase(name);
+	if(game->nameMap.insert(std::pair<std::string,GameObject*>(newName,this)).second) {
+		if(!name.empty()) game->nameMap.erase(name);
 		name = newName;
 	}
 	else {VBE_LOG("#WARNING Can't set name for node " << this << ". This name is already in use." );}
@@ -58,16 +50,16 @@ void GameObject::setName(std::string newName) {
 
 void GameObject::setDrawPriority(int newPriority) {
 	if(drawPriority == newPriority) return;
-	Game::drawTasks.erase(this);
+	game->drawTasks.erase(this);
 	drawPriority = newPriority;
-	Game::drawTasks.insert(this);
+	game->drawTasks.insert(this);
 }
 
 void GameObject::setUpdatePriority(int newPriority) {
 	if(updatePriority == newPriority) return;
-	Game::updateTasks.erase(this);
+	game->Game::updateTasks.erase(this);
 	updatePriority = newPriority;
-	Game::updateTasks.insert(this);
+	game->Game::updateTasks.insert(this);
 }
 
 std::string GameObject::getName() {
@@ -83,15 +75,11 @@ int GameObject::getUpdatePriority() {
 }
 
 GameObject* GameObject::getObjectByName(std::string name) {
-	return nameMap.at(name);
+	return Game::i()->nameMap.at(name);
 }
 
 GameObject* GameObject::getObjectByID(int id) {
-	return idMap.at(id);
-}
-
-int GameObject::getObjectCount() {
-	return objectCount;
+	return Game::i()->idMap.at(id);
 }
 
 void GameObject::onObjectAdd(GameObject* object) {

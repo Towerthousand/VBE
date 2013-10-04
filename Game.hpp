@@ -26,28 +26,32 @@ class Game {
 				}
 		};
 	public:
-		static bool init();
-		static void run();
-		static void setRoot(GameObject* newRoot);
-		static void close();
-
-		static sf::RenderWindow &getWindow() { return window; }
-		
-		static bool isRunning;
-	private:
-		static void update(float deltaTime);
-		static void draw();
-		static bool loadResources ();
-
-		static sf::RenderWindow window;
-		static GameObject* root;
-		static std::set<GameObject*,FunctorCompareDraw> drawTasks;
-		static std::set<GameObject*,FunctorCompareUpdate> updateTasks;
-
-		friend class GameObject;
-
 		Game();
 		~Game();
+
+		static Game* i() { return Game::instance;}
+		void run();
+		void setRoot(GameObject* newRoot);
+		int getObjectCount() { return objectCount; }
+		sf::RenderWindow &getWindow() { return window; }
+		
+		bool isRunning;
+	private:
+		void update(float deltaTime);
+		void draw();
+		bool loadResources ();
+
+		sf::RenderWindow window;
+		GameObject* root;
+		std::map<std::string,GameObject*> nameMap;
+		std::map<int,GameObject*> idMap;
+		int idCounter;
+		int objectCount;
+		std::set<GameObject*,Game::FunctorCompareDraw> drawTasks;
+		std::set<GameObject*,FunctorCompareUpdate> updateTasks;
+		static Game* instance;
+
+		friend class GameObject;
 };
 
 #endif //GAME_HPP

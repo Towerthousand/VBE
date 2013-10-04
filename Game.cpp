@@ -1,21 +1,11 @@
 #include "Game.hpp"
 #include "Manager.hpp"
 
-bool Game::isRunning = false;
+Game* Game::instance = NULL;
 
-sf::RenderWindow Game::window;
-GameObject* Game::root = NULL;
-std::set<GameObject*,Game::FunctorCompareDraw> Game::drawTasks;
-std::set<GameObject*,Game::FunctorCompareUpdate> Game::updateTasks;
-
-Game::Game(){
-}
-
-Game::~Game() {
-}
-
-// Init non-resource, general game stuff here.
-bool Game::init() {
+Game::Game() :isRunning(true), root(NULL), idCounter(1), objectCount(0) {
+	VBE_ASSERT(Game::instance == NULL, "Two games created");
+	Game::instance = this;
 	VBE_LOG("* INIT GAME");
 
 	window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Default,CONTEXT_SETTINGS_OPENGL);
@@ -23,11 +13,11 @@ bool Game::init() {
 	window.setKeyRepeatEnabled(false);
 	window.setVerticalSyncEnabled(false);
 
-	glClearColor(0.0/255.0,0.0/255.0,0.0/255.0,1);
+	glClearColor(0.1,0.2,0.05,1);
 
 	//Load game-wide resources
-	if (!loadResources())
-		return false;
+	if(!loadResources())
+			VBE_ASSERT(false,"Could not load resources");
 	isRunning = true;
 
 	//GL stuff..: root(NULL)
@@ -41,7 +31,23 @@ bool Game::init() {
 	glCullFace(GL_BACK);
 
 	VBE_LOG("* INIT GAME SUCCESFUL");
-	return true;
+}
+
+
+Game::~Game() {
+	//Free resources, delete scenegraph nodes and close windows
+	VBE_ASSERT(Game::instance == this, "Two games created");
+	VBE_ASSERT(root != NULL, "Null scenegraph root");
+	delete root;
+	root = NULL;
+	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
+	Textures.clear();
+	Meshes.clear();
+	AudioManager::clear();
+	Programs.clear();
+	window.close();
+	isRunning = false;
+	VBE_LOG("* EXIT GAME SUCCESFUL" );
 }
 
 // Load scene-independent resources here, return false if failed to load
@@ -51,13 +57,14 @@ bool Game::loadResources () {
 
 // Main game loop
 void Game::run() {
+	VBE_ASSERT(root != NULL, "Null scenegraph root");
+
 	sf::Clock clock;
 	while (isRunning) {
 		float deltaTime = clock.restart().asSeconds();
 		update(deltaTime);
 		draw();
 	}
-	close();
 }
 
 // Set root for the scenegraph
@@ -69,14 +76,13 @@ void Game::setRoot(GameObject *newRoot) {
 // Update scenegraph
 void Game::update(float deltaTime) {
 	Input::update(isRunning,window);
-	VBE_LOG("START");
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	for(std::set<GameObject*,FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it)
 		(*it)->update(deltaTime);
 
 	for(std::set<GameObject*,FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end();) {
 		if(!(*it)->isAlive) {
-			delete toDelete;
+			it = updateTasks.erase(it);
 		}
 		else ++it;
 	}
@@ -93,19 +99,4 @@ void Game::draw() {
 	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
 		(*it)->draw();
 	window.display();
-}
-
-//Free resources, delete scenegraph nodes and close windows
-void Game::close() {
-	VBE_ASSERT(root != NULL, "Null scenegraph root");
-	delete root;
-	root = NULL;
-	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
-	Textures.clear();
-	Meshes.clear();
-	AudioManager::clear();
-	Programs.clear();
-	window.close();
-	isRunning = false;
-	VBE_LOG("* EXIT GAME SUCCESFUL" );
 }
