@@ -29,10 +29,13 @@ class Game {
 		Game();
 		~Game();
 
+		GameObject* getObjectByName(std::string name);
+		GameObject* getObjectByID(int id);
+
 		static Game* i() { return Game::instance;}
 		void run();
 		void setRoot(GameObject* newRoot);
-		int getObjectCount() { return objectCount; }
+		int getObjectCount() { return updateTasks.size(); }
 		sf::RenderWindow &getWindow() { return window; }
 		
 		bool isRunning;
@@ -41,14 +44,11 @@ class Game {
 		void draw();
 		bool loadResources ();
 
-		void die(GameObject* object);
-
 		sf::RenderWindow window;
 		GameObject* root;
 		std::map<std::string,GameObject*> nameMap;
 		std::map<int,GameObject*> idMap;
 		int idCounter;
-		int objectCount;
 		std::set<GameObject*,Game::FunctorCompareDraw> drawTasks;
 		std::set<GameObject*,FunctorCompareUpdate> updateTasks;
 

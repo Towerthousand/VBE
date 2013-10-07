@@ -8,15 +8,12 @@ class GameObject { //scenegraph nodes
 		GameObject();
 		virtual ~GameObject();
 
-		static GameObject* getObjectByName(std::string name);
-		static GameObject* getObjectByID(int id);
-
 		virtual void update(float deltaTime);
 		virtual void draw() const ;
 
-		void attach(GameObject* parent);
-		void detach();
-		void detachAndDelete();
+		void addTo(GameObject* parent);
+		void removeFromParent();
+		void removeAndDelete();
 
 		void setName(std::string newName);
 		std::string getName() const;

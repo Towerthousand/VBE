@@ -1,18 +1,18 @@
 #include "GameObject.hpp"
 #include "Game.hpp"
 
-GameObject::GameObject() : id(Game::i()->objectCount++),
+GameObject::GameObject() : id(Game::i()->idCounter++),
 	transform(1.0f), fullTransform(1.0), game(Game::i()), inGame(false), parent(NULL), drawPriority(0),
 	updatePriority(0), name(""), isAlive(true) {
 	game->idMap.insert(std::pair<int,GameObject*>(id,this));
 }
 
 GameObject::~GameObject() {
-	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-		delete *it;
-	if(!name.empty())
-		game->nameMap.erase(name);
-	game->idMap.erase(id);
+	if(game != NULL) {
+		if(!name.empty())
+			game->nameMap.erase(name);
+		game->idMap.erase(id);
+	}
 }
 
 void GameObject::update(float deltaTime) {
@@ -24,27 +24,25 @@ void GameObject::draw() const {
 }
 
 
-void GameObject::attach(GameObject *newParent) {
+void GameObject::addTo(GameObject *newParent) {
 	VBE_ASSERT(parent == NULL, "Trying to attach a node that is already attached.");
 	parent = newParent;
 	parent->children.push_back(this);
 	parent->onObjectAdd(this);
-
 	if(parent->inGame)
 		addToGame();
 }
 
-void GameObject::detach() {
+void GameObject::removeFromParent() {
 	VBE_ASSERT(parent != NULL, "Trying to detach a not attached node.");
 	parent->children.remove(this);
-	parent = NULL;
-
 	if(parent->inGame)
 		removeFromGame();
+	parent = NULL;
 }
 
-void GameObject::detachAndDelete() {
-	detach();
+void GameObject::removeAndDelete() {
+	removeFromParent();
 	markForDelete();
 }
 
@@ -101,14 +99,6 @@ int GameObject::getDrawPriority() const {
 
 int GameObject::getUpdatePriority() const {
 	return updatePriority;
-}
-
-GameObject* GameObject::getObjectByName(std::string name) {
-	return Game::i()->nameMap.at(name);
-}
-
-GameObject* GameObject::getObjectByID(int id) {
-	return Game::i()->idMap.at(id);
 }
 
 void GameObject::onObjectAdd(GameObject* object) {

@@ -3,7 +3,7 @@
 
 Game* Game::instance = NULL;
 
-Game::Game() :isRunning(true), root(NULL), idCounter(1), objectCount(0) {
+Game::Game() :isRunning(true), root(NULL), idCounter(1) {
 	VBE_ASSERT(Game::instance == NULL, "Two games created");
 	Game::instance = this;
 	VBE_LOG("* INIT GAME");
@@ -53,6 +53,14 @@ Game::~Game() {
 // Load scene-independent resources here, return false if failed to load
 bool Game::loadResources () {
 	return true;
+}
+
+GameObject* Game::getObjectByName(std::string name) {
+	return nameMap.at(name);
+}
+
+GameObject* Game::getObjectByID(int id) {
+	return idMap.at(id);
 }
 
 // Main game loop
