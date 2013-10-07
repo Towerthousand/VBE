@@ -12,16 +12,18 @@ class GameObject { //scenegraph nodes
 		static GameObject* getObjectByID(int id);
 
 		virtual void update(float deltaTime);
-		virtual void draw() const;
+		virtual void draw() const ;
 
-		void addObject(GameObject* object);
-		void removeFromParent();
+		void attach(GameObject* parent);
+		void detach();
+		void detachAndDelete();
+
 		void setName(std::string newName);
+		std::string getName() const;
+		int getDrawPriority() const;
+		int getUpdatePriority() const;
 		void setDrawPriority(int newPriority);
 		void setUpdatePriority(int newPriority);
-		std::string getName();
-		int getDrawPriority();
-		int getUpdatePriority();
 
 		template<class T>
 		void getAllObjectsOfType(std::vector<T*> &v) {
@@ -42,21 +44,36 @@ class GameObject { //scenegraph nodes
 			return NULL;
 		}
 
+		const std::list<GameObject*>& getChildren() const {
+			return children;
+		}
+
+		Game* getGame() const {
+			return game;
+		}
+
 		const int id;
-		bool isAlive;
 	protected:
 		virtual void onObjectAdd(GameObject* object);
 
-		GameObject* parent;
-		std::list<GameObject*> children;
 		mat4f transform;
 		mat4f fullTransform;
-		Game* game;
+
 	private:
-		void calcFullTransform(mat4f parentFullTransform);
+		Game* game;
+		bool inGame;
+		GameObject* parent;
+		std::list<GameObject*> children;
+
 		int drawPriority;
 		int updatePriority;
 		std::string name;
+		bool isAlive;
+
+		void calcFullTransform(mat4f parentFullTransform);
+		void markForDelete();
+		void addToGame();
+		void removeFromGame();
 
 		friend class Game;
 

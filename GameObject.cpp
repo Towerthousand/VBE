@@ -1,17 +1,13 @@
 #include "GameObject.hpp"
 #include "Game.hpp"
 
-GameObject::GameObject() : id(Game::i()->objectCount++), isAlive(true), parent(NULL),
-	transform(1.0f), fullTransform(1.0), game(Game::i()), drawPriority(0),
-	updatePriority(0), name("") {
-	game->objectCount++;
-	game->attachObject(this);
+GameObject::GameObject() : id(Game::i()->objectCount++),
+	transform(1.0f), fullTransform(1.0), game(Game::i()), inGame(false), parent(NULL), drawPriority(0),
+	updatePriority(0), name(""), isAlive(true) {
 	game->idMap.insert(std::pair<int,GameObject*>(id,this));
 }
 
 GameObject::~GameObject() {
-	--game->objectCount;
-	game->deattachObject(this);
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		delete *it;
 	if(!name.empty())
@@ -20,23 +16,58 @@ GameObject::~GameObject() {
 }
 
 void GameObject::update(float deltaTime) {
-	(void) deltaTime;
+	(void)deltaTime;
 }
 
 void GameObject::draw() const {
+
 }
 
-void GameObject::addObject(GameObject *object) {
-	VBE_ASSERT(object->parent == NULL, "Trying to add a node that already has a parent. Remove it from it's parent first.");
-	object->parent = this;
-	children.push_back(object);
-	onObjectAdd(object);
+
+void GameObject::attach(GameObject *newParent) {
+	VBE_ASSERT(parent == NULL, "Trying to attach a node that is already attached.");
+	parent = newParent;
+	parent->children.push_back(this);
+	parent->onObjectAdd(this);
+
+	if(parent->inGame)
+		addToGame();
 }
 
-void GameObject::removeFromParent() {
-	VBE_ASSERT(parent != NULL, "Trying to remove node from null parent. Add it to a parent node first.");
+void GameObject::detach() {
+	VBE_ASSERT(parent != NULL, "Trying to detach a not attached node.");
 	parent->children.remove(this);
 	parent = NULL;
+
+	if(parent->inGame)
+		removeFromGame();
+}
+
+void GameObject::detachAndDelete() {
+	detach();
+	markForDelete();
+}
+
+void GameObject::markForDelete() {
+	isAlive = false;
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		(*it)->markForDelete();
+}
+
+void GameObject::addToGame() {
+	VBE_ASSERT(!inGame, "Adding an object to the game that is already in game.");
+	inGame = true;
+	game->objectTasksToAdd.push(this);
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		(*it)->addToGame();
+}
+
+void GameObject::removeFromGame() {
+	VBE_ASSERT(inGame, "Removing an object from the game that is not in game.");
+	inGame = false;
+	game->objectTasksToRemove.push(this);
+	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		(*it)->addToGame();
 }
 
 void GameObject::setName(std::string newName) {
@@ -49,28 +80,26 @@ void GameObject::setName(std::string newName) {
 }
 
 void GameObject::setDrawPriority(int newPriority) {
+	VBE_ASSERT(!inGame, "You can't change the priority of an object that is in the game.");
 	if(drawPriority == newPriority) return;
-	game->drawTasks.erase(this);
 	drawPriority = newPriority;
-	game->drawTasks.insert(this);
 }
 
 void GameObject::setUpdatePriority(int newPriority) {
+	VBE_ASSERT(!inGame, "You can't change the priority of an object that is in the game.");
 	if(updatePriority == newPriority) return;
-	game->Game::updateTasks.erase(this);
 	updatePriority = newPriority;
-	game->Game::updateTasks.insert(this);
 }
 
-std::string GameObject::getName() {
+std::string GameObject::getName() const {
 	return name;
 }
 
-int GameObject::getDrawPriority() {
+int GameObject::getDrawPriority() const {
 	return drawPriority;
 }
 
-int GameObject::getUpdatePriority() {
+int GameObject::getUpdatePriority() const {
 	return updatePriority;
 }
 

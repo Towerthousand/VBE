@@ -41,6 +41,8 @@ class Game {
 		void draw();
 		bool loadResources ();
 
+		void die(GameObject* object);
+
 		sf::RenderWindow window;
 		GameObject* root;
 		std::map<std::string,GameObject*> nameMap;
@@ -49,6 +51,10 @@ class Game {
 		int objectCount;
 		std::set<GameObject*,Game::FunctorCompareDraw> drawTasks;
 		std::set<GameObject*,FunctorCompareUpdate> updateTasks;
+
+		std::queue<GameObject*> objectTasksToAdd;
+		std::queue<GameObject*> objectTasksToRemove;
+
 		static Game* instance;
 
 		friend class GameObject;

@@ -46,6 +46,7 @@
 #include <list>
 #include <cmath>
 #include <cstring>
+#include <queue>
 
 //GLM (openGL Math)
 #include <glm/glm.hpp> // vec3, vec4, ivec4, mat4 (core)

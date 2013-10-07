@@ -69,23 +69,35 @@ void Game::run() {
 
 // Set root for the scenegraph
 void Game::setRoot(GameObject *newRoot) {
-	if(root != NULL) delete root;
+	if(root != NULL)
+		root->removeFromGame();
+
 	root = newRoot;
+	root->addToGame();
 }
 
 // Update scenegraph
 void Game::update(float deltaTime) {
 	Input::update(isRunning,window);
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
+
+	while(!objectTasksToRemove.empty()) {
+		GameObject* obj = objectTasksToRemove.front();
+		updateTasks.erase(obj);
+		drawTasks.erase(obj);
+		objectTasksToRemove.pop();
+		if(!obj->isAlive) delete obj;
+	}
+
+	while(!objectTasksToAdd.empty()) {
+		GameObject* obj = objectTasksToAdd.front();
+		updateTasks.insert(obj);
+		drawTasks.insert(obj);
+		objectTasksToAdd.pop();
+	}
+
 	for(std::set<GameObject*,FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it)
 		(*it)->update(deltaTime);
-
-	for(std::set<GameObject*,FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end();) {
-		if(!(*it)->isAlive) {
-			it = updateTasks.erase(it);
-		}
-		else ++it;
-	}
 	//int nulls = 0;
 	//if(!GameObject::checkTree(Game::root, nulls))
 	//	VBE_ASSERT(0,"SCENEGRAPH ERROR!");
