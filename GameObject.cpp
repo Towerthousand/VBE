@@ -65,7 +65,7 @@ void GameObject::removeFromGame() {
 	inGame = false;
 	game->objectTasksToRemove.push(this);
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-		(*it)->addToGame();
+		(*it)->removeFromGame();
 }
 
 void GameObject::setName(std::string newName) {
