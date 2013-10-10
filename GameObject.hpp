@@ -41,44 +41,30 @@ class GameObject { //scenegraph nodes
 			return NULL;
 		}
 
-		const std::list<GameObject*>& getChildren() const {
-			return children;
-		}
-
-		Game* getGame() const {
-			return game;
-		}
+		const std::list<GameObject*>& getChildren() const;
 
 		const int id;
 	protected:
+		Game* getGame() const;
 		virtual void onObjectAdd(GameObject* object);
 
 		mat4f transform;
 		mat4f fullTransform;
-
 	private:
-		Game* game;
-		bool inGame;
-		GameObject* parent;
-		std::list<GameObject*> children;
-
-		int drawPriority;
-		int updatePriority;
-		std::string name;
-		bool isAlive;
-
 		void calcFullTransform(mat4f parentFullTransform);
 		void markForDelete();
 		void addToGame();
 		void removeFromGame();
 
+		GameObject* parent;
+		std::list<GameObject*> children;
+		int drawPriority;
+		int updatePriority;
+		std::string name;
+		bool inGame;
+		bool isAlive;
+
 		friend class Game;
-
-	public:
-		// debug function. Checks all nodes are childs of their parents (only once)
-		// and that not more than one null parent exists (the root object)
-		static bool checkTree(GameObject* root, int& nulls);
-
 };
 
 #endif // GAMEOBJECT_HPP

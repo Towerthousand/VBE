@@ -29,17 +29,19 @@ class Game {
 		Game();
 		~Game();
 
-		GameObject* getObjectByName(std::string name);
-		GameObject* getObjectByID(int id);
+		GameObject* getObjectByName(std::string name) const;
+		GameObject* getObjectByID(int id) const;
 
-		static Game* i() { return Game::instance;}
 		void run();
 		void setRoot(GameObject* newRoot);
-		int getObjectCount() { return updateTasks.size(); }
+		GameObject* getRoot() {return root;}
+		int getObjectCount() const { return updateTasks.size(); }
 		sf::RenderWindow &getWindow() { return window; }
 		
 		bool isRunning;
 	private:
+		static Game* i() { return Game::instance;}
+
 		void update(float deltaTime);
 		void draw();
 		bool loadResources ();

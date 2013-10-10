@@ -36,10 +36,7 @@ Game::Game() :isRunning(true), root(NULL), idCounter(1) {
 
 Game::~Game() {
 	//Free resources, delete scenegraph nodes and close windows
-	VBE_ASSERT(Game::instance == this, "Two games created");
-	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	delete root;
-	root = NULL;
 	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
 	Textures.clear();
 	Meshes.clear();
@@ -55,31 +52,31 @@ bool Game::loadResources () {
 	return true;
 }
 
-GameObject* Game::getObjectByName(std::string name) {
+GameObject* Game::getObjectByName(std::string name) const {
 	return nameMap.at(name);
 }
 
-GameObject* Game::getObjectByID(int id) {
+GameObject* Game::getObjectByID(int id) const {
 	return idMap.at(id);
 }
 
 // Main game loop
 void Game::run() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
-
 	sf::Clock clock;
 	while (isRunning) {
 		float deltaTime = clock.restart().asSeconds();
 		update(deltaTime);
 		draw();
 	}
+	float deltaTime = clock.restart().asSeconds();
+	update(deltaTime);
+	draw();
 }
 
 // Set root for the scenegraph
 void Game::setRoot(GameObject *newRoot) {
-	if(root != NULL)
-		root->removeFromGame();
-
+	VBE_ASSERT(root == NULL, "Root has already been set!");
 	root = newRoot;
 	root->addToGame();
 }
@@ -106,9 +103,6 @@ void Game::update(float deltaTime) {
 
 	for(std::set<GameObject*,FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it)
 		(*it)->update(deltaTime);
-	//int nulls = 0;
-	//if(!GameObject::checkTree(Game::root, nulls))
-	//	VBE_ASSERT(0,"SCENEGRAPH ERROR!");
 }
 
 // Draw scenegraph
