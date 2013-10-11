@@ -12,7 +12,6 @@ class GameObject { //scenegraph nodes
 		virtual void draw() const ;
 
 		void addTo(GameObject* parent);
-		void removeFromParent();
 		void removeAndDelete();
 
 		void setName(std::string newName);
@@ -48,9 +47,20 @@ class GameObject { //scenegraph nodes
 		Game* getGame() const;
 		virtual void onObjectAdd(GameObject* object);
 
+		//Model matrix
 		mat4f transform;
 		mat4f fullTransform;
+
+		//View matrix
+		bool hasView;
+		mat4f view;
+
+		//Projection matrix
+		bool hasProjection;
+		mat4f projection;
+
 	private:
+		void removeFromParent();
 		void calcFullTransform(mat4f parentFullTransform);
 		void markForDelete();
 		void addToGame();

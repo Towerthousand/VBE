@@ -13,30 +13,13 @@ Game::Game() :isRunning(true), root(NULL), idCounter(1) {
 	window.setKeyRepeatEnabled(false);
 	window.setVerticalSyncEnabled(false);
 
-	glClearColor(0.1,0.2,0.05,1);
-
-	//Load game-wide resources
-	if(!loadResources())
-			VBE_ASSERT(false,"Could not load resources");
 	isRunning = true;
-
-	//GL stuff..: root(NULL)
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.01f);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDepthFunc(GL_LEQUAL);
-	glEnable(GL_CULL_FACE); //enable backface culling
-	glCullFace(GL_BACK);
 
 	VBE_LOG("* INIT GAME SUCCESFUL");
 }
 
-
 Game::~Game() {
 	//Free resources, delete scenegraph nodes and close windows
-	delete root;
 	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
 	Textures.clear();
 	Meshes.clear();
@@ -45,11 +28,6 @@ Game::~Game() {
 	window.close();
 	isRunning = false;
 	VBE_LOG("* EXIT GAME SUCCESFUL" );
-}
-
-// Load scene-independent resources here, return false if failed to load
-bool Game::loadResources () {
-	return true;
 }
 
 GameObject* Game::getObjectByName(std::string name) const {

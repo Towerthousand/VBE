@@ -32,23 +32,6 @@ void GameObject::addTo(GameObject *newParent) {
 		addToGame();
 }
 
-void GameObject::removeFromParent() {
-	//NOT ADVISED BY ITSELF. All objects should be attached after creation and killed with
-	//removeAndDelete();. This should only be used to detach, change priority and reattach.
-	//After this, the object will not be traced by the game anymore and will not be deleted
-	//by it either. If the object is not manually deleted, it will result in a memory leak.
-	//But deletion can't be done in the same frame as the detaching, since the game will
-	//not stop tracking the object untill the end of the frame. Premature deletion will
-	//result in a crash by invalid pointer access (game tries to update/draw the object
-	//for the last time, but it no longer exists)
-	VBE_ASSERT(this != Game::i()->getRoot(), "Cannot perform this operation on root node");
-	VBE_ASSERT(parent != NULL, "Trying to detach a not attached node.");
-	parent->children.remove(this);
-	if(inGame)
-		removeFromGame();
-	parent = NULL;
-}
-
 void GameObject::removeAndDelete() {
 	//This will remove the object from the tree and it will tell the game to stop tracking
 	//these objects and delete them.
@@ -76,12 +59,20 @@ int GameObject::getUpdatePriority() const {
 void GameObject::setDrawPriority(int newPriority) {
 	VBE_ASSERT(!inGame, "You can't change the priority of an object that is in the game.");
 	if(drawPriority == newPriority) return;
+	if(parent != NULL) {
+		Game::i()->objectTasksToRemove.push(this);
+		Game::i()->objectTasksToAdd.push(this);
+	}
 	drawPriority = newPriority;
 }
 
 void GameObject::setUpdatePriority(int newPriority) {
 	VBE_ASSERT(!inGame, "You can't change the priority of an object that is in the game.");
 	if(updatePriority == newPriority) return;
+	if(parent != NULL) {
+		Game::i()->objectTasksToRemove.push(this);
+		Game::i()->objectTasksToAdd.push(this);
+	}
 	updatePriority = newPriority;
 }
 
@@ -98,7 +89,15 @@ const std::list<GameObject*>& GameObject::getChildren() const {
 }
 
 void GameObject::onObjectAdd(GameObject* object) {
-	(void) object;
+	(void)object;
+}
+
+void GameObject::removeFromParent() {
+	VBE_ASSERT(parent != NULL, "Trying to detach a not attached node.");
+	parent->children.remove(this);
+	if(inGame)
+		removeFromGame();
+	parent = NULL;
 }
 
 void GameObject::calcFullTransform(mat4f parentFullTransform) {
