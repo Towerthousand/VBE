@@ -2,7 +2,7 @@
 #include "Game.hpp"
 
 GameObject::GameObject() : id(Game::i()->idCounter++),
-	transform(1.0f), fullTransform(1.0), parent(NULL), drawPriority(0),
+	transform(1.0f), modelMatrix(1.0), hasView(false), viewMatrix(1.0f), hasProjection(false), projectionMatrix(1.0f), parent(NULL), drawPriority(0),
 	updatePriority(0), name(""), inGame(false), isAlive(true) {
 	Game::i()->idMap.insert(std::pair<int,GameObject*>(id,this));
 }
@@ -100,10 +100,22 @@ void GameObject::removeFromParent() {
 	parent = NULL;
 }
 
-void GameObject::calcFullTransform(mat4f parentFullTransform) {
-	fullTransform = parentFullTransform * transform;
+void GameObject::propragateTransforms() {
+	if(this == Game::i()->root) {
+		modelMatrix = mat4f(1.0f);
+	}
+	else {
+		modelMatrix = parent->modelMatrix * modelMatrix;
+
+		if(!hasProjection)
+			projectionMatrix = parent->projectionMatrix;
+
+		if(!hasView)
+			viewMatrix = parent->viewMatrix;
+	}
+
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-		(*it)->calcFullTransform(fullTransform);
+		(*it)->propragateTransforms();
 }
 
 void GameObject::markForDelete() {

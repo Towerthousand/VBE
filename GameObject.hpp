@@ -49,19 +49,19 @@ class GameObject { //scenegraph nodes
 
 		//Model matrix
 		mat4f transform;
-		mat4f fullTransform;
+		mat4f modelMatrix;
 
 		//View matrix
 		bool hasView;
-		mat4f view;
+		mat4f viewMatrix ;
 
 		//Projection matrix
 		bool hasProjection;
-		mat4f projection;
+		mat4f projectionMatrix;
 
 	private:
 		void removeFromParent();
-		void calcFullTransform(mat4f parentFullTransform);
+		void propragateTransforms();
 		void markForDelete();
 		void addToGame();
 		void removeFromGame();

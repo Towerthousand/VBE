@@ -87,7 +87,7 @@ void Game::update(float deltaTime) {
 void Game::draw() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	root->calcFullTransform(mat4f(1.0f));
+	root->propragateTransforms();
 	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
 		(*it)->draw();
 	window.display();
