@@ -49,16 +49,7 @@ class GameObject { //scenegraph nodes
 
 		//Model matrix
 		mat4f transform;
-		mat4f modelMatrix;
-
-		//View matrix
-		bool hasView;
-		mat4f viewMatrix ;
-
-		//Projection matrix
-		bool hasProjection;
-		mat4f projectionMatrix;
-
+		mat4f fullTransform;
 	private:
 		void removeFromParent();
 		void propragateTransforms();

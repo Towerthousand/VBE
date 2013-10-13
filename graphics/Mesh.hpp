@@ -14,8 +14,14 @@ class Mesh {
 			POINTS = GL_POINTS
 		};
 
-		Mesh(const Vertex::Format &vertexFormat, unsigned int vertexCount, bool dynamic = false);
-		Mesh(const std::string &filename, bool dynamic = false);
+		enum BufferType {
+			STATIC = GL_STATIC_DRAW,
+			DYNAMIC = GL_DYNAMIC_DRAW,
+			STREAM = GL_STREAM_DRAW
+		};
+
+		Mesh(const Vertex::Format &vertexFormat, unsigned int vertexCount, BufferType dynamic = STATIC);
+		Mesh(const std::string &filename, BufferType dynamic = STATIC);
 		~Mesh();
 		bool loadFromFile(const std::string &filename);
 
@@ -24,7 +30,7 @@ class Mesh {
 		const Vertex::Format& getVertexFormat() const;
 		unsigned int getVertexCount() const;
 		unsigned int getVertexSize() const;
-		bool isDynamic() const;
+		BufferType getType() const;
 		GLuint getVertexBuffer() const;
 
 		PrimitiveType getPrimitiveType() const;
@@ -38,7 +44,7 @@ class Mesh {
 		unsigned int vertexCount;
 		GLuint vertexBuffer;
 		PrimitiveType primitiveType;
-		bool dynamic;
+		BufferType bufferType;
 };
 
 #endif // MESH_HPP

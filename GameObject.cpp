@@ -2,7 +2,7 @@
 #include "Game.hpp"
 
 GameObject::GameObject() : id(Game::i()->idCounter++),
-	transform(1.0f), modelMatrix(1.0), hasView(false), viewMatrix(1.0f), hasProjection(false), projectionMatrix(1.0f), parent(NULL), drawPriority(0),
+	transform(1.0f), fullTransform(1.0f), parent(NULL), drawPriority(0),
 	updatePriority(0), name(""), inGame(false), isAlive(true) {
 	Game::i()->idMap.insert(std::pair<int,GameObject*>(id,this));
 }
@@ -57,7 +57,6 @@ int GameObject::getUpdatePriority() const {
 }
 
 void GameObject::setDrawPriority(int newPriority) {
-	VBE_ASSERT(!inGame, "You can't change the priority of an object that is in the game.");
 	if(drawPriority == newPriority) return;
 	if(parent != NULL) {
 		Game::i()->objectTasksToRemove.push(this);
@@ -67,7 +66,6 @@ void GameObject::setDrawPriority(int newPriority) {
 }
 
 void GameObject::setUpdatePriority(int newPriority) {
-	VBE_ASSERT(!inGame, "You can't change the priority of an object that is in the game.");
 	if(updatePriority == newPriority) return;
 	if(parent != NULL) {
 		Game::i()->objectTasksToRemove.push(this);
@@ -101,19 +99,8 @@ void GameObject::removeFromParent() {
 }
 
 void GameObject::propragateTransforms() {
-	if(this == Game::i()->root) {
-		modelMatrix = mat4f(1.0f);
-	}
-	else {
-		modelMatrix = parent->modelMatrix * modelMatrix;
-
-		if(!hasProjection)
-			projectionMatrix = parent->projectionMatrix;
-
-		if(!hasView)
-			viewMatrix = parent->viewMatrix;
-	}
-
+	if(this == Game::i()->root)	fullTransform = transform;
+	else fullTransform = parent->fullTransform * transform;
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->propragateTransforms();
 }
