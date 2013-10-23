@@ -35,23 +35,22 @@ void ParticleSystem::update(float deltaTime) {
 		else
 			++it;
 	}
+	std::vector<Particle::Vertex> vtxs;
+	vtxs.resize(particles.size());
+	int i = 0;
+	for(std::list<Particle>::const_iterator it = particles.begin(); it != particles.end(); it++) {
+		it->render(vtxs[i]);
+		i++;
+	}
+	model.mesh->setVertexData(&vtxs[0], particles.size());
 }
 
 void ParticleSystem::draw() const {
 	if(particles.size() == 0)
 		return;
 	VBE_ASSERT(textureSheet != NULL, "Cannot draw textureless particles, give particleSystem a textureSheet before emitting particles");
-	if(vtxs.size() < particles.size())
-		vtxs.resize(particles.size());
-
-	int i = 0;
-	for(std::list<Particle>::const_iterator it = particles.begin(); it != particles.end(); it++) {
-		it->render(vtxs[i]);
-		i++;
-	}
 	glDepthMask(GL_FALSE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-	model.mesh->setVertexData(&vtxs[0], particles.size());
 	model.program->uniform("modelViewMatrix")->set(viewMatrix*fullTransform);
 	model.program->uniform("projectionMatrix")->set(projectionMatrix);
 	model.program->uniform("texSize")->set(1.0f/float(textureCount));

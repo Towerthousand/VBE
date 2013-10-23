@@ -16,7 +16,6 @@ class ParticleSystem : public GameObject {
 
 	private:
 		std::list<Particle> particles;
-		mutable std::vector<Particle::Vertex> vtxs;
 		Model model;
 		unsigned int textureCount;
 		Texture* textureSheet;
