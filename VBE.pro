@@ -54,3 +54,8 @@ HEADERS += \
     VBE/modules/particles/ParticleEmitter.hpp \
     VBE/modules/particles/Particle.hpp
 
+OTHER_FILES += \
+    VBE/data/shaders/particle.geom \
+    VBE/data/shaders/particle.vert \
+    VBE/data/shaders/particle.frag
+
