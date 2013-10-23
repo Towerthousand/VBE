@@ -15,7 +15,13 @@ ParticleSystem::ParticleSystem() :
 	mesh->setPrimitiveType(Mesh::POINTS);
 	model.mesh = mesh;
 	Meshes.add("particlesMesh",mesh);
-	model.program = Programs.get("particleShader");
+	if(!Programs.exists("__particleShader")) {
+		ShaderProgram* p = new ShaderProgram();
+		if(!p->makeProgram("data/shaders/particle.vert","data/shaders/particle.geom","data/shaders/particle.frag"))
+			VBE_ASSERT(false, "Could not load particle shaders, they must be located in data/shaders/particle.[vert,geom,frag]");
+		Programs.add("__particleShader",p);
+	}
+	model.program = Programs.get("__particleShader");
 	setName("particleSystem");
 	setUpdatePriority(-100);
 	setDrawPriority(100);
