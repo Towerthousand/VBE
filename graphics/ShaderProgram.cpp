@@ -16,6 +16,12 @@ ShaderProgram::~ShaderProgram() {
 	}
 }
 
+bool ShaderProgram::makeProgramFromString(const std::string& vertSource, const std::string& fragSource) {
+}
+
+bool ShaderProgram::makeProgramFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource) {
+}
+
 bool ShaderProgram::makeProgram(const std::string &vp_filename, const std::string &fp_filename) {
 	//LOAD AND COMPILE VERTEX SHADER
 	VBE_DLOG("* Loading new vertex shader from " << vp_filename );

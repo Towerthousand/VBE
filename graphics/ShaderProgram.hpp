@@ -8,8 +8,12 @@ class ShaderProgram {
 		ShaderProgram();
 		~ShaderProgram();
 
+		bool makeProgramFromString(const std::string &vertSource, const std::string &fragSource);
+		bool makeProgramFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
+
 		bool makeProgram(const std::string& vp_filename, const std::string& fp_filename);
 		bool makeProgram(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename);
+
 		GLuint getHandle() const {return programHandle;}
 
 		void use() const;

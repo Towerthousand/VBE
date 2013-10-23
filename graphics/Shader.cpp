@@ -35,6 +35,12 @@ bool Shader::load(const std::string &filename) {
 	return true;
 }
 
+bool Shader::loadRaw(const std::string &content) {
+	const char* buff = content.c_str();
+	glShaderSource(shaderHandle, 1, &buff, NULL);
+	return true;
+}
+
 bool Shader::compile() const {
 	GLint status;
 	glCompileShader(shaderHandle);
