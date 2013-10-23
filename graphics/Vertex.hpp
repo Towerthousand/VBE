@@ -49,7 +49,8 @@ namespace Vertex {
 				Int           = GL_INT,
 				UnsignedInt   = GL_UNSIGNED_INT,
 				Float         = GL_FLOAT,
-				Fixed         = GL_FIXED
+				Fixed         = GL_FIXED,
+				Double        = GL_DOUBLE
 			};
 			Element(Attribute &attr, unsigned int type, unsigned int size);
 			Element(     int attrID, unsigned int type, unsigned int size);
