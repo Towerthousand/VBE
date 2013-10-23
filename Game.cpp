@@ -1,5 +1,7 @@
 #include "Game.hpp"
 #include "Manager.hpp"
+#include "audio/AudioManager.hpp"
+#include "input/Input.hpp"
 
 Game* Game::instance = NULL;
 

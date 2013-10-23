@@ -1,14 +1,6 @@
 #ifndef GAME_HPP
 #define GAME_HPP
-
-#include "audio/AudioManager.hpp"
-#include "input/Input.hpp"
 #include "GameObject.hpp"
-#include "graphics/Mesh.hpp"
-#include "graphics/Model.hpp"
-#include "graphics/ShaderProgram.hpp"
-#include "graphics/Texture.hpp"
-#include "graphics/Uniform.hpp"
 
 class Game {
 		struct FunctorCompareDraw{

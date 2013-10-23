@@ -1,6 +1,5 @@
 #ifndef MANAGER_HPP
 #define MANAGER_HPP
-#include "tools.hpp"
 #include "graphics/Texture.hpp"
 #include "graphics/ShaderProgram.hpp"
 #include "graphics/Mesh.hpp"

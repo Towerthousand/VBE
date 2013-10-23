@@ -1,5 +1,4 @@
 #include "Uniform.hpp"
-#include "ShaderProgram.hpp"
 #include "Texture.hpp"
 
 Uniform::Uniform(unsigned int count, GLenum type, GLint location) :

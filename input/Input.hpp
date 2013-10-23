@@ -1,6 +1,6 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
-#include "tools.hpp"
+#include "../tools.hpp"
 
 class Input {
 	public:
