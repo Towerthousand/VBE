@@ -8,13 +8,34 @@ Shader::~Shader() {
 	glDeleteShader(shaderHandle);
 }
 
-bool Shader::load(const std::string &filename) {
+Shader* Shader::makeShader(const std::string& data, GLenum shaderType, bool raw) {
+	std::string out = (!raw? data: "string");
+	switch(shaderType) {
+		case GL_FRAGMENT_SHADER:
+			VBE_DLOG("* Loading new fragment shader from " << out );
+			break;
+		case GL_GEOMETRY_SHADER:
+			VBE_DLOG("* Loading new geometry shader from " << out );
+			break;
+		case GL_VERTEX_SHADER:
+			VBE_DLOG("* Loading new vertex shader from " << out );
+			break;
+		default:
+			break;
+	}
+	out.clear();
+	Shader* s = new Shader(shaderType);
+	if(raw) s->loadRaw(data);
+	else s->load(data);
+	s->compile();
+	VBE_DLOG( " - Compiled " << data << " successfully." );
+	return s;
+}
+
+void Shader::load(const std::string &filename) {
 	std::ifstream is;
 	is.open(filename, std::ios::in);
-	if (is.fail()) {
-		VBE_LOG("#ERROR Failed to get the contents from " << filename );
-		return false;
-	}
+	VBE_ASSERT(!is.fail(),"Failed to get the contents from " << filename );
 
 	// get length of file
 	is.seekg(0, std::ios::end);
@@ -31,21 +52,22 @@ bool Shader::load(const std::string &filename) {
 	buffer[length] = '\0';
 	const char *source = buffer;
 	glShaderSource(shaderHandle, 1, &source, NULL);
-
-	return true;
 }
 
-bool Shader::loadRaw(const std::string &content) {
+void Shader::loadRaw(const std::string &content) {
 	const char* buff = content.c_str();
-	glShaderSource(shaderHandle, 1, &buff, NULL);
-	return true;
+	const GLint len = content.size();
+	glShaderSource(shaderHandle, 1, &buff, &len);
 }
 
-bool Shader::compile() const {
+void Shader::compile() const {
 	GLint status;
 	glCompileShader(shaderHandle);
 	glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &status);
-	return status == GL_TRUE;
+	if(status != GL_TRUE) {
+		printInfoLog();
+		VBE_ASSERT(false, "Compile failed for shader." );
+	}
 }
 
 void Shader::attach(GLuint program) const {

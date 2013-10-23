@@ -15,6 +15,10 @@ class ParticleSystem : public GameObject {
 		void setViewMatrix(const mat4f& mat) {viewMatrix = mat;}
 
 	private:
+		static const std::string vertexShader;
+		static const std::string geometryShader;
+		static const std::string fragmentShader;
+
 		std::list<Particle> particles;
 		Model model;
 		unsigned int textureCount;

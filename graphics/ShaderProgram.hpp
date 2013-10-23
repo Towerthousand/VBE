@@ -2,17 +2,17 @@
 #define SHADERPROGRAM_HPP
 #include "../tools.hpp"
 
+class Shader;
 class Uniform;
 class ShaderProgram {
 	public:
 		ShaderProgram();
 		~ShaderProgram();
 
-		bool makeProgramFromString(const std::string &vertSource, const std::string &fragSource);
-		bool makeProgramFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
-
-		bool makeProgram(const std::string& vp_filename, const std::string& fp_filename);
-		bool makeProgram(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename);
+		void makeProgramFromString(const std::string &vertSource, const std::string &fragSource);
+		void makeProgramFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
+		void makeProgramFromFile(const std::string& vp_filename, const std::string& fp_filename);
+		void makeProgramFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename);
 
 		GLuint getHandle() const {return programHandle;}
 
@@ -23,9 +23,14 @@ class ShaderProgram {
 		std::map<std::string,Uniform*> uniforms;
 
 	private:
+		void makeProgram(const std::string& vp_filename, const std::string& fp_filename, bool raw);
+		void makeProgram(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename, bool raw);
+		void link();
+		void retriveProgramInfo();
+		void printInfoLog();
+
 		static GLuint current;
 
-		void printInfoLog();
 		GLuint programHandle;
 };
 
