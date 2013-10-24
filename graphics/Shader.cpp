@@ -23,12 +23,11 @@ Shader* Shader::makeShader(const std::string& data, GLenum shaderType, bool raw)
 		default:
 			break;
 	}
-	out.clear();
 	Shader* s = new Shader(shaderType);
 	if(raw) s->loadFromString(data);
 	else s->loadFromFile(data);
 	s->compile();
-	VBE_DLOG( " - Compiled " << data << " successfully." );
+	VBE_DLOG( " - Compiled " << out << " successfully." );
 	return s;
 }
 

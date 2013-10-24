@@ -37,7 +37,13 @@ void ShaderProgram::makeProgram(const std::string &vp_filename, const std::strin
 	Shader* vertex = Shader::makeShader(vp_filename, GL_VERTEX_SHADER, raw);
 	Shader* fragment = Shader::makeShader(fp_filename, GL_FRAGMENT_SHADER, raw);
 
-	VBE_DLOG("* Creating new shaderProgram with " << vp_filename << " and " << fp_filename );
+	if(!raw) {
+		VBE_DLOG("* Creating new shaderProgram with " << vp_filename << " and " << fp_filename );
+	}
+	else {
+		VBE_DLOG("* Creating new shaderProgram with two raw strings");
+	}
+
 	programHandle = glCreateProgram();
 
 	vertex->attach(programHandle);
@@ -52,8 +58,14 @@ void ShaderProgram::makeProgram(const std::string& vp_filename, const std::strin
 	Shader* vertex = Shader::makeShader(vp_filename, GL_VERTEX_SHADER, raw);
 	Shader* geometry = Shader::makeShader(gp_filename, GL_GEOMETRY_SHADER, raw);
 	Shader* fragment = Shader::makeShader(fp_filename, GL_FRAGMENT_SHADER, raw);
+	VBE_DLOG(vp_filename);
+	if(!raw) {
+		VBE_DLOG("* Creating new shaderProgram with " << vp_filename << ", " << gp_filename << " and " << fp_filename );
+	}
+	else {
+		VBE_DLOG("* Creating new shaderProgram with three raw strings");
+	}
 
-	VBE_DLOG("* Creating new shaderProgram with " << vp_filename << ", " << gp_filename << " and " << fp_filename );
 	programHandle = glCreateProgram();
 
 	vertex->attach(programHandle);
