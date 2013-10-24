@@ -39,13 +39,8 @@ void GameObject::removeAndDelete() {
 	markForDelete();
 }
 
-void GameObject::setName(std::string newName) {
-	if(name == newName) return;
-	if(Game::i()->nameMap.insert(std::pair<std::string,GameObject*>(newName,this)).second) {
-		if(!name.empty()) Game::i()->nameMap.erase(name);
-		name = newName;
-	}
-	else {VBE_ASSERT(false,"Can't set name " << newName << " for node " << this << ". This name is already in use." );}
+std::string GameObject::getName() const {
+	return name;
 }
 
 int GameObject::getDrawPriority() const {
@@ -54,6 +49,15 @@ int GameObject::getDrawPriority() const {
 
 int GameObject::getUpdatePriority() const {
 	return updatePriority;
+}
+
+void GameObject::setName(std::string newName) {
+	if(name == newName) return;
+	if(Game::i()->nameMap.insert(std::pair<std::string,GameObject*>(newName,this)).second) {
+		if(!name.empty()) Game::i()->nameMap.erase(name);
+		name = newName;
+	}
+	else {VBE_ASSERT(false,"Can't set name " << newName << " for node " << this << ". This name is already in use." );}
 }
 
 void GameObject::setDrawPriority(int newPriority) {
@@ -74,16 +78,16 @@ void GameObject::setUpdatePriority(int newPriority) {
 	updatePriority = newPriority;
 }
 
+const std::list<GameObject*>& GameObject::getChildren() const {
+	return children;
+}
+
 Game*GameObject::getGame() const {
 	return Game::i();
 }
 
-std::string GameObject::getName() const {
-	return name;
-}
-
-const std::list<GameObject*>& GameObject::getChildren() const {
-	return children;
+const GameObject* GameObject::getParent() const {
+	return parent;
 }
 
 void GameObject::onObjectAdd(GameObject* object) {
@@ -126,3 +130,4 @@ void GameObject::addToGame() {
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->addToGame();
 }
+

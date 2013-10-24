@@ -45,6 +45,7 @@ class GameObject { //scenegraph nodes
 		const int id;
 	protected:
 		Game* getGame() const;
+		const GameObject* getParent() const;
 		virtual void onObjectAdd(GameObject* object);
 
 		//Model matrix

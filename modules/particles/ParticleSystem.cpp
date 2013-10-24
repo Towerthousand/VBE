@@ -17,7 +17,8 @@ ParticleSystem::ParticleSystem() :
 	Meshes.add("particlesMesh",mesh);
 	if(!Programs.exists("__particleShader")) {
 		ShaderProgram* p = new ShaderProgram();
-		p->makeProgramFromString(vertexShader,geometryShader,fragmentShader);
+		p->makeProgramFromFile("data/shaders/particle.vert","data/shaders/particle.geom","data/shaders/particle.frag");
+		//p->makeProgramFromString(vertexShader,geometryShader,fragmentShader);
 		Programs.add("__particleShader",p);
 	}
 	model.program = Programs.get("__particleShader");
@@ -70,38 +71,37 @@ void ParticleSystem::setTextureSheet(Texture* textureSheet, unsigned int texture
 
 const std::string ParticleSystem::vertexShader (
 		" \
-		#version 420 //4.2\
-		\
-		uniform mat4 modelViewMatrix; \
-in vec3 a_position; \
-in vec3 a_vel; \
-in vec4 a_color; \
-in float a_size; \
-in int a_texIndex; \
-out vec2 geom_vel; \
-out vec4 geom_color; \
-out float geom_size; \
-out int geom_texIndex; \
-void main () { \
-	gl_Position = modelViewMatrix * vec4(a_position, 1.0); \
-	geom_color = a_color; \
-	geom_size = a_size; \
-	geom_texIndex = a_texIndex; \
-	geom_vel = vec3(mat3(modelViewMatrix)*a_vel).xy; \
-}\
-"
-);
+		#version 420 \n\
+			\
+			uniform mat4 modelViewMatrix; \
+			in vec3 a_position; \
+			in vec3 a_vel; \
+			in vec4 a_color; \
+			in float a_size; \
+			in int a_texIndex; \
+			out vec2 geom_vel; \
+			out vec4 geom_color; \
+			out float geom_size; \
+			out int geom_texIndex; \
+			void main () { \
+			gl_Position = modelViewMatrix * vec4(a_position, 1.0); \
+			geom_color = a_color; \
+			geom_size = a_size; \
+			geom_texIndex = a_texIndex; \
+			geom_vel = vec3(mat3(modelViewMatrix)*a_vel).xy; \
+			}"
+		);
 
 const std::string ParticleSystem::geometryShader (
 		" \
-		#version 420 //4.2\
+		#version 420 //4.2\n\
 		\
 		layout (points) in; \
 layout (triangle_strip, max_vertices = 4) out; \
 \
 uniform mat4 projectionMatrix; \
 uniform mat4 modelViewMatrix; \
-uniform float texSize; // 1.0 / num de texturas \
+uniform float texSize; // 1.0 / num de texturas \n\
 \
 in vec2 geom_vel[]; \
 in vec4 geom_color[]; \
@@ -146,28 +146,26 @@ void main() { \
 	} \
 	\
 	for(int i = 0; i < 4; i++) { \
-		// copy attributes \
+		// copy attributes \n\
 		vec3 disp = transform*vec3(displacements[i], 0.0); \
 		gl_Position = projectionMatrix * (gl_in[0].gl_Position + vec4(disp * geom_size[0], 0.0)); \
 		v_texCoord.x = texSize*(float(geom_texIndex[0]) + float(texCoords[i].x)); \
 		v_texCoord.y = texCoords[i].y; \
 		v_color = geom_color[0]; \
-		// done with the vertex  \
+		// done with the vertex  \n\
 		EmitVertex(); \
 	} \
 	EndPrimitive(); \
-}\
-"
+}"
 );
 
 const std::string ParticleSystem::fragmentShader (
 		" \
-		#version 420 //4.2\
+		#version 420 //4.2\n\
 		uniform sampler2D textureSheet; \
 in vec2 v_texCoord; \
 in vec4 v_color; \
 void main() { \
 	gl_FragColor = v_color*texture2D(textureSheet,v_texCoord); \
-}\
-"
+}"
 );
