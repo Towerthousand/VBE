@@ -25,14 +25,14 @@ Shader* Shader::makeShader(const std::string& data, GLenum shaderType, bool raw)
 	}
 	out.clear();
 	Shader* s = new Shader(shaderType);
-	if(raw) s->loadRaw(data);
-	else s->load(data);
+	if(raw) s->loadFromString(data);
+	else s->loadFromFile(data);
 	s->compile();
 	VBE_DLOG( " - Compiled " << data << " successfully." );
 	return s;
 }
 
-void Shader::load(const std::string &filename) {
+void Shader::loadFromFile(const std::string &filename) {
 	std::ifstream is;
 	is.open(filename, std::ios::in);
 	VBE_ASSERT(!is.fail(),"Failed to get the contents from " << filename );
@@ -54,7 +54,7 @@ void Shader::load(const std::string &filename) {
 	glShaderSource(shaderHandle, 1, &source, NULL);
 }
 
-void Shader::loadRaw(const std::string &content) {
+void Shader::loadFromString(const std::string &content) {
 	const char* buff = content.c_str();
 	const GLint len = content.size();
 	glShaderSource(shaderHandle, 1, &buff, &len);

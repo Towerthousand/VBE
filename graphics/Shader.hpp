@@ -11,8 +11,8 @@ class Shader {
 	private:
 		Shader(GLenum type);
 
-		void load(const std::string &filename);
-		void loadRaw(const std::string& content);
+		void loadFromFile(const std::string &filename);
+		void loadFromString(const std::string& content);
 		void compile() const;
 
 		void printInfoLog() const;
