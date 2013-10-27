@@ -17,8 +17,7 @@ ParticleSystem::ParticleSystem() :
 	Meshes.add("particlesMesh",mesh);
 	if(!Programs.exists("__particleShader")) {
 		ShaderProgram* p = new ShaderProgram();
-		p->makeProgramFromFile("data/shaders/particle.vert","data/shaders/particle.geom","data/shaders/particle.frag");
-		//p->makeProgramFromString(vertexShader,geometryShader,fragmentShader);
+		p->makeProgramFromString(vertexShader,geometryShader,fragmentShader);
 		Programs.add("__particleShader",p);
 	}
 	model.program = Programs.get("__particleShader");
