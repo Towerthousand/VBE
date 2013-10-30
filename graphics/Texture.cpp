@@ -8,7 +8,7 @@ Texture::~Texture(){
 	glDeleteTextures(1,(GLuint*) &handle);
 }
 
-bool Texture::loadFromFile(const std::string &filePath, bool mipmap) {
+bool Texture::loadFromFile(const std::string &filePath, Texture::Format format, bool mipmap) {
 	//load image
 	sf::Image image;
 	if (!image.loadFromFile(filePath)) {
@@ -17,10 +17,10 @@ bool Texture::loadFromFile(const std::string &filePath, bool mipmap) {
 	}
 	size = vec2i(image.getSize().x,image.getSize().y);
 	
-	return loadRawRGBA8888(image.getPixelsPtr(),image.getSize().x,image.getSize().y, mipmap);
+	return loadRawRGBA8888(image.getPixelsPtr(),image.getSize().x,image.getSize().y, format, mipmap);
 }
 
-bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY, bool mipmap) {
+bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::Format format, bool mipmap) {
 	VBE_ASSERT(handle == 0, "Trying to load onto an already in use texture instance");
 	//get handle
 	GLuint tex_handle;
@@ -30,10 +30,10 @@ bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned i
 	//bind handle and set to image
 	bind();
 	glTexImage2D(
-				GL_TEXTURE_2D, 0, GL_RGBA,
+				GL_TEXTURE_2D, 0, format,
 				sizeX, sizeY,
 				0,
-				GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*) pixels
+				format, GL_UNSIGNED_BYTE, (GLvoid*) pixels
 				);
 
 	if(mipmap) {

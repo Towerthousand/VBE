@@ -1,6 +1,6 @@
 #ifndef MANAGER_HPP
 #define MANAGER_HPP
-#include "graphics/Texture.hpp"
+#include "graphics/RenderTarget.hpp"
 #include "graphics/ShaderProgram.hpp"
 #include "graphics/Mesh.hpp"
 
@@ -41,6 +41,7 @@ class Manager {
 };
 
 //default Managers
+extern Manager<RenderTarget> FrameBuffers;
 extern Manager<Texture> Textures;
 extern Manager<Mesh> Meshes;
 extern Manager<ShaderProgram> Programs;

@@ -30,7 +30,8 @@ SOURCES += \
 	$$PWD/Manager.cpp \
     VBE/modules/particles/ParticleSystem.cpp \
     VBE/modules/particles/ParticleEmitter.cpp \
-    VBE/modules/particles/Particle.cpp
+    VBE/modules/particles/Particle.cpp \
+    VBE/graphics/RenderTarget.cpp
 
 HEADERS += \
 	$$PWD/Game.hpp \
@@ -52,7 +53,8 @@ HEADERS += \
     VBE/modules/particles.hpp \
     VBE/modules/particles/ParticleSystem.hpp \
     VBE/modules/particles/ParticleEmitter.hpp \
-    VBE/modules/particles/Particle.hpp
+    VBE/modules/particles/Particle.hpp \
+    VBE/graphics/RenderTarget.hpp
 
 OTHER_FILES +=
 
