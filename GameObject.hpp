@@ -55,18 +55,20 @@ class GameObject { //scenegraph nodes
 		void removeFromParent();
 		void propragateTransforms();
 		void markForDelete();
-		void addToGame();
-		void removeFromGame();
+
+		virtual void addToContainer(GameObject* obj);
+		virtual void removeFromContainer(GameObject* obj);
 
 		GameObject* parent;
 		std::list<GameObject*> children;
 		int drawPriority;
 		int updatePriority;
 		std::string name;
-		bool inGame;
+		bool inContainer;
 		bool isAlive;
 
 		friend class Game;
+		friend class ContainerObject;
 };
 
 #endif // GAMEOBJECT_HPP

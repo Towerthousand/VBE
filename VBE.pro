@@ -31,7 +31,8 @@ SOURCES += \
     VBE/modules/particles/ParticleSystem.cpp \
     VBE/modules/particles/ParticleEmitter.cpp \
     VBE/modules/particles/Particle.cpp \
-    VBE/graphics/RenderTarget.cpp
+    VBE/graphics/RenderTarget.cpp \
+    VBE/ContainerObject.cpp
 
 HEADERS += \
 	$$PWD/Game.hpp \
@@ -54,7 +55,8 @@ HEADERS += \
     VBE/modules/particles/ParticleSystem.hpp \
     VBE/modules/particles/ParticleEmitter.hpp \
     VBE/modules/particles/Particle.hpp \
-    VBE/graphics/RenderTarget.hpp
+    VBE/graphics/RenderTarget.hpp \
+    VBE/ContainerObject.hpp
 
 OTHER_FILES +=
 

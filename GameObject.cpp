@@ -1,10 +1,12 @@
 #include "GameObject.hpp"
 #include "Game.hpp"
 
-GameObject::GameObject() : id(Game::i()->idCounter++),
+GameObject::GameObject() : id(Game::i() != NULL?Game::i()->idCounter++:0),
 	transform(1.0f), fullTransform(1.0f), parent(NULL), drawPriority(0),
-	updatePriority(0), name(""), inGame(false), isAlive(true) {
-	Game::i()->idMap.insert(std::pair<int,GameObject*>(id,this));
+	updatePriority(0), name(""), inContainer(false), isAlive(true) {
+
+	if(Game::i() != NULL)
+		Game::i()->idMap.insert(std::pair<int, GameObject*>(id,this));
 }
 
 GameObject::~GameObject() {
@@ -23,13 +25,13 @@ void GameObject::draw() const {
 
 void GameObject::addTo(GameObject *newParent) {
 	//Called whenever we want to add an object to a parent object
-	VBE_ASSERT(this != Game::i()->getRoot(), "Cannot perform this operation on root node");
 	VBE_ASSERT(parent == NULL, "Trying to attach a node that is already attached.");
 	parent = newParent;
 	parent->children.push_back(this);
 	parent->onObjectAdd(this);
-	if(parent->inGame)
-		addToGame();
+
+	if(parent->inContainer || dynamic_cast<ContainerObject*>(parent) != nullptr)
+		parent->addToContainer(this);
 }
 
 void GameObject::removeAndDelete() {
@@ -97,14 +99,17 @@ void GameObject::onObjectAdd(GameObject* object) {
 void GameObject::removeFromParent() {
 	VBE_ASSERT(parent != NULL, "Trying to detach a not attached node.");
 	parent->children.remove(this);
-	if(inGame)
-		removeFromGame();
+	if(inContainer)
+		parent->removeFromContainer(this);
 	parent = NULL;
 }
 
 void GameObject::propragateTransforms() {
-	if(this == Game::i()->root)	fullTransform = transform;
-	else fullTransform = parent->fullTransform * transform;
+	if(parent == NULL)
+		fullTransform = transform;
+	else
+		fullTransform = parent->fullTransform * transform;
+
 	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->propragateTransforms();
 }
@@ -115,19 +120,13 @@ void GameObject::markForDelete() {
 		(*it)->markForDelete();
 }
 
-void GameObject::removeFromGame() {
-	VBE_ASSERT(inGame, "Removing an object from the game that is not in game.");
-	inGame = false;
-	Game::i()->objectTasksToRemove.push(this);
-	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-		(*it)->removeFromGame();
+void GameObject::addToContainer(GameObject* obj) {
+	if(parent != nullptr)
+		parent->addToContainer(obj);
 }
 
-void GameObject::addToGame() {
-	VBE_ASSERT(!inGame, "Adding an object to the game that is already in game.");
-	inGame = true;
-	Game::i()->objectTasksToAdd.push(this);
-	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-		(*it)->addToGame();
-}
 
+void GameObject::removeFromContainer(GameObject* obj) {
+	if(parent != nullptr)
+		parent->removeFromContainer(obj);
+}

@@ -1,22 +1,9 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 #include "GameObject.hpp"
+#include "ContainerObject.hpp"
 
-class Game {
-		struct FunctorCompareDraw{
-				bool operator()(const GameObject* a, const GameObject* b) {
-					if(a->drawPriority == b->drawPriority)
-						return (a->id < b->id);
-					return (a->drawPriority < b->drawPriority);
-				}
-		};
-		struct FunctorCompareUpdate{
-				bool operator()(const GameObject* a, const GameObject* b) {
-					if(a->updatePriority == b->updatePriority)
-						return (a->id < b->id);
-					return (a->updatePriority < b->updatePriority);
-				}
-		};
+class Game : public ContainerObject {
 	public:
 		Game();
 		~Game();
@@ -25,8 +12,9 @@ class Game {
 		GameObject* getObjectByID(int id) const;
 
 		void run();
-		void setRoot(GameObject* newRoot);
-		GameObject* getRoot() {return root;}
+		virtual void update(float deltaTime);
+		virtual void draw();
+
 		int getObjectCount() const { return updateTasks.size(); }
 		sf::RenderWindow &getWindow() { return window; }
 		
@@ -34,24 +22,18 @@ class Game {
 	private:
 		static Game* i() { return Game::instance;}
 
-		void update(float deltaTime);
-		void draw();
 		bool loadResources ();
 
 		sf::RenderWindow window;
-		GameObject* root;
+
 		std::map<std::string,GameObject*> nameMap;
 		std::map<int,GameObject*> idMap;
 		int idCounter;
-		std::set<GameObject*,Game::FunctorCompareDraw> drawTasks;
-		std::set<GameObject*,FunctorCompareUpdate> updateTasks;
-
-		std::queue<GameObject*> objectTasksToAdd;
-		std::queue<GameObject*> objectTasksToRemove;
 
 		static Game* instance;
 
 		friend class GameObject;
+		friend class ContainerObject;
 };
 
 #endif //GAME_HPP
