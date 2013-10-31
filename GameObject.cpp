@@ -3,8 +3,7 @@
 
 GameObject::GameObject() : id(Game::i() != NULL?Game::i()->idCounter++:0),
 	transform(1.0f), fullTransform(1.0f), parent(NULL), drawPriority(0),
-	updatePriority(0), name(""), inContainer(false), isAlive(true) {
-
+	updatePriority(0), name(""), container(NULL), isAlive(true) {
 	if(Game::i() != NULL)
 		Game::i()->idMap.insert(std::pair<int, GameObject*>(id,this));
 }
@@ -30,7 +29,7 @@ void GameObject::addTo(GameObject *newParent) {
 	parent->children.push_back(this);
 	parent->onObjectAdd(this);
 
-	if(parent->inContainer || dynamic_cast<ContainerObject*>(parent) != nullptr)
+	if(parent->container != NULL || dynamic_cast<ContainerObject*>(parent) != nullptr)
 		parent->addToContainer(this);
 }
 
@@ -65,17 +64,17 @@ void GameObject::setName(std::string newName) {
 void GameObject::setDrawPriority(int newPriority) {
 	if(drawPriority == newPriority) return;
 	if(parent != NULL) {
-		Game::i()->objectTasksToRemove.push(this);
-		Game::i()->objectTasksToAdd.push(this);
+		container->objectTasksToRemove.push(this);
+		container->objectTasksToAdd.push(this);
 	}
 	drawPriority = newPriority;
 }
 
 void GameObject::setUpdatePriority(int newPriority) {
 	if(updatePriority == newPriority) return;
-	if(parent != NULL) {
-		Game::i()->objectTasksToRemove.push(this);
-		Game::i()->objectTasksToAdd.push(this);
+	if(container != NULL) {
+		container->objectTasksToRemove.push(this);
+		container->objectTasksToAdd.push(this);
 	}
 	updatePriority = newPriority;
 }
@@ -99,7 +98,7 @@ void GameObject::onObjectAdd(GameObject* object) {
 void GameObject::removeFromParent() {
 	VBE_ASSERT(parent != NULL, "Trying to detach a not attached node.");
 	parent->children.remove(this);
-	if(inContainer)
+	if(container != NULL)
 		parent->removeFromContainer(this);
 	parent = NULL;
 }

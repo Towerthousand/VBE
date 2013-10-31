@@ -22,8 +22,6 @@ class Game : public ContainerObject {
 	private:
 		static Game* i() { return Game::instance;}
 
-		bool loadResources ();
-
 		sf::RenderWindow window;
 
 		std::map<std::string,GameObject*> nameMap;

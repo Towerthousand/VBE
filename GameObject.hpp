@@ -3,6 +3,7 @@
 #include "tools.hpp"
 
 class Game;
+class ContainerObject;
 class GameObject { //scenegraph nodes
 	public:
 		GameObject();
@@ -64,7 +65,7 @@ class GameObject { //scenegraph nodes
 		int drawPriority;
 		int updatePriority;
 		std::string name;
-		bool inContainer;
+		ContainerObject* container;
 		bool isAlive;
 
 		friend class Game;

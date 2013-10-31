@@ -36,18 +36,21 @@ void ContainerObject::draw() {
 
 
 void ContainerObject::addToContainer(GameObject* obj) {
-	VBE_ASSERT(!obj->inContainer, "Adding an object to container that is already in a container.");
-	obj->inContainer = true;
+	VBE_ASSERT(obj->container == NULL, "Adding an object to container that is already in a container.");
+	obj->container = this;
 	objectTasksToAdd.push(obj);
-	for(std::list<GameObject*>::iterator it = obj->children.begin(); it != obj->children.end(); ++it)
-		addToContainer(*it);
+
+	if(dynamic_cast<ContainerObject*> (obj) == NULL)
+		for(std::list<GameObject*>::iterator it = obj->children.begin(); it != obj->children.end(); ++it)
+			addToContainer(*it);
 }
 
 
 void ContainerObject::removeFromContainer(GameObject* obj) {
-	VBE_ASSERT(obj->inContainer, "Removing an object from a container that is not in a container.");
-	obj->inContainer = false;
+	VBE_ASSERT(obj->container != NULL, "Removing an object from a container that is not in a container.");
+	obj->container = NULL;
 	objectTasksToRemove.push(obj);
-	for(std::list<GameObject*>::iterator it = obj->children.begin(); it != obj->children.end(); ++it)
-		removeFromContainer(*it);
+	if(dynamic_cast<ContainerObject*> (obj) == NULL)
+		for(std::list<GameObject*>::iterator it = obj->children.begin(); it != obj->children.end(); ++it)
+			removeFromContainer(*it);
 }
