@@ -37,7 +37,9 @@ class RenderTarget {
 		void attachTexture(int width, int height,Attachment target,
 						   Texture::Format textureFormat, unsigned int slot);
 		void addDrawingTarget(Attachment target);
+		void noDrawingTargets();
 		Texture* getAttachedTexture(Attachment target);
+		bool isUsable();
 
 	private:
 		class RenderBuffer {

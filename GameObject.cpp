@@ -103,13 +103,13 @@ void GameObject::removeFromParent() {
 	parent = NULL;
 }
 
-void GameObject::propragateTransforms() {
+void GameObject::propragateTransforms() const{
 	if(parent == NULL)
 		fullTransform = transform;
 	else
 		fullTransform = parent->fullTransform * transform;
 
-	for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+	for(std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->propragateTransforms();
 }
 

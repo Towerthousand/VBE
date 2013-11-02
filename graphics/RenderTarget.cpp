@@ -72,13 +72,23 @@ void RenderTarget::addDrawingTarget(Attachment target) {
 			break;
 		}
 	VBE_ASSERT(!error, "Trying to add an already added attachment to a RenderTarget");
-	bind();
 	drawAttachments.push_back(target);
+	bind();
 	glDrawBuffers(drawAttachments.size(),(GLenum*)&drawAttachments[0]);
-	VBE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "FrameBuffer Error");
+}
+
+void RenderTarget::noDrawingTargets() {
+	drawAttachments.clear();
+	bind();
+	GLenum none = GL_NONE;
+	glDrawBuffers(1,&none);
 }
 
 Texture* RenderTarget::getAttachedTexture(RenderTarget::Attachment target) {
 	VBE_ASSERT(textures.find(target) != textures.end(), "Trying to retrieve unexisting texture from FBO");
 	return textures.at(target);
+}
+
+bool RenderTarget::isUsable() {
+	return (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 }

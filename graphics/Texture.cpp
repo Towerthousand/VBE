@@ -30,7 +30,7 @@ bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned i
 	//bind handle and set to image
 	bind();
 	glTexImage2D(
-				GL_TEXTURE_2D, 0, format,
+				GL_TEXTURE_2D, 0, ((format==DEPTH_COMPONENT)?GL_DEPTH_COMPONENT32:format),
 				sizeX, sizeY,
 				0,
 				format, GL_UNSIGNED_BYTE, (GLvoid*) pixels

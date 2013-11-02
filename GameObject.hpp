@@ -23,18 +23,18 @@ class GameObject { //scenegraph nodes
 		void setUpdatePriority(int newPriority);
 
 		template<class T>
-		void getAllObjectsOfType(std::vector<T*> &v) {
-			T* p = dynamic_cast<T*>(this);
+		void getAllObjectsOfType(std::vector<const T*> &v) const {
+			const T* p = dynamic_cast<const T*>(this);
 			if(p) v.push_back(p);
-			for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+			for(std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
 				(*it)->getAllObjectsOfType<T>(v);
 		}
 
 		template<class T>
-		T* getFirstObjectOfType() {
-			T* p = dynamic_cast<T*>(this);
+		T* getFirstObjectOfType() const {
+			const T* p = dynamic_cast<const T*>(this);
 			if(p) return p;
-			for(std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+			for(std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it) {
 				p = (*it)->getFirstObjectOfType<T>();
 				if(p) return p;
 			}
@@ -51,10 +51,10 @@ class GameObject { //scenegraph nodes
 
 		//Model matrix
 		mat4f transform;
-		mat4f fullTransform;
+		mutable mat4f fullTransform;
 	private:
 		void removeFromParent();
-		void propragateTransforms();
+		void propragateTransforms() const;
 		void markForDelete();
 
 		virtual void addToContainer(GameObject* obj);

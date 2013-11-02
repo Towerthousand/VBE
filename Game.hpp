@@ -6,12 +6,12 @@
 class Game : public ContainerObject {
 	public:
 		Game();
-		~Game();
+		virtual ~Game();
 
 		GameObject* getObjectByName(std::string name) const;
 		GameObject* getObjectByID(int id) const;
 
-		void run();
+		virtual void run();
 		virtual void update(float deltaTime);
 		virtual void draw();
 

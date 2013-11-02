@@ -23,11 +23,11 @@ class ContainerObject : public GameObject {
 		};
 
 		virtual void update(float deltaTime);
-		virtual void draw();
+		virtual void draw() const;
 
 	private:
-		virtual void addToContainer(GameObject* obj);
-		virtual void removeFromContainer(GameObject* obj);
+		void addToContainer(GameObject* obj);
+		void removeFromContainer(GameObject* obj);
 
 		std::set<GameObject*, FunctorCompareDraw> drawTasks;
 		std::set<GameObject*, FunctorCompareUpdate> updateTasks;

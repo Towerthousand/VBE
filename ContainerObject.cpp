@@ -1,13 +1,9 @@
 #include "ContainerObject.hpp"
 
-ContainerObject::ContainerObject()
-{
+ContainerObject::ContainerObject() {
 }
 
-
-// Update scenegraph
 void ContainerObject::update(float deltaTime) {
-
 	while(!objectTasksToRemove.empty()) {
 		GameObject* obj = objectTasksToRemove.front();
 		updateTasks.erase(obj);
@@ -27,13 +23,11 @@ void ContainerObject::update(float deltaTime) {
 		(*it)->update(deltaTime);
 }
 
-// Draw scenegraph
-void ContainerObject::draw() {
+void ContainerObject::draw() const {
 	propragateTransforms();
 	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
 		(*it)->draw();
 }
-
 
 void ContainerObject::addToContainer(GameObject* obj) {
 	VBE_ASSERT(obj->container == NULL, "Adding an object to container that is already in a container.");
@@ -44,7 +38,6 @@ void ContainerObject::addToContainer(GameObject* obj) {
 		for(std::list<GameObject*>::iterator it = obj->children.begin(); it != obj->children.end(); ++it)
 			addToContainer(*it);
 }
-
 
 void ContainerObject::removeFromContainer(GameObject* obj) {
 	VBE_ASSERT(obj->container != NULL, "Removing an object from a container that is not in a container.");
