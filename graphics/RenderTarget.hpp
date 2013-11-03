@@ -31,7 +31,7 @@ class RenderTarget {
 		~RenderTarget();
 
 		static void bindScreen();
-		void bind();
+		void use();
 		void attachRenderBuffer(int width, int height, Attachment target,
 								Texture::Format bufferFormat);
 		void attachTexture(int width, int height,Attachment target,
@@ -49,10 +49,11 @@ class RenderTarget {
 
 				void bind() const;
 				GLuint getHandle() const;
-
 			private:
 				GLuint handle;
 		};
+
+		void bind();
 
 		static GLuint current;
 		GLuint handle;

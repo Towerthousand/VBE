@@ -44,6 +44,11 @@ void RenderTarget::bind() {
 	current = handle;
 }
 
+void RenderTarget::use() {
+	VBE_ASSERT(isUsable(),"Can't use incomplete RenderTaget");
+	bind();
+}
+
 void RenderTarget::attachRenderBuffer(int width, int height, Attachment target,
 									  Texture::Format bufferFormat) {
 	bind();
