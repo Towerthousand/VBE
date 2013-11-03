@@ -65,6 +65,8 @@ void RenderTarget::attachTexture(int width, int height, Attachment target,
 }
 
 void RenderTarget::addDrawingTarget(Attachment target) {
+	VBE_ASSERT(target != DEPTH && target != STENCIL && target != DEPTH_STENCIL,
+			   "Can only set color attachments as drawing targets");
 	bool error = false;
 	for(unsigned int i = 0; i < drawAttachments.size(); ++i)
 		if(drawAttachments[i] == target) {
