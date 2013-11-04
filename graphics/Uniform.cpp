@@ -20,6 +20,7 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_INT:
 			size = sizeof(GLint);
 			break;
+		case GL_SAMPLER_2D_SHADOW:
 		case GL_SAMPLER_2D:
 			size = sizeof(GLint);
 			break;
@@ -84,7 +85,7 @@ void Uniform::set(const std::vector<mat4f> &val) {
 }
 
 void Uniform::set(const Texture* val) {
-	VBE_ASSERT(type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(type == GL_SAMPLER_2D || type == GL_SAMPLER_2D_SHADOW, "Wrong uniform type. Location " << this->location);
 	val->bind();
 	unsigned int slot = val->getSlot();
 	setBytes((char*)&slot);
@@ -98,7 +99,8 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 		case GL_FLOAT_VEC3:	glUniform3fv(location,count,(GLfloat*)&lastValue[0]); break;
 		case GL_FLOAT_VEC4:	glUniform4fv(location,count,(GLfloat*)&lastValue[0]); break;
 		case GL_FLOAT_MAT4:	glUniformMatrix4fv(location,count,GL_FALSE,(GLfloat*)&lastValue[0]); break;
-		case GL_INT:		glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
+		case GL_INT:
+		case GL_SAMPLER_2D_SHADOW:
 		case GL_SAMPLER_2D:	glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
 		default:
 			VBE_ASSERT(false, "Unrecognised uniform type " << type);

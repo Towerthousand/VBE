@@ -70,7 +70,7 @@ void ParticleSystem::setTextureSheet(Texture* textureSheet, unsigned int texture
 
 const std::string ParticleSystem::vertexShader (
 		" \
-		#version 420 \n\
+		#version 420 core\n\
 			\
 			uniform mat4 modelViewMatrix; \
 			in vec3 a_position; \
@@ -93,7 +93,7 @@ const std::string ParticleSystem::vertexShader (
 
 const std::string ParticleSystem::geometryShader (
 		" \
-		#version 420 //4.2\n\
+		#version 420 core//4.2\n\
 		\
 		layout (points) in; \
 layout (triangle_strip, max_vertices = 4) out; \
@@ -160,11 +160,11 @@ void main() { \
 
 const std::string ParticleSystem::fragmentShader (
 		" \
-		#version 420 //4.2\n\
+		#version 420 core //4.2\n\
 		uniform sampler2D textureSheet; \
 in vec2 v_texCoord; \
 in vec4 v_color; \
 void main() { \
-	gl_FragColor = v_color*texture2D(textureSheet,v_texCoord); \
+	gl_FragColor = v_color*texture(textureSheet,v_texCoord); \
 }"
 );

@@ -62,7 +62,7 @@ void RenderTarget::attachTexture(int width, int height, Attachment target,
 									  Texture::Format textureFormat, unsigned int slot) {
 	bind();
 	Texture* tex = new Texture(slot);
-	tex->loadRawRGBA8888(NULL,width,height,textureFormat,false);
+	tex->loadRaw(NULL,width,height,textureFormat,false);
 	tex->setFilter(GL_NEAREST,GL_NEAREST);
 	textures.insert(std::pair<Attachment,Texture*>(target,tex));
 	tex->bind();

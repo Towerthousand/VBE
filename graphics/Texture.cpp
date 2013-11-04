@@ -8,19 +8,19 @@ Texture::~Texture(){
 	glDeleteTextures(1,(GLuint*) &handle);
 }
 
-bool Texture::loadFromFile(const std::string &filePath, Texture::Format format, bool mipmap) {
+bool Texture::loadFromFile(const std::string &filePath, Format format, bool mipmap) {
 	//load image
 	sf::Image image;
 	if (!image.loadFromFile(filePath)) {
 		VBE_LOG("#ERROR " << filePath << " didn't load" );
 		return false;
 	}
-	size = vec2i(image.getSize().x,image.getSize().y);
-	
-	return loadRawRGBA8888(image.getPixelsPtr(),image.getSize().x,image.getSize().y, format, mipmap);
+	return loadRaw(image.getPixelsPtr(),image.getSize().x,image.getSize().y, format, mipmap);
 }
 
-bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::Format format, bool mipmap) {
+bool Texture::loadRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Format format, bool mipmap) {
+	this->format = format;
+	size = vec2i(sizeX,sizeY);
 	VBE_ASSERT(handle == 0, "Trying to load onto an already in use texture instance");
 	//get handle
 	GLuint tex_handle;
@@ -63,6 +63,13 @@ void Texture::setWrap(GLenum wrap) const {
 	bind();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
+}
+
+void Texture::setComparison(GLenum func, GLenum mode) {
+	VBE_ASSERT(format == DEPTH_COMPONENT || format == DEPTH_STENCIL, "Can't set comparison for a non-depth, non_stencil texture");
+	bind();
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, func);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, mode);
 }
 
 void Texture::setSlot(unsigned int newSlot) {

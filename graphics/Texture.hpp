@@ -29,12 +29,13 @@ class Texture {
 		~Texture();
 
 		bool loadFromFile(const std::string& filePath,
-						  Texture::Format = Texture::RGBA, bool mipmap = false);
-		bool loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY,
-							 Texture::Format format = Texture::RGBA, bool mipmap = false);
+						  Format format = RGBA, bool mipmap = false);
+		bool loadRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY,
+							 Format format = RGBA, bool mipmap = false);
 
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap) const;
+		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
 		void setSlot(unsigned int newSlot);
 		unsigned int getSlot() const;
 		int getWidth() const;
@@ -42,10 +43,10 @@ class Texture {
 		void bind() const;
 		GLuint getHandle() const;
 	private:
-		GLuint sampler;
 		GLuint handle;
 		unsigned int slot;
 		vec2i size;
+		Format format;
 };
 
 #endif // Texture_HPP
