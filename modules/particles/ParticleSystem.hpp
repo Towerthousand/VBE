@@ -6,6 +6,7 @@
 class ParticleSystem : public GameObject {
 	public:
 		ParticleSystem();
+		~ParticleSystem();
 		void update(float deltaTime);
 		void draw() const;
 		void addParticle(const Particle& p);

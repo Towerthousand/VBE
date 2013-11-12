@@ -79,18 +79,18 @@ void ShaderProgram::makeProgram(const std::string& vp_filename, const std::strin
 }
 
 void ShaderProgram::printInfoLog() {
-	VBE_ASSERT(programHandle != 0, "Trying to query null program");
+	VBE_ASSERT(programHandle != 0, "Trying to query nullptr program");
 	int length = 0;
 	glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &length);
 	if (length > 1) {
 		char infoLog[length];
-		glGetProgramInfoLog(programHandle, length, NULL, infoLog);
+		glGetProgramInfoLog(programHandle, length, nullptr, infoLog);
 		VBE_LOG(infoLog );
 	}
 }
 
 void ShaderProgram::use() const {
-	VBE_ASSERT(programHandle != 0, "Trying to use null program");
+	VBE_ASSERT(programHandle != 0, "Trying to use nullptr program");
 	if(current != programHandle) {
 		current = programHandle;
 		glUseProgram(programHandle);
@@ -101,7 +101,7 @@ void ShaderProgram::use() const {
 
 Uniform* ShaderProgram::uniform(const std::string &name) const {
 	VBE_ASSERT(uniforms.find(name) != uniforms.end(), "Trying to retrieve unexisting uniform " << name);
-	VBE_ASSERT(programHandle != 0, "Trying to retrieve uniform from null program");
+	VBE_ASSERT(programHandle != 0, "Trying to retrieve uniform from nullptr program");
 	return uniforms.at(name);
 }
 
@@ -131,7 +131,7 @@ void ShaderProgram::retriveProgramInfo() {
 			GLint attribLocation;
 			for (int i = 0; i < activeAttributes; ++i) {
 				// Query attribute info.
-				glGetActiveAttrib(programHandle, i, length, NULL, &attribSize, &attribType, attribName);
+				glGetActiveAttrib(programHandle, i, length, nullptr, &attribSize, &attribType, attribName);
 				attribName[length] = '\0';
 
 				// Query the pre-assigned attribute location.
@@ -156,8 +156,8 @@ void ShaderProgram::retriveProgramInfo() {
 			GLint uniformLocation;
 			for (int i = 0; i < activeUniforms; ++i) {
 				// Query uniform info.
-				glGetActiveUniform(programHandle, i, length, NULL, &uniformSize, &uniformType, uniformName);
-				uniformName[length] = '\0';  // null terminate
+				glGetActiveUniform(programHandle, i, length, nullptr, &uniformSize, &uniformType, uniformName);
+				uniformName[length] = '\0';  // nullptr terminate
 				if (uniformSize > 1 && length > 3) {
 					// This is an array uniform. I'm stripping array indexers off it since GL does not
 					// seem to be consistent across different drivers/implementations in how it returns

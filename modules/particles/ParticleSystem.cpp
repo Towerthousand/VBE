@@ -1,7 +1,8 @@
 #include "ParticleSystem.hpp"
+#include "../../ResourceLoader.hpp"
 
 ParticleSystem::ParticleSystem() :
-	textureCount(0), textureSheet(NULL),
+	textureCount(0), textureSheet(nullptr),
 	projectionMatrix(1.0f), viewMatrix(1.0f) {
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position   , Vertex::Element::Float, 3));
@@ -9,21 +10,20 @@ ParticleSystem::ParticleSystem() :
 	elements.push_back(Vertex::Element(Vertex::Attribute::Color      , Vertex::Element::Float, 4));
 	elements.push_back(Vertex::Element(Vertex::Attribute::get("a_size"), Vertex::Element::Float, 1));
 	elements.push_back(Vertex::Element(Vertex::Attribute::get("a_texIndex"), Vertex::Element::Int, 1));
-	Vertex::Format format(elements);
 
-	Mesh* mesh= new Mesh(format, 0, Mesh::STREAM);
-	mesh->setPrimitiveType(Mesh::POINTS);
-	model.mesh = mesh;
-	Meshes.add("particlesMesh",mesh);
-	if(!Programs.exists("__particleShader")) {
-		ShaderProgram* p = new ShaderProgram();
-		p->makeProgramFromString(vertexShader,geometryShader,fragmentShader);
-		Programs.add("__particleShader",p);
-	}
+	model.mesh = ResourceLoader::makeEmptyMesh(Vertex::Format(elements),Mesh::STREAM);
+	model.mesh->setPrimitiveType(Mesh::POINTS);
+	ShaderProgram* p = new ShaderProgram();
+	p->makeProgramFromString(vertexShader,geometryShader,fragmentShader);
 	model.program = Programs.get("__particleShader");
 	setName("particleSystem");
 	setUpdatePriority(-100);
 	setDrawPriority(100);
+}
+
+ParticleSystem::~ParticleSystem() {
+	delete model.mesh;
+	delete model.program;
 }
 
 void ParticleSystem::update(float deltaTime) {
@@ -47,7 +47,7 @@ void ParticleSystem::update(float deltaTime) {
 void ParticleSystem::draw() const {
 	if(particles.size() == 0)
 		return;
-	VBE_ASSERT(textureSheet != NULL, "Cannot draw textureless particles, give particleSystem a textureSheet before emitting particles");
+	VBE_ASSERT(textureSheet != nullptr, "Cannot draw textureless particles, give particleSystem a textureSheet before emitting particles");
 	glDepthMask(GL_FALSE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	model.program->uniform("modelViewMatrix")->set(viewMatrix*fullTransform);

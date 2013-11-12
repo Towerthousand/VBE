@@ -50,7 +50,7 @@ void Shader::loadFromFile(const std::string &filename) {
 
 	buffer[length] = '\0';
 	const char *source = buffer;
-	glShaderSource(shaderHandle, 1, &source, NULL);
+	glShaderSource(shaderHandle, 1, &source, nullptr);
 }
 
 void Shader::loadFromString(const std::string &content) {
@@ -70,17 +70,17 @@ void Shader::compile() const {
 }
 
 void Shader::attach(GLuint program) const {
-	VBE_ASSERT(program != 0, "Trying to attach shader with id " << shaderHandle << " to null program");
+	VBE_ASSERT(program != 0, "Trying to attach shader with id " << shaderHandle << " to nullptr program");
 	glAttachShader(program, shaderHandle);
 }
 
 void Shader::printInfoLog() const {
-	VBE_ASSERT(shaderHandle != 0, "Trying to query null shader");
+	VBE_ASSERT(shaderHandle != 0, "Trying to query nullptr shader");
 	int length = 0;
 	glGetShaderiv(shaderHandle, GL_INFO_LOG_LENGTH, &length);
 	if (length > 1) {
 		char infoLog[length];
-		glGetShaderInfoLog(shaderHandle, length, NULL, infoLog);
+		glGetShaderInfoLog(shaderHandle, length, nullptr, infoLog);
 		VBE_LOG(infoLog );
 	}
 }

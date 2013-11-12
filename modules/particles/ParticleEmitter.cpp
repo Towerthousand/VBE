@@ -4,7 +4,7 @@
 ParticleEmitter::ParticleEmitter(int particlesPerSecond)
 	: oldWorldPos(0.0f), currWorldPos(0.0f),
 	  period(1.0f/particlesPerSecond),
-	  sys(NULL), state(0.0f) {
+	  sys(nullptr), state(0.0f) {
 	sys = (ParticleSystem*) getGame()->getObjectByName("particleSystem");
 }
 

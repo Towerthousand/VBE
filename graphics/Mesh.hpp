@@ -20,10 +20,9 @@ class Mesh {
 			STREAM = GL_STREAM_DRAW
 		};
 
-		Mesh(const Vertex::Format &vertexFormat, unsigned int vertexCount, BufferType dynamic = STATIC);
-		Mesh(const std::string &filename, BufferType dynamic = STATIC);
+		Mesh(BufferType bufferType = STATIC, bool indexed = false);
 		~Mesh();
-		bool loadFromFile(const std::string &filename);
+		void loadFromFile(const std::string &filename);
 
 		void draw(const ShaderProgram* program);
 
@@ -32,19 +31,25 @@ class Mesh {
 		unsigned int getVertexSize() const;
 		BufferType getType() const;
 		GLuint getVertexBuffer() const;
-
+		GLuint getIndexBuffer() const;
 		PrimitiveType getPrimitiveType() const;
+		bool isIndexed() const;
+
+		void setVertexFormat(const Vertex::Format& format);
 		void setPrimitiveType(Mesh::PrimitiveType type);
 		void setVertexData(void* vertexData, unsigned int newVertexCount);
+		void setVertexIndices(unsigned int* indexData, unsigned int newIndexCount);
 
 	private:
-		void makeVBO();
 		std::map<GLuint,const ShaderBinding*> bindingsCache;
 		Vertex::Format vertexFormat;
 		unsigned int vertexCount;
+		unsigned int indexCount;
 		GLuint vertexBuffer;
+		GLuint indexBuffer;
 		PrimitiveType primitiveType;
 		BufferType bufferType;
+		bool indexed;
 };
 
 #endif // MESH_HPP

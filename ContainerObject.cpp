@@ -30,20 +30,20 @@ void ContainerObject::draw() const {
 }
 
 void ContainerObject::addToContainer(GameObject* obj) {
-	VBE_ASSERT(obj->container == NULL, "Adding an object to container that is already in a container.");
+	VBE_ASSERT(obj->container == nullptr, "Adding an object to container that is already in a container.");
 	obj->container = this;
 	objectTasksToAdd.push(obj);
 
-	if(dynamic_cast<ContainerObject*> (obj) == NULL)
+	if(dynamic_cast<ContainerObject*> (obj) == nullptr)
 		for(std::list<GameObject*>::iterator it = obj->children.begin(); it != obj->children.end(); ++it)
 			addToContainer(*it);
 }
 
 void ContainerObject::removeFromContainer(GameObject* obj) {
-	VBE_ASSERT(obj->container != NULL, "Removing an object from a container that is not in a container.");
-	obj->container = NULL;
+	VBE_ASSERT(obj->container != nullptr, "Removing an object from a container that is not in a container.");
+	obj->container = nullptr;
 	objectTasksToRemove.push(obj);
-	if(dynamic_cast<ContainerObject*> (obj) == NULL)
+	if(dynamic_cast<ContainerObject*> (obj) == nullptr)
 		for(std::list<GameObject*>::iterator it = obj->children.begin(); it != obj->children.end(); ++it)
 			removeFromContainer(*it);
 }

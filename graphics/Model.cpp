@@ -1,14 +1,14 @@
 #include "Model.hpp"
 #include "Mesh.hpp"
 
-Model::Model() : modelMatrix(mat4f(1.0)), mesh(NULL), program(NULL) {
+Model::Model() : modelMatrix(mat4f(1.0)), mesh(nullptr), program(nullptr) {
 }
 
 Model::~Model() {
 }
 
 void Model::draw() const {
-	VBE_ASSERT(mesh != NULL, "Trying to draw with null mesh pointer");
-	VBE_ASSERT(program != NULL, "Trying to draw with null program pointer");
+	VBE_ASSERT(mesh != nullptr, "Trying to draw with nullptr mesh pointer");
+	VBE_ASSERT(program != nullptr, "Trying to draw with nullptr program pointer");
 	mesh->draw(program);
 }

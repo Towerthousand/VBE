@@ -25,7 +25,7 @@ class Texture {
 			BGRA = GL_BGRA
 		};
 
-		Texture(unsigned int slot);
+		Texture();
 		~Texture();
 
 		bool loadFromFile(const std::string& filePath,
@@ -47,6 +47,7 @@ class Texture {
 		unsigned int slot;
 		vec2i size;
 		Format format;
+		static unsigned int lastSlot;
 };
 
 #endif // Texture_HPP

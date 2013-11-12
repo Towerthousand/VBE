@@ -28,11 +28,12 @@ SOURCES += \
 	$$PWD/graphics/Uniform.cpp \
 	$$PWD/graphics/ShaderBinding.cpp \
 	$$PWD/Manager.cpp \
-    VBE/modules/particles/ParticleSystem.cpp \
-    VBE/modules/particles/ParticleEmitter.cpp \
-    VBE/modules/particles/Particle.cpp \
-    VBE/graphics/RenderTarget.cpp \
-    VBE/ContainerObject.cpp
+	$$PWD/modules/particles/ParticleSystem.cpp \
+	$$PWD/modules/particles/ParticleEmitter.cpp \
+	$$PWD/modules/particles/Particle.cpp \
+	$$PWD/graphics/RenderTarget.cpp \
+	$$PWD/ContainerObject.cpp \
+	$$PWD/ResourceLoader.cpp
 
 HEADERS += \
 	$$PWD/Game.hpp \
@@ -51,12 +52,13 @@ HEADERS += \
 	$$PWD/graphics/ShaderBinding.hpp \
 	$$PWD/includes.hpp \
 	$$PWD/Manager.hpp \
-    VBE/modules/particles.hpp \
-    VBE/modules/particles/ParticleSystem.hpp \
-    VBE/modules/particles/ParticleEmitter.hpp \
-    VBE/modules/particles/Particle.hpp \
-    VBE/graphics/RenderTarget.hpp \
-    VBE/ContainerObject.hpp
+	$$PWD/modules/particles.hpp \
+	$$PWD/modules/particles/ParticleSystem.hpp \
+	$$PWD/modules/particles/ParticleEmitter.hpp \
+	$$PWD/modules/particles/Particle.hpp \
+	$$PWD/graphics/RenderTarget.hpp \
+	$$PWD/ContainerObject.hpp \
+	$$PWD/ResourceLoader.hpp
 
 OTHER_FILES +=
 

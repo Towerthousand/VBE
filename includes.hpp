@@ -4,7 +4,7 @@
 #include "Game.hpp"
 #include "tools.hpp"
 #include "GameObject.hpp"
-#include "Manager.hpp"
+#include "ResourceLoader.hpp"
 #include "graphics/Model.hpp"
 #include "graphics/Shader.hpp"
 #include "graphics/ShaderBinding.hpp"

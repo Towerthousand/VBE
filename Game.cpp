@@ -3,10 +3,10 @@
 #include "audio/AudioManager.hpp"
 #include "input/Input.hpp"
 
-Game* Game::instance = NULL;
+Game* Game::instance = nullptr;
 
 Game::Game() :isRunning(true), idCounter(1) {
-	VBE_ASSERT(Game::instance == NULL, "Two games created");
+	VBE_ASSERT(Game::instance == nullptr, "Two games created");
 	Game::instance = this;
 	VBE_LOG("* INIT GAME");
 

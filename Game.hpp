@@ -1,6 +1,5 @@
 #ifndef GAME_HPP
 #define GAME_HPP
-#include "GameObject.hpp"
 #include "ContainerObject.hpp"
 
 class Game : public ContainerObject {

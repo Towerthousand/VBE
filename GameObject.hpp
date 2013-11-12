@@ -38,7 +38,7 @@ class GameObject { //scenegraph nodes
 				p = (*it)->getFirstObjectOfType<T>();
 				if(p) return p;
 			}
-			return NULL;
+			return nullptr;
 		}
 
 		const std::list<GameObject*>& getChildren() const;

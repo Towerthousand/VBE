@@ -1,7 +1,11 @@
 #include "Texture.hpp"
 
-Texture::Texture(unsigned int slot): handle(0), slot(slot), size(0,0){
-	VBE_ASSERT(slot < GL_MAX_TEXTURE_UNITS, "Trying to use impossible texture slot " << slot << ". Maximum is " << GL_MAX_TEXTURE_UNITS);
+unsigned int Texture::lastSlot = 0;
+
+Texture::Texture(): handle(0), slot(0), size(0,0){
+	if(lastSlot >= GL_MAX_TEXTURE_UNITS) lastSlot = 0;
+	slot = lastSlot++;
+	glGenTextures(1, &handle);
 }
 
 Texture::~Texture(){
@@ -21,11 +25,6 @@ bool Texture::loadFromFile(const std::string &filePath, Format format, bool mipm
 bool Texture::loadRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Format format, bool mipmap) {
 	this->format = format;
 	size = vec2i(sizeX,sizeY);
-	VBE_ASSERT(handle == 0, "Trying to load onto an already in use texture instance");
-	//get handle
-	GLuint tex_handle;
-	glGenTextures(1, &tex_handle);
-	handle = tex_handle;
 
 	//bind handle and set to image
 	bind();
@@ -48,7 +47,7 @@ bool Texture::loadRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY
 }
 
 void Texture::bind() const {
-	VBE_ASSERT(handle !=0, "Trying to bind null texture into slot " << slot);
+	VBE_ASSERT(handle !=0, "Trying to bind nullptr texture into slot " << slot);
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, handle);
 }

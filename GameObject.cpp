@@ -1,10 +1,10 @@
 #include "GameObject.hpp"
 #include "Game.hpp"
 
-GameObject::GameObject() : id(Game::i() != NULL?Game::i()->idCounter++:0),
-	transform(1.0f), fullTransform(1.0f), parent(NULL), drawPriority(0),
-	updatePriority(0), name(""), container(NULL), isAlive(true) {
-	if(Game::i() != NULL)
+GameObject::GameObject() : id(Game::i() != nullptr?Game::i()->idCounter++:0),
+	transform(1.0f), fullTransform(1.0f), parent(nullptr), drawPriority(0),
+	updatePriority(0), name(""), container(nullptr), isAlive(true) {
+	if(Game::i() != nullptr)
 		Game::i()->idMap.insert(std::pair<int, GameObject*>(id,this));
 }
 
@@ -24,12 +24,12 @@ void GameObject::draw() const {
 
 void GameObject::addTo(GameObject *newParent) {
 	//Called whenever we want to add an object to a parent object
-	VBE_ASSERT(parent == NULL, "Trying to attach a node that is already attached.");
+	VBE_ASSERT(parent == nullptr, "Trying to attach a node that is already attached.");
 	parent = newParent;
 	parent->children.push_back(this);
 	parent->onObjectAdd(this);
 
-	if(parent->container != NULL || dynamic_cast<ContainerObject*>(parent) != nullptr)
+	if(parent->container != nullptr || dynamic_cast<ContainerObject*>(parent) != nullptr)
 		parent->addToContainer(this);
 }
 
@@ -63,7 +63,7 @@ void GameObject::setName(std::string newName) {
 
 void GameObject::setDrawPriority(int newPriority) {
 	if(drawPriority == newPriority) return;
-	if(parent != NULL) {
+	if(parent != nullptr) {
 		container->objectTasksToRemove.push(this);
 		container->objectTasksToAdd.push(this);
 	}
@@ -72,7 +72,7 @@ void GameObject::setDrawPriority(int newPriority) {
 
 void GameObject::setUpdatePriority(int newPriority) {
 	if(updatePriority == newPriority) return;
-	if(container != NULL) {
+	if(container != nullptr) {
 		container->objectTasksToRemove.push(this);
 		container->objectTasksToAdd.push(this);
 	}
@@ -96,15 +96,15 @@ void GameObject::onObjectAdd(GameObject* object) {
 }
 
 void GameObject::removeFromParent() {
-	VBE_ASSERT(parent != NULL, "Trying to detach a not attached node.");
+	VBE_ASSERT(parent != nullptr, "Trying to detach a not attached node.");
 	parent->children.remove(this);
-	if(container != NULL)
+	if(container != nullptr)
 		parent->removeFromContainer(this);
-	parent = NULL;
+	parent = nullptr;
 }
 
 void GameObject::propragateTransforms() const{
-	if(parent == NULL)
+	if(parent == nullptr)
 		fullTransform = transform;
 	else
 		fullTransform = parent->fullTransform * transform;
