@@ -30,18 +30,36 @@ class RenderTarget {
 		RenderTarget();
 		~RenderTarget();
 
-		static void bindScreen();
-		void use();
-		void attachRenderBuffer(int width, int height, Attachment target,
-								Texture::Format bufferFormat);
-		void attachTexture(int width, int height,Attachment target,
-						   Texture::Format textureFormat, unsigned int slot);
-		void addDrawingTarget(Attachment target);
-		void noDrawingTargets();
-		Texture* getAttachedTexture(Attachment target);
-		bool isUsable();
+		static void bind(RenderTarget* renderTarget);
+
+		void addRenderBuffer(Attachment target, Texture::Format format);
+		void addTexture(Attachment target, Texture::Format format);
+
+		Texture* getTextureForAttachment(Attachment attachment);
+
+		void setSize(int width, int height);
+		void build();
 
 	private:
+
+		class RenderTargetEntry {
+			public:
+				enum Type {
+					RenderBuffer,
+					Texture
+				};
+
+				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, Texture::Format format) :
+					type(type), attachment(attachment), format(format), texture(NULL), renderBuffer(NULL) {}
+
+				Type type;
+				RenderTarget::Attachment attachment;
+				Texture::Format format;
+
+				Texture* texture;
+				RenderBuffer* renderBuffer;
+		};
+
 		class RenderBuffer {
 			public:
 				RenderBuffer(int width, int height, Texture::Format format);
@@ -53,14 +71,10 @@ class RenderTarget {
 				GLuint handle;
 		};
 
-		void bind();
-
 		static GLuint current;
-		GLuint handle;
 
-		std::vector<Attachment> drawAttachments;
-		std::map<Attachment,Texture*> textures;
-		std::map<Attachment,RenderBuffer*> buffers;
+		GLuint handle; // 0 if not built
+		std::map<Attachment, RenderTargetEntry> entries;
 };
 
 #endif // RENDERTARGET_HPP

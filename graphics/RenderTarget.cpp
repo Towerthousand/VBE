@@ -20,8 +20,9 @@ GLuint RenderTarget::RenderBuffer::getHandle() const {
 	return handle;
 }
 
-RenderTarget::RenderTarget() {
-	glGenFramebuffers(1,&handle);
+
+
+RenderTarget::RenderTarget() : handle(0) {
 }
 
 RenderTarget::~RenderTarget() {
@@ -49,8 +50,28 @@ void RenderTarget::use() {
 	bind();
 }
 
-void RenderTarget::attachRenderBuffer(int width, int height, Attachment target,
-									  Texture::Format bufferFormat) {
+void RenderTarget::addRenderBuffer(RenderTarget::Attachment target, Texture::Format format) {
+	VBE_ASSERT(entries.find(target) == entries.end(), "There's already an entry with the requested Attachment");
+	entries[target] = RenderTargetEntry(RenderTargetEntry::Type::RenderBuffer, target, format);
+}
+
+void RenderTarget::addTexture(RenderTarget::Attachment target, Texture::Format format) {
+	VBE_ASSERT(entries.find(target) == entries.end(), "There's already an entry with the requested Attachment");
+	entries[target] = RenderTargetEntry(RenderTargetEntry::Type::Texture, target, format);
+}
+
+void RenderTarget::build() {
+	VBE_ASSERT(handle == 0, "This RenderTarget is already built");
+	VBE_ASSERT(entries.size() != 0, "This RenderTarget has no textures or render buffers.");
+
+	glGenFramebuffers(1,&handle);
+	for(std::map<Attachment, RenderTargetEntry> it = entries.begin(); it != entries.end(); ++it) {
+		RenderTargetEntry& e = it->second;
+
+	}
+}
+
+void RenderTarget::attachRenderBuffer(int width, int height, Attachment target, Texture::Format bufferFormat) {
 	bind();
 	RenderBuffer* buff = new RenderBuffer(width,height,bufferFormat);
 	buffers.insert(std::pair<Attachment,RenderBuffer*>(target,buff));
