@@ -32,6 +32,8 @@ class RenderTarget {
 
 		static void bind(RenderTarget* renderTarget);
 
+		int getWidth() const { return width; }
+		int getHeight() const { return height; }
 		void setSize(int width, int height);
 		void addRenderBuffer(Attachment target, Texture::Format format);
 		void addTexture(Attachment target, Texture::Format format);
