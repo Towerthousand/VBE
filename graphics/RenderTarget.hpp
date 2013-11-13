@@ -27,38 +27,21 @@ class RenderTarget {
 			COLOR15 = GL_COLOR_ATTACHMENT15
 		};
 
-		RenderTarget();
+		RenderTarget(int width, int height);
 		~RenderTarget();
 
 		static void bind(RenderTarget* renderTarget);
 
+		void setSize(int width, int height);
 		void addRenderBuffer(Attachment target, Texture::Format format);
 		void addTexture(Attachment target, Texture::Format format);
 
 		Texture* getTextureForAttachment(Attachment attachment);
 
-		void setSize(int width, int height);
 		void build();
+		void destroy();
 
 	private:
-
-		class RenderTargetEntry {
-			public:
-				enum Type {
-					RenderBuffer,
-					Texture
-				};
-
-				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, Texture::Format format) :
-					type(type), attachment(attachment), format(format), texture(NULL), renderBuffer(NULL) {}
-
-				Type type;
-				RenderTarget::Attachment attachment;
-				Texture::Format format;
-
-				Texture* texture;
-				RenderBuffer* renderBuffer;
-		};
 
 		class RenderBuffer {
 			public:
@@ -71,9 +54,29 @@ class RenderTarget {
 				GLuint handle;
 		};
 
+
+		class RenderTargetEntry {
+			public:
+				enum Type {
+					RenderBufferEntry,
+					TextureEntry
+				};
+
+				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, Texture::Format format) :
+					type(type), attachment(attachment), format(format), texture(nullptr), renderBuffer(nullptr) {}
+
+				Type type;
+				RenderTarget::Attachment attachment;
+				Texture::Format format;
+
+				Texture* texture;
+				RenderBuffer* renderBuffer;
+		};
+
 		static GLuint current;
 
 		GLuint handle; // 0 if not built
+		int width, height;
 		std::map<Attachment, RenderTargetEntry> entries;
 };
 

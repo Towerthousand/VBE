@@ -10,7 +10,7 @@ Game::Game() :isRunning(true), idCounter(1) {
 	Game::instance = this;
 	VBE_LOG("* INIT GAME");
 
-	window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Fullscreen,CONTEXT_SETTINGS_OPENGL);
+	window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE, sf::Style::Fullscreen, CONTEXT_SETTINGS_OPENGL);
 	window.setMouseCursorVisible(false);
 	window.setKeyRepeatEnabled(false);
 	window.setVerticalSyncEnabled(false);
