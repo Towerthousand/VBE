@@ -8,58 +8,58 @@ ShaderProgram::ShaderProgram() : programHandle(0) {
 }
 
 ShaderProgram::~ShaderProgram() {
-	if(programHandle != 0) {
+	if(programHandle != 0)
 		glDeleteProgram(programHandle);
-	}
-	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
+	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it)
 		delete it->second;
-	}
 }
 
-void ShaderProgram::makeProgram(const std::string &vp_filename, const std::string &fp_filename, bool raw) {
-	VBE_ASSERT(programHandle == 0, "Trying to remake an already made program!");
-	Shader* vertex = Shader::makeShader(vp_filename, GL_VERTEX_SHADER, raw);
-	Shader* fragment = Shader::makeShader(fp_filename, GL_FRAGMENT_SHADER, raw);
+ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, const std::string& fragSource) {
+	ShaderProgram* p = new ShaderProgram();
+	Shader* vertex = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
+	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
+	VBE_DLOG("* Creating new shaderProgram");
 
-	if(!raw) {
-		VBE_DLOG("* Creating new shaderProgram with " << vp_filename << " and " << fp_filename );
-	}
-	else {
-		VBE_DLOG("* Creating new shaderProgram with two raw strings");
-	}
+	p->programHandle = glCreateProgram();
 
-	programHandle = glCreateProgram();
-
-	vertex->attach(programHandle);
-	fragment->attach(programHandle);
-	link();
-	retriveProgramInfo();
+	vertex->attach(p->programHandle);
+	fragment->attach(p->programHandle);
+	p->link();
+	p->retriveProgramInfo();
 	delete vertex;
 	delete fragment;
+	return p;
 }
 
-void ShaderProgram::makeProgram(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename, bool raw) {
-	Shader* vertex = Shader::makeShader(vp_filename, GL_VERTEX_SHADER, raw);
-	Shader* geometry = Shader::makeShader(gp_filename, GL_GEOMETRY_SHADER, raw);
-	Shader* fragment = Shader::makeShader(fp_filename, GL_FRAGMENT_SHADER, raw);
-	VBE_DLOG(vp_filename);
-	if(!raw) {
-		VBE_DLOG("* Creating new shaderProgram with " << vp_filename << ", " << gp_filename << " and " << fp_filename );
-	}
-	else {
-		VBE_DLOG("* Creating new shaderProgram with three raw strings");
-	}
+ShaderProgram*ShaderProgram::loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource) {
+	ShaderProgram* p = new ShaderProgram();
+	Shader* vertex = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
+	Shader* geometry = Shader::loadShader(geomSource, GL_GEOMETRY_SHADER);
+	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
+	VBE_DLOG("* Creating new shaderProgram");
 
-	programHandle = glCreateProgram();
+	p->programHandle = glCreateProgram();
 
-	vertex->attach(programHandle);
-	geometry->attach(programHandle);
-	fragment->attach(programHandle);
-	link();
-	retriveProgramInfo();
+	vertex->attach(p->programHandle);
+	geometry->attach(p->programHandle);
+	fragment->attach(p->programHandle);
+	p->link();
+	p->retriveProgramInfo();
 	delete vertex;
 	delete geometry;
 	delete fragment;
+	return p;
+}
+
+ShaderProgram*ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& fp_filename) {
+	return loadFromString(readFileIntoString(vp_filename),
+								 readFileIntoString(fp_filename));
+}
+
+ShaderProgram*ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename) {
+	return loadFromString(readFileIntoString(vp_filename),
+								 readFileIntoString(gp_filename),
+								 readFileIntoString(fp_filename));
 }
 
 void ShaderProgram::printInfoLog() {
@@ -148,10 +148,8 @@ void ShaderProgram::retriveProgramInfo() {
 					// array uniforms. On some systems it will return "u_matrixArray", while on others
 					// it will return "u_matrixArray[0]".
 					char* c = strrchr(uniformName, '[');
-					if (c) {
-						*c = '\0';
+					if (c) *c = '\0';
 					}
-				}
 
 				// Query the pre-assigned uniform location.
 				uniformLocation = glGetUniformLocation(programHandle, uniformName);
@@ -176,4 +174,24 @@ void ShaderProgram::retriveProgramInfo() {
 		it->second->log();
 	}
 	VBE_DLOG("--------------" );
+}
+
+std::string ShaderProgram::readFileIntoString(const std::string& filename){
+	std::ifstream is;
+	is.open(filename, std::ios::in);
+	VBE_ASSERT(!is.fail(),"Failed to get the contents from " << filename );
+	// get length of file
+	is.seekg(0, std::ios::end);
+	int length = (int) is.tellg();
+	is.seekg(0, std::ios::beg);
+
+	// allocate memory:
+	std::string s(length, 0);
+
+	// read data as a block:
+	is.read(&s[0], length);
+	is.close();
+
+	VBE_LOG(s);
+	return s;
 }

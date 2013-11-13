@@ -20,9 +20,10 @@ class Mesh {
 			STREAM = GL_STREAM_DRAW
 		};
 
-		Mesh(BufferType bufferType = STATIC, bool indexed = false);
+		static Mesh* loadFromFile(const std::string filepath, Mesh::BufferType bufferType = STATIC);
+		static Mesh* loadEmpty(Vertex::Format format, Mesh::BufferType bufferType = STATIC, bool indexed = false);
+
 		~Mesh();
-		void loadFromFile(const std::string &filename);
 
 		void draw(const ShaderProgram* program);
 
@@ -35,14 +36,15 @@ class Mesh {
 		PrimitiveType getPrimitiveType() const;
 		bool isIndexed() const;
 
-		void setVertexFormat(const Vertex::Format& format);
 		void setPrimitiveType(Mesh::PrimitiveType type);
 		void setVertexData(void* vertexData, unsigned int newVertexCount);
 		void setVertexIndices(unsigned short* indexData, unsigned int newIndexCount);
 
 	private:
+		Mesh(Vertex::Format format, BufferType bufferType = STATIC, bool indexed = false);
+
 		std::map<GLuint,const ShaderBinding*> bindingsCache;
-		Vertex::Format vertexFormat;
+		const Vertex::Format vertexFormat;
 		unsigned int vertexCount;
 		unsigned int indexCount;
 		GLuint vertexBuffer;

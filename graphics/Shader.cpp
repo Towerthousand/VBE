@@ -8,49 +8,25 @@ Shader::~Shader() {
 	glDeleteShader(shaderHandle);
 }
 
-Shader* Shader::makeShader(const std::string& data, GLenum shaderType, bool raw) {
-	std::string out = (!raw? data: "string");
+Shader* Shader::loadShader(const std::string& data, GLenum shaderType) {
 	switch(shaderType) {
 		case GL_FRAGMENT_SHADER:
-			VBE_DLOG("* Loading new fragment shader from " << out );
+			VBE_DLOG("* Loading new fragment shader");
 			break;
 		case GL_GEOMETRY_SHADER:
-			VBE_DLOG("* Loading new geometry shader from " << out );
+			VBE_DLOG("* Loading new geometry shader");
 			break;
 		case GL_VERTEX_SHADER:
-			VBE_DLOG("* Loading new vertex shader from " << out );
+			VBE_DLOG("* Loading new vertex shader");
 			break;
 		default:
 			break;
 	}
 	Shader* s = new Shader(shaderType);
-	if(raw) s->loadFromString(data);
-	else s->loadFromFile(data);
+	s->loadFromString(data);
 	s->compile();
-	VBE_DLOG( " - Compiled " << out << " successfully." );
+	VBE_DLOG(" - Compiled " << out << " successfully.");
 	return s;
-}
-
-void Shader::loadFromFile(const std::string &filename) {
-	std::ifstream is;
-	is.open(filename, std::ios::in);
-	VBE_ASSERT(!is.fail(),"Failed to get the contents from " << filename );
-
-	// get length of file
-	is.seekg(0, std::ios::end);
-	int length = (int) is.tellg();
-	is.seekg(0, std::ios::beg);
-
-	// allocate memory:
-	char buffer[length+1];
-
-	// read data as a block:
-	is.read(buffer, length);
-	is.close();
-
-	buffer[length] = '\0';
-	const char *source = buffer;
-	glShaderSource(shaderHandle, 1, &source, nullptr);
 }
 
 void Shader::loadFromString(const std::string &content) {

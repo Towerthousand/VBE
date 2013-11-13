@@ -58,12 +58,9 @@ void RenderTarget::attachRenderBuffer(int width, int height, Attachment target,
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, target, GL_RENDERBUFFER, buff->getHandle());
 }
 
-void RenderTarget::attachTexture(int width, int height, Attachment target,
-									  Texture::Format textureFormat, unsigned int slot) {
+void RenderTarget::attachTexture(int width, int height, Attachment target, Texture::Format textureFormat, unsigned int slot) {
 	bind();
-	Texture* tex = new Texture();
-	tex->setSlot(slot);
-	tex->loadRaw(nullptr,width,height,textureFormat,false);
+	Texture* tex = Texture::loadFromRaw(nullptr,width,height,textureFormat,false,slot);
 	tex->setFilter(GL_NEAREST,GL_NEAREST);
 	textures.insert(std::pair<Attachment,Texture*>(target,tex));
 	tex->bind();

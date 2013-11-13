@@ -6,11 +6,12 @@ class Shader;
 class Uniform;
 class ShaderProgram {
 	public:
-		ShaderProgram();
 		~ShaderProgram();
 
-		void makeProgram(const std::string& vp_filename, const std::string& fp_filename, bool raw);
-		void makeProgram(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename, bool raw);
+		static ShaderProgram* loadFromString(const std::string &vertSource, const std::string &fragSource);
+		static ShaderProgram* loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
+		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& fp_filename);
+		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename);
 
 		GLuint getHandle() const {return programHandle;}
 
@@ -21,9 +22,12 @@ class ShaderProgram {
 		std::map<std::string,Uniform*> uniforms;
 
 	private:
+		ShaderProgram();
+
 		void link();
 		void retriveProgramInfo();
 		void printInfoLog();
+		static std::string readFileIntoString(const std::string& filename);
 
 		static GLuint current;
 

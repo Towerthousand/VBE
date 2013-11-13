@@ -1,5 +1,4 @@
 #include "ParticleSystem.hpp"
-#include "../../ResourceLoader.hpp"
 
 ParticleSystem::ParticleSystem() :
 	textureCount(0), textureSheet(nullptr),
@@ -11,9 +10,9 @@ ParticleSystem::ParticleSystem() :
 	elements.push_back(Vertex::Element(Vertex::Attribute::get("a_size"), Vertex::Element::Float, 1));
 	elements.push_back(Vertex::Element(Vertex::Attribute::get("a_texIndex"), Vertex::Element::Int, 1));
 
-	model.mesh = ResourceLoader::makeEmptyMesh(Vertex::Format(elements),Mesh::STREAM);
+	model.mesh = Mesh::loadEmpty(Vertex::Format(elements),Mesh::STREAM);
 	model.mesh->setPrimitiveType(Mesh::POINTS);
-	model.program = ResourceLoader::makeProgramFromString(vertexShader,geometryShader,fragmentShader);
+	model.program = ShaderProgram::loadFromString(vertexShader,geometryShader,fragmentShader);
 	setName("particleSystem");
 	setUpdatePriority(-100);
 	setDrawPriority(100);

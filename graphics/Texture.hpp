@@ -25,13 +25,10 @@ class Texture {
 			BGRA = GL_BGRA
 		};
 
-		Texture();
 		~Texture();
 
-		bool loadFromFile(const std::string& filePath,
-						  Format format = RGBA, bool mipmap = false);
-		bool loadRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY,
-							 Format format = RGBA, bool mipmap = false);
+		static Texture* loadFromFile(const std::string& filePath, Texture::Format format = Texture::RGBA, bool mipmap = false, int slot = -1);
+		static Texture* loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::Format format = Texture::RGBA, bool mipmap = false, int slot = -1);
 
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap) const;
@@ -43,6 +40,8 @@ class Texture {
 		void bind() const;
 		GLuint getHandle() const;
 	private:
+		Texture();
+
 		GLuint handle;
 		unsigned int slot;
 		vec2i size;

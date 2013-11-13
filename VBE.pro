@@ -32,8 +32,7 @@ SOURCES += \
 	$$PWD/modules/particles/ParticleEmitter.cpp \
 	$$PWD/modules/particles/Particle.cpp \
 	$$PWD/graphics/RenderTarget.cpp \
-	$$PWD/ContainerObject.cpp \
-	$$PWD/ResourceLoader.cpp
+	$$PWD/ContainerObject.cpp
 
 HEADERS += \
 	$$PWD/Game.hpp \
@@ -57,8 +56,7 @@ HEADERS += \
 	$$PWD/modules/particles/ParticleEmitter.hpp \
 	$$PWD/modules/particles/Particle.hpp \
 	$$PWD/graphics/RenderTarget.hpp \
-	$$PWD/ContainerObject.hpp \
-	$$PWD/ResourceLoader.hpp
+	$$PWD/ContainerObject.hpp
 
 OTHER_FILES +=
 

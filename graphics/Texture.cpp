@@ -12,38 +12,40 @@ Texture::~Texture(){
 	glDeleteTextures(1,(GLuint*) &handle);
 }
 
-bool Texture::loadFromFile(const std::string &filePath, Format format, bool mipmap) {
+Texture* Texture::loadFromFile(const std::string& filePath, Texture::Format format, bool mipmap, int slot) {
 	//load image
 	sf::Image image;
 	if (!image.loadFromFile(filePath)) {
 		VBE_LOG("#ERROR " << filePath << " didn't load" );
-		return false;
 	}
-	return loadRaw(image.getPixelsPtr(),image.getSize().x,image.getSize().y, format, mipmap);
+	return loadFromRaw(image.getPixelsPtr(),image.getSize().x,image.getSize().y, format, mipmap, slot);
 }
 
-bool Texture::loadRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Format format, bool mipmap) {
-	this->format = format;
-	size = vec2i(sizeX,sizeY);
+Texture* Texture::loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::Format format, bool mipmap, int slot) {
+	Texture* tex = new Texture();
+	if(slot != -1)
+		tex->setSlot(slot);
+	tex->format = format;
+	tex->size = vec2i(sizeX,sizeY);
 
 	//bind handle and set to image
-	bind();
+	tex->bind();
 	glTexImage2D(
-				GL_TEXTURE_2D, 0, ((format==DEPTH_COMPONENT)?GL_DEPTH_COMPONENT32:format),
+				GL_TEXTURE_2D, 0, ((tex->format==Texture::DEPTH_COMPONENT)?GL_DEPTH_COMPONENT32:tex->format),
 				sizeX, sizeY,
 				0,
-				format, GL_UNSIGNED_BYTE, (GLvoid*) pixels
+				tex->format, GL_UNSIGNED_BYTE, (GLvoid*) pixels
 				);
 
 	if(mipmap) {
 		glGenerateMipmap(GL_TEXTURE_2D);
-		setFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+		tex->setFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
 	}
 	else
-		setFilter(GL_LINEAR, GL_LINEAR);
+		tex->setFilter(GL_LINEAR, GL_LINEAR);
 
-	setWrap(GL_REPEAT);
-	return true;
+	tex->setWrap(GL_REPEAT);
+	return tex;
 }
 
 void Texture::bind() const {

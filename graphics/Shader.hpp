@@ -6,7 +6,7 @@ class Shader {
 	public:
 		~Shader();
 
-		static Shader* makeShader(const std::string& location, GLenum shaderType, bool raw);
+		static Shader* loadShader(const std::string& data, GLenum shaderType);
 		void attach(GLuint program) const;
 	private:
 		Shader(GLenum type);
