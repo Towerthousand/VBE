@@ -192,6 +192,5 @@ std::string ShaderProgram::readFileIntoString(const std::string& filename){
 	is.read(&s[0], length);
 	is.close();
 
-	VBE_LOG(s);
 	return s;
 }

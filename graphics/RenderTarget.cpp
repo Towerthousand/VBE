@@ -20,8 +20,6 @@ GLuint RenderTarget::RenderBuffer::getHandle() const {
 	return handle;
 }
 
-
-
 RenderTarget::RenderTarget(int width, int height) : handle(0), width(width), height(height) {
 }
 
@@ -31,14 +29,13 @@ RenderTarget::~RenderTarget() {
 }
 
 void RenderTarget::bind(RenderTarget* target) {
-	GLuint handle = 0;
-	if(target != nullptr) {
-		VBE_ASSERT(target->handle != 0, "This RenderTarget not yet built");
-		handle = target->handle;
-	}
-
+	GLuint handle = (target == nullptr)? 0 : target->handle;
+	VBE_ASSERT(target == nullptr || handle != 0, "This RenderTarget not yet built");
 	if(current == handle) return;
 	glBindFramebuffer(GL_FRAMEBUFFER, handle);
+	if(handle != 0)
+		glViewport(0,0,target->width,target->height);
+	else glViewport(0,0,SCRWIDTH,SCRHEIGHT);
 	current = handle;
 }
 
