@@ -53,19 +53,33 @@
 #include <glm/gtc/matrix_transform.hpp> // translate, rotate, scale, perspective
 
 //math typedefs
-typedef glm::detail::tvec4<int> vec4i;
-typedef glm::detail::tvec4<float> vec4f;
-typedef glm::detail::tvec4<double> vec4d;
-typedef glm::detail::tvec4<uint> vec4ui;
-typedef glm::detail::tvec3<int> vec3i;
-typedef glm::detail::tvec3<float> vec3f;
-typedef glm::detail::tvec3<double> vec3d;
-typedef glm::detail::tvec3<uint> vec3ui;
-typedef glm::detail::tvec2<int> vec2i;
 typedef glm::detail::tvec2<float> vec2f;
+typedef glm::detail::tvec3<float> vec3f;
+typedef glm::detail::tvec4<float> vec4f;
 typedef glm::detail::tvec2<double> vec2d;
-typedef glm::detail::tvec2<uint> vec2ui;
+typedef glm::detail::tvec3<double> vec3d;
+typedef glm::detail::tvec4<double> vec4d;
+typedef glm::detail::tvec2<int> vec2i;
+typedef glm::detail::tvec3<int> vec3i;
+typedef glm::detail::tvec4<int> vec4i;
+typedef glm::detail::tvec2<unsigned int> vec2ui;
+typedef glm::detail::tvec3<unsigned int> vec3ui;
+typedef glm::detail::tvec4<unsigned int> vec4ui;
+typedef glm::detail::tvec2<short> vec2s;
+typedef glm::detail::tvec3<short> vec3s;
+typedef glm::detail::tvec4<short> vec4s;
+typedef glm::detail::tvec2<unsigned short> vec2us;
+typedef glm::detail::tvec3<unsigned short> vec3us;
+typedef glm::detail::tvec4<unsigned short> vec4us;
+typedef glm::detail::tvec2<char> vec2c;
+typedef glm::detail::tvec3<char> vec3c;
+typedef glm::detail::tvec4<char> vec4c;
+typedef glm::detail::tvec2<unsigned char> vec2uc;
+typedef glm::detail::tvec3<unsigned char> vec3uc;
+typedef glm::detail::tvec4<unsigned char> vec4uc;
 typedef glm::detail::tvec2<bool> vec2b;
+typedef glm::detail::tvec3<bool> vec3b;
+typedef glm::detail::tvec4<bool> vec4b;
 typedef glm::detail::tmat2x2<float> mat2f;
 typedef glm::detail::tmat3x3<float> mat3f;
 typedef glm::detail::tmat4x4<float> mat4f;

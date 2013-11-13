@@ -3,7 +3,7 @@
 unsigned int Texture::lastSlot = 0;
 
 Texture::Texture(): handle(0), slot(0), size(0,0){
-	if(lastSlot >= GL_MAX_TEXTURE_UNITS) lastSlot = 0;
+	lastSlot = lastSlot%(GL_MAX_TEXTURE_UNITS-GL_TEXTURE0-2);
 	slot = lastSlot++;
 	glGenTextures(1, &handle);
 }

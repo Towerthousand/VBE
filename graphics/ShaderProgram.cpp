@@ -16,22 +16,6 @@ ShaderProgram::~ShaderProgram() {
 	}
 }
 
-void ShaderProgram::makeProgramFromString(const std::string& vertSource, const std::string& fragSource) {
-	makeProgram(vertSource,fragSource,true);
-}
-
-void ShaderProgram::makeProgramFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource) {
-	makeProgram(vertSource,geomSource,fragSource,true);
-}
-
-void ShaderProgram::makeProgramFromFile(const std::string& vp_filename, const std::string& fp_filename) {
-	makeProgram(vp_filename,fp_filename,false);
-}
-
-void ShaderProgram::makeProgramFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename) {
-	makeProgram(vp_filename,gp_filename,fp_filename,false);
-}
-
 void ShaderProgram::makeProgram(const std::string &vp_filename, const std::string &fp_filename, bool raw) {
 	VBE_ASSERT(programHandle == 0, "Trying to remake an already made program!");
 	Shader* vertex = Shader::makeShader(vp_filename, GL_VERTEX_SHADER, raw);

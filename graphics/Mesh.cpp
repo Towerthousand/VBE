@@ -19,10 +19,6 @@ Mesh::Mesh(BufferType bufferType, bool indexed) :
 	if(indexed) {
 		glGenBuffers(1, &indexBuffer);
 		VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create IBO for mesh");
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-		VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to bind IBO for mesh");
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, nullptr, indexBuffer);
-		VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to load IBO with empty vertex data");
 	}
 }
 
@@ -41,12 +37,8 @@ void Mesh::draw(const ShaderProgram *program) {
 	const ShaderBinding* binding = bindingsCache.at(handle);
 	program->use();
 	binding->bindVAO();
-	if(!indexed) {
-		glDrawArrays(primitiveType, 0, vertexCount);
-	}
-	else {
-		glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0);
-	}
+	if(!indexed) glDrawArrays(primitiveType, 0, vertexCount);
+	else glDrawElements(primitiveType, indexCount, GL_UNSIGNED_SHORT, 0);
 }
 
 const Vertex::Format& Mesh::getVertexFormat() const {
@@ -96,7 +88,7 @@ void Mesh::setVertexData(void* vertexData, unsigned int newVertexCount) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Mesh::setVertexIndices(unsigned int* indexData, unsigned int newIndexCount) {
+void Mesh::setVertexIndices(unsigned short* indexData, unsigned int newIndexCount) {
 	VBE_ASSERT(indexed, "Cannot set indexes for a non-indexed mesh");
 	indexCount = newIndexCount;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);

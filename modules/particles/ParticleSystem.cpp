@@ -13,9 +13,7 @@ ParticleSystem::ParticleSystem() :
 
 	model.mesh = ResourceLoader::makeEmptyMesh(Vertex::Format(elements),Mesh::STREAM);
 	model.mesh->setPrimitiveType(Mesh::POINTS);
-	ShaderProgram* p = new ShaderProgram();
-	p->makeProgramFromString(vertexShader,geometryShader,fragmentShader);
-	model.program = Programs.get("__particleShader");
+	model.program = ResourceLoader::makeProgramFromString(vertexShader,geometryShader,fragmentShader);
 	setName("particleSystem");
 	setUpdatePriority(-100);
 	setDrawPriority(100);

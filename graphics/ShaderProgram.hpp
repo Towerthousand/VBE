@@ -9,10 +9,8 @@ class ShaderProgram {
 		ShaderProgram();
 		~ShaderProgram();
 
-		void makeProgramFromString(const std::string &vertSource, const std::string &fragSource);
-		void makeProgramFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
-		void makeProgramFromFile(const std::string& vp_filename, const std::string& fp_filename);
-		void makeProgramFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename);
+		void makeProgram(const std::string& vp_filename, const std::string& fp_filename, bool raw);
+		void makeProgram(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename, bool raw);
 
 		GLuint getHandle() const {return programHandle;}
 
@@ -23,8 +21,6 @@ class ShaderProgram {
 		std::map<std::string,Uniform*> uniforms;
 
 	private:
-		void makeProgram(const std::string& vp_filename, const std::string& fp_filename, bool raw);
-		void makeProgram(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename, bool raw);
 		void link();
 		void retriveProgramInfo();
 		void printInfoLog();

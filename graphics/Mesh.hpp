@@ -38,7 +38,7 @@ class Mesh {
 		void setVertexFormat(const Vertex::Format& format);
 		void setPrimitiveType(Mesh::PrimitiveType type);
 		void setVertexData(void* vertexData, unsigned int newVertexCount);
-		void setVertexIndices(unsigned int* indexData, unsigned int newIndexCount);
+		void setVertexIndices(unsigned short* indexData, unsigned int newIndexCount);
 
 	private:
 		std::map<GLuint,const ShaderBinding*> bindingsCache;
