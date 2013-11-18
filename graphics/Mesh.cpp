@@ -92,6 +92,18 @@ void Mesh::setVertexIndices(unsigned short* indexData, unsigned int newIndexCoun
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+struct FunctorCompareVec3s{
+    bool operator()(const vec3s& a, const vec3s& b)
+    {
+        if(a.x != b.x) return a.x < b.x;
+        if(a.y != b.y) return a.y < b.y;
+        if(a.z != b.z) return a.z < b.z;
+        return false;
+    }
+
+};
+
+
 Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType) {
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
@@ -114,13 +126,15 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 	std::vector<vert> dataIndexed; //indexed data
 	std::vector<vert> dataNotIndexed; //unindexed data
 
+    std::map<vec3s, int, FunctorCompareVec3s> indexMap;
+
 	std::string line;
 	while (getline(in, line)) {
 		if (line.substr(0,2) == "v ") {
 			std::istringstream s(line.substr(2));
 			vec3f v;
 			s >> v.x >> v.y >> v.z;
-			vertices.push_back(v);
+            vertices.push_back(v);
 		}
 		else if (line.substr(0,3) == "vn ") {
 			std::istringstream s(line.substr(3));
@@ -143,22 +157,24 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 							 >> vInf[1].x >> b >> vInf[1].y >> b >> vInf[1].z
 							 >> vInf[2].x >> b >> vInf[2].y >> b >> vInf[2].z;
 			vec3s indexes(-1,-1,-1);
+
 			for(unsigned int i = 0; i < 3; ++i)
-				for(unsigned int j = 0; j < dataIndexed.size(); ++j)
-					if(dataIndexed[j].pos == vertices[vInf[i].x-1] &&
-					   dataIndexed[j].tex == textures[vInf[i].y-1] &&
-					   dataIndexed[j].nor == normals[vInf[i].z-1])
-						indexes[i] = j;
-			for(unsigned int i = 0; i < 3; ++i) {
-				if(indexes[i] < 0) {
-					indexes[i] = dataIndexed.size();
-					dataIndexed.push_back(vert(vertices[vInf[i].x-1],normals[vInf[i].z-1],textures[vInf[i].y-1]));
-				}
-				indices.push_back(indexes[i]);
-			}
-			dataNotIndexed.push_back(vert(vertices[vInf[0].x-1],normals[vInf[0].z-1],textures[vInf[0].y-1]));
-			dataNotIndexed.push_back(vert(vertices[vInf[1].x-1],normals[vInf[1].z-1],textures[vInf[1].y-1]));
-			dataNotIndexed.push_back(vert(vertices[vInf[2].x-1],normals[vInf[2].z-1],textures[vInf[2].y-1]));
+            {
+                std::map<vec3s, int, FunctorCompareVec3s>::iterator it = indexMap.find(vInf[i]);
+                int ind = 0;
+                if(it == indexMap.end())
+                {
+                    ind = indexMap.size();
+                    indexMap.insert(std::pair<vec3s, int>(vInf[i], dataIndexed.size()));
+                    dataIndexed.push_back(vert(vertices[vInf[i].x-1],normals[vInf[i].z-1],textures[vInf[i].y-1]));
+                }
+                else
+                    ind = it->second;
+
+                indices.push_back(ind);
+
+                dataNotIndexed.push_back(vert(vertices[vInf[i].x-1],normals[vInf[i].z-1],textures[vInf[i].y-1]));
+            }
 		}
 	}
 	float sizeWithIndex = dataIndexed.size()*sizeof(dataIndexed[0])+indices.size()*sizeof(indices[0]);
