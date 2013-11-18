@@ -35,8 +35,8 @@ class RenderTarget {
 		int getWidth() const { return width; }
 		int getHeight() const { return height; }
 		void setSize(int width, int height);
-		void addRenderBuffer(Attachment target, Texture::Format format);
-		void addTexture(Attachment target, Texture::Format format);
+		void addRenderBuffer(Attachment target, Texture::InternalFormat format);
+		void addTexture(Attachment target, Texture::InternalFormat format);
 
 		Texture* getTextureForAttachment(Attachment attachment);
 
@@ -47,7 +47,7 @@ class RenderTarget {
 
 		class RenderBuffer {
 			public:
-				RenderBuffer(int width, int height, Texture::Format format);
+				RenderBuffer(int width, int height, Texture::InternalFormat format);
 				~RenderBuffer();
 
 				void bind() const;
@@ -64,12 +64,12 @@ class RenderTarget {
 					TextureEntry
 				};
 
-				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, Texture::Format format) :
+				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, Texture::InternalFormat format) :
 					type(type), attachment(attachment), format(format), texture(nullptr), renderBuffer(nullptr) {}
 
 				Type type;
 				RenderTarget::Attachment attachment;
-				Texture::Format format;
+				Texture::InternalFormat format;
 
 				Texture* texture;
 				RenderBuffer* renderBuffer;

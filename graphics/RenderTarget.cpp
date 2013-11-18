@@ -2,7 +2,7 @@
 
 GLuint RenderTarget::current = 0;
 
-RenderTarget::RenderBuffer::RenderBuffer(int width, int height, Texture::Format format) {
+RenderTarget::RenderBuffer::RenderBuffer(int width, int height, Texture::InternalFormat format) {
 	glGenRenderbuffers(1, &handle);
 	bind();
 	glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
@@ -21,6 +21,7 @@ GLuint RenderTarget::RenderBuffer::getHandle() const {
 }
 
 RenderTarget::RenderTarget(int width, int height) : handle(0), width(width), height(height) {
+	VBE_ASSERT(width != 0 && height != 0, "Invalid dimensions for RenderTarget (height:" << height << " width:" << width);
 }
 
 RenderTarget::~RenderTarget() {
@@ -30,7 +31,7 @@ RenderTarget::~RenderTarget() {
 
 void RenderTarget::bind(RenderTarget* target) {
 	GLuint handle = (target == nullptr)? 0 : target->handle;
-	VBE_ASSERT(target == nullptr || handle != 0, "This RenderTarget not yet built");
+	VBE_ASSERT(target == nullptr || handle != 0, "Cannot bind unbuilt RenderTarget");
 	if(current == handle) return;
 	glBindFramebuffer(GL_FRAMEBUFFER, handle);
 	if(handle != 0)
@@ -40,25 +41,26 @@ void RenderTarget::bind(RenderTarget* target) {
 }
 
 void RenderTarget::setSize(int width, int height) {
-	VBE_ASSERT(handle == 0, "This RenderTarget is already built");
+	VBE_ASSERT(handle == 0, "Cannot set size of already built RenderTarget. Call RenderTarget::destroy() first or add before building");
+	VBE_ASSERT(width != 0 && height != 0, "Invalid dimensions for RenderTarget (height:" << height << " width:" << width);
 	this->width = width;
 	this->height = height;
 }
 
-void RenderTarget::addRenderBuffer(RenderTarget::Attachment attachment, Texture::Format format) {
-	VBE_ASSERT(handle == 0, "This RenderTarget is already built");
+void RenderTarget::addRenderBuffer(RenderTarget::Attachment attachment, Texture::InternalFormat format) {
+	VBE_ASSERT(handle == 0, "Cannot add RenderBuffer to already built RenderTarget. Call RenderTarget::destroy() first or add before building");
 	VBE_ASSERT(entries.find(attachment) == entries.end(), "There's already an entry with the requested Attachment");
 	entries.insert(std::pair<Attachment, RenderTargetEntry> (attachment, RenderTargetEntry(RenderTargetEntry::RenderBufferEntry, attachment, format)));
 }
 
-void RenderTarget::addTexture(RenderTarget::Attachment attachment, Texture::Format format) {
-	VBE_ASSERT(handle == 0, "This RenderTarget is already built");
+void RenderTarget::addTexture(RenderTarget::Attachment attachment, Texture::InternalFormat format) {
+	VBE_ASSERT(handle == 0, "Cannot add texture to already built RenderTarget. Call RenderTarget::destroy() first or add before building");
 	VBE_ASSERT(entries.find(attachment) == entries.end(), "There's already an entry with the requested Attachment");
 	entries.insert(std::pair<Attachment, RenderTargetEntry> (attachment, RenderTargetEntry(RenderTargetEntry::TextureEntry, attachment, format)));
 }
 
 void RenderTarget::build() {
-	VBE_ASSERT(handle == 0, "This RenderTarget is already built");
+	VBE_ASSERT(handle == 0, "Cannot rebuild already built RenderTarget. Call RenderTarget::destroy() first");
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget has no textures or render buffers.");
 
 	glGenFramebuffers(1,&handle);
@@ -76,7 +78,7 @@ void RenderTarget::build() {
 			e.renderBuffer = buff;
 		}
 		else {
-			Texture* tex = Texture::loadFromRaw(nullptr, width, height, e.format);
+			Texture* tex = Texture::loadEmpty(width, height, e.format);
 			tex->bind();
 			glFramebufferTexture(GL_FRAMEBUFFER, e.attachment, tex->getHandle(), 0);
 			e.texture = tex;
@@ -97,18 +99,16 @@ void RenderTarget::build() {
 }
 
 void RenderTarget::destroy() {
-	VBE_ASSERT(handle != 0, "Can't destroy a not built RenderTarget");
+	VBE_ASSERT(handle != 0, "Can't destroy an unbuilt RenderTarget");
 
 	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
 		RenderTargetEntry& e = it->second;
 
 		if(e.type == RenderTargetEntry::RenderBufferEntry) {
-			VBE_ASSERT(e.renderBuffer != nullptr, "this should never happen. wat do?");
 			delete e.renderBuffer;
 			e.renderBuffer = nullptr;
 		}
 		else {
-			VBE_ASSERT(e.texture != nullptr, "this should never happen. wat do?");
 			delete e.texture;
 			e.texture = nullptr;
 		}
@@ -118,7 +118,7 @@ void RenderTarget::destroy() {
 }
 
 Texture* RenderTarget::getTextureForAttachment(RenderTarget::Attachment target) {
-	VBE_ASSERT(handle != 0, "This RenderTarget not yet built");
+	VBE_ASSERT(handle != 0, "Can't get texture for attachment without building it first");
 	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");
 	RenderTargetEntry& e = entries.at(target);
 	VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");

@@ -12,31 +12,36 @@ Texture::~Texture(){
 	glDeleteTextures(1,(GLuint*) &handle);
 }
 
-Texture* Texture::loadFromFile(const std::string& filePath, Texture::Format format, bool mipmap, int slot) {
+Texture*Texture::loadEmpty(unsigned int sizeX, unsigned int sizeY, Texture::InternalFormat format, int slot) {
+	SourceFormat sFormat = RGBA;
+	SourceType sType = UNSIGNED_BYTE;
+	switch (format) {
+		case R8_SNORM: case R8I: case R8UI: case R16: case R16F: case R16I: case R16UI: case R16_SNORM: case R32F: case R32I: case R32UI: case R8: sFormat = RED; break;
+		case RG8_SNORM: case RG8I: case RG8UI: case RG16: case RG16F: case RG16I: case RG16UI: case RG16_SNORM: case RG32F: case RG32I: case RG32UI: case RG8: sFormat = RG; break;
+		case RGB4: case RGB5: case RGB8_SNORM: case RGB8I: case RGB8UI: case RGB10: case RGB12: case RGB16_SNORM: case RGB16F: case RGB16I: case RGB16UI: case RGB32F: case RGB32I: case RGB32UI: case RGB8: sFormat = RGB; break;
+		case RGBA2: case RGBA4: case RGBA8_SNORM: case RGBA12: case RGBA16: case RGBA16F: case RGBA32F: case RGBA8I: case RGBA8UI: case RGBA16I: case RGBA16UI: case RGBA32I: case RGBA32UI: case RGBA8: sFormat = RGBA; break;
+		case DEPTH_COMPONENT16: case DEPTH_COMPONENT24: case DEPTH_COMPONENT32F: case DEPTH24_STENCIL8: case DEPTH32F_STENCIL8: case DEPTH_COMPONENT32: sFormat = DEPTH_COMPONENT; sType = UNSIGNED_INT; break;
+	}
+	return loadFromRaw(nullptr,sizeX,sizeY,sFormat,sType,format,false,slot);
+}
+
+Texture* Texture::loadFromFile(const std::string& filePath, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
 	//load image
 	sf::Image image;
 	if (!image.loadFromFile(filePath)) {
 		VBE_LOG("#ERROR " << filePath << " didn't load" );
 	}
-	return loadFromRaw(image.getPixelsPtr(),image.getSize().x,image.getSize().y, format, mipmap, slot);
+	return loadFromRaw(image.getPixelsPtr(),image.getSize().x,image.getSize().y,sourceFormat,sourceType,internalFormat,mipmap,slot);
 }
 
-Texture* Texture::loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::Format format, bool mipmap, int slot) {
+Texture* Texture::loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
 	Texture* tex = new Texture();
 	if(slot != -1)
 		tex->setSlot(slot);
-	tex->format = format;
+	tex->format = internalFormat;
 	tex->size = vec2i(sizeX,sizeY);
-
-	//bind handle and set to image
 	tex->bind();
-	glTexImage2D(
-				GL_TEXTURE_2D, 0, ((tex->format==Texture::DEPTH_COMPONENT)?GL_DEPTH_COMPONENT32:tex->format),
-				sizeX, sizeY,
-				0,
-				tex->format, GL_UNSIGNED_BYTE, (GLvoid*) pixels
-				);
-
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, sizeX, sizeY, 0, sourceFormat, sourceType, (GLvoid*) pixels);
 	if(mipmap) {
 		glGenerateMipmap(GL_TEXTURE_2D);
 		tex->setFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
@@ -67,7 +72,7 @@ void Texture::setWrap(GLenum wrap) const {
 }
 
 void Texture::setComparison(GLenum func, GLenum mode) {
-	VBE_ASSERT(format == DEPTH_COMPONENT || format == DEPTH_STENCIL, "Can't set comparison for a non-depth, non_stencil texture");
+	VBE_ASSERT(format == DEPTH_COMPONENT16 || format == DEPTH_COMPONENT24 || format == DEPTH_COMPONENT32 || format == DEPTH_COMPONENT32F || format == DEPTH24_STENCIL8 || format == DEPTH32F_STENCIL8, "Can't set comparison for a non-depth, non_stencil texture");
 	bind();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, func);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, mode);
