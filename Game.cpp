@@ -62,7 +62,5 @@ void Game::run() {
 		update(deltaTime);
 		draw();
 	}
-	float deltaTime = clock.restart().asSeconds();
-	update(deltaTime);
-	draw();
+	update(0.1f);
 }
