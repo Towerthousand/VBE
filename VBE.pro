@@ -28,9 +28,6 @@ SOURCES += \
 	$$PWD/graphics/Uniform.cpp \
 	$$PWD/graphics/ShaderBinding.cpp \
 	$$PWD/Manager.cpp \
-	$$PWD/modules/particles/ParticleSystem.cpp \
-	$$PWD/modules/particles/ParticleEmitter.cpp \
-	$$PWD/modules/particles/Particle.cpp \
 	$$PWD/graphics/RenderTarget.cpp \
 	$$PWD/ContainerObject.cpp
 
@@ -51,10 +48,6 @@ HEADERS += \
 	$$PWD/graphics/ShaderBinding.hpp \
 	$$PWD/includes.hpp \
 	$$PWD/Manager.hpp \
-	$$PWD/modules/particles.hpp \
-	$$PWD/modules/particles/ParticleSystem.hpp \
-	$$PWD/modules/particles/ParticleEmitter.hpp \
-	$$PWD/modules/particles/Particle.hpp \
 	$$PWD/graphics/RenderTarget.hpp \
 	$$PWD/ContainerObject.hpp
 
