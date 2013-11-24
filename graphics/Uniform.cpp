@@ -8,6 +8,9 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_FLOAT:
 			size = sizeof(GLfloat);
 			break;
+		case GL_FLOAT_VEC2:
+			size = sizeof(GLfloat)*2;
+			break;
 		case GL_FLOAT_VEC3:
 			size = sizeof(GLfloat)*3;
 			break;
@@ -54,6 +57,16 @@ void Uniform::set(const std::vector<float> &val) {
 	setBytes((char*)&val[0]);
 }
 
+void Uniform::set(const vec2f &val) {
+	VBE_ASSERT(type == GL_FLOAT_VEC2, "Wrong uniform type. Location " << this->location);
+	setBytes((char*)&val[0]);
+}
+void Uniform::set(const std::vector<vec2f> &val) {
+	VBE_ASSERT(type == GL_FLOAT_VEC2, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
+	setBytes((char*)&val[0][0]);
+}
+
 void Uniform::set(const vec3f &val) {
 	VBE_ASSERT(type == GL_FLOAT_VEC3, "Wrong uniform type. Location " << this->location);
 	setBytes((char*)&val[0]);
@@ -96,6 +109,7 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 	dirty = false;
 	switch(type) {
 		case GL_FLOAT:		glUniform1fv(location,count,(GLfloat*)&lastValue[0]); break;
+		case GL_FLOAT_VEC2:	glUniform2fv(location,count,(GLfloat*)&lastValue[0]); break;
 		case GL_FLOAT_VEC3:	glUniform3fv(location,count,(GLfloat*)&lastValue[0]); break;
 		case GL_FLOAT_VEC4:	glUniform4fv(location,count,(GLfloat*)&lastValue[0]); break;
 		case GL_FLOAT_MAT4:	glUniformMatrix4fv(location,count,GL_FALSE,(GLfloat*)&lastValue[0]); break;
@@ -130,6 +144,7 @@ void Uniform::log() {
 			  <<" bytes per item and of type ");
 	switch(type) {
 		case GL_FLOAT: VBE_DLOG("GL_FLOAT"); break;
+		case GL_FLOAT_VEC2: VBE_DLOG("GL_FLOAT_VEC2"); break;
 		case GL_FLOAT_VEC3: VBE_DLOG("GL_FLOAT_VEC3"); break;
 		case GL_FLOAT_VEC4: VBE_DLOG("GL_FLOAT_VEC4"); break;
 		case GL_FLOAT_MAT4: VBE_DLOG("GL_FLOAT_MAT4"); break;
