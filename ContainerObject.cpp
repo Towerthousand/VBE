@@ -19,13 +19,13 @@ void ContainerObject::update(float deltaTime) {
 		objectTasksToAdd.pop();
 	}
 
-	for(std::set<GameObject*,FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it)
+	for(std::set<GameObject*, FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it)
 		(*it)->update(deltaTime);
 }
 
 void ContainerObject::draw() const {
 	propragateTransforms();
-	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
+	for(std::set<GameObject*, FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
 		(*it)->draw();
 }
 

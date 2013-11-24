@@ -2,14 +2,14 @@
 
 unsigned int Texture::lastSlot = 0;
 
-Texture::Texture(): handle(0), slot(0), size(0,0){
+Texture::Texture(): handle(0), slot(0), size(0, 0){
 	lastSlot = lastSlot%(GL_MAX_TEXTURE_UNITS-GL_TEXTURE0-2);
 	slot = lastSlot++;
 	glGenTextures(1, &handle);
 }
 
 Texture::~Texture(){
-	glDeleteTextures(1,(GLuint*) &handle);
+	glDeleteTextures(1, (GLuint*) &handle);
 }
 
 Texture*Texture::loadEmpty(unsigned int sizeX, unsigned int sizeY, Texture::InternalFormat format, int slot) {
@@ -22,7 +22,7 @@ Texture*Texture::loadEmpty(unsigned int sizeX, unsigned int sizeY, Texture::Inte
 		case RGBA2: case RGBA4: case RGBA8_SNORM: case RGBA12: case RGBA16: case RGBA16F: case RGBA32F: case RGBA8I: case RGBA8UI: case RGBA16I: case RGBA16UI: case RGBA32I: case RGBA32UI: case RGBA8: sFormat = RGBA; break;
 		case DEPTH_COMPONENT16: case DEPTH_COMPONENT24: case DEPTH_COMPONENT32F: case DEPTH24_STENCIL8: case DEPTH32F_STENCIL8: case DEPTH_COMPONENT32: sFormat = DEPTH_COMPONENT; sType = UNSIGNED_INT; break;
 	}
-	return loadFromRaw(nullptr,sizeX,sizeY,sFormat,sType,format,false,slot);
+	return loadFromRaw(nullptr, sizeX, sizeY, sFormat, sType, format, false, slot);
 }
 
 Texture* Texture::loadFromFile(const std::string& filePath, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
@@ -31,7 +31,7 @@ Texture* Texture::loadFromFile(const std::string& filePath, Texture::SourceForma
 	if (!image.loadFromFile(filePath)) {
 		VBE_LOG("#ERROR " << filePath << " didn't load" );
 	}
-	return loadFromRaw(image.getPixelsPtr(),image.getSize().x,image.getSize().y,sourceFormat,sourceType,internalFormat,mipmap,slot);
+	return loadFromRaw(image.getPixelsPtr(), image.getSize().x, image.getSize().y, sourceFormat, sourceType, internalFormat, mipmap, slot);
 }
 
 Texture* Texture::loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
@@ -39,7 +39,7 @@ Texture* Texture::loadFromRaw(const void* pixels, unsigned int sizeX, unsigned i
 	if(slot != -1)
 		tex->setSlot(slot);
 	tex->format = internalFormat;
-	tex->size = vec2i(sizeX,sizeY);
+	tex->size = vec2i(sizeX, sizeY);
 	tex->bind();
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, sizeX, sizeY, 0, sourceFormat, sourceType, (GLvoid*) pixels);
 	if(mipmap) {

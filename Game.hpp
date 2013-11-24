@@ -23,8 +23,8 @@ class Game : public ContainerObject {
 
 		sf::RenderWindow window;
 
-		std::map<std::string,GameObject*> nameMap;
-		std::map<int,GameObject*> idMap;
+		std::map<std::string, GameObject*> nameMap;
+		std::map<int, GameObject*> idMap;
 		int idCounter;
 
 		static Game* instance;

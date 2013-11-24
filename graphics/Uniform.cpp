@@ -31,7 +31,7 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 			VBE_ASSERT(false, "Unrecognised uniform type " << type); break;
 	}
 	size *= count;
-	lastValue = std::vector<char>(size,0);
+	lastValue = std::vector<char>(size, 0);
 }
 
 Uniform::~Uniform() {
@@ -108,14 +108,14 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 	if(!dirty) return;
 	dirty = false;
 	switch(type) {
-		case GL_FLOAT:		glUniform1fv(location,count,(GLfloat*)&lastValue[0]); break;
-		case GL_FLOAT_VEC2:	glUniform2fv(location,count,(GLfloat*)&lastValue[0]); break;
-		case GL_FLOAT_VEC3:	glUniform3fv(location,count,(GLfloat*)&lastValue[0]); break;
-		case GL_FLOAT_VEC4:	glUniform4fv(location,count,(GLfloat*)&lastValue[0]); break;
-		case GL_FLOAT_MAT4:	glUniformMatrix4fv(location,count,GL_FALSE,(GLfloat*)&lastValue[0]); break;
+		case GL_FLOAT:		glUniform1fv(location, count, (GLfloat*)&lastValue[0]); break;
+		case GL_FLOAT_VEC2:	glUniform2fv(location, count, (GLfloat*)&lastValue[0]); break;
+		case GL_FLOAT_VEC3:	glUniform3fv(location, count, (GLfloat*)&lastValue[0]); break;
+		case GL_FLOAT_VEC4:	glUniform4fv(location, count, (GLfloat*)&lastValue[0]); break;
+		case GL_FLOAT_MAT4:	glUniformMatrix4fv(location, count, GL_FALSE, (GLfloat*)&lastValue[0]); break;
 		case GL_INT:
 		case GL_SAMPLER_2D_SHADOW:
-		case GL_SAMPLER_2D:	glUniform1iv(location,count,(GLint*)&lastValue[0]); break;
+		case GL_SAMPLER_2D:	glUniform1iv(location, count, (GLint*)&lastValue[0]); break;
 		default:
 			VBE_ASSERT(false, "Unrecognised uniform type " << type);
 			break;

@@ -10,10 +10,10 @@ class Manager {
 		Manager() {}
 		virtual ~Manager() {}
 
-		void add  (const std::string& resID,T* resource) {
+		void add  (const std::string& resID, T* resource) {
 			VBE_ASSERT(resources.find(resID) == resources.end(), "Failed to add resource. resource " << resID << " already exists");
 			VBE_LOG("* Adding resource with ID " << resID );
-			resources.insert(std::pair<std::string,T*>(resID,resource));
+			resources.insert(std::pair<std::string, T*>(resID, resource));
 		}
 
 		T*   get  (const std::string& resID) const {
@@ -37,7 +37,7 @@ class Manager {
 				erase(resources.begin()->first);
 		}
 	private:
-		std::map<std::string,T*> resources;
+		std::map<std::string, T*> resources;
 };
 
 //default Managers

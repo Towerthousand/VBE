@@ -11,11 +11,11 @@ ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
 	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create VAO for mesh");
 	glBindVertexArray(vertexArrayObject);
 	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to bind VAO with id " << vertexArrayObject);
-	glBindBuffer(GL_ARRAY_BUFFER,mesh->getVertexBuffer());
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->getVertexBuffer());
 	if(mesh->isIndexed())
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mesh->getIndexBuffer());
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndexBuffer());
 	const Vertex::Format format = mesh->getVertexFormat();
-	for(std::map<std::string,GLint>::const_iterator it = program->attributes.begin(); it != program->attributes.end(); ++it) {
+	for(std::map<std::string, GLint>::const_iterator it = program->attributes.begin(); it != program->attributes.end(); ++it) {
 		for(unsigned int i = 0; i < format.elementCount(); ++i) {
 			const Vertex::Element* current = &format.element(i);
 			if(current->attr.hasName(it->first)) {

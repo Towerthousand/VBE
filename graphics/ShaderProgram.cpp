@@ -10,7 +10,7 @@ ShaderProgram::ShaderProgram() : programHandle(0) {
 ShaderProgram::~ShaderProgram() {
 	if(programHandle != 0)
 		glDeleteProgram(programHandle);
-	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it)
+	for(std::map<std::string, Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it)
 		delete it->second;
 }
 
@@ -79,7 +79,7 @@ void ShaderProgram::use() const {
 		current = programHandle;
 		glUseProgram(programHandle);
 	}
-	for(std::map<std::string,Uniform*>::const_iterator it = uniforms.begin(); it != uniforms.end(); ++it)
+	for(std::map<std::string, Uniform*>::const_iterator it = uniforms.begin(); it != uniforms.end(); ++it)
 		it->second->ready();
 }
 
@@ -163,13 +163,13 @@ void ShaderProgram::retriveProgramInfo() {
 	//PRINT ATTRIBUTE INFO
 	VBE_DLOG("--------------" );
 	VBE_DLOG("Printing attribute info:" );
-	for(std::map<std::string,GLint>::iterator it = attributes.begin(); it != attributes.end(); ++it) {
+	for(std::map<std::string, GLint>::iterator it = attributes.begin(); it != attributes.end(); ++it) {
 		VBE_DLOG(it->first << " at location " << it->second );
 	}
 
 	//PRINT UNIFORM INFO
 	VBE_DLOG("Printing uniform info:" );
-	for(std::map<std::string,Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
+	for(std::map<std::string, Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
 		VBE_DLOG(it->first << ":" );
 		it->second->log();
 	}
@@ -179,7 +179,7 @@ void ShaderProgram::retriveProgramInfo() {
 std::string ShaderProgram::readFileIntoString(const std::string& filename){
 	std::ifstream is;
 	is.open(filename, std::ios::in);
-	VBE_ASSERT(!is.fail(),"Failed to get the contents from " << filename );
+	VBE_ASSERT(!is.fail(), "Failed to get the contents from " << filename );
 	// get length of file
 	is.seekg(0, std::ios::end);
 	int length = (int) is.tellg();

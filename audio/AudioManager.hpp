@@ -15,8 +15,8 @@ class AudioManager {
 		static void clear();
 
 	private:
-		static std::map<std::string,sf::Music*> musicBank;
-		static std::map<std::string,std::pair<sf::SoundBuffer*,sf::Sound*>> effectBank;
+		static std::map<std::string, sf::Music*> musicBank;
+		static std::map<std::string, std::pair<sf::SoundBuffer*, sf::Sound*>> effectBank;
 		AudioManager();
 		~AudioManager();
 };

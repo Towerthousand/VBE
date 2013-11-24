@@ -9,8 +9,8 @@ std::set<sf::Mouse::Button> Input::mouseButtonsDown;
 std::set<sf::Mouse::Button> Input::mouseButtonsReleased;
 
 bool Input::focus(true);
-vec2i Input::lastMousePos(0,0);
-vec2i Input::mouseDisplacement(0,0);
+vec2i Input::lastMousePos(0, 0);
+vec2i Input::mouseDisplacement(0, 0);
 
 Input::Input() {
 }
@@ -18,13 +18,13 @@ Input::Input() {
 Input::~Input() {
 }
 
-void Input::update(bool &isGameRunning,sf::Window &window) {
+void Input::update(bool &isGameRunning, sf::Window &window) {
 	keysPressed = std::set<sf::Keyboard::Key>();
 	keysReleased = std::set<sf::Keyboard::Key>();
 	mouseButtonsPressed = std::set<sf::Mouse::Button>();
 	mouseButtonsReleased = std::set<sf::Mouse::Button>();
 	lastMousePos += mouseDisplacement;
-	mouseDisplacement = vec2i(0,0);
+	mouseDisplacement = vec2i(0, 0);
 	sf::Event event;
 	while(window.pollEvent(event)) {
 		switch(event.type) {
@@ -51,7 +51,7 @@ void Input::update(bool &isGameRunning,sf::Window &window) {
 				mouseButtonsDown.erase(event.mouseButton.button);
 				break;
 			case sf::Event::MouseMoved:
-				mouseDisplacement = vec2i(event.mouseMove.x,event.mouseMove.y) - lastMousePos;
+				mouseDisplacement = vec2i(event.mouseMove.x, event.mouseMove.y) - lastMousePos;
 				break;
 			case sf::Event::KeyPressed:
 				if(event.key.code == sf::Keyboard::Escape)
@@ -70,7 +70,7 @@ void Input::update(bool &isGameRunning,sf::Window &window) {
 }
 
 void Input::setMousePos(int x, int y, sf::Window& window) {
-	sf::Mouse::setPosition(sf::Vector2i(x,y),window);
-	lastMousePos = vec2i(x,y);
-	mouseDisplacement = vec2i(0,0);
+	sf::Mouse::setPosition(sf::Vector2i(x, y), window);
+	lastMousePos = vec2i(x, y);
+	mouseDisplacement = vec2i(0, 0);
 }

@@ -10,7 +10,7 @@ Game::Game() :isRunning(true), idCounter(1) {
 	Game::instance = this;
 	VBE_LOG("* INIT GAME");
 
-	window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE, sf::Style::Default, CONTEXT_SETTINGS_OPENGL);
+	window.create(sf::VideoMode(SCRWIDTH, SCRHEIGHT, 32), WINDOW_TITLE, sf::Style::Default, CONTEXT_SETTINGS_OPENGL);
 	SCRWIDTH = window.getSize().x;
 	SCRHEIGHT = window.getSize().y;
 	window.setMouseCursorVisible(false);
@@ -34,7 +34,7 @@ Game::~Game() {
 }
 
 void Game::update(float deltaTime) {
-	Input::update(isRunning,window);
+	Input::update(isRunning, window);
 	ContainerObject::update(deltaTime);
 }
 
@@ -45,12 +45,12 @@ void Game::draw() {
 }
 
 GameObject* Game::getObjectByName(std::string name) const {
-	VBE_ASSERT(nameMap.find(name) != nameMap.end(),"There is no object named " << name);
+	VBE_ASSERT(nameMap.find(name) != nameMap.end(), "There is no object named " << name);
 	return nameMap.at(name);
 }
 
 GameObject* Game::getObjectByID(int id) const {
-	VBE_ASSERT(idMap.find(id) != idMap.end(),"There is no object with id " << id);
+	VBE_ASSERT(idMap.find(id) != idMap.end(), "There is no object with id " << id);
 	return idMap.at(id);
 }
 

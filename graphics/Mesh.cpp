@@ -24,8 +24,8 @@ Mesh::Mesh(Vertex::Format format, BufferType bufferType, bool indexed) :
 
 Mesh::~Mesh() {
 	if(vertexBuffer != 0)
-		glDeleteBuffers(1,&vertexBuffer);
-	for(std::map<GLuint,const ShaderBinding*>::iterator it = bindingsCache.begin(); it != bindingsCache.end(); ++it)
+		glDeleteBuffers(1, &vertexBuffer);
+	for(std::map<GLuint, const ShaderBinding*>::iterator it = bindingsCache.begin(); it != bindingsCache.end(); ++it)
 		delete it->second;
 }
 
@@ -33,7 +33,7 @@ void Mesh::draw(const ShaderProgram *program) {
 	VBE_ASSERT(program->getHandle() != 0, "nullptr program when about to draw mesh");
 	GLuint handle = program->getHandle();
 	if(bindingsCache.find(handle) == bindingsCache.end())
-		bindingsCache.insert(std::pair<GLuint,const ShaderBinding*>(handle,new ShaderBinding(program, this)));
+		bindingsCache.insert(std::pair<GLuint, const ShaderBinding*>(handle, new ShaderBinding(program, this)));
 	const ShaderBinding* binding = bindingsCache.at(handle);
 	program->use();
 	binding->bindVAO();
@@ -93,7 +93,7 @@ void Mesh::setVertexIndices(unsigned short* indexData, unsigned int newIndexCoun
 }
 
 struct FunctorCompareVec3s{
-    bool operator()(const vec3s& a, const vec3s& b)
+	bool operator()(const vec3s& a, const vec3s& b)
     {
         if(a.x != b.x) return a.x < b.x;
         if(a.y != b.y) return a.y < b.y;
@@ -112,7 +112,7 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 
 	struct vert {
 			vert(vec3f pos, vec3f nor, vec2f tex) : pos(pos) , nor(nor), tex(tex) {}
-			vec3f pos,nor;
+			vec3f pos, nor;
 			vec2f tex;
 	};
 
@@ -126,54 +126,54 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 	std::vector<vert> dataIndexed; //indexed data
 	std::vector<vert> dataNotIndexed; //unindexed data
 
-    std::map<vec3s, int, FunctorCompareVec3s> indexMap;
+	std::map<vec3s, int, FunctorCompareVec3s> indexMap;
 
 	std::string line;
 	while (getline(in, line)) {
-		if (line.substr(0,2) == "v ") {
+		if (line.substr(0, 2) == "v ") {
 			std::istringstream s(line.substr(2));
 			vec3f v;
 			s >> v.x >> v.y >> v.z;
             vertices.push_back(v);
 		}
-		else if (line.substr(0,3) == "vn ") {
+		else if (line.substr(0, 3) == "vn ") {
 			std::istringstream s(line.substr(3));
 			vec3f v;
 			s >> v.x >> v.y >> v.z;
 			normals.push_back(v);
 		}
-		else if (line.substr(0,3) == "vt ") {
+		else if (line.substr(0, 3) == "vt ") {
 			std::istringstream s(line.substr(3));
 			vec2f v;
 			s >> v.x >> v.y;
 			v.y = 1-v.y;
 			textures.push_back(v);
 		}
-		else if (line.substr(0,2) == "f ") {
+		else if (line.substr(0, 2) == "f ") {
 			std::istringstream s(line.substr(2));
-			std::vector<vec3s> vInf(3,vec3s(0));
+			std::vector<vec3s> vInf(3, vec3s(0));
 			char b;
 			s   >> vInf[0].x >> b >> vInf[0].y >> b >> vInf[0].z
 							 >> vInf[1].x >> b >> vInf[1].y >> b >> vInf[1].z
 							 >> vInf[2].x >> b >> vInf[2].y >> b >> vInf[2].z;
-			vec3s indexes(-1,-1,-1);
+			vec3s indexes(-1, -1, -1);
 
 			for(unsigned int i = 0; i < 3; ++i)
             {
-                std::map<vec3s, int, FunctorCompareVec3s>::iterator it = indexMap.find(vInf[i]);
+				std::map<vec3s, int, FunctorCompareVec3s>::iterator it = indexMap.find(vInf[i]);
                 int ind = 0;
                 if(it == indexMap.end())
                 {
                     ind = indexMap.size();
-                    indexMap.insert(std::pair<vec3s, int>(vInf[i], dataIndexed.size()));
-                    dataIndexed.push_back(vert(vertices[vInf[i].x-1],normals[vInf[i].z-1],textures[vInf[i].y-1]));
+					indexMap.insert(std::pair<vec3s, int>(vInf[i], dataIndexed.size()));
+					dataIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], textures[vInf[i].y-1]));
                 }
                 else
                     ind = it->second;
 
                 indices.push_back(ind);
 
-                dataNotIndexed.push_back(vert(vertices[vInf[i].x-1],normals[vInf[i].z-1],textures[vInf[i].y-1]));
+				dataNotIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], textures[vInf[i].y-1]));
             }
 		}
 	}
@@ -182,17 +182,17 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 
 	Mesh* mesh = nullptr;
 	if(sizeWithoutIndex > sizeWithIndex) { //indexed
-		mesh = new Mesh(Vertex::Format(elements),bufferType,true);
-		mesh->setVertexData(&dataIndexed[0],dataIndexed.size());
-		mesh->setVertexIndices(&indices[0],indices.size());
+		mesh = new Mesh(Vertex::Format(elements), bufferType, true);
+		mesh->setVertexData(&dataIndexed[0], dataIndexed.size());
+		mesh->setVertexIndices(&indices[0], indices.size());
 	}
 	else { //not indexed
-		mesh = new Mesh(Vertex::Format(elements),bufferType,false);
-		mesh->setVertexData(&dataNotIndexed[0],dataNotIndexed.size());
+		mesh = new Mesh(Vertex::Format(elements), bufferType, false);
+		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 	}
 	return mesh;
 }
 
 Mesh* Mesh::loadEmpty(Vertex::Format format, Mesh::BufferType bufferType, bool indexed) {
-	return new Mesh(format,bufferType,indexed);
+	return new Mesh(format, bufferType, indexed);
 }

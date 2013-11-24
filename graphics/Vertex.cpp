@@ -38,7 +38,7 @@ namespace Vertex {
 		std::map<std::string, Attribute*>::iterator it = names.find(name);
 		if (it == names.end()) {
 			attributes.push_back(new Attribute(attributes.size()));
-			it = names.insert(std::pair<std::string, Attribute*>(name,attributes.back())).first;
+			it = names.insert(std::pair<std::string, Attribute*>(name, attributes.back())).first;
 		}
 
 		return *(it->second);
@@ -49,7 +49,7 @@ namespace Vertex {
 	}
 
 	bool Attribute::hasName(const std::string &name) const {
-		std::map<std::string,Attribute*>::const_iterator it = names.find(name);
+		std::map<std::string, Attribute*>::const_iterator it = names.find(name);
 		if(it != names.end() && it->second->ID() == id)
 			return true;
 		return false;
@@ -97,7 +97,7 @@ namespace Vertex {
 	}
 
 	Format::Format(const std::vector<Element> &elements)
-		: elements(elements), offsets(elements.size(),0), vertSize(0) {
+		: elements(elements), offsets(elements.size(), 0), vertSize(0) {
 		unsigned int offset = 0;
 		for (unsigned int i = 0; i < elements.size(); ++i) {
 			offsets[i] = offset;

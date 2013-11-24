@@ -1,4 +1,4 @@
-CONFIG(debug,debug|release) {
+CONFIG(debug, debug|release) {
   DEFINES += "__DEBUG" "__LOG"
 }
 #DEFINES += "__DLOG"

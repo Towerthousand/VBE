@@ -18,8 +18,8 @@ class ShaderProgram {
 		void use() const;
 		Uniform* uniform(const std::string& name) const;
 
-		std::map<std::string,GLint> attributes;
-		std::map<std::string,Uniform*> uniforms;
+		std::map<std::string, GLint> attributes;
+		std::map<std::string, Uniform*> uniforms;
 
 	private:
 		ShaderProgram();

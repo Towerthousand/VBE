@@ -43,7 +43,7 @@ class Mesh {
 	private:
 		Mesh(Vertex::Format format, BufferType bufferType = STATIC, bool indexed = false);
 
-		std::map<GLuint,const ShaderBinding*> bindingsCache;
+		std::map<GLuint, const ShaderBinding*> bindingsCache;
 		const Vertex::Format vertexFormat;
 		unsigned int vertexCount;
 		unsigned int indexCount;

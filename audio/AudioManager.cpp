@@ -1,7 +1,7 @@
 #include "AudioManager.hpp"
 
-std::map<std::string,sf::Music*> AudioManager::musicBank;
-std::map<std::string,std::pair<sf::SoundBuffer*,sf::Sound*>> AudioManager::effectBank;
+std::map<std::string, sf::Music*> AudioManager::musicBank;
+std::map<std::string, std::pair<sf::SoundBuffer*, sf::Sound*>> AudioManager::effectBank;
 
 AudioManager::AudioManager() {
 }
@@ -17,7 +17,7 @@ bool AudioManager::loadMusic(const std::string &trackID, const std::string &file
 		VBE_LOG("#ERROR " << filePath << " didn't load" );
 		return false;
 	}
-	musicBank.insert(std::pair<std::string,sf::Music*>(trackID,newTrack));
+	musicBank.insert(std::pair<std::string, sf::Music*>(trackID, newTrack));
 	return true;
 }
 
@@ -31,13 +31,13 @@ void AudioManager::eraseMusic(const std::string &trackID) {
 bool AudioManager::loadEffect(const std::string &effectID, const std::string &filePath) {
 	VBE_ASSERT(effectBank.find(effectID) == effectBank.end(), "Loading failed: effect " << effectID << " already exists");
 	VBE_LOG("* Loading new sound effect: \"" << effectID << "\" from " + filePath );
-	std::pair<sf::SoundBuffer*,sf::Sound*> newEffect = std::pair<sf::SoundBuffer*,sf::Sound*>(new sf::SoundBuffer(),new sf::Sound());
+	std::pair<sf::SoundBuffer*, sf::Sound*> newEffect = std::pair<sf::SoundBuffer*, sf::Sound*>(new sf::SoundBuffer(), new sf::Sound());
 	if (!newEffect.first->loadFromFile(filePath)) {
 		VBE_LOG("#ERROR " << filePath << " didn't load" );
 		return false;
 	}
 	newEffect.second->setBuffer(*newEffect.first);
-	effectBank.insert(std::pair<std::string,std::pair<sf::SoundBuffer*,sf::Sound*>>(effectID,newEffect));
+	effectBank.insert(std::pair<std::string, std::pair<sf::SoundBuffer*, sf::Sound*>>(effectID, newEffect));
 	return true;
 }
 

@@ -13,7 +13,7 @@ RenderTarget::RenderBuffer::~RenderBuffer() {
 }
 
 void RenderTarget::RenderBuffer::bind() const {
-	glBindRenderbuffer(GL_RENDERBUFFER,handle);
+	glBindRenderbuffer(GL_RENDERBUFFER, handle);
 }
 
 GLuint RenderTarget::RenderBuffer::getHandle() const {
@@ -35,8 +35,8 @@ void RenderTarget::bind(RenderTarget* target) {
 	if(current == handle) return;
 	glBindFramebuffer(GL_FRAMEBUFFER, handle);
 	if(handle != 0)
-		glViewport(0,0,target->width,target->height);
-	else glViewport(0,0,SCRWIDTH,SCRHEIGHT);
+		glViewport(0, 0, target->width, target->height);
+	else glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 	current = handle;
 }
 
@@ -63,7 +63,7 @@ void RenderTarget::build() {
 	VBE_ASSERT(handle == 0, "Cannot rebuild already built RenderTarget. Call RenderTarget::destroy() first");
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget has no textures or render buffers.");
 
-	glGenFramebuffers(1,&handle);
+	glGenFramebuffers(1, &handle);
 	bind(this);//please
 
 	std::vector<Attachment> drawAttachments;
@@ -90,10 +90,10 @@ void RenderTarget::build() {
 
 	if(drawAttachments.size() == 0) {
 		GLenum none = GL_NONE;
-		glDrawBuffers(1,&none);
+		glDrawBuffers(1, &none);
 	}
 	else
-		glDrawBuffers(drawAttachments.size(),(GLenum*)&drawAttachments[0]);
+		glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]);
 
 	VBE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer");
 }
