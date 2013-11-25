@@ -1,7 +1,7 @@
 #include "Model.hpp"
 #include "Mesh.hpp"
 
-Model::Model() : modelMatrix(mat4f(1.0)), mesh(nullptr), program(nullptr) {
+Model::Model() : mesh(nullptr), program(nullptr) {
 }
 
 Model::~Model() {

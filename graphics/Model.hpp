@@ -11,7 +11,6 @@ class Model {
 
 		void draw() const;
 
-		mat4f modelMatrix;
 		Mesh* mesh;
 		ShaderProgram* program;
 };
