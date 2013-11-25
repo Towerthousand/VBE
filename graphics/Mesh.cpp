@@ -92,8 +92,8 @@ void Mesh::setVertexIndices(unsigned int* indexData, unsigned int newIndexCount)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-struct FunctorCompareVec3s{
-	bool operator()(const vec3s& a, const vec3s& b)
+struct FunctorComparevec3i{
+	bool operator()(const vec3i& a, const vec3i& b)
     {
         if(a.x != b.x) return a.x < b.x;
         if(a.y != b.y) return a.y < b.y;
@@ -126,7 +126,7 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 	std::vector<vert> dataIndexed; //indexed data
 	std::vector<vert> dataNotIndexed; //unindexed data
 
-	std::map<vec3s, int, FunctorCompareVec3s> indexMap;
+	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
 	std::string line;
 	while (getline(in, line)) {
@@ -151,19 +151,19 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 		}
 		else if (line.substr(0, 2) == "f ") {
 			std::istringstream s(line.substr(2));
-			std::vector<vec3s> vInf(3, vec3s(0));
+			std::vector<vec3i> vInf(3, vec3i(0));
 			char b;
 			s   >> vInf[0].x >> b >> vInf[0].y >> b >> vInf[0].z
 							 >> vInf[1].x >> b >> vInf[1].y >> b >> vInf[1].z
 							 >> vInf[2].x >> b >> vInf[2].y >> b >> vInf[2].z;
 			for(unsigned int i = 0; i < 3; ++i)
             {
-				std::map<vec3s, int, FunctorCompareVec3s>::iterator it = indexMap.find(vInf[i]);
+				std::map<vec3i, int, FunctorComparevec3i>::iterator it = indexMap.find(vInf[i]);
                 int ind = 0;
                 if(it == indexMap.end())
                 {
                     ind = indexMap.size();
-					indexMap.insert(std::pair<vec3s, int>(vInf[i], dataIndexed.size()));
+					indexMap.insert(std::pair<vec3i, int>(vInf[i], dataIndexed.size()));
 					dataIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], textures[vInf[i].y-1]));
                 }
                 else
