@@ -38,7 +38,7 @@ class Mesh {
 
 		void setPrimitiveType(Mesh::PrimitiveType type);
 		void setVertexData(void* vertexData, unsigned int newVertexCount);
-		void setVertexIndices(unsigned short* indexData, unsigned int newIndexCount);
+		void setVertexIndices(unsigned int* indexData, unsigned int newIndexCount);
 
 	private:
 		Mesh(Vertex::Format format, BufferType bufferType = STATIC, bool indexed = false);

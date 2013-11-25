@@ -25,7 +25,7 @@ Shader* Shader::loadShader(const std::string& data, GLenum shaderType) {
 	Shader* s = new Shader(shaderType);
 	s->loadFromString(data);
 	s->compile();
-	VBE_DLOG(" - Compiled " << out << " successfully.");
+	VBE_DLOG(" - Compiled successfully.");
 	return s;
 }
 

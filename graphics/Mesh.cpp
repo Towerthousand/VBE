@@ -38,7 +38,7 @@ void Mesh::draw(const ShaderProgram *program) {
 	program->use();
 	binding->bindVAO();
 	if(!indexed) glDrawArrays(primitiveType, 0, vertexCount);
-	else glDrawElements(primitiveType, indexCount, GL_UNSIGNED_SHORT, 0);
+	else glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0);
 }
 
 const Vertex::Format& Mesh::getVertexFormat() const {
@@ -84,7 +84,7 @@ void Mesh::setVertexData(void* vertexData, unsigned int newVertexCount) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Mesh::setVertexIndices(unsigned short* indexData, unsigned int newIndexCount) {
+void Mesh::setVertexIndices(unsigned int* indexData, unsigned int newIndexCount) {
 	VBE_ASSERT(indexed, "Cannot set indexes for a non-indexed mesh");
 	indexCount = newIndexCount;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -122,7 +122,7 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 	std::vector<vec3f> vertices;
 	std::vector<vec3f> normals;
 	std::vector<vec2f> textures;
-	std::vector<unsigned short> indices; //indices into data1
+	std::vector<unsigned int> indices; //indices into data1
 	std::vector<vert> dataIndexed; //indexed data
 	std::vector<vert> dataNotIndexed; //unindexed data
 
@@ -156,8 +156,6 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 			s   >> vInf[0].x >> b >> vInf[0].y >> b >> vInf[0].z
 							 >> vInf[1].x >> b >> vInf[1].y >> b >> vInf[1].z
 							 >> vInf[2].x >> b >> vInf[2].y >> b >> vInf[2].z;
-			vec3s indexes(-1, -1, -1);
-
 			for(unsigned int i = 0; i < 3; ++i)
             {
 				std::map<vec3s, int, FunctorCompareVec3s>::iterator it = indexMap.find(vInf[i]);
@@ -177,11 +175,12 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
             }
 		}
 	}
+	VBE_LOG(indices.size());
 	float sizeWithIndex = dataIndexed.size()*sizeof(dataIndexed[0])+indices.size()*sizeof(indices[0]);
 	float sizeWithoutIndex = dataNotIndexed.size()*sizeof(dataNotIndexed[0]);
 
 	Mesh* mesh = nullptr;
-	if(sizeWithoutIndex > sizeWithIndex) { //indexed
+	if(true || sizeWithoutIndex > sizeWithIndex) { //indexed
 		mesh = new Mesh(Vertex::Format(elements), bufferType, true);
 		mesh->setVertexData(&dataIndexed[0], dataIndexed.size());
 		mesh->setVertexIndices(&indices[0], indices.size());
