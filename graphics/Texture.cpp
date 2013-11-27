@@ -69,6 +69,7 @@ void Texture::setWrap(GLenum wrap) const {
 	bind();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrap);
 }
 
 void Texture::setComparison(GLenum func, GLenum mode) {
