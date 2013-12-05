@@ -12,7 +12,7 @@ class Model {
 		void draw() const;
 
 		Mesh* mesh;
-		ShaderProgram* program;
+		mutable ShaderProgram* program;
 };
 
 #endif // MODEL_HPP
