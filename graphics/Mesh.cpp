@@ -180,7 +180,7 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 	float sizeWithoutIndex = dataNotIndexed.size()*sizeof(dataNotIndexed[0]);
 
 	Mesh* mesh = nullptr;
-	if(true || sizeWithoutIndex > sizeWithIndex) { //indexed
+	if(sizeWithoutIndex > sizeWithIndex) { //indexed
 		mesh = new Mesh(Vertex::Format(elements), bufferType, true);
 		mesh->setVertexData(&dataIndexed[0], dataIndexed.size());
 		mesh->setVertexIndices(&indices[0], indices.size());
