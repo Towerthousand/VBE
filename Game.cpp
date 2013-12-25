@@ -30,6 +30,7 @@ Game::~Game() {
 	Programs.clear();
 	window.close();
 	isRunning = false;
+	Game::instance = nullptr;
 	VBE_LOG("* EXIT GAME SUCCESFUL" );
 }
 

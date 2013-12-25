@@ -1,7 +1,7 @@
 #include "GameObject.hpp"
 #include "Game.hpp"
 
-GameObject::GameObject() : id(Game::i() != nullptr?Game::i()->idCounter++:0),
+GameObject::GameObject() : id(Game::i() != nullptr?Game::i()->idCounter++:-1),
 	transform(1.0f), fullTransform(1.0f), parent(nullptr), drawPriority(0),
 	updatePriority(0), name(""), container(nullptr), isAlive(true) {
 	if(Game::i() != nullptr)
@@ -10,9 +10,11 @@ GameObject::GameObject() : id(Game::i() != nullptr?Game::i()->idCounter++:0),
 
 GameObject::~GameObject() {
 	//erase traces from the object
-	if(!name.empty())
-		Game::i()->nameMap.erase(name);
-	Game::i()->idMap.erase(id);
+	if(Game::i() != nullptr) {
+		if(!name.empty())
+			Game::i()->nameMap.erase(name);
+		Game::i()->idMap.erase(id);
+	}
 }
 
 void GameObject::update(float deltaTime) {
@@ -53,7 +55,7 @@ int GameObject::getUpdatePriority() const {
 }
 
 void GameObject::setName(std::string newName) {
-	if(name == newName) return;
+	if(name == newName || Game::i() == nullptr) return;
 	if(Game::i()->nameMap.insert(std::pair<std::string, GameObject*>(newName, this)).second) {
 		if(!name.empty()) Game::i()->nameMap.erase(name);
 		name = newName;
