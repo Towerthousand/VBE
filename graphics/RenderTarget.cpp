@@ -1,6 +1,6 @@
 #include "RenderTarget.hpp"
 
-GLuint RenderTarget::current = 0;
+RenderTarget* RenderTarget::current = nullptr;
 
 RenderTarget::RenderBuffer::RenderBuffer(int width, int height, Texture::InternalFormat format) {
 	glGenRenderbuffers(1, &handle);
@@ -30,14 +30,18 @@ RenderTarget::~RenderTarget() {
 }
 
 void RenderTarget::bind(RenderTarget* target) {
-	GLuint handle = (target == nullptr)? 0 : target->handle;
-	VBE_ASSERT(target == nullptr || handle != 0, "Cannot bind unbuilt RenderTarget");
-	if(current == handle) return;
-	glBindFramebuffer(GL_FRAMEBUFFER, handle);
-	if(handle != 0)
+	GLuint currHandle = (target == nullptr)? 0 : target->handle;
+	VBE_ASSERT(target == nullptr || currHandle != 0, "Cannot bind unbuilt RenderTarget");
+	if(current == target) return;
+	glBindFramebuffer(GL_FRAMEBUFFER, currHandle);
+	if(currHandle != 0)
 		glViewport(0, 0, target->width, target->height);
 	else glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
-	current = handle;
+	current = target;
+}
+
+RenderTarget* RenderTarget::getCurrent() {
+	return current;
 }
 
 void RenderTarget::setSize(int width, int height) {

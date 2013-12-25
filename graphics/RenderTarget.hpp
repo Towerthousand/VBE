@@ -31,6 +31,7 @@ class RenderTarget {
 		~RenderTarget();
 
 		static void bind(RenderTarget* renderTarget);
+		static RenderTarget* getCurrent();
 
 		int getWidth() const { return width; }
 		int getHeight() const { return height; }
@@ -75,7 +76,7 @@ class RenderTarget {
 				RenderBuffer* renderBuffer;
 		};
 
-		static GLuint current;
+		static RenderTarget* current;
 
 		GLuint handle; // 0 if not built
 		int width, height;
