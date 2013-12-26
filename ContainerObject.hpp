@@ -36,7 +36,6 @@ class ContainerObject : public GameObject {
 		std::queue<GameObject*> objectTasksToRemove;
 
 		friend class GameObject;
-		friend class Game;
 };
 
 #endif // CONTAINEROBJECT_HPP

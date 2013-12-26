@@ -34,7 +34,6 @@ void Input::update(bool &isGameRunning, sf::Window &window) {
 			case sf::Event::Resized:
 				SCRWIDTH = event.size.width;
 				SCRHEIGHT = event.size.height;
-				glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 				break;
 			case sf::Event::GainedFocus:
 				focus = true;

@@ -2,14 +2,18 @@
 
 RenderTarget* RenderTarget::current = nullptr;
 
-RenderTarget::RenderBuffer::RenderBuffer(int width, int height, Texture::InternalFormat format) {
+RenderTarget::RenderBuffer::RenderBuffer(int width, int height, Texture::InternalFormat format) : format(format){
 	glGenRenderbuffers(1, &handle);
-	bind();
-	glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
+	resize(width, height);
 }
 
 RenderTarget::RenderBuffer::~RenderBuffer() {
 	glDeleteRenderbuffers(1, &handle);
+}
+
+void RenderTarget::RenderBuffer::resize(int width, int height) const {
+	bind();
+	glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
 }
 
 void RenderTarget::RenderBuffer::bind() const {
@@ -34,6 +38,8 @@ void RenderTarget::bind(RenderTarget* target) {
 	VBE_ASSERT(target == nullptr || currHandle != 0, "Cannot bind unbuilt RenderTarget");
 	if(current == target) return;
 	glBindFramebuffer(GL_FRAMEBUFFER, currHandle);
+	if(target != nullptr)
+		target->checkSize();
 	if(currHandle != 0)
 		glViewport(0, 0, target->width, target->height);
 	else glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
@@ -68,6 +74,7 @@ void RenderTarget::build() {
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget has no textures or render buffers.");
 
 	glGenFramebuffers(1, &handle);
+	RenderTarget* current = getCurrent();
 	bind(this);//please
 
 	std::vector<Attachment> drawAttachments;
@@ -100,6 +107,22 @@ void RenderTarget::build() {
 		glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]);
 
 	VBE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer");
+
+	bind(current);
+}
+
+void RenderTarget::checkSize() {
+	if(getWidth() == SCRWIDTH && getHeight() == SCRHEIGHT)
+		return;
+
+	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
+		RenderTargetEntry& e = it->second;
+
+		if(e.type == RenderTargetEntry::RenderBufferEntry)
+			e.renderBuffer->resize(desiredWidth, desiredHeight);
+		else
+			e.texture->resize(desiredWidth, desiredHeight);
+	}
 }
 
 void RenderTarget::destroy() {

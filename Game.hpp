@@ -14,7 +14,6 @@ class Game : public ContainerObject {
 		virtual void update(float deltaTime);
 		virtual void draw();
 
-		int getObjectCount() const { return updateTasks.size(); }
 		sf::RenderWindow &getWindow() { return window; }
 		
 		bool isRunning;

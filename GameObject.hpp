@@ -68,7 +68,6 @@ class GameObject { //scenegraph nodes
 		ContainerObject* container;
 		bool isAlive;
 
-		friend class Game;
 		friend class ContainerObject;
 };
 
