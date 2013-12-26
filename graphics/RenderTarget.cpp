@@ -34,15 +34,17 @@ RenderTarget::~RenderTarget() {
 }
 
 void RenderTarget::bind(RenderTarget* target) {
-	GLuint currHandle = (target == nullptr)? 0 : target->handle;
-	VBE_ASSERT(target == nullptr || currHandle != 0, "Cannot bind unbuilt RenderTarget");
 	if(current == target) return;
-	glBindFramebuffer(GL_FRAMEBUFFER, currHandle);
-	if(target != nullptr)
+	if(target == nullptr) {
+		glViewport(0,0,SCRWIDTH,SCRHEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+	else {
+		VBE_ASSERT(target->handle != 0, "Cannot bind unbuilt RenderTarget");
 		target->checkSize();
-	if(currHandle != 0)
 		glViewport(0, 0, target->width, target->height);
-	else glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, target->handle);
+	}
 	current = target;
 }
 
@@ -112,17 +114,17 @@ void RenderTarget::build() {
 }
 
 void RenderTarget::checkSize() {
-	if(getWidth() == SCRWIDTH && getHeight() == SCRHEIGHT)
+	if(width == SCRWIDTH && height == SCRHEIGHT)
 		return;
-
-	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
-		RenderTargetEntry& e = it->second;
-
-		if(e.type == RenderTargetEntry::RenderBufferEntry)
-			e.renderBuffer->resize(desiredWidth, desiredHeight);
-		else
-			e.texture->resize(desiredWidth, desiredHeight);
-	}
+	width = SCRWIDTH; height = SCRHEIGHT; // >.< not supporting non-fullscreen targets ATM
+	//////////////////////TODO!
+	//	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
+	//		RenderTargetEntry& e = it->second;
+	//		if(e.type == RenderTargetEntry::RenderBufferEntry)
+	//			e.renderBuffer->resize(SCRWIDTH, SCRHEIGHT); //DONE
+	//		else
+	//			e.texture->resize(SCRWIDTH, SCRHEIGHT); //TODO: Implement Texture::resize(); =__=
+	//	}
 }
 
 void RenderTarget::destroy() {
@@ -140,7 +142,6 @@ void RenderTarget::destroy() {
 			e.texture = nullptr;
 		}
 	}
-
 	glDeleteFramebuffers(1, &handle);
 }
 

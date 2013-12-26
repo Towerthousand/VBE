@@ -53,7 +53,7 @@ class RenderTarget {
 				RenderBuffer(int width, int height, Texture::InternalFormat format);
 				~RenderBuffer();
 
-				void resize(int width, int height);
+				void resize(int width, int height) const;
 				void bind() const;
 				GLuint getHandle() const;
 			private:
