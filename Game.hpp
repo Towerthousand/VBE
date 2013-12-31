@@ -6,6 +6,7 @@ class Game : public ContainerObject {
 	public:
 		Game();
 		virtual ~Game();
+		static Game* i() { return Game::instance;}
 
 		GameObject* getObjectByName(std::string name) const;
 		GameObject* getObjectByID(int id) const;
@@ -18,8 +19,6 @@ class Game : public ContainerObject {
 		
 		bool isRunning;
 	private:
-		static Game* i() { return Game::instance;}
-
 		sf::RenderWindow window;
 
 		std::map<std::string, GameObject*> nameMap;
