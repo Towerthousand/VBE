@@ -40,16 +40,18 @@ RenderTarget::~RenderTarget() {
 }
 
 void RenderTarget::bind(RenderTarget* target) {
-	GLuint currHandle = (target == nullptr)? 0 : target->handle;
-	VBE_ASSERT(target == nullptr || currHandle != 0, "Cannot bind unbuilt RenderTarget");
-
 	if(current == target) return;
-	glBindFramebuffer(GL_FRAMEBUFFER, currHandle);
-	if(target != nullptr)
+
+	if(target == nullptr) {
+		glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+	else {
+		VBE_ASSERT(target->handle != 0, "Cannot bind unbuilt RenderTarget");
 		target->checkSize();
-	if(currHandle != 0)
 		glViewport(0, 0, target->size.x, target->size.y);
-	else glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, target->handle);
+	}
 	current = target;
 }
 
@@ -149,7 +151,6 @@ void RenderTarget::destroy() {
 			e.texture = nullptr;
 		}
 	}
-
 	glDeleteFramebuffers(1, &handle);
 
 	handle = 0;
