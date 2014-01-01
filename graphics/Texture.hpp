@@ -120,10 +120,16 @@ class Texture {
 		
 		~Texture();
 
-		static Texture* loadEmpty(unsigned int sizeX, unsigned int sizeY, Texture::InternalFormat format = RGBA8, int slot = -1);
-		static Texture* loadFromFile(const std::string& filePath, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-		static Texture* loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-		
+		static Texture* createEmpty(unsigned int sizeX, unsigned int sizeY, Texture::InternalFormat format = RGBA8, int slot = -1);
+		static Texture* createFromFile(const std::string& filePath, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
+		static Texture* createFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
+
+
+		void loadEmpty(unsigned int sizeX, unsigned int sizeY, Texture::InternalFormat format = RGBA8, int slot = -1);
+		void loadFromFile(const std::string& filePath, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
+		void loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
+		void resize(unsigned int sizeX, unsigned int sizeY);
+
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap) const;
 		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);

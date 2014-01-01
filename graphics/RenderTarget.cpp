@@ -11,7 +11,7 @@ RenderTarget::RenderBuffer::~RenderBuffer() {
 	glDeleteRenderbuffers(1, &handle);
 }
 
-void RenderTarget::RenderBuffer::resize(int width, int height) const {
+void RenderTarget::RenderBuffer::resize(int width, int height) {
 	bind();
 	glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
 }
@@ -24,8 +24,14 @@ GLuint RenderTarget::RenderBuffer::getHandle() const {
 	return handle;
 }
 
-RenderTarget::RenderTarget(int width, int height) : handle(0), width(width), height(height) {
+RenderTarget::RenderTarget(int width, int height) : handle(0), size(width, height), screenRelativeSize(false) {
 	VBE_ASSERT(width != 0 && height != 0, "Invalid dimensions for RenderTarget (height:" << height << " width:" << width);
+}
+
+RenderTarget::RenderTarget(float mult) : handle(0), size(int(SCRWIDTH*mult), int(SCRHEIGHT*mult)), screenRelativeSize(true), screenSizeMultiplier(mult) {
+}
+
+RenderTarget::RenderTarget() : handle(0), size(int(SCRWIDTH), int(SCRHEIGHT)), screenRelativeSize(true), screenSizeMultiplier(1) {
 }
 
 RenderTarget::~RenderTarget() {
@@ -36,25 +42,19 @@ RenderTarget::~RenderTarget() {
 void RenderTarget::bind(RenderTarget* target) {
 	GLuint currHandle = (target == nullptr)? 0 : target->handle;
 	VBE_ASSERT(target == nullptr || currHandle != 0, "Cannot bind unbuilt RenderTarget");
+
 	if(current == target) return;
 	glBindFramebuffer(GL_FRAMEBUFFER, currHandle);
 	if(target != nullptr)
 		target->checkSize();
 	if(currHandle != 0)
-		glViewport(0, 0, target->width, target->height);
+		glViewport(0, 0, target->size.x, target->size.y);
 	else glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 	current = target;
 }
 
 RenderTarget* RenderTarget::getCurrent() {
 	return current;
-}
-
-void RenderTarget::setSize(int width, int height) {
-	VBE_ASSERT(handle == 0, "Cannot set size of already built RenderTarget. Call RenderTarget::destroy() first or add before building");
-	VBE_ASSERT(width != 0 && height != 0, "Invalid dimensions for RenderTarget (height:" << height << " width:" << width);
-	this->width = width;
-	this->height = height;
 }
 
 void RenderTarget::addRenderBuffer(RenderTarget::Attachment attachment, Texture::InternalFormat format) {
@@ -73,6 +73,8 @@ void RenderTarget::build() {
 	VBE_ASSERT(handle == 0, "Cannot rebuild already built RenderTarget. Call RenderTarget::destroy() first");
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget has no textures or render buffers.");
 
+	size = getDesiredSize();
+
 	glGenFramebuffers(1, &handle);
 	RenderTarget* current = getCurrent();
 	bind(this);//please
@@ -83,13 +85,13 @@ void RenderTarget::build() {
 		RenderTargetEntry& e = it->second;
 
 		if(e.type == RenderTargetEntry::RenderBufferEntry) {
-			RenderBuffer* buff = new RenderBuffer(width, height, e.format);
+			RenderBuffer* buff = new RenderBuffer(size.x, size.y, e.format);
 			buff->bind();
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, e.attachment, GL_RENDERBUFFER, buff->getHandle());
 			e.renderBuffer = buff;
 		}
 		else {
-			Texture* tex = Texture::loadEmpty(width, height, e.format);
+			Texture* tex = Texture::createEmpty(size.x, size.y, e.format);
 			tex->bind();
 			glFramebufferTexture(GL_FRAMEBUFFER, e.attachment, tex->getHandle(), 0);
 			e.texture = tex;
@@ -112,17 +114,24 @@ void RenderTarget::build() {
 }
 
 void RenderTarget::checkSize() {
-	if(getWidth() == SCRWIDTH && getHeight() == SCRHEIGHT)
+	VBE_ASSERT(handle != 0, "RenderTarget should be built");
+
+	vec2i desiredSize = getDesiredSize();
+	if(getSize() == desiredSize)
 		return;
+
+	VBE_LOG("Resizing RenderTarget");
 
 	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
 		RenderTargetEntry& e = it->second;
 
 		if(e.type == RenderTargetEntry::RenderBufferEntry)
-			e.renderBuffer->resize(desiredWidth, desiredHeight);
+			e.renderBuffer->resize(desiredSize.x, desiredSize.y);
 		else
-			e.texture->resize(desiredWidth, desiredHeight);
+			e.texture->resize(desiredSize.x, desiredSize.y);
 	}
+
+	size = getDesiredSize();
 }
 
 void RenderTarget::destroy() {
@@ -142,6 +151,8 @@ void RenderTarget::destroy() {
 	}
 
 	glDeleteFramebuffers(1, &handle);
+
+	handle = 0;
 }
 
 Texture* RenderTarget::getTextureForAttachment(RenderTarget::Attachment target) {

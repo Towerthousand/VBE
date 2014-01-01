@@ -27,15 +27,24 @@ class RenderTarget {
 			COLOR15 = GL_COLOR_ATTACHMENT15
 		};
 
+		RenderTarget();
 		RenderTarget(int width, int height);
+		RenderTarget(float mult);
 		~RenderTarget();
 
 		static void bind(RenderTarget* renderTarget);
 		static RenderTarget* getCurrent();
 
-		int getWidth() const { return width; }
-		int getHeight() const { return height; }
-		void setSize(int width, int height);
+		int getWidth() const { return size.x; }
+		int getHeight() const { return size.y; }
+		vec2i getSize() const { return size; }
+		vec2i getDesiredSize() const {
+			if(screenRelativeSize)
+				return vec2i(int(SCRWIDTH*screenSizeMultiplier), int(SCRHEIGHT*screenSizeMultiplier));
+			else
+				return size;
+		}
+
 		void addRenderBuffer(Attachment target, Texture::InternalFormat format);
 		void addTexture(Attachment target, Texture::InternalFormat format);
 
@@ -83,7 +92,10 @@ class RenderTarget {
 		static RenderTarget* current;
 
 		GLuint handle; // 0 if not built
-		int width, height;
+		vec2i size;
+		bool screenRelativeSize;
+		float screenSizeMultiplier;
+
 		std::map<Attachment, RenderTargetEntry> entries;
 };
 
