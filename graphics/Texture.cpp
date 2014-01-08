@@ -45,6 +45,7 @@ void Texture::loadEmpty(unsigned int sizeX, unsigned int sizeY, Texture::Interna
 
 void Texture::loadFromFile(const std::string& filePath, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
 	//load image
+	VBE_DLOG("* Loading new texture from path " << filePath);
 	sf::Image image;
 	if (!image.loadFromFile(filePath)) {
 		VBE_LOG("#ERROR " << filePath << " didn't load" );

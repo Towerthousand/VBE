@@ -138,18 +138,19 @@ bool Uniform::compare(const char *val) const {
 }
 
 void Uniform::log() {
-	VBE_DLOG("Array of "		 << count
-			  << " at location "	 << location
-			  << ", with a size of " << lastValue.size()/count
-			  <<" bytes per item and of type ");
+	VBE_DLOG("    Item count: "		 << count);
+	VBE_DLOG("    Location: " << location);
+	VBE_DLOG("    Size: " << lastValue.size()/count << " bytes per item");
+	std::string s;
 	switch(type) {
-		case GL_FLOAT: VBE_DLOG("GL_FLOAT"); break;
-		case GL_FLOAT_VEC2: VBE_DLOG("GL_FLOAT_VEC2"); break;
-		case GL_FLOAT_VEC3: VBE_DLOG("GL_FLOAT_VEC3"); break;
-		case GL_FLOAT_VEC4: VBE_DLOG("GL_FLOAT_VEC4"); break;
-		case GL_FLOAT_MAT4: VBE_DLOG("GL_FLOAT_MAT4"); break;
-		case GL_INT: VBE_DLOG("GL_INT"); break;
-		case GL_SAMPLER_2D: VBE_DLOG("GL_SAMPLER_2D"); break;
-		default: VBE_DLOG("UNKNOWN_TYPE"); break;
+		case GL_FLOAT: s = "GL_FLOAT"; break;
+		case GL_FLOAT_VEC2: s = "GL_FLOAT_VEC2"; break;
+		case GL_FLOAT_VEC3: s = "GL_FLOAT_VEC3"; break;
+		case GL_FLOAT_VEC4: s = "GL_FLOAT_VEC4"; break;
+		case GL_FLOAT_MAT4: s = "GL_FLOAT_MAT4"; break;
+		case GL_INT: s = "GL_INT"; break;
+		case GL_SAMPLER_2D: s = "GL_SAMPLER_2D"; break;
+		default: s = "UNKNOWN_TYPE"; break;
 	}
+	VBE_DLOG("    Type: " << s);
 }

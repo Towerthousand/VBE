@@ -96,7 +96,7 @@ void ShaderProgram::link() {
 	glGetProgramiv(programHandle, GL_LINK_STATUS, &success);
 	if (success != GL_TRUE) {
 		printInfoLog();
-		VBE_ASSERT(false, "#ERROR Linking program failed!" );
+		VBE_ASSERT(false, "Linking program failed" );
 	}
 	VBE_DLOG( " - Linked program successfully. PROGRAMID: " << programHandle );
 }
@@ -161,19 +161,18 @@ void ShaderProgram::retriveProgramInfo() {
 	}
 
 	//PRINT ATTRIBUTE INFO
-	VBE_DLOG("--------------" );
-	VBE_DLOG("Printing attribute info:" );
+	VBE_DLOG(" - Printing attribute info:" );
 	for(std::map<std::string, GLint>::iterator it = attributes.begin(); it != attributes.end(); ++it) {
-		VBE_DLOG(it->first << " at location " << it->second );
+		VBE_DLOG("  - Name: " << it->first);
+		VBE_DLOG( "    Location: " << it->second);
 	}
 
 	//PRINT UNIFORM INFO
-	VBE_DLOG("Printing uniform info:" );
+	VBE_DLOG(" - Printing uniform info:" );
 	for(std::map<std::string, Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it) {
-		VBE_DLOG(it->first << ":" );
+		VBE_DLOG("  - Name: " << it->first);
 		it->second->log();
 	}
-	VBE_DLOG("--------------" );
 }
 
 std::string ShaderProgram::readFileIntoString(const std::string& filename){
