@@ -103,14 +103,14 @@ namespace Vertex {
 			offsets[i] = offset;
 			unsigned int size = 4;
 			switch(elements[i].type) {
-				case Element::Byte:          size = sizeof(char); break;
-				case Element::UnsignedByte:  size = sizeof(unsigned char); break;
-				case Element::Short:         size = sizeof(short); break;
-				case Element::UnsignedShort: size = sizeof(unsigned short); break;
-				case Element::Int:           size = sizeof(int); break;
-				case Element::UnsignedInt:   size = sizeof(unsigned int); break;
-				case Element::Float:         size = sizeof(float); break;
-				case Element::Fixed:         size = sizeof(int); break;
+				case Element::Byte:          size = sizeof(GLbyte); break;
+				case Element::UnsignedByte:  size = sizeof(GLchar); break;
+				case Element::Short:         size = sizeof(GLshort); break;
+				case Element::UnsignedShort: size = sizeof(GLushort); break;
+				case Element::Int:           size = sizeof(GLint); break;
+				case Element::UnsignedInt:   size = sizeof(GLuint); break;
+				case Element::Float:         size = sizeof(GLfloat); break;
+				case Element::Fixed:         size = sizeof(GLfixed); break;
 				default: VBE_ASSERT(0, "Not a knownt element type " << elements[i].type); break;
 			}
 			offset += elements[i].size * size;
