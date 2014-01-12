@@ -110,7 +110,7 @@ namespace Vertex {
 				case Element::Int:           size = sizeof(GLint); break;
 				case Element::UnsignedInt:   size = sizeof(GLuint); break;
 				case Element::Float:         size = sizeof(GLfloat); break;
-				case Element::Fixed:         size = sizeof(GLfixed); break;
+				case Element::Fixed:         size = sizeof(GLint); break; //FIXME: GLFixed no existe para mi (?)
 				default: VBE_ASSERT(0, "Not a knownt element type " << elements[i].type); break;
 			}
 			offset += elements[i].size * size;
