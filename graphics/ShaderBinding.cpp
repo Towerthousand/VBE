@@ -20,18 +20,16 @@ ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
 			const Vertex::Element* current = &format.element(i);
 			if(current->attr.hasName(it->first)) {
 				glEnableVertexAttribArray(it->second);
-				if(current->type == Vertex::Element::Float ||
-				   current->type == Vertex::Element::Double ||
-				   current->type == Vertex::Element::Fixed)
-					glVertexAttribPointer(it->second,
-										  current->size,
-										  current->type, GL_FALSE,
-										  format.vertexSize(),
-										  (GLvoid*)long(format.offset(i)));
-				else
+				if(current->conv == Vertex::Element::ConvertToInt)
 					glVertexAttribIPointer(it->second,
 										  current->size,
 										  current->type,
+										  format.vertexSize(),
+										  (GLvoid*)long(format.offset(i)));
+				else
+					glVertexAttribPointer(it->second,
+										  current->size,
+										  current->type, current->conv == Vertex::Element::ConvertToFloatNormalized ? GL_TRUE : GL_FALSE,
 										  format.vertexSize(),
 										  (GLvoid*)long(format.offset(i)));
 			}

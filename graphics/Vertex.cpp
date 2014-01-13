@@ -71,17 +71,30 @@ namespace Vertex {
 		return *this;
 	}
 
-	Element::Element(Attribute &attr, unsigned int type, unsigned int size)
-		: attr(attr), type(type), size(size) {
-
+	Element::Element(Attribute &attr, unsigned int type, unsigned int size, Conversion conv)
+		: attr(attr), type(type), size(size), conv(conv) {
+		calcDefaultConversion();
 	}
 
-	Element::Element(int attrID, unsigned int type, unsigned int size)
-		: attr(Attribute::get(attrID)), type(type), size(size) {
+	Element::Element(int attrID, unsigned int type, unsigned int size, Conversion conv)
+		: attr(Attribute::get(attrID)), type(type), size(size), conv(conv) {
+		calcDefaultConversion();
 
 	}
+	void Element::calcDefaultConversion()
+	{
+		if(conv == ConvertDefault)
+		{
+			if(type == Vertex::Element::Float ||
+			   type == Vertex::Element::Double ||
+			   type == Vertex::Element::Fixed)
+				conv = ConvertToFloat;
+			else
+				conv = ConvertToInt;
+		}
+	}
 
-	Element::Element(const Element &element) : attr(element.attr), type(element.type), size(element.size) {
+	Element::Element(const Element &element) : attr(element.attr), type(element.type), size(element.size), conv(element.conv) {
 	}
 
 	Element& Element::operator=(const Element& e) {

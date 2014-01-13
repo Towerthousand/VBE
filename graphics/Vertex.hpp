@@ -52,8 +52,16 @@ namespace Vertex {
 				Fixed         = GL_FIXED,
 				Double        = GL_DOUBLE
 			};
-			Element(Attribute &attr, unsigned int type, unsigned int size);
-			Element(     int attrID, unsigned int type, unsigned int size);
+
+			enum Conversion {
+				ConvertDefault,
+				ConvertToFloat,
+				ConvertToFloatNormalized,
+				ConvertToInt
+			};
+
+			Element(Attribute &attr, unsigned int type, unsigned int size, Conversion conv = ConvertDefault);
+			Element(     int attrID, unsigned int type, unsigned int size, Conversion conv = ConvertDefault);
 			Element(const Element& element);
 
 			Element& operator=(const Element& e);
@@ -63,6 +71,10 @@ namespace Vertex {
 			Attribute &attr;
 			unsigned int type;
 			unsigned int size;
+			Conversion conv;
+
+		private:
+			void calcDefaultConversion();
 	};
 
 	class Format {
