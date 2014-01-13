@@ -29,7 +29,9 @@ SOURCES += \
 	$$PWD/graphics/ShaderBinding.cpp \
 	$$PWD/Manager.cpp \
 	$$PWD/graphics/RenderTarget.cpp \
-	$$PWD/ContainerObject.cpp
+	$$PWD/ContainerObject.cpp \
+    VBE/graphics/Texture3D.cpp \
+    VBE/graphics/Texture2D.cpp
 
 HEADERS += \
 	$$PWD/Game.hpp \
@@ -49,7 +51,9 @@ HEADERS += \
 	$$PWD/includes.hpp \
 	$$PWD/Manager.hpp \
 	$$PWD/graphics/RenderTarget.hpp \
-	$$PWD/ContainerObject.hpp
+	$$PWD/ContainerObject.hpp \
+    VBE/graphics/Texture3D.hpp \
+    VBE/graphics/Texture2D.hpp
 
 OTHER_FILES +=
 

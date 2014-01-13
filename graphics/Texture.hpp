@@ -117,34 +117,19 @@ class Texture {
 			UNSIGNED_INT_5_9_9_9_REV		= GL_UNSIGNED_INT_5_9_9_9_REV,
 			FLOAT_32_UNSIGNED_INT_24_8_REV	= GL_FLOAT_32_UNSIGNED_INT_24_8_REV
 		};
-		
+
 		~Texture();
-
-		static Texture* createEmpty(unsigned int sizeX, unsigned int sizeY, Texture::InternalFormat format = RGBA8, int slot = -1);
-		static Texture* createFromFile(const std::string& filePath, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-		static Texture* createFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-
-
-		void loadEmpty(unsigned int sizeX, unsigned int sizeY, Texture::InternalFormat format = RGBA8, int slot = -1);
-		void loadFromFile(const std::string& filePath, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-		void loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-		void resize(unsigned int sizeX, unsigned int sizeY);
 
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap) const;
-		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
 		void setSlot(unsigned int newSlot);
 		unsigned int getSlot() const;
-		int getWidth() const;
-		int getHeight() const;
 		void bind() const;
 		GLuint getHandle() const;
-	private:
+	protected:
 		Texture();
-
 		GLuint handle;
 		unsigned int slot;
-		vec2i size;
 		InternalFormat format;
 		static unsigned int lastSlot;
 };

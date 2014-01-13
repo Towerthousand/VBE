@@ -93,7 +93,7 @@ void RenderTarget::build() {
 			e.renderBuffer = buff;
 		}
 		else {
-			Texture* tex = Texture::createEmpty(size.x, size.y, e.format);
+			Texture2D* tex = Texture2D::createEmpty(size.x, size.y, e.format);
 			tex->bind();
 			glFramebufferTexture(GL_FRAMEBUFFER, e.attachment, tex->getHandle(), 0);
 			e.texture = tex;
@@ -156,7 +156,7 @@ void RenderTarget::destroy() {
 	handle = 0;
 }
 
-Texture* RenderTarget::getTextureForAttachment(RenderTarget::Attachment target) {
+Texture2D* RenderTarget::getTextureForAttachment(RenderTarget::Attachment target) {
 	VBE_ASSERT(handle != 0, "Can't get texture for attachment without building it first");
 	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");
 	RenderTargetEntry& e = entries.at(target);

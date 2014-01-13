@@ -24,7 +24,7 @@ Game::Game() :isRunning(true), idCounter(1) {
 Game::~Game() {
 	//Free resources, delete scenegraph nodes and close windows
 	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
-	Textures.clear();
+	Textures2D.clear();
 	Meshes.clear();
 	AudioManager::clear();
 	Programs.clear();

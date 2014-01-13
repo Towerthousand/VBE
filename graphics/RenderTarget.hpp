@@ -1,7 +1,7 @@
 #ifndef RENDERTARGET_HPP
 #define RENDERTARGET_HPP
 #include "../tools.hpp"
-#include "Texture.hpp"
+#include "Texture2D.hpp"
 
 class RenderTarget {
 	public:
@@ -48,7 +48,7 @@ class RenderTarget {
 		void addRenderBuffer(Attachment target, Texture::InternalFormat format);
 		void addTexture(Attachment target, Texture::InternalFormat format);
 
-		Texture* getTextureForAttachment(Attachment attachment);
+		Texture2D* getTextureForAttachment(Attachment attachment);
 
 		void build();
 		void destroy();
@@ -85,7 +85,7 @@ class RenderTarget {
 				RenderTarget::Attachment attachment;
 				Texture::InternalFormat format;
 
-				Texture* texture;
+				Texture2D* texture;
 				RenderBuffer* renderBuffer;
 		};
 
