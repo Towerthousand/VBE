@@ -49,6 +49,7 @@ class RenderTarget {
 		void addTexture(Attachment target, Texture::InternalFormat format);
 
 		Texture2D* getTextureForAttachment(Attachment attachment);
+		const Texture2D* getTextureForAttachment(Attachment attachment) const;
 
 		void build();
 		void destroy();

@@ -17,7 +17,12 @@ class Manager {
 			resources.insert(std::pair<std::string, T*>(resID, resource));
 		}
 
-		T*   get  (const std::string& resID) const {
+		T*   get  (const std::string& resID) {
+			VBE_ASSERT(resources.find(resID) != resources.end(), "Failed to get resource. resource " << resID << " doesn't exist");
+			return resources.at(resID);
+		}
+
+		const T* get  (const std::string& resID) const {
 			VBE_ASSERT(resources.find(resID) != resources.end(), "Failed to get resource. resource " << resID << " doesn't exist");
 			return resources.at(resID);
 		}

@@ -156,6 +156,14 @@ void RenderTarget::destroy() {
 	handle = 0;
 }
 
+const Texture2D* RenderTarget::getTextureForAttachment(RenderTarget::Attachment target) const {
+	VBE_ASSERT(handle != 0, "Can't get texture for attachment without building it first");
+	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");
+	const RenderTargetEntry& e = entries.at(target);
+	VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");
+	return e.texture;
+}
+
 Texture2D* RenderTarget::getTextureForAttachment(RenderTarget::Attachment target) {
 	VBE_ASSERT(handle != 0, "Can't get texture for attachment without building it first");
 	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");

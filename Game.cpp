@@ -45,12 +45,22 @@ void Game::draw() {
 	window.display();
 }
 
-GameObject* Game::getObjectByName(std::string name) const {
+GameObject* Game::getObjectByName(std::string name) {
 	VBE_ASSERT(nameMap.find(name) != nameMap.end(), "There is no object named " << name);
 	return nameMap.at(name);
 }
 
-GameObject* Game::getObjectByID(int id) const {
+GameObject* Game::getObjectByID(int id) {
+	VBE_ASSERT(idMap.find(id) != idMap.end(), "There is no object with id " << id);
+	return idMap.at(id);
+}
+
+const GameObject* Game::getObjectByName(std::string name) const {
+	VBE_ASSERT(nameMap.find(name) != nameMap.end(), "There is no object named " << name);
+	return nameMap.at(name);
+}
+
+const GameObject* Game::getObjectByID(int id) const {
 	VBE_ASSERT(idMap.find(id) != idMap.end(), "There is no object with id " << id);
 	return idMap.at(id);
 }

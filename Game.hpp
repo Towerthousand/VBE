@@ -8,8 +8,10 @@ class Game : public ContainerObject {
 		virtual ~Game();
 		static Game* i() { return Game::instance;}
 
-		GameObject* getObjectByName(std::string name) const;
-		GameObject* getObjectByID(int id) const;
+		const GameObject* getObjectByName(std::string name) const;
+		const GameObject* getObjectByID(int id) const;
+		GameObject* getObjectByName(std::string name);
+		GameObject* getObjectByID(int id);
 
 		virtual void run();
 		virtual void update(float deltaTime);

@@ -85,7 +85,11 @@ const std::list<GameObject*>& GameObject::getChildren() const {
 	return children;
 }
 
-Game*GameObject::getGame() const {
+Game* GameObject::getGame() {
+	return Game::i();
+}
+
+const Game* GameObject::getGame() const{
 	return Game::i();
 }
 
