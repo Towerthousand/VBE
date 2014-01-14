@@ -12,7 +12,7 @@ TEMPLATE = app
 CONFIG -= qt
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL
 INCLUDEPATH += $$PWD/
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -std=c++0x
 SOURCES += \
 	$$PWD/Game.cpp \
 	$$PWD/tools.cpp \
