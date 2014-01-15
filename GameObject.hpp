@@ -45,8 +45,7 @@ class GameObject { //scenegraph nodes
 
 		const int id;
 	protected:
-		const Game* getGame() const;
-		Game* getGame();
+		Game* getGame() const;
 		const GameObject* getParent() const;
 		virtual void onObjectAdd(GameObject* object);
 
