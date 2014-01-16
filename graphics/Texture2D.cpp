@@ -81,3 +81,22 @@ int Texture2D::getWidth() const {
 int Texture2D::getHeight() const {
 	return size.y;
 }
+
+void Texture2D::bind() const {
+	VBE_ASSERT(handle !=0, "Trying to bind nullptr texture into slot " << slot);
+	glActiveTexture(GL_TEXTURE0 + slot);
+	glBindTexture(GL_TEXTURE_2D, handle);
+}
+
+void Texture2D::setFilter(GLenum min, GLenum mag) {
+	bind();
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag);
+}
+
+void Texture2D::setWrap(GLenum wrap) {
+	bind();
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrap);
+}

@@ -20,6 +20,10 @@ class Texture2D : public Texture {
 		int getWidth() const;
 		int getHeight() const;
 
+		void setFilter(GLenum min, GLenum mag);
+		void setWrap(GLenum wrap);
+		void bind() const;
+
 	private:
 		vec2i size;
 };

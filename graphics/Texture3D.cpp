@@ -62,3 +62,22 @@ int Texture3D::getHeight() const {
 int Texture3D::getDepth() const {
 	return size.z;
 }
+
+void Texture3D::bind() const {
+	VBE_ASSERT(handle !=0, "Trying to bind nullptr texture into slot " << slot);
+	glActiveTexture(GL_TEXTURE0 + slot);
+	glBindTexture(GL_TEXTURE_3D, handle);
+}
+
+void Texture3D::setFilter(GLenum min, GLenum mag) {
+	bind();
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, min);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, mag);
+}
+
+void Texture3D::setWrap(GLenum wrap) {
+	bind();
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, wrap);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, wrap);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, wrap);
+}

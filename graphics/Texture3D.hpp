@@ -19,6 +19,10 @@ class Texture3D : public Texture {
 		int getHeight() const;
 		int getDepth() const;
 
+		void setFilter(GLenum min, GLenum mag);
+		void setWrap(GLenum wrap);
+		void bind() const;
+
 	private:
 		vec3i size;
 };

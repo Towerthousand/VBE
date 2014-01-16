@@ -120,11 +120,8 @@ class Texture {
 
 		~Texture();
 
-		void setFilter(GLenum min, GLenum mag);
-		void setWrap(GLenum wrap) const;
 		void setSlot(unsigned int newSlot);
 		unsigned int getSlot() const;
-		void bind() const;
 		GLuint getHandle() const;
 	protected:
 		Texture();
