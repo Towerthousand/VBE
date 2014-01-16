@@ -23,8 +23,8 @@ class GameObject { //scenegraph nodes
 		void setUpdatePriority(int newPriority);
 
 		template<class T>
-		void getAllObjectsOfType(std::vector<T*> &v) {
-			T* p = dynamic_cast<T*>(this);
+		void getAllObjectsOfType(std::vector<T*> &v) const {
+			T* p = const_cast<T*>(dynamic_cast<const T*>(this));
 			if(p) v.push_back(p);
 			for(std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
 				(*it)->getAllObjectsOfType<T>(v);
@@ -32,7 +32,7 @@ class GameObject { //scenegraph nodes
 
 		template<class T>
 		T* getFirstObjectOfType() const {
-			const T* p = dynamic_cast<const T*>(this);
+			T* p = const_cast<T*>(dynamic_cast<const T*>(this));
 			if(p) return p;
 			for(std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it) {
 				p = (*it)->getFirstObjectOfType<T>();
