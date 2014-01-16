@@ -14,7 +14,6 @@ class Texture3D : public Texture {
 		void loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, unsigned int sizeZ, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
 
 		void resize(unsigned int sizeX, unsigned int sizeY, unsigned sizeZ);
-		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
 		int getWidth() const;
 		int getHeight() const;
 		int getDepth() const;
