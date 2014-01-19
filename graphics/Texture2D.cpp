@@ -53,9 +53,9 @@ void Texture2D::loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int
 	format = internalFormat;
 	size = vec2i(sizeX, sizeY);
 	bind();
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, sizeX, sizeY, 0, sourceFormat, sourceType, (GLvoid*) pixels);
+	GL_ASSERT(glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, sizeX, sizeY, 0, sourceFormat, sourceType, (GLvoid*) pixels), "Failed to get storage for texture 2D");
 	if(mipmap) {
-		glGenerateMipmap(GL_TEXTURE_2D);
+		GL_ASSERT(glGenerateMipmap(GL_TEXTURE_2D), "Failed to generate mipmap for texture 2D");
 		setFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
 	}
 	else
@@ -70,8 +70,8 @@ void Texture2D::resize(unsigned int sizeX, unsigned int sizeY) {
 void Texture2D::setComparison(GLenum func, GLenum mode) {
 	VBE_ASSERT(format == DEPTH_COMPONENT16 || format == DEPTH_COMPONENT24 || format == DEPTH_COMPONENT32 || format == DEPTH_COMPONENT32F || format == DEPTH24_STENCIL8 || format == DEPTH32F_STENCIL8, "Can't set comparison for a non-depth, non_stencil texture");
 	bind();
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, func);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, mode);
+	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, func), "Failed to set texture 2D parameter");
+	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, mode), "Failed to set texture 2D parameter");
 }
 
 int Texture2D::getWidth() const {
@@ -84,19 +84,19 @@ int Texture2D::getHeight() const {
 
 void Texture2D::bind() const {
 	VBE_ASSERT(handle !=0, "Trying to bind nullptr texture into slot " << slot);
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, handle);
+	GL_ASSERT(glActiveTexture(GL_TEXTURE0 + slot), "Failed to set active texture");
+	GL_ASSERT(glBindTexture(GL_TEXTURE_2D, handle), "Failed to bind texture 2D");
 }
 
 void Texture2D::setFilter(GLenum min, GLenum mag) {
 	bind();
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag);
+	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min), "Failed to set texture 2D parameter");
+	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag), "Failed to set texture 2D parameter");
 }
 
 void Texture2D::setWrap(GLenum wrap) {
 	bind();
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrap);
+	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap), "Failed to set texture 2D parameter");
+	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap), "Failed to set texture 2D parameter");
+	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrap), "Failed to set texture 2D parameter");
 }

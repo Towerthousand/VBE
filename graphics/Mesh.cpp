@@ -10,21 +10,15 @@ Mesh::Mesh(Vertex::Format format, BufferType bufferType, bool indexed) :
 	primitiveType(TRIANGLES),
 	bufferType(bufferType),
 	indexed(indexed) {
-	glGenBuffers(1, &vertexBuffer);
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create VBO for mesh");
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to bind VBO for mesh");
-	glBufferData(GL_ARRAY_BUFFER, 0, nullptr, bufferType);
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to load VBO with empty vertex data");
-	if(indexed) {
-		glGenBuffers(1, &indexBuffer);
-		VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create IBO for mesh");
-	}
+	GL_ASSERT(glGenBuffers(1, &vertexBuffer), "Failed to create VBO for mesh");
+	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer), "Failed to bind VBO for mesh");
+	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, 0, nullptr, bufferType), "Failed to load VBO with empty vertex data");
+	if(indexed) GL_ASSERT(glGenBuffers(1, &indexBuffer), "Failed to create IBO for mesh");
 }
 
 Mesh::~Mesh() {
 	if(vertexBuffer != 0)
-		glDeleteBuffers(1, &vertexBuffer);
+		GL_ASSERT(glDeleteBuffers(1, &vertexBuffer), "Failed to delete VBO");
 	for(std::map<GLuint, const ShaderBinding*>::iterator it = bindingsCache.begin(); it != bindingsCache.end(); ++it)
 		delete it->second;
 }
@@ -37,8 +31,8 @@ void Mesh::draw(const ShaderProgram *program) {
 	const ShaderBinding* binding = bindingsCache.at(handle);
 	program->use();
 	binding->bindVAO();
-	if(!indexed) glDrawArrays(primitiveType, 0, vertexCount);
-	else glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0);
+	if(!indexed) GL_ASSERT(glDrawArrays(primitiveType, 0, vertexCount), "Call to glDrawArrays failed");
+	else GL_ASSERT(glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0), "Call to glDrawElements failed");
 }
 
 const Vertex::Format& Mesh::getVertexFormat() const {
@@ -79,17 +73,17 @@ void Mesh::setPrimitiveType(Mesh::PrimitiveType type) {
 
 void Mesh::setVertexData(void* vertexData, unsigned int newVertexCount) {
 	vertexCount = newVertexCount;
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, vertexData, bufferType);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer), "Failed to bind VBO for mesh");
+	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, vertexData, bufferType), "Failed to send VBO data to GPU");
+	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0), "Failed to bind VBO for mesh");
 }
 
 void Mesh::setVertexIndices(unsigned int* indexData, unsigned int newIndexCount) {
 	VBE_ASSERT(indexed, "Cannot set indexes for a non-indexed mesh");
 	indexCount = newIndexCount;
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), indexData, bufferType);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer), "Failed to bind IBO for mesh");
+	GL_ASSERT(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), indexData, bufferType), "Failed to send IBO data to GPU");
+	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0), "Failed to bind IBO for mesh");
 }
 
 struct FunctorComparevec3i{
@@ -100,7 +94,6 @@ struct FunctorComparevec3i{
         if(a.z != b.z) return a.z < b.z;
         return false;
     }
-
 };
 
 
@@ -123,10 +116,9 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 	std::vector<vec3f> vertices;
 	std::vector<vec3f> normals;
 	std::vector<vec2f> textures;
-	std::vector<unsigned int> indices; //indices into data1
-	std::vector<vert> dataIndexed; //indexed data
-	std::vector<vert> dataNotIndexed; //unindexed data
-
+	std::vector<unsigned int> indices;
+	std::vector<vert> dataIndexed;
+	std::vector<vert> dataNotIndexed;
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
 	std::string line;

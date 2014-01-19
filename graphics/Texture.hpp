@@ -128,7 +128,9 @@ class Texture {
 		GLuint handle;
 		unsigned int slot;
 		InternalFormat format;
+	private:
 		static unsigned int lastSlot;
+		static int maxSlots;
 };
 
 #endif // Texture_HPP

@@ -2,10 +2,11 @@
 
 Shader::Shader(GLenum type) {
 	shaderHandle = glCreateShader(type);
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create shader");
 }
 
 Shader::~Shader() {
-	glDeleteShader(shaderHandle);
+	GL_ASSERT(glDeleteShader(shaderHandle), "Failed to delete shader");
 }
 
 Shader* Shader::loadShader(const std::string& data, GLenum shaderType) {
@@ -32,13 +33,13 @@ Shader* Shader::loadShader(const std::string& data, GLenum shaderType) {
 void Shader::loadFromString(const std::string &content) {
 	const char* buff = content.c_str();
 	const GLint len = content.size();
-	glShaderSource(shaderHandle, 1, &buff, &len);
+	GL_ASSERT(glShaderSource(shaderHandle, 1, &buff, &len),"Failed to set shader source");
 }
 
 void Shader::compile() const {
 	GLint status;
-	glCompileShader(shaderHandle);
-	glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &status);
+	GL_ASSERT(glCompileShader(shaderHandle),"Failed to execute compilation for shader");
+	GL_ASSERT(glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &status),"Failed glGetShaderiv");
 	if(status != GL_TRUE) {
 		printInfoLog();
 		VBE_ASSERT(false, "Compile failed for shader." );
@@ -47,16 +48,16 @@ void Shader::compile() const {
 
 void Shader::attach(GLuint program) const {
 	VBE_ASSERT(program != 0, "Trying to attach shader with id " << shaderHandle << " to nullptr program");
-	glAttachShader(program, shaderHandle);
+	GL_ASSERT(glAttachShader(program, shaderHandle), "Failed to attach shader");
 }
 
 void Shader::printInfoLog() const {
 	VBE_ASSERT(shaderHandle != 0, "Trying to query nullptr shader");
 	int length = 0;
-	glGetShaderiv(shaderHandle, GL_INFO_LOG_LENGTH, &length);
+	GL_ASSERT(glGetShaderiv(shaderHandle, GL_INFO_LOG_LENGTH, &length), "Failed glGetShaderiv");
 	if (length > 1) {
 		char infoLog[length];
-		glGetShaderInfoLog(shaderHandle, length, nullptr, infoLog);
-		VBE_LOG(infoLog );
+		GL_ASSERT(glGetShaderInfoLog(shaderHandle, length, nullptr, infoLog), "Failed glGetShaderInfoLog");
+		VBE_LOG(infoLog);
 	}
 }

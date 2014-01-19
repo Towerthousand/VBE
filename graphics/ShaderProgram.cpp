@@ -9,7 +9,7 @@ ShaderProgram::ShaderProgram() : programHandle(0) {
 
 ShaderProgram::~ShaderProgram() {
 	if(programHandle != 0)
-		glDeleteProgram(programHandle);
+		GL_ASSERT(glDeleteProgram(programHandle), "Failed to delete program");
 	for(std::map<std::string, Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it)
 		delete it->second;
 }
@@ -39,6 +39,7 @@ ShaderProgram*ShaderProgram::loadFromString(const std::string& vertSource, const
 	VBE_DLOG("* Creating new shaderProgram");
 
 	p->programHandle = glCreateProgram();
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create program");
 
 	vertex->attach(p->programHandle);
 	geometry->attach(p->programHandle);
@@ -65,10 +66,10 @@ ShaderProgram*ShaderProgram::loadFromFile(const std::string& vp_filename, const 
 void ShaderProgram::printInfoLog() {
 	VBE_ASSERT(programHandle != 0, "Trying to query nullptr program");
 	int length = 0;
-	glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &length);
+	GL_ASSERT(glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &length), "Failed glGetProgramiv");
 	if (length > 1) {
 		char infoLog[length];
-		glGetProgramInfoLog(programHandle, length, nullptr, infoLog);
+		GL_ASSERT(glGetProgramInfoLog(programHandle, length, nullptr, infoLog), "Failed glGetProgramInfoLog");
 		VBE_LOG(infoLog );
 	}
 }
@@ -77,7 +78,7 @@ void ShaderProgram::use() const {
 	VBE_ASSERT(programHandle != 0, "Trying to use nullptr program");
 	if(current != programHandle) {
 		current = programHandle;
-		glUseProgram(programHandle);
+		GL_ASSERT(glUseProgram(programHandle), "Failed to use program");
 	}
 	for(std::map<std::string, Uniform*>::const_iterator it = uniforms.begin(); it != uniforms.end(); ++it)
 		it->second->ready();
@@ -90,10 +91,10 @@ Uniform* ShaderProgram::uniform(const std::string &name) const {
 }
 
 void ShaderProgram::link() {
-	glLinkProgram(programHandle);
+	GL_ASSERT(glLinkProgram(programHandle), "Failed to execute link for program");
 	//CHECK FOR LINK SUCCESS
 	GLint success;
-	glGetProgramiv(programHandle, GL_LINK_STATUS, &success);
+	GL_ASSERT(glGetProgramiv(programHandle, GL_LINK_STATUS, &success), "Failed glGetProgramiv");
 	if (success != GL_TRUE) {
 		printInfoLog();
 		VBE_ASSERT(false, "Linking program failed" );
@@ -104,10 +105,10 @@ void ShaderProgram::link() {
 void ShaderProgram::retriveProgramInfo() {
 	//RETRIEVE ATTRIBUTE DATA
 	GLint activeAttributes;
-	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+	GL_ASSERT(glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES, &activeAttributes), "Failed glGetProgramiv");
 	if (activeAttributes > 0) {
 		GLint length;
-		glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length);
+		GL_ASSERT(glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length), "Failed glGetProgramiv");
 		if (length > 0) {
 			GLchar attribName[length + 1];
 			GLint attribSize;
@@ -115,7 +116,7 @@ void ShaderProgram::retriveProgramInfo() {
 			GLint attribLocation;
 			for (int i = 0; i < activeAttributes; ++i) {
 				// Query attribute info.
-				glGetActiveAttrib(programHandle, i, length, nullptr, &attribSize, &attribType, attribName);
+				GL_ASSERT(glGetActiveAttrib(programHandle, i, length, nullptr, &attribSize, &attribType, attribName), "Failed glGetActiveAttrib");
 				attribName[length] = '\0';
 
 				// Query the pre-assigned attribute location.
@@ -129,10 +130,10 @@ void ShaderProgram::retriveProgramInfo() {
 
 	//RETRIEVE UNIFORM INFO
 	GLint activeUniforms;
-	glGetProgramiv(programHandle, GL_ACTIVE_UNIFORMS, &activeUniforms);
+	GL_ASSERT(glGetProgramiv(programHandle, GL_ACTIVE_UNIFORMS, &activeUniforms), "Failed glGetProgramiv");
 	if (activeUniforms > 0) {
 		GLint length;
-		glGetProgramiv(programHandle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length);
+		GL_ASSERT(glGetProgramiv(programHandle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length), "Failed glGetPRogramiv");
 		if (length > 0) {
 			GLchar uniformName[length + 1];
 			GLint uniformSize;
@@ -140,7 +141,7 @@ void ShaderProgram::retriveProgramInfo() {
 			GLint uniformLocation;
 			for (int i = 0; i < activeUniforms; ++i) {
 				// Query uniform info.
-				glGetActiveUniform(programHandle, i, length, nullptr, &uniformSize, &uniformType, uniformName);
+				GL_ASSERT(glGetActiveUniform(programHandle, i, length, nullptr, &uniformSize, &uniformType, uniformName), "Failed glGetActiveUniform");
 				uniformName[length] = '\0';  // nullptr terminate
 				if (uniformSize > 1 && length > 3) {
 					// This is an array uniform. I'm stripping array indexers off it since GL does not
@@ -153,6 +154,7 @@ void ShaderProgram::retriveProgramInfo() {
 
 				// Query the pre-assigned uniform location.
 				uniformLocation = glGetUniformLocation(programHandle, uniformName);
+				VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to get uniform location");
 				Uniform* uniform = new Uniform(uniformSize, uniformType, uniformLocation);
 
 				uniforms[uniformName] = uniform;

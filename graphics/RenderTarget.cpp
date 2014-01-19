@@ -3,21 +3,21 @@
 RenderTarget* RenderTarget::current = nullptr;
 
 RenderTarget::RenderBuffer::RenderBuffer(int width, int height, Texture::InternalFormat format) : format(format){
-	glGenRenderbuffers(1, &handle);
+	GL_ASSERT(glGenRenderbuffers(1, &handle),"Failed to generate render buffer");
 	resize(width, height);
 }
 
 RenderTarget::RenderBuffer::~RenderBuffer() {
-	glDeleteRenderbuffers(1, &handle);
+	GL_ASSERT(glDeleteRenderbuffers(1, &handle),"Failed to delete render buffer");
 }
 
 void RenderTarget::RenderBuffer::resize(int width, int height) {
 	bind();
-	glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
+	GL_ASSERT(glRenderbufferStorage(GL_RENDERBUFFER, format, width, height),"Failed to allocate render buffer storage");
 }
 
 void RenderTarget::RenderBuffer::bind() const {
-	glBindRenderbuffer(GL_RENDERBUFFER, handle);
+	GL_ASSERT(glBindRenderbuffer(GL_RENDERBUFFER, handle),"Failed to bind render buffer");
 }
 
 GLuint RenderTarget::RenderBuffer::getHandle() const {
@@ -43,14 +43,14 @@ void RenderTarget::bind(RenderTarget* target) {
 	if(current == target) return;
 
 	if(target == nullptr) {
-		glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		GL_ASSERT(glViewport(0, 0, SCRWIDTH, SCRHEIGHT), "Failed to create viewport");
+		GL_ASSERT(glBindFramebuffer(GL_FRAMEBUFFER, 0), "Failed to bind screen frame buffer");
 	}
 	else {
 		VBE_ASSERT(target->handle != 0, "Cannot bind unbuilt RenderTarget");
 		target->checkSize();
-		glViewport(0, 0, target->size.x, target->size.y);
-		glBindFramebuffer(GL_FRAMEBUFFER, target->handle);
+		GL_ASSERT(glViewport(0, 0, target->size.x, target->size.y),"Failed to bind viewport");
+		GL_ASSERT(glBindFramebuffer(GL_FRAMEBUFFER, target->handle),"Failed to bind frame buffer");
 	}
 	current = target;
 }
@@ -77,7 +77,7 @@ void RenderTarget::build() {
 
 	size = getDesiredSize();
 
-	glGenFramebuffers(1, &handle);
+	GL_ASSERT(glGenFramebuffers(1, &handle),"Failed to create frame buffer");
 	RenderTarget* current = getCurrent();
 	bind(this);//please
 
@@ -89,13 +89,13 @@ void RenderTarget::build() {
 		if(e.type == RenderTargetEntry::RenderBufferEntry) {
 			RenderBuffer* buff = new RenderBuffer(size.x, size.y, e.format);
 			buff->bind();
-			glFramebufferRenderbuffer(GL_FRAMEBUFFER, e.attachment, GL_RENDERBUFFER, buff->getHandle());
+			GL_ASSERT(glFramebufferRenderbuffer(GL_FRAMEBUFFER, e.attachment, GL_RENDERBUFFER, buff->getHandle()),"Failed to bind render buffer to frame buffer");
 			e.renderBuffer = buff;
 		}
 		else {
 			Texture2D* tex = Texture2D::createEmpty(size.x, size.y, e.format);
 			tex->bind();
-			glFramebufferTexture(GL_FRAMEBUFFER, e.attachment, tex->getHandle(), 0);
+			GL_ASSERT(glFramebufferTexture(GL_FRAMEBUFFER, e.attachment, tex->getHandle(), 0),"Failed to bind texture to frame buffer");
 			e.texture = tex;
 		}
 
@@ -105,10 +105,10 @@ void RenderTarget::build() {
 
 	if(drawAttachments.size() == 0) {
 		GLenum none = GL_NONE;
-		glDrawBuffers(1, &none);
+		GL_ASSERT(glDrawBuffers(1, &none),"Failed to assign no draw buffers");
 	}
 	else
-		glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]);
+		GL_ASSERT(glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]),"Failed to assign draw buffers");
 
 	VBE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer");
 
@@ -151,7 +151,7 @@ void RenderTarget::destroy() {
 			e.texture = nullptr;
 		}
 	}
-	glDeleteFramebuffers(1, &handle);
+	GL_ASSERT(glDeleteFramebuffers(1, &handle),"Failed to delete frame buffer");
 
 	handle = 0;
 }
