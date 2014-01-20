@@ -23,7 +23,7 @@
 	VBE_ASSERT(__gl_error_code == GL_NO_ERROR, "OpenGL Error with id: " << __gl_error_code << std::endl << "Error message: " << string); \
 	} while(0)
 #else
-#define GL_ASSERT( gl_code ) gl_code
+#define GL_ASSERT( gl_code , string) gl_code
 #endif
 #ifdef __LOG
 #define VBE_LOG(log) std::cout << log << std::endl
