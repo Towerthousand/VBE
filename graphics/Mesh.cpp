@@ -64,7 +64,12 @@ Mesh::PrimitiveType Mesh::getPrimitiveType() const {
 }
 
 bool Mesh::isIndexed() const {
-	return indexed;
+    return indexed;
+}
+
+AABB Mesh::getBoundingBox() const
+{
+    return aabb;
 }
 
 void Mesh::setPrimitiveType(Mesh::PrimitiveType type) {
@@ -121,6 +126,7 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 	std::vector<vert> dataNotIndexed;
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
+    AABB aabb = AABB();
 	std::string line;
 	while (getline(in, line)) {
 		if (line.substr(0, 2) == "v ") {
@@ -128,6 +134,7 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 			vec3f v;
 			s >> v.x >> v.y >> v.z;
             vertices.push_back(v);
+            aabb.extend(v);
 		}
 		else if (line.substr(0, 3) == "vn ") {
 			std::istringstream s(line.substr(3));
@@ -186,6 +193,7 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 		VBE_DLOG("    Not using indexes");
 	}
+    mesh->aabb = aabb;
 	return mesh;
 }
 

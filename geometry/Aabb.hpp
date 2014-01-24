@@ -42,7 +42,7 @@ inline vec3f AABB::getMax() const {
 }
 
 inline vec3f AABB::getCenter() const {
-    return f*(pmin + pmax);
+    return 0.5f*(pmin + pmax);
 }
 
 inline vec3f AABB::getDimensions() const {

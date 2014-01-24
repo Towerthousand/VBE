@@ -1,6 +1,8 @@
 #ifndef MESH_HPP
 #define MESH_HPP
+
 #include "Vertex.hpp"
+#include "geometry/Aabb.hpp"
 
 class ShaderBinding;
 class ShaderProgram;
@@ -36,6 +38,8 @@ class Mesh {
 		PrimitiveType getPrimitiveType() const;
 		bool isIndexed() const;
 
+        AABB getBoundingBox() const;
+
 		void setPrimitiveType(Mesh::PrimitiveType type);
 		void setVertexData(void* vertexData, unsigned int newVertexCount);
 		void setVertexIndices(unsigned int* indexData, unsigned int newIndexCount);
@@ -52,6 +56,8 @@ class Mesh {
 		PrimitiveType primitiveType;
 		BufferType bufferType;
 		bool indexed;
+
+        AABB aabb;
 };
 
 #endif // MESH_HPP

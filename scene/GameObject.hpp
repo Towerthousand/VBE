@@ -22,6 +22,8 @@ class GameObject { //scenegraph nodes
 		void setDrawPriority(int newPriority);
 		void setUpdatePriority(int newPriority);
 
+        mat4f getFullTransform() const;
+
 		template<class T>
 		void getAllObjectsOfType(std::vector<T*> &v) const {
 			T* p = const_cast<T*>(dynamic_cast<const T*>(this));

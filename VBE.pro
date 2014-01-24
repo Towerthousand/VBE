@@ -32,7 +32,7 @@ SOURCES += \
 	$$PWD/scene/ContainerObject.cpp \
      	$$PWD/graphics/Texture3D.cpp \
     	$$PWD/graphics/Texture2D.cpp \
-    VBE/geometry/aabb.cpp
+        $$PWD/geometry/Aabb.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -55,7 +55,7 @@ HEADERS += \
 	$$PWD/scene/ContainerObject.hpp \
     	$$PWD/graphics/Texture3D.hpp \
     	$$PWD/graphics/Texture2D.hpp \
-    VBE/geometry/aabb.h
+        $$PWD/geometry/Aabb.hpp
 
 OTHER_FILES +=
 
