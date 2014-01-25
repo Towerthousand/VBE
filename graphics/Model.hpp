@@ -11,7 +11,7 @@ class Model {
 
 		void draw() const;
 
-		Mesh* mesh;
+		mutable Mesh* mesh;
 		mutable ShaderProgram* program;
 };
 
