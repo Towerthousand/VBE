@@ -57,5 +57,11 @@ bool AABB::inside(const AABB &aabb) const
 
 bool AABB::overlap(const AABB &aabb) const
 {
-    return inside(aabb.pmin) || inside(aabb.pmax);
+	if (pmin.x > aabb.pmax.x) return false;
+	if (pmax.x < aabb.pmin.x) return false;
+	if (pmin.y > aabb.pmax.y) return false;
+	if (pmax.y < aabb.pmin.y) return false;
+	if (pmin.z > aabb.pmax.z) return false;
+	if (pmax.z < aabb.pmin.z) return false;
+	return true;
 }
