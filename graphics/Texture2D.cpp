@@ -84,7 +84,7 @@ int Texture2D::getHeight() const {
 
 void Texture2D::bind() const {
 	VBE_ASSERT(handle !=0, "Trying to bind nullptr texture into slot " << slot);
-	GL_ASSERT(glActiveTexture(GL_TEXTURE0 + slot), "Failed to set active texture");
+    GL_ASSERT(glActiveTexture(GL_TEXTURE0 + slot), "Failed to set active texture slot " << slot);
 	GL_ASSERT(glBindTexture(GL_TEXTURE_2D, handle), "Failed to bind texture 2D");
 }
 

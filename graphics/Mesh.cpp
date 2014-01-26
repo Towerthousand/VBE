@@ -106,12 +106,13 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 	VBE_DLOG("* Loading new OBJ from path " << filepath << ". Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
-	elements.push_back(Vertex::Element(Vertex::Attribute::Normal   , Vertex::Element::Float, 3));
-	elements.push_back(Vertex::Element(Vertex::Attribute::TexCoord , Vertex::Element::Float, 2));
+    elements.push_back(Vertex::Element(Vertex::Attribute::Normal   , Vertex::Element::Float, 3));
+    elements.push_back(Vertex::Element(Vertex::Attribute::get("a_tangent") , Vertex::Element::Float, 3));
+    elements.push_back(Vertex::Element(Vertex::Attribute::TexCoord , Vertex::Element::Float, 2));
 
 	struct vert {
-			vert(vec3f pos, vec3f nor, vec2f tex) : pos(pos) , nor(nor), tex(tex) {}
-			vec3f pos, nor;
+        vert(vec3f pos, vec3f nor, vec3f tan, vec2f tex) : pos(pos) , nor(nor), tan(tan), tex(tex) {}
+            vec3f pos, nor, tan;
 			vec2f tex;
 	};
 
@@ -120,6 +121,7 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 
 	std::vector<vec3f> vertices;
 	std::vector<vec3f> normals;
+    std::vector<vec3f> tangents;
 	std::vector<vec2f> textures;
 	std::vector<unsigned int> indices;
 	std::vector<vert> dataIndexed;
@@ -141,6 +143,11 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 			vec3f v;
 			s >> v.x >> v.y >> v.z;
 			normals.push_back(v);
+            vec3f t = glm::cross(glm::normalize(v), vec3f(0, 0, 1));
+            if (glm::length(t) < 0.01) {
+                t = glm::cross(glm::normalize(v), vec3f(0, 1, 0));
+            }
+            tangents.push_back(t);
 		}
 		else if (line.substr(0, 3) == "vt ") {
 			std::istringstream s(line.substr(3));
@@ -164,14 +171,14 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
                 {
                     ind = indexMap.size();
 					indexMap.insert(std::pair<vec3i, int>(vInf[i], dataIndexed.size()));
-					dataIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], textures[vInf[i].y-1]));
+                    dataIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], tangents[vInf[i].z-1], textures[vInf[i].y-1]));
                 }
                 else
                     ind = it->second;
 
                 indices.push_back(ind);
 
-				dataNotIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], textures[vInf[i].y-1]));
+                dataNotIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], tangents[vInf[i].z-1], textures[vInf[i].y-1]));
             }
 		}
 	}
