@@ -17,6 +17,9 @@ class Game : public ContainerObject {
 
 		sf::RenderWindow &getWindow() { return window; }
 		
+		void setFixedFramerate(int fixedFramerate);
+		void setDynamicFramerate();
+
 		bool isRunning;
 	private:
 		sf::RenderWindow window;
@@ -24,6 +27,9 @@ class Game : public ContainerObject {
 		std::map<std::string, GameObject*> nameMap;
 		std::map<int, GameObject*> idMap;
 		int idCounter;
+
+		bool isFixedFramerate;
+		float fixedFramerate;
 
 		static Game* instance;
 

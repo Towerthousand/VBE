@@ -55,13 +55,36 @@ GameObject* Game::getObjectByID(int id) const {
 	return idMap.at(id);
 }
 
+void Game::setFixedFramerate(int fixedFramerate)
+{
+	this->fixedFramerate = fixedFramerate;
+	this->isFixedFramerate = true;
+}
+
+void Game::setDynamicFramerate()
+{
+	isFixedFramerate = false;
+}
+
 // Main game loop
 void Game::run() {
-	sf::Clock clock;
-	while (isRunning) {
-		float deltaTime = clock.restart().asSeconds();
-		update(deltaTime);
-		draw();
+	if(isFixedFramerate)
+	{
+		window.setFramerateLimit(fixedFramerate);
+		while (isRunning) {
+			float deltaTime = 1.0f/fixedFramerate;
+			update(deltaTime);
+			draw();
+		}
+	}
+	else
+	{
+		sf::Clock clock;
+		while (isRunning) {
+			float deltaTime = clock.restart().asSeconds();
+			update(deltaTime);
+			draw();
+		}
 	}
 	update(0.1f);
 }
