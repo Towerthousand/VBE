@@ -1,15 +1,14 @@
 #ifndef OBJLOADER_HPP
 #define OBJLOADER_HPP
-#include "tools.hpp"
+#include "Mesh.hpp"
 
-class Mesh;
 class OBJLoader {
 	public:
-		Mesh loadFromOBJStandard(const std::string& filePath);
-		Mesh loadFromOBJTangentsBitangents(const std::string& filePath);
+		static Mesh* loadFromOBJStandard(const std::string& filepath, Mesh::BufferType bufferType);
+		static Mesh* loadFromOBJTangents(const std::string& filepath, Mesh::BufferType bufferType);
 	private:
 		OBJLoader();
 		~OBJLoader();
-}
+};
 
 #endif //OBJLOADER_HPP

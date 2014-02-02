@@ -33,7 +33,6 @@ void ContainerObject::addToContainer(GameObject* obj) {
 	VBE_ASSERT(obj->container == nullptr, "Adding an object to container that is already in a container.");
 	obj->container = this;
 	objectTasksToAdd.push(obj);
-
 	if(dynamic_cast<ContainerObject*> (obj) == nullptr)
 		for(std::list<GameObject*>::iterator it = obj->children.begin(); it != obj->children.end(); ++it)
 			addToContainer(*it);

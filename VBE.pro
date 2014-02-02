@@ -30,9 +30,10 @@ SOURCES += \
 	$$PWD/utils/Manager.cpp \
 	$$PWD/graphics/RenderTarget.cpp \
 	$$PWD/scene/ContainerObject.cpp \
-     	$$PWD/graphics/Texture3D.cpp \
-    	$$PWD/graphics/Texture2D.cpp \
-        $$PWD/geometry/Aabb.cpp
+	$$PWD/graphics/Texture3D.cpp \
+	$$PWD/graphics/Texture2D.cpp \
+	$$PWD/graphics/OBJLoader.cpp \
+	$$PWD/geometry/Aabb.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -53,9 +54,10 @@ HEADERS += \
 	$$PWD/utils/Manager.hpp \
 	$$PWD/graphics/RenderTarget.hpp \
 	$$PWD/scene/ContainerObject.hpp \
-    	$$PWD/graphics/Texture3D.hpp \
-    	$$PWD/graphics/Texture2D.hpp \
-        $$PWD/geometry/Aabb.hpp
+	$$PWD/graphics/Texture3D.hpp \
+	$$PWD/graphics/Texture2D.hpp \
+	$$PWD/graphics/OBJLoader.hpp \
+	$$PWD/geometry/Aabb.hpp
 
 OTHER_FILES +=
 

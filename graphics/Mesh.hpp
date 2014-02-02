@@ -58,6 +58,7 @@ class Mesh {
 		bool indexed;
 
         AABB aabb;
+		friend class OBJLoader;
 };
 
 #endif // MESH_HPP

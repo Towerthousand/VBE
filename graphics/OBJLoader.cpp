@@ -1,7 +1,16 @@
 #include "OBJLoader.hpp"
-#include "Mesh.hpp"
 
-Mesh OBJLoader::loadFromOBJStandard(const std::string& filePath) {
+struct FunctorComparevec3i{
+	bool operator()(const vec3i& a, const vec3i& b)
+	{
+		if(a.x != b.x) return a.x < b.x;
+		if(a.y != b.y) return a.y < b.y;
+		if(a.z != b.z) return a.z < b.z;
+		return false;
+	}
+};
+
+Mesh* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from path " << filepath << ". Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
@@ -9,7 +18,7 @@ Mesh OBJLoader::loadFromOBJStandard(const std::string& filePath) {
 	elements.push_back(Vertex::Element(Vertex::Attribute::TexCoord , Vertex::Element::Float, 2));
 
 	struct vert {
-        vert(vec3f pos, vec3f nor, vec2f tex) : pos(pos) , nor(nor), tex(tex) {}
+			vert(vec3f pos, vec3f nor, vec2f tex) : pos(pos) , nor(nor), tex(tex) {}
 			vec3f pos, nor;
 			vec2f tex;
 	};
@@ -61,11 +70,11 @@ Mesh OBJLoader::loadFromOBJStandard(const std::string& filePath) {
 				if(it == indexMap.end()) {
 					ind = indexMap.size();
 					indexMap.insert(std::pair<vec3i, int>(vInf[i], dataIndexed.size()));
-					dataIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], tangents[vInf[i].z-1], textures[vInf[i].y-1]));
+					dataIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], textures[vInf[i].y-1]));
 				}
 				else ind = it->second;
 				indices.push_back(ind);
-				dataNotIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], tangents[vInf[i].z-1], textures[vInf[i].y-1]));
+				dataNotIndexed.push_back(vert(vertices[vInf[i].x-1], normals[vInf[i].z-1], textures[vInf[i].y-1]));
 			}
 		}
 	}
@@ -91,7 +100,7 @@ Mesh OBJLoader::loadFromOBJStandard(const std::string& filePath) {
 	return mesh;
 }
 
-Mesh OBJLoader::loadFromOBJTangentsBitangents(const std::string& filePath, Mesh::BufferType bufferType) {
+Mesh* OBJLoader::loadFromOBJTangents(const std::string& filepath, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from path " << filepath << ". Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
@@ -100,7 +109,7 @@ Mesh OBJLoader::loadFromOBJTangentsBitangents(const std::string& filePath, Mesh:
 	elements.push_back(Vertex::Element(Vertex::Attribute::TexCoord , Vertex::Element::Float, 2));
 
 	struct vert {
-	vert(vec3f pos, vec3f nor, vec3f tan, vec2f tex) : pos(pos) , nor(nor), tan(tan), tex(tex) {}
+			vert(vec3f pos, vec3f nor, vec3f tan, vec2f tex) : pos(pos) , nor(nor), tan(tan), tex(tex) {}
 			vec3f pos, nor, tan;
 			vec2f tex;
 	};
