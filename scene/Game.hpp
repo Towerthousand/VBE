@@ -28,8 +28,8 @@ class Game : public ContainerObject {
 		std::map<int, GameObject*> idMap;
 		int idCounter;
 
+		int fixedFramerate;
 		bool isFixedFramerate;
-		float fixedFramerate;
 
 		static Game* instance;
 

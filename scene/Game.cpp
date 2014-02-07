@@ -5,7 +5,7 @@
 
 Game* Game::instance = nullptr;
 
-Game::Game() :isRunning(true), idCounter(1) {
+Game::Game() :isRunning(true), idCounter(1), fixedFramerate(0), isFixedFramerate(false) {
 	VBE_ASSERT(Game::instance == nullptr, "Two games created");
 	Game::instance = this;
 	VBE_LOG("* INIT GAME");
@@ -55,30 +55,26 @@ GameObject* Game::getObjectByID(int id) const {
 	return idMap.at(id);
 }
 
-void Game::setFixedFramerate(int fixedFramerate)
-{
+void Game::setFixedFramerate(int fixedFramerate) {
 	this->fixedFramerate = fixedFramerate;
 	this->isFixedFramerate = true;
 }
 
-void Game::setDynamicFramerate()
-{
+void Game::setDynamicFramerate() {
 	isFixedFramerate = false;
 }
 
 // Main game loop
 void Game::run() {
-	if(isFixedFramerate)
-	{
+	if(isFixedFramerate) {
 		window.setFramerateLimit(fixedFramerate);
+		float deltaTime = 1.0f/float(fixedFramerate);
 		while (isRunning) {
-			float deltaTime = 1.0f/fixedFramerate;
 			update(deltaTime);
 			draw();
 		}
 	}
-	else
-	{
+	else {
 		sf::Clock clock;
 		while (isRunning) {
 			float deltaTime = clock.restart().asSeconds();
