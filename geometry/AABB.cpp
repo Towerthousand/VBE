@@ -1,30 +1,24 @@
-#include "Aabb.hpp"
-#include <limits>
+#include "AABB.hpp"
 
-AABB::AABB()
-{
+AABB::AABB() {
     pmax = vec3f(std::numeric_limits<float>::min());
     pmin = vec3f(std::numeric_limits<float>::max());
 }
 
-AABB::AABB(const AABB &aabb)
-{
+AABB::AABB(const AABB &aabb) {
     pmin = aabb.pmin;
     pmax = aabb.pmax;
 }
 
-AABB::AABB(const vec3f &min, const vec3f &max)
-{
+AABB::AABB(const vec3f &min, const vec3f &max) {
     this->pmin = min;
     this->pmax = max;
 }
 
-AABB::~AABB()
-{
+AABB::~AABB() {
 }
 
-void AABB::extend(const vec3f &p)
-{
+void AABB::extend(const vec3f &p) {
     if (p.x < pmin.x)    pmin.x = p.x;
     if (p.y < pmin.y)    pmin.y = p.y;
     if (p.z < pmin.z)    pmin.z = p.z;
@@ -33,14 +27,12 @@ void AABB::extend(const vec3f &p)
     if (p.z > pmax.z)    pmax.z = p.z;
 }
 
-void AABB::extend(const AABB &aabb)
-{
+void AABB::extend(const AABB &aabb) {
     this->extend(aabb.pmin);
     this->extend(aabb.pmax);
 }
 
-bool AABB::inside(const vec3f &p) const
-{
+bool AABB::inside(const vec3f &p) const {
     if (p.x < pmin.x) return false;
     if (p.y < pmin.y) return false;
     if (p.z < pmin.z) return false;
@@ -50,13 +42,11 @@ bool AABB::inside(const vec3f &p) const
     return true;
 }
 
-bool AABB::inside(const AABB &aabb) const
-{
+bool AABB::inside(const AABB &aabb) const {
     return inside(aabb.pmin) && inside(aabb.pmax);
 }
 
-bool AABB::overlap(const AABB &aabb) const
-{
+bool AABB::overlap(const AABB &aabb) const {
 	if (pmin.x > aabb.pmax.x) return false;
 	if (pmax.x < aabb.pmin.x) return false;
 	if (pmin.y > aabb.pmax.y) return false;

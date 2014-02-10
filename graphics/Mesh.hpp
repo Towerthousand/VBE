@@ -2,7 +2,7 @@
 #define MESH_HPP
 
 #include "Vertex.hpp"
-#include "geometry/Aabb.hpp"
+#include "geometry/AABB.hpp"
 
 class ShaderBinding;
 class ShaderProgram;
