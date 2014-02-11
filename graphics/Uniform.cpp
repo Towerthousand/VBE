@@ -1,6 +1,7 @@
 #include "Uniform.hpp"
 #include "Texture2D.hpp"
 #include "Texture3D.hpp"
+#include "Texture2DArray.hpp"
 
 Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 	dirty(true), count(count), type(type), location(location) {
@@ -24,8 +25,6 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_INT:
 			size = sizeof(GLint);
 			break;
-		case GL_SAMPLER_1D:
-		case GL_SAMPLER_1D_ARRAY:
 		case GL_SAMPLER_2D:
 		case GL_SAMPLER_2D_ARRAY:
 		case GL_SAMPLER_2D_SHADOW:
@@ -116,6 +115,13 @@ void Uniform::set(const Texture3D* val) {
 	setBytes((char*)&slot);
 }
 
+void Uniform::set(const Texture2DArray* val) {
+	VBE_ASSERT(type == GL_SAMPLER_2D_ARRAY, "Wrong uniform type. Location " << this->location);
+	val->bind();
+	unsigned int slot = val->getSlot();
+	setBytes((char*)&slot);
+}
+
 void Uniform::ready() { //assumes program is binded already. Only to be called by ShaderProgram
 	if(!dirty) return;
 	dirty = false;
@@ -126,6 +132,7 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 		case GL_FLOAT_VEC4:	GL_ASSERT(glUniform4fv(location, count, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
 		case GL_FLOAT_MAT4:	GL_ASSERT(glUniformMatrix4fv(location, count, GL_FALSE, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
 		case GL_INT:
+		case GL_SAMPLER_2D_ARRAY:
 		case GL_SAMPLER_2D_SHADOW:
 		case GL_SAMPLER_3D:
 		case GL_SAMPLER_2D:	GL_ASSERT(glUniform1iv(location, count, (GLint*)&lastValue[0]), "Failed to send uniform to GPU"); break;
@@ -163,7 +170,8 @@ void Uniform::log() {
 		case GL_FLOAT_MAT4: s = "GL_FLOAT_MAT4"; break;
 		case GL_INT: s = "GL_INT"; break;
 		case GL_SAMPLER_2D: s = "GL_SAMPLER_2D"; break;
-		case GL_SAMPLER_2D_SHADOW: s = "GL_SAMPLER_2D"; break;
+		case GL_SAMPLER_2D_SHADOW: s = "GL_SAMPLER_2D_SHADOW"; break;
+		case GL_SAMPLER_2D_ARRAY: s = "GL_SAMPLER_2D_ARRAY"; break;
 		case GL_SAMPLER_3D: s = "GL_SAMPLER_3D"; break;
 		default: s = "UNKNOWN_TYPE"; break;
 	}

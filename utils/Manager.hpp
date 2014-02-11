@@ -4,6 +4,7 @@
 #include "graphics/ShaderProgram.hpp"
 #include "graphics/Mesh.hpp"
 #include "graphics/Texture3D.hpp"
+#include "graphics/Texture2DArray.hpp"
 
 template<class T>
 class Manager {
@@ -42,10 +43,11 @@ class Manager {
 };
 
 //default Managers
-extern Manager<RenderTarget> FrameBuffers;
-extern Manager<Texture2D> Textures2D;
-extern Manager<Texture3D> Textures3D;
-extern Manager<Mesh> Meshes;
-extern Manager<ShaderProgram> Programs;
+extern Manager<RenderTarget>	FrameBuffers;
+extern Manager<Texture2D>		Textures2D;
+extern Manager<Texture2DArray>	Textures2DArrays;
+extern Manager<Texture3D>		Textures3D;
+extern Manager<Mesh>			Meshes;
+extern Manager<ShaderProgram>	Programs;
 
 #endif // MANAGER_HPP

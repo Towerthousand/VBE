@@ -4,6 +4,7 @@
 
 class Texture2D;
 class Texture3D;
+class Texture2DArray;
 class Uniform {
 	public:
 		Uniform(unsigned int count, GLenum type, GLint location);
@@ -26,9 +27,10 @@ class Uniform {
 
 		void set(const mat4f &val);
 		void set(const std::vector<mat4f> &val);
-
+		
 		void set(const Texture2D* val);
 		void set(const Texture3D* val);
+		void set(const Texture2DArray* val);
 
 		void log();
 
