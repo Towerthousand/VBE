@@ -78,8 +78,8 @@ Mesh* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::BufferTy
 			}
 		}
 	}
-	float sizeWithIndex = dataIndexed.size()*sizeof(vert)+indices.size()*sizeof(int);
-	float sizeWithoutIndex = dataNotIndexed.size()*sizeof(vert);
+	int sizeWithIndex = dataIndexed.size()*sizeof(vert)+indices.size()*sizeof(int);
+	int sizeWithoutIndex = dataNotIndexed.size()*sizeof(vert);
 
 	VBE_DLOG(" - Vertex count without indexes: " << dataNotIndexed.size());
 	VBE_DLOG(" - Vertex count with indexes: " << dataIndexed.size() << " (" << indices.size() << ") indexes");
@@ -173,8 +173,8 @@ Mesh* OBJLoader::loadFromOBJTangents(const std::string& filepath, Mesh::BufferTy
 			}
 		}
 	}
-	float sizeWithIndex = dataIndexed.size()*sizeof(vert)+indices.size()*sizeof(int);
-	float sizeWithoutIndex = dataNotIndexed.size()*sizeof(vert);
+	int sizeWithIndex = dataIndexed.size()*sizeof(vert)+indices.size()*sizeof(int);
+	int sizeWithoutIndex = dataNotIndexed.size()*sizeof(vert);
 
 	VBE_DLOG(" - Vertex count without indexes: " << dataNotIndexed.size());
 	VBE_DLOG(" - Vertex count with indexes: " << dataIndexed.size() << " (" << indices.size() << ") indexes");

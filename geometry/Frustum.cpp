@@ -7,7 +7,7 @@ Frustum::~Frustum() {
 }
 
 bool Frustum::insideFrustum( const vec3f &center, float radius) const {
-	for(uint i=0; i < 4; i++)
+	for(unsigned int i=0; i < 4; i++)
 		if(!planes[i].inside(center,radius)) return false;
 	return true;
 }

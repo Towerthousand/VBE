@@ -24,9 +24,12 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_INT:
 			size = sizeof(GLint);
 			break;
+		case GL_SAMPLER_1D:
+		case GL_SAMPLER_1D_ARRAY:
+		case GL_SAMPLER_2D:
+		case GL_SAMPLER_2D_ARRAY:
 		case GL_SAMPLER_2D_SHADOW:
 		case GL_SAMPLER_3D:
-		case GL_SAMPLER_2D:
 			size = sizeof(GLint);
 			break;
 		default:

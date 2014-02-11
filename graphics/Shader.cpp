@@ -56,8 +56,9 @@ void Shader::printInfoLog() const {
 	int length = 0;
 	GL_ASSERT(glGetShaderiv(shaderHandle, GL_INFO_LOG_LENGTH, &length), "Failed glGetShaderiv");
 	if (length > 1) {
-		char infoLog[length];
+		GLchar* infoLog = new GLchar[length];
 		GL_ASSERT(glGetShaderInfoLog(shaderHandle, length, nullptr, infoLog), "Failed glGetShaderInfoLog");
 		VBE_LOG(infoLog);
+		delete[] infoLog;
 	}
 }

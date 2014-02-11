@@ -68,9 +68,10 @@ void ShaderProgram::printInfoLog() {
 	int length = 0;
 	GL_ASSERT(glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &length), "Failed glGetProgramiv");
 	if (length > 1) {
-		char infoLog[length];
+		GLchar* infoLog = new GLchar[length];
 		GL_ASSERT(glGetProgramInfoLog(programHandle, length, nullptr, infoLog), "Failed glGetProgramInfoLog");
 		VBE_LOG(infoLog );
+		delete[] infoLog;
 	}
 }
 
@@ -82,6 +83,10 @@ void ShaderProgram::use() const {
 	}
 	for(std::map<std::string, Uniform*>::const_iterator it = uniforms.begin(); it != uniforms.end(); ++it)
 		it->second->ready();
+}
+
+bool ShaderProgram::hasUniform(const std::string &name) const {
+	return uniforms.find(name) != uniforms.end();
 }
 
 Uniform* ShaderProgram::uniform(const std::string &name) const {
@@ -110,7 +115,7 @@ void ShaderProgram::retriveProgramInfo() {
 		GLint length;
 		GL_ASSERT(glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length), "Failed glGetProgramiv");
 		if (length > 0) {
-			GLchar attribName[length + 1];
+			GLchar* attribName = new GLchar[length + 1];
 			GLint attribSize;
 			GLenum attribType;
 			GLint attribLocation;
@@ -125,6 +130,7 @@ void ShaderProgram::retriveProgramInfo() {
 				// Assign the vertex attribute mapping for the effect.
 				attributes[attribName] = attribLocation;
 			}
+			delete[] attribName;
 		}
 	}
 
@@ -135,7 +141,7 @@ void ShaderProgram::retriveProgramInfo() {
 		GLint length;
 		GL_ASSERT(glGetProgramiv(programHandle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length), "Failed glGetPRogramiv");
 		if (length > 0) {
-			GLchar uniformName[length + 1];
+			GLchar* uniformName = new GLchar[length + 1];
 			GLint uniformSize;
 			GLenum uniformType;
 			GLint uniformLocation;
@@ -159,6 +165,7 @@ void ShaderProgram::retriveProgramInfo() {
 
 				uniforms[uniformName] = uniform;
 			}
+			delete[] uniformName;
 		}
 	}
 

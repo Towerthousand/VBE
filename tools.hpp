@@ -2,6 +2,18 @@
 #define TOOLS_HPP
 
 #ifdef __DEBUG
+#ifdef WINDOWS
+#define VBE_ASSERT(expression, string) do \
+{ \
+	if(!(expression)) { \
+	std::cout << "ASSERT FAILED, STOPPING " << std::endl;\
+	std::cout << "Reason: " << string << std::endl; \
+	std::cout << "At file " << __FILE__ << " inside function " << __FUNCSIG__ << " on line " << __LINE__ << std::endl; \
+	assert(expression); \
+	std::exit(-1); \
+	} \
+	} while (0)
+#else
 #define VBE_ASSERT(expression, string) do \
 { \
 	if(!(expression)) { \
@@ -12,6 +24,7 @@
 	std::exit(-1); \
 	} \
 	} while (0)
+#endif
 #else
 #define VBE_ASSERT(expression, string)
 #endif
@@ -38,7 +51,11 @@
 
 //OpenGL (Open Graphics Library)
 #define GL_GLEXT_PROTOTYPES 1
+#ifdef WINDOWS
+#include "GL\glew.h"
+#else
 #include <GL/gl.h> //core
+#endif
 
 //SFML (Simple Fast Media Library)
 #include <SFML/System.hpp>
@@ -47,6 +64,25 @@
 #include <SFML/Audio.hpp>
 
 //STL (Standard Toolkit Library)
+#ifdef WINDOWS
+	#define _USE_MATH_DEFINES
+	/* Constants rounded for 21 decimals. */
+	#define M_E 2.71828182845904523536
+	#define M_LOG2E 1.44269504088896340736
+	#define M_LOG10E 0.434294481903251827651
+	#define M_LN2 0.693147180559945309417
+	#define M_LN10 2.30258509299404568402
+	#define M_PI 3.14159265358979323846
+	#define M_PI_2 1.57079632679489661923
+	#define M_PI_4 0.785398163397448309616
+	#define M_1_PI 0.318309886183790671538
+	#define M_2_PI 0.636619772367581343076
+	#define M_1_SQRTPI 0.564189583547756286948
+	#define M_2_SQRTPI 1.12837916709551257390
+	#define M_SQRT2 1.41421356237309504880
+	#define M_SQRT_2 0.707106781186547524401
+#endif
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -54,7 +90,6 @@
 #include <map>
 #include <vector>
 #include <list>
-#include <cmath>
 #include <cstring>
 #include <queue>
 #include <limits>

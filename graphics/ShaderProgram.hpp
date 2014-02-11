@@ -16,6 +16,7 @@ class ShaderProgram {
 		GLuint getHandle() const {return programHandle;}
 
 		void use() const;
+		bool	 hasUniform(const std::string& name) const;
 		Uniform* uniform(const std::string& name) const;
 
 		std::map<std::string, GLint> attributes;
