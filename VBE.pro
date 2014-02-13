@@ -1,7 +1,7 @@
 CONFIG(debug, debug|release) {
   DEFINES += "__DEBUG" "__LOG"
 }
-#DEFINES += "__DLOG"
+DEFINES += "__DLOG" "__LOG" "__DEBUG" 
 
 #__DEBUG will make asserts on all risky operations, and will output a detailed error message if it fails
 #__LOG will output all VBE_LOG(..). This is general (important) info such as resource loading, etc
@@ -36,7 +36,8 @@ SOURCES += \
 	$$PWD/geometry/AABB.cpp \
 	$$PWD/geometry/Plane.cpp \
 	$$PWD/geometry/Frustum.cpp \
-	$$PWD/scene/Camera.cpp
+	$$PWD/scene/Camera.cpp \
+	$$PWD/Log.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -63,4 +64,5 @@ HEADERS += \
 	$$PWD/geometry/AABB.hpp \
 	$$PWD/geometry/Plane.hpp \
 	$$PWD/geometry/Frustum.hpp \
-	$$PWD/scene/Camera.hpp
+	$$PWD/scene/Camera.hpp \
+	$$PWD/Log.hpp
