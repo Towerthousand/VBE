@@ -89,19 +89,12 @@ typedef glm::detail::tmat3x3<double> mat3d;
 typedef glm::detail::tmat4x4<double> mat4d;
 
 //defines (global settings and constants)
-extern std::string WINDOW_TITLE;
 extern sf::ContextSettings CONTEXT_SETTINGS_OPENGL;
 extern const float DEG_TO_RAD;
-
-//frustum settings
-extern float FOV;
-extern float ZNEAR;
-extern float ZFAR;
 
 //global variables
 extern int SCRWIDTH;
 extern int SCRHEIGHT;
-extern bool WINDOWFOCUS;
 extern const sf::Clock GLOBALCLOCK;
 
 #endif // TOOLS_HPP

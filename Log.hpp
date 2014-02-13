@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <sstream>
+#include <fstream>
+#include <ctime>
 
 //VBE_ASSERT
 #ifdef __DEBUG
@@ -49,7 +51,7 @@
 
 //VBE_WARNING
 #ifdef __DEBUG
-#define VBE_WARN(msg) Log::warning() << log << Log::Flush
+//#define VBE_WARN(msg) Log::warning() << log << Log::Flush
 #define VBE_WARN(expression , string) do \
 { \
 	if(!(expression)) { \
@@ -59,15 +61,16 @@
 		 " inside function " << __PRETTY_FUNCTION__ << " on line " << __LINE__ << Log::Flush; \
 	} \
 } while (0)
+#endif
 
 //VBE_LOG,_DLOG
 #ifdef __LOG
-#define VBE_LOG(msg) Log::message() << log << Log::Flush
+#define VBE_LOG(msg) Log::message() << msg << Log::Flush
 #else
 #define VBE_LOG(msg)
 #endif
 #ifdef __DLOG
-#define VBE_DLOG(msg) VBE_LOG(log)
+#define VBE_DLOG(msg) VBE_LOG(msg)
 #else
 #define VBE_DLOG(msg)
 #endif
@@ -83,6 +86,12 @@ class Log {
 		Log(logType t) : type(t) {}
 		~Log() {}
 
+		static void save() {
+			std::ofstream file(outPath,std::ofstream::out|std::ofstream::trunc);
+			file << endFile.str();
+			file.close();
+		}
+
 		const logType type;
 		mutable std::ostringstream msg;
 
@@ -91,6 +100,7 @@ class Log {
 		static Log* errorInstance;
 		static std::ostringstream endFile;
 		static unsigned char flags;
+		static std::string outPath;
 
 	public:
 		enum logModifiers {
@@ -101,7 +111,9 @@ class Log {
 
 		enum logFlags {
 			fTimestamp	= 0x01,
-			wololo = 0x02
+			fStandardOut = 0x02,
+			fAlwaysSave = 0x04,
+			fGMTime = 0x08
 		};
 
 		static void setFlags(unsigned char f) {
@@ -132,41 +144,12 @@ class Log {
 			return *errorInstance;
 		}
 
-		static void saveToText(std::string filepath) {
-			(void) filepath; //not yet implemented
-		}
-
-		static void saveToHtml(std::string filepath) {
-			(void) filepath; //not yet implemented
-		}
-
 		static std::string getContents() { return endFile.str(); }
+		static std::string setFilePath() { return endFile.str(); }
 };
 
-template<>
-const Log& Log::operator<< (const logModifiers& t) const {
-	switch(t) {
-		case Flush:
-			switch(this->type) {
-				case Message:
-					endFile << "[MESSAGE] "; break;
-				case Warning:
-					endFile << "[WARNING] "; break;
-				case Error:
-					endFile << "[ERROR]   "; break; 
-				default: break;
-			}
-			endFile << (flags&fTimestamp?"[":"")
-				<< (flags&fTimestamp?"time?":"")
-				<< (flags&fTimestamp?"] ":"")
-				<< msg.str() << "\n";
-			msg.str("");
-			break;
-		case Line:
-			msg << "\n          "; break;
-		default: break;
-	}
-	return *this;
-}
-
 #endif // LOG_HPP
+
+
+
+

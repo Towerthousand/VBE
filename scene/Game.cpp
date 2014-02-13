@@ -10,7 +10,7 @@ Game::Game() :isRunning(true), idCounter(1), fixedFramerate(0), isFixedFramerate
 	Game::instance = this;
 	VBE_LOG("* INIT GAME");
 
-	window.create(sf::VideoMode(SCRWIDTH, SCRHEIGHT, 32), WINDOW_TITLE, sf::Style::Default, CONTEXT_SETTINGS_OPENGL);
+	window.create(sf::VideoMode(SCRWIDTH, SCRHEIGHT, 32), "TITLE" , sf::Style::Default, CONTEXT_SETTINGS_OPENGL);
 	SCRWIDTH = window.getSize().x;
 	SCRHEIGHT = window.getSize().y;
 	window.setMouseCursorVisible(false);

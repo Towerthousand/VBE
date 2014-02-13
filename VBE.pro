@@ -1,7 +1,7 @@
 CONFIG(debug, debug|release) {
   DEFINES += "__DEBUG" "__LOG"
 }
-DEFINES += "__DLOG" "__LOG" "__DEBUG" 
+#DEFINES += "__DLOG"
 
 #__DEBUG will make asserts on all risky operations, and will output a detailed error message if it fails
 #__LOG will output all VBE_LOG(..). This is general (important) info such as resource loading, etc
@@ -32,6 +32,7 @@ SOURCES += \
 	$$PWD/scene/ContainerObject.cpp \
 	$$PWD/graphics/Texture3D.cpp \
 	$$PWD/graphics/Texture2D.cpp \
+        $$PWD/graphics/Texture2DArray.cpp \
 	$$PWD/graphics/OBJLoader.cpp \
 	$$PWD/geometry/AABB.cpp \
 	$$PWD/geometry/Plane.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
 	$$PWD/scene/ContainerObject.hpp \
 	$$PWD/graphics/Texture3D.hpp \
 	$$PWD/graphics/Texture2D.hpp \
+        $$PWD/graphics/Texture2DArray.hpp \
 	$$PWD/graphics/OBJLoader.hpp \
 	$$PWD/geometry/AABB.hpp \
 	$$PWD/geometry/Plane.hpp \
