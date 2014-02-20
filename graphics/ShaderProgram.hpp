@@ -10,8 +10,10 @@ class ShaderProgram {
 
 		static ShaderProgram* loadFromString(const std::string &vertSource, const std::string &fragSource);
 		static ShaderProgram* loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
+		static ShaderProgram* loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource);
 		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& fp_filename);
 		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename);
+		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& tc_filename, const std::string& te_filename, const std::string& gp_filename, const std::string& fp_filename);
 
 		GLuint getHandle() const {return programHandle;}
 
@@ -26,7 +28,7 @@ class ShaderProgram {
 		ShaderProgram();
 
 		void link();
-		void retriveProgramInfo();
+		void retrieveProgramInfo();
 		void printInfoLog();
 		static std::string readFileIntoString(const std::string& filename);
 

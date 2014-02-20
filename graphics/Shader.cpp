@@ -14,6 +14,12 @@ Shader* Shader::loadShader(const std::string& data, GLenum shaderType) {
 		case GL_FRAGMENT_SHADER:
 			VBE_DLOG("* Loading new fragment shader");
 			break;
+		case GL_TESS_CONTROL_SHADER:
+			VBE_DLOG("* Loading new tessellation control shader");
+			break;
+		case GL_TESS_EVALUATION_SHADER:
+			VBE_DLOG("* Loading new tessellation evaluation shader");
+			break;
 		case GL_GEOMETRY_SHADER:
 			VBE_DLOG("* Loading new geometry shader");
 			break;

@@ -19,6 +19,9 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_FLOAT_VEC4:
 			size = sizeof(GLfloat)*4;
 			break;
+		case GL_FLOAT_MAT3:
+			size = sizeof(GLfloat)*12;
+			break;
 		case GL_FLOAT_MAT4:
 			size = sizeof(GLfloat)*16;
 			break;
@@ -91,6 +94,16 @@ void Uniform::set(const std::vector<vec4f> &val) {
 	setBytes((char*)&val[0][0]);
 }
 
+void Uniform::set(const mat3f &val) {
+	VBE_ASSERT(type == GL_FLOAT_MAT3, "Wrong uniform type. Location " << this->location);
+	setBytes((char*)&val[0][0]);
+}
+void Uniform::set(const std::vector<mat3f> &val) {
+	VBE_ASSERT(type == GL_FLOAT_MAT3, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
+	setBytes((char*)&val[0][0][0]);
+}
+
 void Uniform::set(const mat4f &val) {
 	VBE_ASSERT(type == GL_FLOAT_MAT4, "Wrong uniform type. Location " << this->location);
 	setBytes((char*)&val[0][0]);
@@ -130,6 +143,7 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 		case GL_FLOAT_VEC2:	GL_ASSERT(glUniform2fv(location, count, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
 		case GL_FLOAT_VEC3:	GL_ASSERT(glUniform3fv(location, count, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
 		case GL_FLOAT_VEC4:	GL_ASSERT(glUniform4fv(location, count, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
+		case GL_FLOAT_MAT3:	GL_ASSERT(glUniformMatrix3fv(location, count, GL_FALSE, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
 		case GL_FLOAT_MAT4:	GL_ASSERT(glUniformMatrix4fv(location, count, GL_FALSE, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
 		case GL_INT:
 		case GL_SAMPLER_2D_ARRAY:
@@ -167,8 +181,9 @@ void Uniform::log() {
 		case GL_FLOAT_VEC2: s = "GL_FLOAT_VEC2"; break;
 		case GL_FLOAT_VEC3: s = "GL_FLOAT_VEC3"; break;
 		case GL_FLOAT_VEC4: s = "GL_FLOAT_VEC4"; break;
+		case GL_FLOAT_MAT3: s = "GL_FLOAT_MAT3"; break;
 		case GL_FLOAT_MAT4: s = "GL_FLOAT_MAT4"; break;
-		case GL_INT: s = "GL_INT"; break;
+		case GL_INT:		s = "GL_INT"; break;
 		case GL_SAMPLER_2D: s = "GL_SAMPLER_2D"; break;
 		case GL_SAMPLER_2D_SHADOW: s = "GL_SAMPLER_2D_SHADOW"; break;
 		case GL_SAMPLER_2D_ARRAY: s = "GL_SAMPLER_2D_ARRAY"; break;

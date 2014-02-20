@@ -25,7 +25,7 @@ ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, cons
 	vertex->attach(p->programHandle);
 	fragment->attach(p->programHandle);
 	p->link();
-	p->retriveProgramInfo();
+	p->retrieveProgramInfo();
 	delete vertex;
 	delete fragment;
 	return p;
@@ -45,22 +45,59 @@ ShaderProgram*ShaderProgram::loadFromString(const std::string& vertSource, const
 	geometry->attach(p->programHandle);
 	fragment->attach(p->programHandle);
 	p->link();
-	p->retriveProgramInfo();
+	p->retrieveProgramInfo();
 	delete vertex;
 	delete geometry;
 	delete fragment;
 	return p;
 }
 
+ShaderProgram*ShaderProgram::loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource) {
+	ShaderProgram* p = new ShaderProgram();
+	Shader* vertex   = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
+	Shader* tessctrl = Shader::loadShader(tescSource, GL_TESS_CONTROL_SHADER);
+	Shader* tesseval = Shader::loadShader(teseSource, GL_TESS_EVALUATION_SHADER);
+	Shader* geometry = Shader::loadShader(geomSource, GL_GEOMETRY_SHADER);
+	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
+	VBE_DLOG("* Creating new shaderProgram");
+
+	p->programHandle = glCreateProgram();
+	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create program");
+
+	vertex->attach(p->programHandle);
+	tessctrl->attach(p->programHandle);
+	tesseval->attach(p->programHandle);
+	geometry->attach(p->programHandle);
+	fragment->attach(p->programHandle);
+	p->link();
+	p->retrieveProgramInfo();
+
+	delete vertex;
+	delete tessctrl;
+	delete tesseval;
+	delete geometry;
+	delete fragment;
+
+	return p;
+}
+
 ShaderProgram*ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& fp_filename) {
 	return loadFromString(readFileIntoString(vp_filename),
-								 readFileIntoString(fp_filename));
+						  readFileIntoString(fp_filename));
 }
 
 ShaderProgram*ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename) {
 	return loadFromString(readFileIntoString(vp_filename),
-								 readFileIntoString(gp_filename),
-								 readFileIntoString(fp_filename));
+						  readFileIntoString(gp_filename),
+						  readFileIntoString(fp_filename));
+}
+
+ShaderProgram*ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& tc_filename, const std::string& te_filename, const std::string& gp_filename, const std::string& fp_filename) {
+	return loadFromString(readFileIntoString(vp_filename),
+						  readFileIntoString(tc_filename),
+						  readFileIntoString(te_filename),
+						  readFileIntoString(gp_filename),
+						  readFileIntoString(fp_filename));
 }
 
 void ShaderProgram::printInfoLog() {
@@ -107,7 +144,7 @@ void ShaderProgram::link() {
 	VBE_DLOG( " - Linked program successfully. PROGRAMID: " << programHandle );
 }
 
-void ShaderProgram::retriveProgramInfo() {
+void ShaderProgram::retrieveProgramInfo() {
 	//RETRIEVE ATTRIBUTE DATA
 	GLint activeAttributes;
 	GL_ASSERT(glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES, &activeAttributes), "Failed glGetProgramiv");
