@@ -25,6 +25,9 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_FLOAT_MAT4:
 			size = sizeof(GLfloat)*16;
 			break;
+		case GL_BOOL:
+			size = sizeof(GLint);
+			break;
 		case GL_INT:
 			size = sizeof(GLint);
 			break;
@@ -45,13 +48,18 @@ Uniform::~Uniform() {
 }
 
 void Uniform::set(int val) {
-	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(type == GL_INT || type == GL_BOOL || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
 	setBytes((char*)&val);
 }
 void Uniform::set(const std::vector<int> &val) {
-	VBE_ASSERT(type == GL_INT || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(type == GL_INT || type == GL_BOOL || type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
 	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
 	setBytes((char*)&val[0]);
+}
+
+void Uniform::set(bool val) {
+	VBE_ASSERT(type == GL_BOOL, "Wrong uniform type. Location " << this->location);
+	setBytes((char*)&val);
 }
 
 void Uniform::set(float val) {
@@ -145,6 +153,7 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 		case GL_FLOAT_VEC4:	GL_ASSERT(glUniform4fv(location, count, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
 		case GL_FLOAT_MAT3:	GL_ASSERT(glUniformMatrix3fv(location, count, GL_FALSE, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
 		case GL_FLOAT_MAT4:	GL_ASSERT(glUniformMatrix4fv(location, count, GL_FALSE, (GLfloat*)&lastValue[0]), "Failed to send uniform to GPU"); break;
+		case GL_BOOL:
 		case GL_INT:
 		case GL_SAMPLER_2D_ARRAY:
 		case GL_SAMPLER_2D_SHADOW:
@@ -183,6 +192,7 @@ void Uniform::log() {
 		case GL_FLOAT_VEC4: s = "GL_FLOAT_VEC4"; break;
 		case GL_FLOAT_MAT3: s = "GL_FLOAT_MAT3"; break;
 		case GL_FLOAT_MAT4: s = "GL_FLOAT_MAT4"; break;
+		case GL_BOOL:		s = "GL_BOOL"; break;
 		case GL_INT:		s = "GL_INT"; break;
 		case GL_SAMPLER_2D: s = "GL_SAMPLER_2D"; break;
 		case GL_SAMPLER_2D_SHADOW: s = "GL_SAMPLER_2D_SHADOW"; break;

@@ -13,6 +13,8 @@ class Uniform {
 		void set(int val);
 		void set(const std::vector<int> &val);
 
+		void set(bool val);
+
 		void set(float val);
 		void set(const std::vector<float> &val);
 
