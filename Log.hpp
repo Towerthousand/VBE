@@ -4,7 +4,8 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <ctime>
+#include <vector>
+#include "glm/glm.hpp" // vec3, vec4, ivec4, mat4 (core)
 
 //VBE_ASSERT
 #ifdef __DEBUG
@@ -77,13 +78,13 @@
 
 class Log {
 	private:
-		enum logType {
+		enum LogType {
 			Message = 0,
 			Warning,
 			Error
 		};
 
-		Log(logType t) : type(t) {}
+		Log(LogType t) : type(t) {}
 		~Log() {}
 
 		static void save() {
@@ -92,7 +93,7 @@ class Log {
 			file.close();
 		}
 
-		const logType type;
+		const LogType type;
 		mutable std::ostringstream msg;
 
 		static Log* messageInstance;
@@ -103,27 +104,26 @@ class Log {
 		static std::string outPath;
 
 	public:
-		enum logModifiers {
+		enum LogModifiers {
 			Flush = 0,
-			Line = 1,
+			Line,
 			Bold
 		};
 
-		enum logFlags {
-			fTimestamp	= 0x01,
-			fStandardOut = 0x02,
-			fAlwaysSave = 0x04,
-			fGMTime = 0x08
+		enum LogFlags {
+			Timestamp	= 0x01,
+			StandardOut = 0x02,
+			AlwaysSave = 0x04,
+			GMTime = 0x08
 		};
+
+		template<class T> const Log& operator<<(const T& t) const {
+			msg << t;
+			return *this;
+		}
 
 		static void setFlags(unsigned char f) {
 			flags = f;
-		}
-
-		template<class T>
-		const Log& operator<<(const T& t) const {
-			msg << t;
-			return *this;
 		}
 
 		static Log& message() {
@@ -148,8 +148,60 @@ class Log {
 		static std::string setFilePath() { return endFile.str(); }
 };
 
+//Template specialitzations that use private stuff. Implemented in cpp (no actual templating going on)
+template<> const Log& Log::operator<< <Log::LogModifiers>(const Log::LogModifiers& t) const;
+
+//Templated, non-member operator overloaders that must be implemented where declared (templates suck at linking)
+//User can define them wherever they want for their own objects.
+template<class T>
+const Log&operator << (const Log& log, const glm::detail::tvec4<T>& v) {
+	log << "vec4(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
+	return log;
+}
+
+template<class T>
+const Log&operator << (const Log& log, const glm::detail::tvec3<T>& v) {
+	log << "vec3(" << v.x << ", " << v.y << ", " << v.z << ")";
+	return log;
+}
+
+template<class T>
+const Log&operator << (const Log& log, const glm::detail::tvec2<T>& v) {
+	log << "vec2(" << v.x << ", " << v.y << ")";
+	return log;
+}
+
+template<class T>
+const Log&operator << (const Log& log, const glm::detail::tmat3x3<T>& m) {
+	for(unsigned int i = 0; i < 3; ++i) {
+		for(unsigned int j = 0; j < 3; ++j) {
+			log << m[j][i];
+			if(j < 2) log << " ";
+		}
+		if(i < 2) log << Log::Line;
+	}
+	return log;
+}
+
+template<class T>
+const Log&operator << (const Log& log, const glm::detail::tmat4x4<T>& m) {
+	for(unsigned int i = 0; i < 4; ++i) {
+		for(unsigned int j = 0; j < 4; ++j) {
+			log << m[j][i];
+			if(j < 3) log << " ";
+		}
+		if(i < 3) log << Log::Line;
+	}
+	return log;
+}
+
+template<class T>
+const Log&operator << (const Log& log, const std::vector<T>& v) {
+	for(unsigned int i = 0; i < v.size(); ++i) {
+		log << v[i];
+		if(i != v.size()-1) log << " ";
+	}
+	return log;
+}
+
 #endif // LOG_HPP
-
-
-
-
