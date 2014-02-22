@@ -7,7 +7,7 @@
 //OpenGL (Open Graphics Library)
 #define GL_GLEXT_PROTOTYPES 1
 #ifdef WINDOWS
-#include "GL\glew.h"
+#include "GL/glew.h"
 #else
 #include <GL/gl.h> //core
 #endif

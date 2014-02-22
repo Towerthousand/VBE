@@ -13,7 +13,8 @@ class Mesh {
 			TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
 			LINES = GL_LINES,
 			LINE_STRIP = GL_LINE_STRIP,
-			POINTS = GL_POINTS
+			POINTS = GL_POINTS,
+			PATCHES = GL_PATCHES
 		};
 
 		enum BufferType {

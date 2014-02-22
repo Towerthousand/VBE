@@ -13,6 +13,8 @@ class Uniform {
 		void set(int val);
 		void set(const std::vector<int> &val);
 
+		void set(bool val);
+
 		void set(float val);
 		void set(const std::vector<float> &val);
 
@@ -24,6 +26,9 @@ class Uniform {
 
 		void set(const vec4f &val);
 		void set(const std::vector<vec4f> &val);
+		
+		void set(const mat3f &val);
+		void set(const std::vector<mat3f> &val);
 
 		void set(const mat4f &val);
 		void set(const std::vector<mat4f> &val);
