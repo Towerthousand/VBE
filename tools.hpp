@@ -18,6 +18,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
+//SDL 2.0.1
+#include <SDL2/SDL.h>
+
 //STL (Standard Toolkit Library)
 #ifdef WINDOWS
 	#define _USE_MATH_DEFINES
@@ -50,8 +53,8 @@
 #include <limits>
 
 //GLM (openGL Math)
-#include <glm/glm.hpp> // vec3, vec4, ivec4, mat4 (core)
-#include <glm/gtc/matrix_transform.hpp> // translate, rotate, scale, perspective
+#include "glm/glm.hpp" // vec3, vec4, ivec4, mat4 (core)
+#include "glm/gtc/matrix_transform.hpp" // translate, rotate, scale, perspective
 
 //math typedefs
 typedef glm::detail::tvec2<float> vec2f;

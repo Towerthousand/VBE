@@ -52,7 +52,6 @@
 
 //VBE_WARNING
 #ifdef __DEBUG
-//#define VBE_WARN(msg) Log::warning() << log << Log::Flush
 #define VBE_WARN(expression , string) do \
 { \
 	if(!(expression)) { \

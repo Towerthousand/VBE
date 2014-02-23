@@ -10,7 +10,7 @@ CONFIG(debug, debug|release) {
 
 TEMPLATE = app
 CONFIG -= qt
-LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL
+LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lSDL2
 INCLUDEPATH += $$PWD/
 QMAKE_CXXFLAGS += -std=c++0x
 SOURCES += \
@@ -32,13 +32,16 @@ SOURCES += \
 	$$PWD/scene/ContainerObject.cpp \
 	$$PWD/graphics/Texture3D.cpp \
 	$$PWD/graphics/Texture2D.cpp \
-        $$PWD/graphics/Texture2DArray.cpp \
+	$$PWD/graphics/Texture2DArray.cpp \
 	$$PWD/graphics/OBJLoader.cpp \
 	$$PWD/geometry/AABB.cpp \
 	$$PWD/geometry/Plane.cpp \
 	$$PWD/geometry/Frustum.cpp \
 	$$PWD/scene/Camera.cpp \
-	$$PWD/Log.cpp
+	$$PWD/Log.cpp \
+	$$PWD/enviorment/Screen.cpp \
+	$$PWD/enviorment/Enviorment.cpp \
+    VBE/enviorment/Keyboard.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -61,10 +64,13 @@ HEADERS += \
 	$$PWD/scene/ContainerObject.hpp \
 	$$PWD/graphics/Texture3D.hpp \
 	$$PWD/graphics/Texture2D.hpp \
-        $$PWD/graphics/Texture2DArray.hpp \
+	$$PWD/graphics/Texture2DArray.hpp \
 	$$PWD/graphics/OBJLoader.hpp \
 	$$PWD/geometry/AABB.hpp \
 	$$PWD/geometry/Plane.hpp \
 	$$PWD/geometry/Frustum.hpp \
 	$$PWD/scene/Camera.hpp \
-	$$PWD/Log.hpp
+	$$PWD/Log.hpp \
+	$$PWD/enviorment/Screen.hpp \
+	$$PWD/enviorment/Enviorment.hpp \
+    VBE/enviorment/Keyboard.hpp
