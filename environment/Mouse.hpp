@@ -23,6 +23,8 @@ class Mouse
 		vec2i getMousePos() const {return mousePos;}
 		vec2i getMouseDisplacement() const {return mousePos-mousePosOld;}
 
+		void setMousePos(vec2i pos) { setMousePos(pos.x, pos.y); }
+		void setMousePos(int x, int y);
 	private:
 		friend class Environment;
 

@@ -1,7 +1,4 @@
 #include "Environment.hpp"
-#include "Screen.hpp"
-#include "Mouse.hpp"
-#include "Keyboard.hpp"
 #include "../scene/Game.hpp"
 
 Screen* Environment::screen = nullptr;

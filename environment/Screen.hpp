@@ -50,6 +50,7 @@ class Screen {
 		std::string getTitle() const;
 
 	private:
+		friend class Mouse;
 		SDL_Window* window;
 		SDL_GLContext context;
 		int height;

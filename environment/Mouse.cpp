@@ -1,8 +1,14 @@
 #include "Mouse.hpp"
+#include "Environment.hpp"
 
 Mouse::Mouse() : mousePos(0, 0), mousePosOld(0, 0) {
 	for(int i = 0; i < _BUTTON_SIZE; i++)
 		buttonsHeld[i] = buttonsHeldOld[i] = false;
+}
+
+void Mouse::setMousePos(int x, int y) {
+	SDL_WarpMouseInWindow(Environment::getScreen()->window, x, y);
+	mousePos = vec2i(x, y);
 }
 
 void Mouse::processEvent(const SDL_Event& e) {
