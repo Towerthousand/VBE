@@ -1,8 +1,11 @@
 #include "Environment.hpp"
 #include "Screen.hpp"
+#include "Mouse.hpp"
 #include "../scene/Game.hpp"
 
 Screen* Environment::screen = nullptr;
+Keyboard* Environment::keyboard = nullptr;
+Mouse* Environment::mouse = nullptr;
 bool Environment::running = false;
 
 Environment::Environment() {}
@@ -15,11 +18,13 @@ void Environment::startUp() {
 	int ret = SDL_Init(SDL_INIT_EVERYTHING);
 	VBE_ASSERT(ret == 0, "Error when initializating SDL" << SDL_GetError());
 	screen = new Screen();
+	mouse = new Mouse();
 }
 
 void Environment::shutDown() {
 	VBE_ASSERT(running, "Trying to shut down an uninitilalized Environment. Call Environment::startUp() to initialize it");
 	delete screen;
+	delete mouse;
 	SDL_Quit();
 	running = false;
 }
@@ -91,16 +96,10 @@ void Environment::processEvents() {
 
 				// Mouse events
 			case SDL_MOUSEMOTION:
-				//TODO MOUSE
-				break;
 			case SDL_MOUSEBUTTONDOWN:
-				//TODO MOUSE
-				break;
 			case SDL_MOUSEBUTTONUP:
-				//TODO MOUSE
-				break;
 			case SDL_MOUSEWHEEL:
-				//TODO MOUSE
+				mouse->processEvent(e);
 				break;
 			default: break;
 		}

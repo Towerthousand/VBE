@@ -41,7 +41,8 @@ SOURCES += \
         $$PWD/Log.cpp \
     $$PWD/environment/Environment.cpp \
     $$PWD/environment/Screen.cpp \
-    $$PWD/environment/Keyboard.cpp
+    $$PWD/environment/Keyboard.cpp \
+    VBE/environment/Mouse.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -73,4 +74,5 @@ HEADERS += \
 	$$PWD/Log.hpp \
         $$PWD/environment/Environment.hpp \
     $$PWD/environment/Screen.hpp \
-    $$PWD/environment/Keyboard.hpp
+    $$PWD/environment/Keyboard.hpp \
+    VBE/environment/Mouse.hpp

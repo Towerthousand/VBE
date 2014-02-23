@@ -3,6 +3,8 @@
 #include "tools.hpp"
 
 class Screen;
+class Keyboard;
+class Mouse;
 class Environment {
 	public:
 		static void startUp();
@@ -12,15 +14,15 @@ class Environment {
 
 		static Screen* getScreen();
 		//Keyboard* getKeyboard() const { return keyboard; }
-		//Mouse* getMouse() const { return mouse; }
+		Mouse* getMouse() const { return mouse; }
 	private:
 		Environment();
 		~Environment();
 
 		static bool running;
 		static Screen* screen;
-		//Keyboard* keyboard;
-		//Mouse* mouse;
+		static Keyboard* keyboard;
+		static Mouse* mouse;
 };
 
 #endif // Environment_HPP
