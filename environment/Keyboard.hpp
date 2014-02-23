@@ -247,13 +247,16 @@ class Keyboard {
 		Keyboard();
 		~Keyboard();
 
+		bool isKeyPressed(Key k) const {return (keysHeldOld.find(k) == keysHeldOld.end()) && (keysHeld.find(k) != keysHeld.end());}
+		bool isKeyReleased(Key k) const {return (keysHeldOld.find(k) != keysHeldOld.end()) && (keysHeld.find(k) == keysHeld.end());}
+		bool isKeyHeld(Key k) const {return (keysHeld.find(k) != keysHeld.end());}
 		void update();
-		void processEvent(const SDL_Event& event);
 
 	private:
-		std::set<Key> keysPressed;
+		friend class Environment;
+		void processEvent(const SDL_Event& event);
 		std::set<Key> keysHeld;
-		std::set<Key> keysReleased;
+		std::set<Key> keysHeldOld;
 
 		bool focus;
 };

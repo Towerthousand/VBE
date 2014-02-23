@@ -1,6 +1,7 @@
 #include "Environment.hpp"
 #include "Screen.hpp"
 #include "Mouse.hpp"
+#include "Keyboard.hpp"
 #include "../scene/Game.hpp"
 
 Screen* Environment::screen = nullptr;
@@ -83,10 +84,8 @@ void Environment::update() {
 
 				// Keyboard events
 			case SDL_KEYDOWN:
-				//TODO KEYBOARD
-				break;
 			case SDL_KEYUP:
-				//TODO KEYBOARD
+				keyboard->processEvent(e);
 				break;
 			case SDL_TEXTEDITING:
 				//TODO KEYBOARD
