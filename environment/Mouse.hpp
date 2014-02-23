@@ -8,7 +8,7 @@ class Mouse
 		Mouse();
 
 		enum Button {
-			Left,
+			Left = 0,
 			Middle,
 			Right,
 			X1,
