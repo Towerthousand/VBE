@@ -37,7 +37,6 @@ class Screen {
 		void swapBuffers() const;
 		void setTitle(std::string newTitle);
 		void setPosition(unsigned int x, unsigned int y);
-		void setGrab(bool grab);
 		void setBorder(bool border);
 
 		unsigned int getDisplayCount() const;
@@ -49,15 +48,19 @@ class Screen {
 		vec2ui getSize() const { return vec2ui(width,height); }
 		std::string getTitle() const;
 
+		bool isFocused() const { return focused; }
 	private:
 		friend class Mouse;
+		friend class Environment;
+
+		void processEvent(const SDL_Event& e);
 		SDL_Window* window;
 		SDL_GLContext context;
 		int height;
 		int width;
 		bool fullscreen;
 
-		friend class Environment;
+		bool focused;
 };
 
 #endif // SCREEN_HPP

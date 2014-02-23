@@ -38,41 +38,7 @@ void Environment::update() {
 
 			// Window events
 			case SDL_WINDOWEVENT:
-				switch(e.window.type) {
-					case SDL_WINDOWEVENT_CLOSE:
-						//TODO FIX THIS
-						if(Game::i() != nullptr)
-							Game::i()->isRunning = false;
-						break;
-					case SDL_WINDOWEVENT_RESIZED:
-						screen->width = 0;
-						screen->height = 0;
-						break;
-					case SDL_WINDOWEVENT_SIZE_CHANGED:
-						screen->width = 0;
-						screen->height = 0;
-						break;
-					case SDL_WINDOWEVENT_ENTER:
-						//TODO MOUSE
-						break;
-					case SDL_WINDOWEVENT_LEAVE:
-						//TODO MOUSE
-						break;
-					case SDL_WINDOWEVENT_EXPOSED: break;
-					case SDL_WINDOWEVENT_FOCUS_GAINED:
-						//TODO KEYBOARD
-						break;
-					case SDL_WINDOWEVENT_FOCUS_LOST:
-						//TODO KEYBOARD
-						break;
-					case SDL_WINDOWEVENT_HIDDEN: break;
-					case SDL_WINDOWEVENT_MAXIMIZED: break;
-					case SDL_WINDOWEVENT_MINIMIZED: break;
-					case SDL_WINDOWEVENT_MOVED: break;
-					case SDL_WINDOWEVENT_RESTORED: break;
-					case SDL_WINDOWEVENT_SHOWN: break;
-					default: break;
-				}
+				screen->processEvent(e);
 				break;
 
 				// System events
@@ -80,7 +46,6 @@ void Environment::update() {
 				if(Game::i() != nullptr)
 					Game::i()->isRunning = false;
 				break;
-			case SDL_SYSWMEVENT: break;
 
 				// Keyboard events
 			case SDL_KEYDOWN:
@@ -101,7 +66,8 @@ void Environment::update() {
 			case SDL_MOUSEWHEEL:
 				mouse->processEvent(e);
 				break;
-			default: break;
+			default:
+				break;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 #include "Screen.hpp"
+#include "../scene/Game.hpp"
 
-Screen::Screen() : window(nullptr), height(0), width(0), fullscreen(false) {
+Screen::Screen() : window(nullptr), height(0), width(0), fullscreen(false), focused(true) {
 }
 
 Screen::~Screen() {
@@ -8,6 +9,48 @@ Screen::~Screen() {
 		SDL_DestroyWindow(window);
 		window = nullptr;
 		SDL_GL_DeleteContext(context);
+	}
+}
+
+void Screen::processEvent(const SDL_Event &e) {
+	switch(e.window.type) {
+		case SDL_WINDOWEVENT_CLOSE:
+			//TODO FIX THIS
+			if(Game::i() != nullptr)
+				Game::i()->isRunning = false;
+			break;
+		case SDL_WINDOWEVENT_RESIZED:
+			width = e.window.data1;
+			height = e.window.data2;
+			break;
+		case SDL_WINDOWEVENT_SIZE_CHANGED:
+			width = e.window.data1;
+			height = e.window.data2;
+			break;
+		case SDL_WINDOWEVENT_ENTER:
+			focused = true;
+			break;
+		case SDL_WINDOWEVENT_LEAVE:
+			focused = false;
+			break;
+		case SDL_WINDOWEVENT_EXPOSED: break;
+		case SDL_WINDOWEVENT_FOCUS_GAINED:
+			focused = true;
+			break;
+		case SDL_WINDOWEVENT_FOCUS_LOST:
+			focused = false;
+			break;
+		case SDL_WINDOWEVENT_HIDDEN:
+			focused = false;
+			break;
+		case SDL_WINDOWEVENT_MAXIMIZED: break;
+		case SDL_WINDOWEVENT_MINIMIZED: break;
+		case SDL_WINDOWEVENT_MOVED: break;
+		case SDL_WINDOWEVENT_RESTORED: break;
+		case SDL_WINDOWEVENT_SHOWN:
+			focused = true;
+			break;
+		default: break;
 	}
 }
 
@@ -71,11 +114,6 @@ void Screen::setPosition(unsigned int x, unsigned int y) {
 	VBE_ASSERT(window != nullptr, "Window must be initialized before calling setPosition");
 	VBE_ASSERT(!fullscreen, "Window must not be fullscreen to call setPosition");
 	SDL_SetWindowPosition(window, x, y);
-}
-
-void Screen::setGrab(bool grab) {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling setGrab");
-	SDL_SetWindowGrab(window, (grab? SDL_TRUE : SDL_FALSE));
 }
 
 void Screen::setBorder(bool border) {

@@ -1,15 +1,20 @@
 #include "Mouse.hpp"
 #include "Environment.hpp"
 
-Mouse::Mouse() : mousePos(0, 0), mousePosOld(0, 0) {
+Mouse::Mouse() : mousePos(0, 0), mousePosRel(0, 0) {
 	for(int i = 0; i < _BUTTON_SIZE; i++)
 		buttonsHeld[i] = buttonsHeldOld[i] = false;
 }
 
 void Mouse::setMousePos(int x, int y) {
+	VBE_LOG(Environment::getScreen()->isFocused());
+	//if(!Environment::getScreen()->isFocused())
+	//	return;
+
+
 	SDL_WarpMouseInWindow(Environment::getScreen()->window, x, y);
 	mousePos = vec2i(x, y);
-	mousePosOld = vec2i(x, y);
+	mousePosRel = vec2i(0, 0);
 }
 
 void Mouse::processEvent(const SDL_Event& e) {
@@ -21,7 +26,9 @@ void Mouse::processEvent(const SDL_Event& e) {
 			buttonsHeld[sdlButtonToButton(e.button.button)] = false;
 			break;
 		case SDL_MOUSEMOTION:
+			//VBE_LOG(e.motion.x<<" "<<e.motion.y<<" "<<e.motion.xrel<<" "<<e.motion.yrel);
 			mousePos = vec2i(e.motion.x, e.motion.y);
+			mousePosRel += vec2i(e.motion.xrel, e.motion.yrel);
 			break;
 		default:
 			break;
@@ -43,7 +50,7 @@ Mouse::Button Mouse::sdlButtonToButton(int button) {
 
 void Mouse::update() {
 	memcpy(buttonsHeldOld, buttonsHeld, sizeof(buttonsHeld));
-	mousePosOld = mousePos;
+	mousePosRel = vec2i(0, 0);
 }
 
 void Mouse::hideCursor() {
@@ -52,4 +59,10 @@ void Mouse::hideCursor() {
 
 void Mouse::showCursor() {
 	SDL_ShowCursor(true);
+}
+
+void Mouse::setGrab(bool grab) {
+	VBE_ASSERT(Environment::getScreen()->window != nullptr, "Window must be initialized before calling setGrab");
+	SDL_SetWindowGrab(Environment::getScreen()->window, (grab? SDL_TRUE : SDL_FALSE));
+	SDL_SetRelativeMouseMode((grab? SDL_TRUE : SDL_FALSE));
 }

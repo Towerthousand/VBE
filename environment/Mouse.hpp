@@ -21,13 +21,15 @@ class Mouse
 		bool isButtonHeld(Button b) const {return buttonsHeld[b];}
 
 		vec2i getMousePos() const {return mousePos;}
-		vec2i getMouseDisplacement() const {return mousePos-mousePosOld;}
+		vec2i getMousePosRelative() const {return mousePosRel;}
 
 		void setMousePos(vec2i pos) { setMousePos(pos.x, pos.y); }
 		void setMousePos(int x, int y);
 
 		void hideCursor();
 		void showCursor();
+
+		void setGrab(bool grab);
 	private:
 		friend class Environment;
 
@@ -40,7 +42,7 @@ class Mouse
 		bool buttonsHeldOld[_BUTTON_SIZE];
 
 		vec2i mousePos;
-		vec2i mousePosOld;
+		vec2i mousePosRel;
 };
 
 #endif // MOUSE_HPP
