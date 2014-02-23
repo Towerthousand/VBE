@@ -2,7 +2,7 @@
 #include "../utils/Manager.hpp"
 #include "../audio/AudioManager.hpp"
 #include "../input/Input.hpp"
-#include "../enviorment/Enviorment.hpp"
+#include "../environment/Environment.hpp"
 
 Game* Game::instance = nullptr;
 
@@ -79,7 +79,7 @@ void Game::run() {
 		sf::Clock clock;
 		while (isRunning) {
 			float deltaTime = clock.restart().asSeconds();
-			Enviorment::processEvents();
+			Environment::processEvents();
 			update(deltaTime);
 			draw();
 		}

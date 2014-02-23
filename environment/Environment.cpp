@@ -1,15 +1,15 @@
-#include "Enviorment.hpp"
+#include "Environment.hpp"
 #include "Screen.hpp"
 #include "../scene/Game.hpp"
 
-Screen* Enviorment::screen = nullptr;
-bool Enviorment::running = false;
+Screen* Environment::screen = nullptr;
+bool Environment::running = false;
 
-Enviorment::Enviorment() {}
-Enviorment::~Enviorment() {}
+Environment::Environment() {}
+Environment::~Environment() {}
 
-void Enviorment::startUp() {
-	VBE_ASSERT(!running, "Trying to start up an already initialized enviorment");
+void Environment::startUp() {
+	VBE_ASSERT(!running, "Trying to start up an already initialized Environment");
 	VBE_ASSERT(SDL_WasInit(SDL_INIT_EVERYTHING) == 0, "SDL Has been init from outside of this application");
 	running = true;
 	int ret = SDL_Init(SDL_INIT_EVERYTHING);
@@ -17,15 +17,15 @@ void Enviorment::startUp() {
 	screen = new Screen();
 }
 
-void Enviorment::shutDown() {
-	VBE_ASSERT(running, "Trying to shut down an uninitilalized enviorment. Call Enviorment::startUp() to initialize it");
+void Environment::shutDown() {
+	VBE_ASSERT(running, "Trying to shut down an uninitilalized Environment. Call Environment::startUp() to initialize it");
 	delete screen;
 	SDL_Quit();
 	running = false;
 }
 
-void Enviorment::processEvents() {
-	VBE_ASSERT(running, "Trying to process events in an uninitialized enviorment. Call Enviorment::startUp() to initialize it");
+void Environment::processEvents() {
+	VBE_ASSERT(running, "Trying to process events in an uninitialized Environment. Call Environment::startUp() to initialize it");
 	SDL_Event e;
 	while (SDL_PollEvent(&e)){
 		switch (e.type) {
@@ -107,7 +107,7 @@ void Enviorment::processEvents() {
 	}
 }
 
-Screen* Enviorment::getScreen() {
-	VBE_ASSERT(running, "Can't get screen, Enviorment is not initialized");
+Screen* Environment::getScreen() {
+	VBE_ASSERT(running, "Can't get screen, Environment is not initialized");
 	return screen;
 }

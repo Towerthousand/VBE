@@ -12,7 +12,7 @@
 #include "graphics/Uniform.hpp"
 #include "input/Input.hpp"
 #include "audio/AudioManager.hpp"
-#include "enviorment/Enviorment.hpp"
-#include "enviorment/Screen.hpp"
+#include "environment/Environment.hpp"
+#include "environment/Screen.hpp"
 
 #endif // INCLUDES_HPP

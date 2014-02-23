@@ -38,10 +38,10 @@ SOURCES += \
 	$$PWD/geometry/Plane.cpp \
 	$$PWD/geometry/Frustum.cpp \
 	$$PWD/scene/Camera.cpp \
-	$$PWD/Log.cpp \
-	$$PWD/enviorment/Screen.cpp \
-	$$PWD/enviorment/Enviorment.cpp \
-    VBE/enviorment/Keyboard.cpp
+        $$PWD/Log.cpp \
+    $$PWD/environment/Environment.cpp \
+    $$PWD/environment/Screen.cpp \
+    $$PWD/environment/Keyboard.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -71,6 +71,6 @@ HEADERS += \
 	$$PWD/geometry/Frustum.hpp \
 	$$PWD/scene/Camera.hpp \
 	$$PWD/Log.hpp \
-	$$PWD/enviorment/Screen.hpp \
-	$$PWD/enviorment/Enviorment.hpp \
-    VBE/enviorment/Keyboard.hpp
+        $$PWD/environment/Environment.hpp \
+    $$PWD/environment/Screen.hpp \
+    $$PWD/environment/Keyboard.hpp

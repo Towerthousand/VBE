@@ -1,9 +1,9 @@
-#ifndef ENVIORMENT_HPP
-#define ENVIORMENT_HPP
+#ifndef ENVIRONMENT_HPP
+#define ENVIRONMENT_HPP
 #include "tools.hpp"
 
 class Screen;
-class Enviorment {
+class Environment {
 	public:
 		static void startUp();
 		static void shutDown();
@@ -14,8 +14,8 @@ class Enviorment {
 		//Keyboard* getKeyboard() const { return keyboard; }
 		//Mouse* getMouse() const { return mouse; }
 	private:
-		Enviorment();
-		~Enviorment();
+		Environment();
+		~Environment();
 
 		static bool running;
 		static Screen* screen;
@@ -23,4 +23,4 @@ class Enviorment {
 		//Mouse* mouse;
 };
 
-#endif // ENVIORMENT_HPP
+#endif // Environment_HPP

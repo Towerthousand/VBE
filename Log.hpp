@@ -61,6 +61,8 @@
 		 " inside function " << __PRETTY_FUNCTION__ << " on line " << __LINE__ << Log::Flush; \
 	} \
 } while (0)
+#else
+#define VBE_WARN(expression , string)
 #endif
 
 //VBE_LOG,_DLOG

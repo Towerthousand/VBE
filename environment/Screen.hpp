@@ -56,7 +56,7 @@ class Screen {
 		int width;
 		bool fullscreen;
 
-		friend class Enviorment;
+		friend class Environment;
 };
 
 #endif // SCREEN_HPP
