@@ -1,7 +1,12 @@
 #include "Keyboard.hpp"
 
-Keyboard::Keyboard() {
+Keyboard::Keyboard() : focus(true) {
 }
 
 Keyboard::~Keyboard() {
+}
+
+void Keyboard::update() {
+	keysPressed = std::set<Key>();
+	keysReleased = std::set<Key>();
 }
