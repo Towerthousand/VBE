@@ -20,6 +20,7 @@ void Environment::startUp() {
 	VBE_ASSERT(ret == 0, "Error when initializating SDL" << SDL_GetError());
 	screen = new Screen();
 	mouse = new Mouse();
+	keyboard = new Keyboard();
 }
 
 void Environment::shutDown() {

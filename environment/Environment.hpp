@@ -13,8 +13,8 @@ class Environment {
 		static void update();
 
 		static Screen* getScreen();
-		//Keyboard* getKeyboard() const { return keyboard; }
-		Mouse* getMouse() const { return mouse; }
+		static Keyboard* getKeyboard() { return keyboard; }
+		static Mouse* getMouse() { return mouse; }
 	private:
 		Environment();
 		~Environment();
