@@ -9,10 +9,10 @@ Keyboard::~Keyboard() {
 
 void Keyboard::processEvent(const SDL_Event& e) {
 	switch(e.type) {
-		case SDL_KEYUP:
+		case SDL_KEYDOWN:
 			keysHeld.insert((Key) e.key.keysym.sym);
 			break;
-		case SDL_KEYDOWN:
+		case SDL_KEYUP:
 			keysHeld.erase((Key) e.key.keysym.sym);
 			break;
 		default:

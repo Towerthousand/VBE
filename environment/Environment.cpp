@@ -30,6 +30,8 @@ void Environment::shutDown() {
 
 void Environment::update() {
 	VBE_ASSERT(running, "Trying to process events in an uninitialized Environment. Call Environment::startUp() to initialize it");
+	if(mouse != nullptr) mouse->update();
+	if(keyboard != nullptr) keyboard->update();
 	SDL_Event e;
 	while (SDL_PollEvent(&e)){
 		switch (e.type) {

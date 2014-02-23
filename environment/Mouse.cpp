@@ -9,6 +9,7 @@ Mouse::Mouse() : mousePos(0, 0), mousePosOld(0, 0) {
 void Mouse::setMousePos(int x, int y) {
 	SDL_WarpMouseInWindow(Environment::getScreen()->window, x, y);
 	mousePos = vec2i(x, y);
+	mousePosOld = vec2i(x, y);
 }
 
 void Mouse::processEvent(const SDL_Event& e) {
