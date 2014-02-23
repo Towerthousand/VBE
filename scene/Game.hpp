@@ -15,15 +15,11 @@ class Game : public ContainerObject {
 		virtual void update(float deltaTime);
 		virtual void draw();
 
-		sf::RenderWindow &getWindow() { return window; }
-		
 		void setFixedFramerate(int fixedFramerate);
 		void setDynamicFramerate();
 
 		bool isRunning;
 	private:
-		sf::RenderWindow window;
-
 		std::map<std::string, GameObject*> nameMap;
 		std::map<int, GameObject*> idMap;
 		int idCounter;

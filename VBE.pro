@@ -10,7 +10,7 @@ CONFIG(debug, debug|release) {
 
 TEMPLATE = app
 CONFIG -= qt
-LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lSDL2
+LIBS += -lGL -lSDL2
 INCLUDEPATH += $$PWD/
 QMAKE_CXXFLAGS += -std=c++0x
 SOURCES += \
@@ -19,8 +19,6 @@ SOURCES += \
 	$$PWD/graphics/Texture.cpp \
 	$$PWD/graphics/Shader.cpp \
 	$$PWD/graphics/ShaderProgram.cpp \
-	$$PWD/audio/AudioManager.cpp \
-	$$PWD/input/Input.cpp \
 	$$PWD/scene/GameObject.cpp \
 	$$PWD/graphics/Mesh.cpp \
 	$$PWD/graphics/Vertex.cpp \
@@ -42,7 +40,7 @@ SOURCES += \
     $$PWD/environment/Environment.cpp \
     $$PWD/environment/Screen.cpp \
     $$PWD/environment/Keyboard.cpp \
-    VBE/environment/Mouse.cpp
+    $$PWD/environment/Mouse.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -51,8 +49,6 @@ HEADERS += \
 	$$PWD/graphics/Texture.hpp \
 	$$PWD/graphics/Shader.hpp \
 	$$PWD/graphics/ShaderProgram.hpp \
-	$$PWD/audio/AudioManager.hpp \
-	$$PWD/input/Input.hpp \
 	$$PWD/scene/GameObject.hpp \
 	$$PWD/glm/*.hpp \
 	$$PWD/graphics/Mesh.hpp \
@@ -75,4 +71,4 @@ HEADERS += \
         $$PWD/environment/Environment.hpp \
     $$PWD/environment/Screen.hpp \
     $$PWD/environment/Keyboard.hpp \
-    VBE/environment/Mouse.hpp
+    $$PWD/environment/Mouse.hpp

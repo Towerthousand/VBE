@@ -1,16 +1,16 @@
 #ifndef ENVIRONMENT_HPP
 #define ENVIRONMENT_HPP
 #include "tools.hpp"
+#include "Screen.hpp"
+#include "Keyboard.hpp"
+#include "Mouse.hpp"
 
-class Screen;
-class Keyboard;
-class Mouse;
 class Environment {
 	public:
 		static void startUp();
 		static void shutDown();
 
-		static void processEvents();
+		static void update();
 
 		static Screen* getScreen();
 		//Keyboard* getKeyboard() const { return keyboard; }

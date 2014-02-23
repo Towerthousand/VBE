@@ -28,10 +28,10 @@ RenderTarget::RenderTarget(int width, int height) : handle(0), size(width, heigh
 	VBE_ASSERT(width != 0 && height != 0, "Invalid dimensions for RenderTarget (height:" << height << " width:" << width);
 }
 
-RenderTarget::RenderTarget(float mult) : handle(0), size(int(SCRWIDTH*mult), int(SCRHEIGHT*mult)), screenRelativeSize(true), screenSizeMultiplier(mult) {
+RenderTarget::RenderTarget(float mult) : handle(0), size(int(Environment::getScreen()->getWidth()*mult), int(Environment::getScreen()->getHeight()*mult)), screenRelativeSize(true), screenSizeMultiplier(mult) {
 }
 
-RenderTarget::RenderTarget() : handle(0), size(int(SCRWIDTH), int(SCRHEIGHT)), screenRelativeSize(true), screenSizeMultiplier(1) {
+RenderTarget::RenderTarget() : handle(0), size(int(Environment::getScreen()->getWidth()), int(Environment::getScreen()->getHeight())), screenRelativeSize(true), screenSizeMultiplier(1) {
 }
 
 RenderTarget::~RenderTarget() {
@@ -43,7 +43,7 @@ void RenderTarget::bind(RenderTarget* target) {
 	if(current == target) return;
 
 	if(target == nullptr) {
-		GL_ASSERT(glViewport(0, 0, SCRWIDTH, SCRHEIGHT), "Failed to create viewport");
+		GL_ASSERT(glViewport(0, 0, Environment::getScreen()->getWidth(), Environment::getScreen()->getHeight()), "Failed to create viewport");
 		GL_ASSERT(glBindFramebuffer(GL_FRAMEBUFFER, 0), "Failed to bind screen frame buffer");
 	}
 	else {

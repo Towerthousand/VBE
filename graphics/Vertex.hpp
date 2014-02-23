@@ -15,9 +15,8 @@ namespace Vertex {
 			bool operator == (const Attribute& a) const;
 			bool operator != (const Attribute& a) const;
 
-			typedef std::set<std::string>::const_iterator iterator;
-			iterator begin() { return attrNames.begin();}
-			iterator end()   { return attrNames.end();  }
+			std::set<std::string>::const_iterator begin() { return attrNames.begin();}
+			std::set<std::string>::const_iterator end()   { return attrNames.end();  }
 
 			Attribute& addName(const std::string &name);
 

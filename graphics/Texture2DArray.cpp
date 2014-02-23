@@ -1,4 +1,6 @@
 #include "Texture2DArray.hpp"
+#include "SFML/Graphics.hpp"
+
 
 Texture2DArray::Texture2DArray() : size(0) {
 }

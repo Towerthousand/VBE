@@ -29,7 +29,7 @@ void Environment::shutDown() {
 	running = false;
 }
 
-void Environment::processEvents() {
+void Environment::update() {
 	VBE_ASSERT(running, "Trying to process events in an uninitialized Environment. Call Environment::startUp() to initialize it");
 	SDL_Event e;
 	while (SDL_PollEvent(&e)){

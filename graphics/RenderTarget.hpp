@@ -1,6 +1,7 @@
 #ifndef RENDERTARGET_HPP
 #define RENDERTARGET_HPP
 #include "../tools.hpp"
+#include "environment/Environment.hpp"
 #include "Texture2D.hpp"
 
 class RenderTarget {
@@ -40,7 +41,7 @@ class RenderTarget {
 		vec2i getSize() const { return size; }
 		vec2i getDesiredSize() const {
 			if(screenRelativeSize)
-				return vec2i(int(SCRWIDTH*screenSizeMultiplier), int(SCRHEIGHT*screenSizeMultiplier));
+				return vec2i(int(Environment::getScreen()->getWidth()*screenSizeMultiplier), int(Environment::getScreen()->getHeight()*screenSizeMultiplier));
 			else
 				return size;
 		}

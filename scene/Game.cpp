@@ -1,7 +1,5 @@
 #include "Game.hpp"
 #include "../utils/Manager.hpp"
-#include "../audio/AudioManager.hpp"
-#include "../input/Input.hpp"
 #include "../environment/Environment.hpp"
 
 Game* Game::instance = nullptr;
@@ -10,16 +8,7 @@ Game::Game() :isRunning(true), idCounter(1), fixedFramerate(0), isFixedFramerate
 	VBE_ASSERT(Game::instance == nullptr, "Two games created");
 	Game::instance = this;
 	VBE_LOG("* INIT GAME");
-
-	window.create(sf::VideoMode(SCRWIDTH, SCRHEIGHT, 32), "TITLE" , sf::Style::Default, CONTEXT_SETTINGS_OPENGL);
-	SCRWIDTH = window.getSize().x;
-	SCRHEIGHT = window.getSize().y;
-	window.setMouseCursorVisible(false);
-	window.setKeyRepeatEnabled(false);
-	window.setVerticalSyncEnabled(false);
-
 	isRunning = true;
-	VBE_LOG("* INIT GAME SUCCESFUL");
 }
 
 Game::~Game() {
@@ -27,23 +16,21 @@ Game::~Game() {
 	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
 	Textures2D.clear();
 	Meshes.clear();
-	AudioManager::clear();
 	Programs.clear();
-	window.close();
 	isRunning = false;
 	Game::instance = nullptr;
 	VBE_LOG("* EXIT GAME SUCCESFUL" );
 }
 
 void Game::update(float deltaTime) {
-	Input::update(isRunning, window);
+	Environment::update();
 	ContainerObject::update(deltaTime);
 }
 
 void Game::draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	ContainerObject::draw();
-	window.display();
+	Environment::getScreen()->swapBuffers();
 }
 
 GameObject* Game::getObjectByName(std::string name) const {
@@ -67,6 +54,14 @@ void Game::setDynamicFramerate() {
 
 // Main game loop
 void Game::run() {
+
+	while (isRunning) {
+		float deltaTime = 0.02f; //FIXME
+		update(deltaTime);
+		draw();
+	}
+
+	/*
 	if(isFixedFramerate) {
 		window.setFramerateLimit(fixedFramerate);
 		float deltaTime = 1.0f/float(fixedFramerate);
@@ -76,13 +71,11 @@ void Game::run() {
 		}
 	}
 	else {
-		sf::Clock clock;
 		while (isRunning) {
-			float deltaTime = clock.restart().asSeconds();
-			Environment::processEvents();
+			float deltaTime = 0.02f; //FIXME
 			update(deltaTime);
 			draw();
 		}
 	}
-	update(0.1f);
+	update(0.1f);*/
 }

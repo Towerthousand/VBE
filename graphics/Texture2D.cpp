@@ -1,4 +1,5 @@
 #include "Texture2D.hpp"
+#include "SFML/Graphics.hpp"
 
 Texture2D::Texture2D() : size(0) {
 }

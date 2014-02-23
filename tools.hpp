@@ -12,12 +12,6 @@
 #include <GL/gl.h> //core
 #endif
 
-//SFML (Simple Fast Media Library)
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-
 //SDL 2.0.1
 #include <SDL2/SDL.h>
 
@@ -51,6 +45,7 @@
 #include <cstring>
 #include <queue>
 #include <limits>
+#include <set>
 
 //GLM (openGL Math)
 #include "glm/glm.hpp" // vec3, vec4, ivec4, mat4 (core)
@@ -91,13 +86,6 @@ typedef glm::detail::tmat2x2<double> mat2d;
 typedef glm::detail::tmat3x3<double> mat3d;
 typedef glm::detail::tmat4x4<double> mat4d;
 
-//defines (global settings and constants)
-extern sf::ContextSettings CONTEXT_SETTINGS_OPENGL;
-extern const float DEG_TO_RAD;
-
-//global variables
-extern int SCRWIDTH;
-extern int SCRHEIGHT;
-extern const sf::Clock GLOBALCLOCK;
+#define DEG_TO_RAD (float(M_PI)/180.0f)
 
 #endif // TOOLS_HPP
