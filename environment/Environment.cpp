@@ -39,6 +39,7 @@ void Environment::processEvents() {
 			case SDL_WINDOWEVENT:
 				switch(e.window.type) {
 					case SDL_WINDOWEVENT_CLOSE:
+						//TODO FIX THIS
 						if(Game::i() != nullptr)
 							Game::i()->isRunning = false;
 						break;
