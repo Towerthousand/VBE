@@ -25,6 +25,9 @@ class Mouse
 
 		void setMousePos(vec2i pos) { setMousePos(pos.x, pos.y); }
 		void setMousePos(int x, int y);
+
+		void hideCursor();
+		void showCursor();
 	private:
 		friend class Environment;
 

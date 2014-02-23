@@ -55,15 +55,9 @@ void Game::setDynamicFramerate() {
 // Main game loop
 void Game::run() {
 
-	while (isRunning) {
-		float deltaTime = 0.02f; //FIXME
-		update(deltaTime);
-		draw();
-	}
 
-	/*
 	if(isFixedFramerate) {
-		window.setFramerateLimit(fixedFramerate);
+//		window.setFramerateLimit(fixedFramerate);
 		float deltaTime = 1.0f/float(fixedFramerate);
 		while (isRunning) {
 			update(deltaTime);
@@ -71,11 +65,15 @@ void Game::run() {
 		}
 	}
 	else {
+		float time = Environment::getClock();
+
 		while (isRunning) {
-			float deltaTime = 0.02f; //FIXME
+			float newTime = Environment::getClock();
+			float deltaTime = newTime-time;
+			time = newTime;
+
 			update(deltaTime);
 			draw();
 		}
 	}
-	update(0.1f);*/
 }

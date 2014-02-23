@@ -45,3 +45,11 @@ void Mouse::update() {
 	memcpy(buttonsHeldOld, buttonsHeld, sizeof(buttonsHeld));
 	mousePosOld = mousePos;
 }
+
+void Mouse::hideCursor() {
+	SDL_ShowCursor(false);
+}
+
+void Mouse::showCursor() {
+	SDL_ShowCursor(true);
+}

@@ -106,6 +106,10 @@ void Environment::update() {
 	}
 }
 
+float Environment::getClock() {
+	return 0.001f*SDL_GetTicks();
+}
+
 Screen* Environment::getScreen() {
 	VBE_ASSERT(running, "Can't get screen, Environment is not initialized");
 	return screen;
