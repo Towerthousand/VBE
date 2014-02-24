@@ -88,6 +88,7 @@ class Environment {
 		static Screen* getScreen();
 		static Keyboard* getKeyboard() { return keyboard; }
 		static Mouse* getMouse() { return mouse; }
+		static float getClock();
 	private:
 		Environment();
 		~Environment();
