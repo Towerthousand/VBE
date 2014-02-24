@@ -5,9 +5,17 @@ Screen* Environment::screen = nullptr;
 Keyboard* Environment::keyboard = nullptr;
 Mouse* Environment::mouse = nullptr;
 bool Environment::running = false;
+Environment::Config Environment::initialConfig = Environment::Config();
 
 Environment::Environment() {}
 Environment::~Environment() {}
+
+Environment::Config&Environment::setup() {
+	VBE_WARN(!running, "Accessing the Environment setup configurations after starting up" << Log::Line <<
+			 "Any changes on this configuration won't affect the running Environment" << Log::Line <<
+			 "To change settings on the run, please interface with the respective device (screen, mouse..)");
+	return initialConfig;
+}
 
 void Environment::startUp() {
 	VBE_ASSERT(!running, "Trying to start up an already initialized Environment");
