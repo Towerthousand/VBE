@@ -33,7 +33,8 @@ class Screen {
 		static std::vector<DisplayMode> getDisplayModes(unsigned int displayIndex = 0);
 
 		void resize(unsigned int newWidth, unsigned int newHeight);
-		void setDisplayMode(unsigned int displayMode, unsigned int displayIndex);
+		void setDisplayMode(unsigned int displayMode = 0, unsigned int displayIndex = 0);
+		void setDesktopDisplayMode();
 		void goFullscreen(unsigned int displayMode = 0, unsigned int displayIndex = 0);
 		void goWindowed(unsigned int newWidth, unsigned int newHeight);
 		void swapBuffers() const;
@@ -55,6 +56,7 @@ class Screen {
 		friend class Environment;
 
 		void processEvent(const SDL_Event& e);
+		void updateSize();
 		SDL_Window* window;
 		SDL_GLContext context;
 		int height;

@@ -27,8 +27,10 @@ Screen::Screen(StartingConfig config) : window(nullptr), height(config.windowHei
 
 	window = SDL_CreateWindow(config.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, config.windowFlags);
 	VBE_ASSERT(window != nullptr, "Failed to init window");
-	SDL_GetWindowSize(window, &this->width, &this->height);
 	context = SDL_GL_CreateContext(window);
+	fullscreen = ((config.windowFlags&Screen::WINDOW_FULLSCREEN) != 0 || (config.windowFlags&Screen::WINDOW_FULLSCREEN_DESKTOP));
+	if(fullscreen)
+		setDisplayMode();
 }
 
 Screen::~Screen() {
@@ -79,6 +81,10 @@ void Screen::processEvent(const SDL_Event &e) {
 	}
 }
 
+void Screen::updateSize() {
+	SDL_GetWindowSize(window, &this->width, &this->height);
+}
+
 void Screen::goFullscreen(unsigned int displayMode, unsigned int displayIndex) {
 	VBE_WARN(!fullscreen, "Going fullscreen on an already fullscreen window");
 	SDL_SetWindowFullscreen(window,WINDOW_FULLSCREEN);
@@ -108,8 +114,18 @@ void Screen::setDisplayMode(unsigned int displayMode, unsigned int displayIndex)
 	SDL_DisplayMode mode;
 	SDL_GetDisplayMode(displayIndex, displayMode, &mode);
 	SDL_SetWindowDisplayMode(window,&mode);
-	width = mode.w;
-	height = mode.h;
+	SDL_HideWindow(window);
+	SDL_ShowWindow(window);
+	SDL_RaiseWindow(window);
+	updateSize();
+}
+
+void Screen::setDesktopDisplayMode() {
+	VBE_ASSERT(fullscreen, "Trying to set a display mode for a non-fullscreen window" << Log::Line
+			   << "Display modes are only for fullscreen windows" << Log::Line
+			   << "To set the size of a non-fullscreen window use resize()");
+	SDL_SetWindowDisplayMode(window,nullptr);
+	updateSize();
 }
 
 void Screen::resize(unsigned int newWidth, unsigned int newHeight) {
@@ -117,8 +133,7 @@ void Screen::resize(unsigned int newWidth, unsigned int newHeight) {
 			   << "Resizing is only for fullscreen windows" << Log::Line
 			   << "To set the display mode of a fullscreen window use setDisplayMode()");
 	SDL_SetWindowSize(window, newWidth, newHeight);
-	height = newHeight;
-	width = newWidth;
+	updateSize();
 }
 
 void Screen::setPosition(unsigned int x, unsigned int y) {
