@@ -13,6 +13,7 @@ Texture::Texture(): handle(0), slot(0) {
 	lastSlot = lastSlot%(maxSlots-1);
 	slot = lastSlot++;
 	GL_ASSERT(glGenTextures(1, &handle));
+	VBE_ASSERT(handle != 0, "Failed to create texture");
 }
 
 Texture::~Texture(){

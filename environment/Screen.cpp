@@ -2,28 +2,28 @@
 #include "../scene/Game.hpp"
 
 Screen::Screen(StartingConfig config) : window(nullptr), height(config.windowHeight), width(config.windowWidth), fullscreen((config.windowFlags&WINDOW_FULLSCREEN) == 0), focused(true) {
-//	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, config.GLRedSize);
-//	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, config.GLGreenSize);
-//	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, config.GLBlueSize);
-//	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, config.GLAlphaSize);
-//	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, config.GLBufferSize);
-//	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, config.GLDoubleBuffer);
-//	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, config.GLDepthSize);
-//	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, config.GLStencilSize);
-//	SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, config.GLAccumRedSize);
-//	SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, config.GLAccumGreenSize);
-//	SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, config.GLAccumBlueSize);
-//	SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, config.GLAccumAlphaSize);
-//	SDL_GL_SetAttribute(SDL_GL_STEREO, config.GLStereo);
-//	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, config.GLMultisampleBuffers);
-//	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, config.GLMultisampleSamples);
-//	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, config.GLAcceleratedGraphics);
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, config.GLRedSize);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, config.GLGreenSize);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, config.GLBlueSize);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, config.GLAlphaSize);
+	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, config.GLBufferSize);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, config.GLDoubleBuffer);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, config.GLDepthSize);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, config.GLStencilSize);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, config.GLAccumRedSize);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, config.GLAccumGreenSize);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, config.GLAccumBlueSize);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, config.GLAccumAlphaSize);
+	SDL_GL_SetAttribute(SDL_GL_STEREO, config.GLStereo);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, config.GLMultisampleBuffers);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, config.GLMultisampleSamples);
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, config.GLAcceleratedGraphics);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, config.GLMajor);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, config.GLMinor);
-//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, config.GLContextFlags);
-//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, config.GLProfile);
-//	SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, config.GLShareContext);
-//	SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, config.GLRequestSRGB);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, config.GLContextFlags);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, config.GLProfile);
+	SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, config.GLShareContext);
+	SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, config.GLRequestSRGB);
 
 	window = SDL_CreateWindow(config.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, config.windowFlags);
 	VBE_ASSERT(window != nullptr, "Failed to init window");
