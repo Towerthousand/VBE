@@ -64,7 +64,7 @@ int Texture3D::getDepth() const {
 }
 
 void Texture3D::bind() const {
-	VBE_ASSERT(handle !=0);
+	VBE_ASSERT(handle !=0, "Cannot bind null texture");
 	GL_ASSERT(glActiveTexture(GL_TEXTURE0 + slot));
 	GL_ASSERT(glBindTexture(GL_TEXTURE_3D, handle));
 }

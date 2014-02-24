@@ -25,7 +25,7 @@ GLuint RenderTarget::RenderBuffer::getHandle() const {
 }
 
 RenderTarget::RenderTarget(int width, int height) : handle(0), size(width, height), screenRelativeSize(false) {
-	VBE_ASSERT(width != 0 && height != 0);
+	VBE_ASSERT(width != 0 && height != 0, "Width or height can't be zero");
 }
 
 RenderTarget::RenderTarget(float mult) : handle(0), size(int(Environment::getScreen()->getWidth()*mult), int(Environment::getScreen()->getHeight()*mult)), screenRelativeSize(true), screenSizeMultiplier(mult) {
@@ -46,7 +46,7 @@ void RenderTarget::bind(RenderTarget* target) {
 		GL_ASSERT(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 	else {
-		VBE_ASSERT(target->handle != 0);
+		VBE_ASSERT(target->handle != 0, "Cannot bind unbuilt render target");
 		target->checkSize();
 		GL_ASSERT(glViewport(0, 0, target->size.x, target->size.y));
 		GL_ASSERT(glBindFramebuffer(GL_FRAMEBUFFER, target->handle));

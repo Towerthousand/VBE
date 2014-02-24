@@ -2,7 +2,7 @@
 
 Shader::Shader(GLenum type) {
 	shaderHandle = glCreateShader(type);
-	VBE_ASSERT(glGetError() == GL_NO_ERROR);
+	GL_ASSERT({});
 }
 
 Shader::~Shader() {
