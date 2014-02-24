@@ -12,11 +12,11 @@ Texture::Texture(): handle(0), slot(0) {
 	}
 	lastSlot = lastSlot%(maxSlots-1);
 	slot = lastSlot++;
-	GL_ASSERT(glGenTextures(1, &handle), "Failed to generate texture");
+	GL_ASSERT(glGenTextures(1, &handle));
 }
 
 Texture::~Texture(){
-	GL_ASSERT(glDeleteTextures(1, (GLuint*) &handle), "Failed to delete texture");
+	GL_ASSERT(glDeleteTextures(1, (GLuint*) &handle));
 }
 
 void Texture::setSlot(unsigned int newSlot) {

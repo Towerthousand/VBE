@@ -40,14 +40,14 @@
 
 //GL_ASSERT
 #ifdef __DEBUG
-#define GL_ASSERT(gl_code , string) do \
+#define GL_ASSERT( gl_code ) do \
 { \
 	gl_code; \
 	GLenum __gl_error_code = glGetError(); \
-	VBE_ASSERT(__gl_error_code == GL_NO_ERROR, "OpenGL Error with id: " << __gl_error_code << Log::Line << "Reason: " << string); \
+	VBE_ASSERT(__gl_error_code == GL_NO_ERROR, "OpenGL Error with id: " << __gl_error_coded); \
 } while(0)
 #else
-#define GL_ASSERT( gl_code , string) gl_code
+#define GL_ASSERT( gl_code ) gl_code
 #endif
 
 //VBE_WARNING
