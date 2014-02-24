@@ -2,8 +2,7 @@
 #define MOUSE_HPP
 #include "tools.hpp"
 
-class Mouse
-{
+class Mouse {
 	public:
 		Mouse();
 
@@ -30,6 +29,7 @@ class Mouse
 		void showCursor();
 
 		void setGrab(bool grab);
+
 	private:
 		friend class Environment;
 

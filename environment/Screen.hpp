@@ -1,6 +1,7 @@
 #ifndef SCREEN_HPP
 #define SCREEN_HPP
 #include "tools.hpp"
+#include "StartingConfig.hpp"
 
 class Screen {
 	public:
@@ -26,10 +27,11 @@ class Screen {
 			WINDOW_MOUSE_FOCUS = SDL_WINDOW_MOUSE_FOCUS //window has mouse focus
 		};
 
-		Screen();
+		Screen(StartingConfig config);
 		~Screen();
 
-		void initWindow(std::string name, unsigned int width, unsigned int height, unsigned long int flags);
+		static std::vector<DisplayMode> getDisplayModes(unsigned int displayIndex = 0);
+
 		void resize(unsigned int newWidth, unsigned int newHeight);
 		void setDisplayMode(unsigned int displayMode, unsigned int displayIndex);
 		void goFullscreen(unsigned int displayMode = 0, unsigned int displayIndex = 0);
@@ -40,15 +42,14 @@ class Screen {
 		void setBorder(bool border);
 
 		unsigned int getDisplayCount() const;
-		std::vector<DisplayMode> getDisplayModes(unsigned int displayIndex = 0) const;
 		DisplayMode getCurrentDisplayMode(int displayIndex = 0) const;
 		bool isWindowInit() const { return (window != nullptr); }
 		unsigned int getHeight() const { return height; }
 		unsigned int getWidth() const { return width; }
 		vec2ui getSize() const { return vec2ui(width,height); }
 		std::string getTitle() const;
-
 		bool isFocused() const { return focused; }
+
 	private:
 		friend class Mouse;
 		friend class Environment;
@@ -59,7 +60,6 @@ class Screen {
 		int height;
 		int width;
 		bool fullscreen;
-
 		bool focused;
 };
 

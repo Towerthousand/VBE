@@ -1,15 +1,40 @@
 #include "Screen.hpp"
 #include "../scene/Game.hpp"
 
-Screen::Screen() : window(nullptr), height(0), width(0), fullscreen(false), focused(true) {
+Screen::Screen(StartingConfig config) : window(nullptr), height(config.windowHeight), width(config.windowWidth), fullscreen((config.windowFlags&WINDOW_FULLSCREEN) == 0), focused(true) {
+//	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, config.GLRedSize);
+//	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, config.GLGreenSize);
+//	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, config.GLBlueSize);
+//	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, config.GLAlphaSize);
+//	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, config.GLBufferSize);
+//	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, config.GLDoubleBuffer);
+//	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, config.GLDepthSize);
+//	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, config.GLStencilSize);
+//	SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, config.GLAccumRedSize);
+//	SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, config.GLAccumGreenSize);
+//	SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, config.GLAccumBlueSize);
+//	SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, config.GLAccumAlphaSize);
+//	SDL_GL_SetAttribute(SDL_GL_STEREO, config.GLStereo);
+//	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, config.GLMultisampleBuffers);
+//	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, config.GLMultisampleSamples);
+//	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, config.GLAcceleratedGraphics);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, config.GLMajor);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, config.GLMinor);
+//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, config.GLContextFlags);
+//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, config.GLProfile);
+//	SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, config.GLShareContext);
+//	SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, config.GLRequestSRGB);
+
+	window = SDL_CreateWindow(config.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, config.windowFlags);
+	VBE_ASSERT(window != nullptr, "Failed to init window");
+	SDL_GetWindowSize(window, &this->width, &this->height);
+	context = SDL_GL_CreateContext(window);
 }
 
 Screen::~Screen() {
-	if(window != nullptr) {
-		SDL_DestroyWindow(window);
-		window = nullptr;
-		SDL_GL_DeleteContext(context);
-	}
+	SDL_DestroyWindow(window);
+	window = nullptr;
+	SDL_GL_DeleteContext(context);
 }
 
 void Screen::processEvent(const SDL_Event &e) {
@@ -54,17 +79,7 @@ void Screen::processEvent(const SDL_Event &e) {
 	}
 }
 
-void Screen::initWindow(std::string name, unsigned int width, unsigned int height, unsigned long int flags) {
-	VBE_ASSERT(window == nullptr, "Window was already init");
-	window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
-	VBE_ASSERT(window != nullptr, "Failed to init window");
-	SDL_GetWindowSize(window, &this->width, &this->height);
-	context = SDL_GL_CreateContext(window);
-	fullscreen = (flags & WINDOW_FULLSCREEN);
-}
-
 void Screen::goFullscreen(unsigned int displayMode, unsigned int displayIndex) {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling goFullscreen");
 	VBE_WARN(!fullscreen, "Going fullscreen on an already fullscreen window");
 	SDL_SetWindowFullscreen(window,WINDOW_FULLSCREEN);
 	fullscreen = true;
@@ -72,7 +87,6 @@ void Screen::goFullscreen(unsigned int displayMode, unsigned int displayIndex) {
 }
 
 void Screen::goWindowed(unsigned int newWidth, unsigned int newHeight) {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling goWindowed");
 	VBE_WARN(fullscreen, "Going windowed on an already windowed window");
 	SDL_SetWindowFullscreen(window,0);
 	fullscreen = false;
@@ -84,12 +98,10 @@ void Screen::swapBuffers() const {
 }
 
 void Screen::setTitle(std::string newTitle) {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling setTitle");
 	SDL_SetWindowTitle(window, newTitle.c_str());
 }
 
 void Screen::setDisplayMode(unsigned int displayMode, unsigned int displayIndex) {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling setDisplayMode");
 	VBE_ASSERT(fullscreen, "Trying to set a display mode for a non-fullscreen window" << Log::Line
 			   << "Display modes are only for fullscreen windows" << Log::Line
 			   << "To set the size of a non-fullscreen window use resize()");
@@ -101,7 +113,6 @@ void Screen::setDisplayMode(unsigned int displayMode, unsigned int displayIndex)
 }
 
 void Screen::resize(unsigned int newWidth, unsigned int newHeight) {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling resize");
 	VBE_ASSERT(!fullscreen, "Trying to resize a fullscreen window" << Log::Line
 			   << "Resizing is only for fullscreen windows" << Log::Line
 			   << "To set the display mode of a fullscreen window use setDisplayMode()");
@@ -111,13 +122,11 @@ void Screen::resize(unsigned int newWidth, unsigned int newHeight) {
 }
 
 void Screen::setPosition(unsigned int x, unsigned int y) {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling setPosition");
 	VBE_ASSERT(!fullscreen, "Window must not be fullscreen to call setPosition");
 	SDL_SetWindowPosition(window, x, y);
 }
 
 void Screen::setBorder(bool border) {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling setBorder");
 	SDL_SetWindowBordered(window, (border? SDL_TRUE : SDL_FALSE));
 }
 
@@ -125,7 +134,7 @@ unsigned int Screen::getDisplayCount() const {
 	return SDL_GetNumVideoDisplays();
 }
 
-std::vector<Screen::DisplayMode> Screen::getDisplayModes(unsigned int displayIndex) const {
+std::vector<Screen::DisplayMode> Screen::getDisplayModes(unsigned int displayIndex) {
 	std::vector<DisplayMode> v;
 	int numModes = SDL_GetNumDisplayModes(displayIndex);
 	for(int i = 0; i < numModes; ++i) {
@@ -137,7 +146,6 @@ std::vector<Screen::DisplayMode> Screen::getDisplayModes(unsigned int displayInd
 }
 
 Screen::DisplayMode Screen::getCurrentDisplayMode(int displayIndex) const {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling getCurrentDisplayMode");
 	VBE_ASSERT(fullscreen, "Cannot get current display mode of non-fullscreen window" << Log::Line
 			   << "Display modes are for fullscreens windows only" << Log::Line
 			   << "To get the size of a non-fullscreen window use Screen::getSize()");
@@ -147,6 +155,5 @@ Screen::DisplayMode Screen::getCurrentDisplayMode(int displayIndex) const {
 }
 
 std::string Screen::getTitle() const {
-	VBE_ASSERT(window != nullptr, "Window must be initialized before calling getTitle");
 	return std::string(SDL_GetWindowTitle(window));
 }

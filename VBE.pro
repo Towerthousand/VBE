@@ -40,7 +40,8 @@ SOURCES += \
     $$PWD/environment/Environment.cpp \
     $$PWD/environment/Screen.cpp \
     $$PWD/environment/Keyboard.cpp \
-    $$PWD/environment/Mouse.cpp
+    $$PWD/environment/Mouse.cpp \
+    VBE/environment/StartingConfig.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -71,4 +72,5 @@ HEADERS += \
         $$PWD/environment/Environment.hpp \
     $$PWD/environment/Screen.hpp \
     $$PWD/environment/Keyboard.hpp \
-    $$PWD/environment/Mouse.hpp
+    $$PWD/environment/Mouse.hpp \
+    VBE/environment/StartingConfig.hpp

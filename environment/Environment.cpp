@@ -5,12 +5,12 @@ Screen* Environment::screen = nullptr;
 Keyboard* Environment::keyboard = nullptr;
 Mouse* Environment::mouse = nullptr;
 bool Environment::running = false;
-Environment::Config Environment::initialConfig = Environment::Config();
+StartingConfig Environment::initialConfig = StartingConfig();
 
 Environment::Environment() {}
 Environment::~Environment() {}
 
-Environment::Config&Environment::setup() {
+StartingConfig& Environment::setup() {
 	VBE_WARN(!running, "Accessing the Environment setup configurations after starting up" << Log::Line <<
 			 "Any changes on this configuration won't affect the running Environment" << Log::Line <<
 			 "To change settings on the run, please interface with the respective device (screen, mouse..)");
@@ -23,9 +23,11 @@ void Environment::startUp() {
 	running = true;
 	int ret = SDL_Init(SDL_INIT_EVERYTHING);
 	VBE_ASSERT(ret == 0, "Error when initializating SDL" << SDL_GetError());
-	screen = new Screen();
+	screen = new Screen(initialConfig);
 	mouse = new Mouse();
 	keyboard = new Keyboard();
+
+	mouse->setGrab(initialConfig.mouseGrab);
 }
 
 void Environment::shutDown() {
@@ -44,27 +46,23 @@ void Environment::update() {
 	while (SDL_PollEvent(&e)){
 		switch (e.type) {
 
-			// Window events
-			case SDL_WINDOWEVENT:
-				screen->processEvent(e);
-				break;
-
-				// System events
+			// System events
 			case SDL_QUIT:
 				if(Game::i() != nullptr)
 					Game::i()->isRunning = false;
 				break;
 
+				// Window events
+			case SDL_WINDOWEVENT:
+				screen->processEvent(e);
+				break;
+
 				// Keyboard events
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
-				keyboard->processEvent(e);
-				break;
 			case SDL_TEXTEDITING:
-				//TODO KEYBOARD
-				break;
 			case SDL_TEXTINPUT:
-				//TODO KEYBOARD
+				keyboard->processEvent(e);
 				break;
 
 				// Mouse events

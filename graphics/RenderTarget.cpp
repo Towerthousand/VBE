@@ -41,7 +41,6 @@ RenderTarget::~RenderTarget() {
 
 void RenderTarget::bind(RenderTarget* target) {
 	if(current == target) return;
-
 	if(target == nullptr) {
 		GL_ASSERT(glViewport(0, 0, Environment::getScreen()->getWidth(), Environment::getScreen()->getHeight()), "Failed to create viewport");
 		GL_ASSERT(glBindFramebuffer(GL_FRAMEBUFFER, 0), "Failed to bind screen frame buffer");

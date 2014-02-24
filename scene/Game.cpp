@@ -6,9 +6,10 @@ Game* Game::instance = nullptr;
 
 Game::Game() :isRunning(true), idCounter(1), fixedFramerate(0), isFixedFramerate(false) {
 	VBE_ASSERT(Game::instance == nullptr, "Two games created");
+	Environment::startUp();
 	Game::instance = this;
-	VBE_LOG("* INIT GAME");
 	isRunning = true;
+	VBE_LOG("* INIT GAME");
 }
 
 Game::~Game() {
@@ -19,6 +20,7 @@ Game::~Game() {
 	Programs.clear();
 	isRunning = false;
 	Game::instance = nullptr;
+	Environment::shutDown();
 	VBE_LOG("* EXIT GAME SUCCESFUL" );
 }
 
@@ -54,10 +56,7 @@ void Game::setDynamicFramerate() {
 
 // Main game loop
 void Game::run() {
-
-
 	if(isFixedFramerate) {
-//		window.setFramerateLimit(fixedFramerate);
 		float deltaTime = 1.0f/float(fixedFramerate);
 		while (isRunning) {
 			update(deltaTime);
@@ -71,7 +70,6 @@ void Game::run() {
 			float newTime = Environment::getClock();
 			float deltaTime = newTime-time;
 			time = newTime;
-
 			update(deltaTime);
 			draw();
 		}
