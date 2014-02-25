@@ -47,12 +47,10 @@ void Screen::processEvent(const SDL_Event &e) {
 				Game::i()->isRunning = false;
 			break;
 		case SDL_WINDOWEVENT_RESIZED:
-			width = e.window.data1;
-			height = e.window.data2;
+			updateSize();
 			break;
 		case SDL_WINDOWEVENT_SIZE_CHANGED:
-			width = e.window.data1;
-			height = e.window.data2;
+			updateSize();
 			break;
 		case SDL_WINDOWEVENT_ENTER:
 			focused = true;

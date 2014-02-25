@@ -6,10 +6,31 @@ Frustum::Frustum() {
 Frustum::~Frustum() {
 }
 
+bool Frustum::insideFrustum( const vec3f &p) const {
+	for(unsigned int i=0; i < 4; i++)
+		if(!planes[i].inside(p)) return false;
+	return true;
+}
+
 bool Frustum::insideFrustum( const vec3f &center, float radius) const {
 	for(unsigned int i=0; i < 4; i++)
 		if(!planes[i].inside(center,radius)) return false;
 	return true;
+}
+
+bool Frustum::insideFrustum( const AABB &box) const {
+	if(!insideFrustum(box.getCenter(),box.getRadius())) return false;
+	vec3f min = box.getMin();
+	vec3f max = box.getMax();
+	if(insideFrustum(min)) return true;
+	if(insideFrustum(max)) return true;
+	if(insideFrustum(vec3f(max.x, min.y, min.z))) return true;
+	if(insideFrustum(vec3f(max.x, max.y, min.z))) return true;
+	if(insideFrustum(vec3f(min.x, max.y, max.z))) return true;
+	if(insideFrustum(vec3f(min.x, min.y, max.z))) return true;
+	if(insideFrustum(vec3f(min.x, max.y, min.z))) return true;
+	if(insideFrustum(vec3f(max.x, min.y, max.z))) return true;
+	return false;
 }
 
 void Frustum::calculate(mat4f VP) {
