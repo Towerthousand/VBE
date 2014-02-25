@@ -14,8 +14,7 @@ class AABB {
 		void extend(const AABB& aabb);
 
 		bool inside(const vec3f& p) const; //p inside this box
-		bool inside(const AABB& aabb) const; //aabb inside this box
-		bool overlap(const AABB& aabb) const; //aabb overlaps this box
+		bool inside(const AABB& aabb) const; //aabb inside this boxs
 
 		vec3f getMin() const;
 		vec3f getMax() const;
@@ -24,6 +23,7 @@ class AABB {
 		float getRadius() const;
 
 	private:
+		friend class Collision;
 		vec3f pmin;
 		vec3f pmax;
 };

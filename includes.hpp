@@ -5,6 +5,7 @@
 #include "scene/Game.hpp"
 #include "scene/GameObject.hpp"
 #include "scene/Camera.hpp"
+#include "geometry/Collision.hpp"
 #include "utils/Manager.hpp"
 #include "graphics/Model.hpp"
 #include "graphics/Shader.hpp"

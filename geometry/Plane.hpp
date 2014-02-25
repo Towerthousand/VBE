@@ -16,6 +16,7 @@ class Plane {
 		bool inside(const AABB& box) const;
 
 	private:
+		friend class Collision;
 		vec3f n;
 		float d;
 };

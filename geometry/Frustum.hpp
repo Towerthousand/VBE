@@ -18,11 +18,8 @@ class Frustum {
 		~Frustum();
 
 		void calculate(mat4f VP);
-		bool insideFrustum(const vec3f& p) const;
-		bool insideFrustum(const vec3f& center, float radius) const;
-		bool insideFrustum(const AABB& box) const;
-
 	private:
+		friend class Collision;
 		Plane planes[4];
 };
 

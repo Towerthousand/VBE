@@ -41,7 +41,8 @@ SOURCES += \
     $$PWD/environment/Screen.cpp \
     $$PWD/environment/Keyboard.cpp \
     $$PWD/environment/Mouse.cpp \
-    VBE/environment/StartingConfig.cpp
+    VBE/environment/StartingConfig.cpp \
+    VBE/geometry/Collision.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -73,4 +74,5 @@ HEADERS += \
     $$PWD/environment/Screen.hpp \
     $$PWD/environment/Keyboard.hpp \
     $$PWD/environment/Mouse.hpp \
-    VBE/environment/StartingConfig.hpp
+    VBE/environment/StartingConfig.hpp \
+    VBE/geometry/Collision.hpp

@@ -6,24 +6,6 @@ Frustum::Frustum() {
 Frustum::~Frustum() {
 }
 
-bool Frustum::insideFrustum( const vec3f &p) const {
-	for(unsigned int i=0; i < 4; i++)
-		if(!planes[i].inside(p)) return false;
-	return true;
-}
-
-bool Frustum::insideFrustum( const vec3f &center, float radius) const {
-	for(unsigned int i=0; i < 4; i++)
-		if(!planes[i].inside(center,radius)) return false;
-	return true;
-}
-
-bool Frustum::insideFrustum( const AABB &box) const {
-	for(unsigned int i=0; i < 4; i++)
-		if(!planes[i].inside(box)) return false;
-	return true;
-}
-
 void Frustum::calculate(mat4f VP) {
 	mat4f invVP = glm::inverse(VP);
 	vec4f ntl,ntr,nbl,nbr,ftl,ftr,fbl,fbr;
