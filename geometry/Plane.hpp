@@ -1,6 +1,6 @@
 #ifndef PLANE_HPP
 #define PLANE_HPP
-#include "tools.hpp"
+#include "AABB.hpp"
 
 class Plane {
 	public:
@@ -11,8 +11,9 @@ class Plane {
 		Plane(); //generated plane will be invalid by default
 		~Plane();
 
-		bool inside(vec3f p, float r) const;
-		bool inside(vec3f p) const;
+		bool inside(const vec3f& p, float r) const;
+		bool inside(const vec3f& p) const;
+		bool inside(const AABB& box) const;
 
 	private:
 		vec3f n;

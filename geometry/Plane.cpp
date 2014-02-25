@@ -26,12 +26,21 @@ Plane::Plane() : n(0), d(0) {
 Plane::~Plane() {
 }
 
-bool Plane::inside(vec3f p, float r) const {
+bool Plane::inside(const vec3f& p, float r) const {
 	float distance = glm::dot(n,p) + d;
 	return (distance < r);
 }
 
-bool Plane::inside(vec3f p) const {
+bool Plane::inside(const vec3f& p) const {
 	float distance = glm::dot(n,p) + d;
 	return (distance < 0);
+}
+
+bool Plane::inside(const AABB& box) const {
+	vec3f c = box.getCenter();
+	vec3f h = (box.getMax()-box.getMin())/2.0f; //half diagonal
+	float e = glm::dot(h, glm::abs(n));
+	float s = glm::dot(c, n) + d;
+	if((s-e) > 0) return false;
+	else return true;
 }

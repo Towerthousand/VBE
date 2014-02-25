@@ -1,7 +1,6 @@
 #ifndef FRUSTUM_HPP
 #define FRUSTUM_HPP
 #include "Plane.hpp"
-#include "AABB.hpp"
 
 class Frustum {
 		enum { //frustrum planes
