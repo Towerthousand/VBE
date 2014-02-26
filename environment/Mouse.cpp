@@ -7,10 +7,8 @@ Mouse::Mouse() : mousePos(0, 0), mousePosRel(0, 0) {
 }
 
 void Mouse::setMousePos(int x, int y) {
-	VBE_LOG(Environment::getScreen()->isFocused());
-	//if(!Environment::getScreen()->isFocused())
-	//	return;
-
+	if(!Environment::getScreen()->isFocused())
+		return;
 
 	SDL_WarpMouseInWindow(Environment::getScreen()->window, x, y);
 	mousePos = vec2i(x, y);
@@ -43,7 +41,7 @@ Mouse::Button Mouse::sdlButtonToButton(int button) {
 		case SDL_BUTTON_X1: return X1;
 		case SDL_BUTTON_X2: return X2;
 		default:
-			VBE_ASSERT(false, "Invalid SDL Button value.");
+			VBE_ASSERT(false, "Invalid SDL Button value: " << button);
 			return Left;
 	}
 }
