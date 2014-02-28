@@ -42,7 +42,8 @@ SOURCES += \
     $$PWD/environment/Keyboard.cpp \
     $$PWD/environment/Mouse.cpp \
     VBE/environment/StartingConfig.cpp \
-    VBE/geometry/Collision.cpp
+    VBE/geometry/Collision.cpp \
+    VBE/geometry/Ray.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -75,4 +76,5 @@ HEADERS += \
     $$PWD/environment/Keyboard.hpp \
     $$PWD/environment/Mouse.hpp \
     VBE/environment/StartingConfig.hpp \
-    VBE/geometry/Collision.hpp
+    VBE/geometry/Collision.hpp \
+    VBE/geometry/Ray.hpp
