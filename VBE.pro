@@ -43,7 +43,8 @@ SOURCES += \
 	$$PWD/environment/StartingConfig.cpp \
 	$$PWD/geometry/Collision.cpp \
 	$$PWD/geometry/Ray.cpp \
-	$$PWD/dependencies/stb_image/stb_image.cpp
+	$$PWD/dependencies/stb_image/stb_image.cpp \
+    VBE/geometry/Sphere.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -78,4 +79,5 @@ HEADERS += \
 	$$PWD/environment/StartingConfig.hpp \
 	$$PWD/geometry/Collision.hpp \
 	$$PWD/geometry/Ray.hpp \
-    VBE/dependencies/stb_image/stb_image.hpp
+    VBE/dependencies/stb_image/stb_image.hpp \
+    VBE/geometry/Sphere.hpp

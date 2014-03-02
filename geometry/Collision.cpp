@@ -1,20 +1,20 @@
 #include "Collision.hpp"
 
-bool Collision::intersects(const Frustum& frustum, const AABB& box) {
+bool Collision::intersects(const Frustum& f, const AABB& b) {
 	for(unsigned int i=0; i < 4; i++)
-		if(!frustum.planes[i].inside(box)) return false;
+		if(!f.planes[i].inside(b)) return false;
 	return true;
 }
 
-bool Collision::intersects(const Frustum& frustum, const vec3f& p) {
+bool Collision::intersects(const Frustum& f, const vec3f& p) {
 	for(unsigned int i=0; i < 4; i++)
-		if(!frustum.planes[i].inside(p)) return false;
+		if(!f.planes[i].inside(p)) return false;
 	return true;
 }
 
-bool Collision::intersects(const Frustum& frustum, const vec3f& center, float radius) {
+bool Collision::intersects(const Frustum& f, const Sphere& s) {
 	for(unsigned int i=0; i < 4; i++)
-		if(!frustum.planes[i].inside(center, radius)) return false;
+		if(!f.planes[i].inside(s)) return false;
 	return true;
 }
 
@@ -28,16 +28,16 @@ bool Collision::intersects(const AABB& a, const AABB& b) {
 	return true;
 }
 
-std::pair<bool, float> Collision::intersectionPoint(const AABB& box, const Ray& ray) {
+std::pair<bool, float> Collision::intersectionPoint(const AABB& b, const Ray& r) {
 	//Slopes method. Realtime rendering (3rd Ed.) pg. 743 for reference
 	float tmin = std::numeric_limits<float>::min();
 	float tmax = std::numeric_limits<float>::max();
-	vec3f p = box.getCenter() - ray.o;
+	vec3f p = b.getCenter() - r.o;
 	vec3f side_dirs[3] = {vec3f(1,0,0), vec3f(0,1,0), vec3f(0,0,1)};
-	vec3f side_lengths = box.getDimensions()/2.0f;
+	vec3f side_lengths = b.getDimensions()/2.0f;
 	for(int i = 0; i < 3; ++i) {
 		float e = glm::dot(side_dirs[i], p);
-		float f = glm::dot(side_dirs[i], ray.dir);
+		float f = glm::dot(side_dirs[i], r.dir);
 		if(glm::length(f) > 0.001) {
 			float t1 = (e + side_lengths[i])/f;
 			float t2 = (e - side_lengths[i])/f;

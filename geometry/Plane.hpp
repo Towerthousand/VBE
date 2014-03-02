@@ -1,6 +1,7 @@
 #ifndef PLANE_HPP
 #define PLANE_HPP
 #include "AABB.hpp"
+#include "Sphere.hpp"
 
 class Plane {
 	public:
@@ -11,7 +12,7 @@ class Plane {
 		Plane(); //generated plane will be invalid by default
 		~Plane();
 
-		bool inside(const vec3f& p, float r) const;
+		bool inside(const Sphere& s) const;
 		bool inside(const vec3f& p) const;
 		bool inside(const AABB& box) const;
 

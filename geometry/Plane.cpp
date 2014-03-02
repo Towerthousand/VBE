@@ -26,9 +26,9 @@ Plane::Plane() : n(0), d(0) {
 Plane::~Plane() {
 }
 
-bool Plane::inside(const vec3f& p, float r) const {
-	float distance = glm::dot(n,p) + d;
-	return (distance < r);
+bool Plane::inside(const Sphere& s) const {
+	float distance = glm::dot(n,s.getCenter()) + d;
+	return (distance < s.getRadius());
 }
 
 bool Plane::inside(const vec3f& p) const {
