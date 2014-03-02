@@ -1,8 +1,10 @@
 #ifndef TOOLS_HPP
 #define TOOLS_HPP
 
-//Logging system and macros
-#include "Log.hpp"
+//External Dependencies
+
+//Image loading
+#include "dependencies/stb_image/stb_image.hpp"
 
 //OpenGL (Open Graphics Library)
 #define GL_GLEXT_PROTOTYPES 1
@@ -12,10 +14,15 @@
 #include <GL/gl.h> //core
 #endif
 
+//GLM (openGL Math)
+#include "dependencies/glm/glm.hpp" // vec3, vec4, ivec4, mat4 (core)
+#include "dependencies/glm/gtc/matrix_transform.hpp" // translate, rotate, scale, perspective
+
 //SDL 2.0.1
 #include <SDL2/SDL.h>
 
-//STL (Standard Toolkit Library)
+//STL stuff
+
 #ifdef WINDOWS
 	#define _USE_MATH_DEFINES
 	/* Constants rounded for 21 decimals. */
@@ -47,11 +54,8 @@
 #include <limits>
 #include <set>
 
-//GLM (openGL Math)
-#include "glm/glm.hpp" // vec3, vec4, ivec4, mat4 (core)
-#include "glm/gtc/matrix_transform.hpp" // translate, rotate, scale, perspective
-
 //math typedefs
+
 typedef glm::detail::tvec2<float> vec2f;
 typedef glm::detail::tvec3<float> vec3f;
 typedef glm::detail::tvec4<float> vec4f;
@@ -87,5 +91,9 @@ typedef glm::detail::tmat3x3<double> mat3d;
 typedef glm::detail::tmat4x4<double> mat4d;
 
 #define DEG_TO_RAD (float(M_PI)/180.0f)
+
+//Logging system and log macros
+
+#include "utils/Log.hpp"
 
 #endif // TOOLS_HPP

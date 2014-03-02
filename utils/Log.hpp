@@ -5,7 +5,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include "glm/glm.hpp" // vec3, vec4, ivec4, mat4 (core)
+#include "dependencies/glm/glm.hpp" // vec3, vec4, ivec4, mat4 (core)
 
 //VBE_ASSERT
 #ifdef __DEBUG

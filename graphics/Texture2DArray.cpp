@@ -1,6 +1,4 @@
 #include "Texture2DArray.hpp"
-#include "SFML/Graphics.hpp"
-
 
 Texture2DArray::Texture2DArray() : size(0) {
 }
@@ -40,26 +38,32 @@ void Texture2DArray::loadEmpty(unsigned int sizeX, unsigned int sizeY, unsigned 
 }
 
 void Texture2DArray::loadFromFiles(const std::vector<std::string>& filePaths, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
-	//load images
+	VBE_DLOG("* Loading new Texture2DArray slice from path " << filePaths[i]);
+	VBE_ASSERT(filePaths.size() > 0, "While loading texture array: you must provide at least one slice (one filepath)");
+	int comp_req = 0;
+	switch(sourceFormat) {
+		case RGB: comp_req = STBI_rgb; break;
+		case RGBA: comp_req = STBI_rgb_alpha; break;
+		default: break;
+	}
+	VBE_ASSERT(comp_req != 0 && sourceType == UNSIGNED_BYTE, "While loading texture: uncompatible source format? Try a RGBA8888 kind of image or a RGB888 one");
 	unsigned int sizeX  = 0;
 	unsigned int sizeY  = 0;
 	unsigned int slices = filePaths.size();
 	unsigned char* pixels = nullptr;
 	for (unsigned int i = 0; i < slices; i++) {
-		VBE_DLOG("* Loading new Texture2DArray slice from path " << filePaths[i]);
-		sf::Image image;
-		if (!image.loadFromFile(filePaths[i])) {
-			VBE_LOG("#ERROR " << filePaths[i] << " didn't load" );
-		}
+		int width, height, channels;
+		unsigned char* ptr = stbi_load(filePaths[i].c_str(), &width, &height, &channels, comp_req);
+		VBE_ASSERT(ptr && width && height, "Failed to load image \"" << filePaths[i] << "\". Reason : " << stbi_failure_reason());
 		if (i == 0) {
-			sizeX = image.getSize().x;
-			sizeY = image.getSize().y;
+			sizeX = width;
+			sizeY = height;
 			pixels = new unsigned char[4*sizeX*sizeY*slices];
 		}
-		VBE_ASSERT(image.getSize().x == sizeX && image.getSize().y == sizeY, "Image " << i << ": " << filePaths[i] << " has a different size.");
-		memcpy((void*)&pixels[4*i*sizeX*sizeY*sizeof(unsigned char)], (void*)image.getPixelsPtr(), 4*sizeX*sizeY*sizeof(unsigned char));
+		VBE_ASSERT(width == int(sizeX) && height == int(sizeY), "Image " << i << ": " << filePaths[i] << " has a different size.");
+		memcpy((void*)&pixels[4*i*sizeX*sizeY*sizeof(unsigned char)], (void*)ptr, 4*sizeX*sizeY*sizeof(unsigned char));
+		stbi_image_free(ptr);
 	}
-
 	loadFromRaw(pixels, sizeX, sizeY, slices, sourceFormat, sourceType, internalFormat, mipmap, slot);
 	delete[] pixels;
 }

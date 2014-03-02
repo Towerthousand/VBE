@@ -2,7 +2,6 @@
 #define CONTAINEROBJECT_HPP
 
 #include "GameObject.hpp"
-#include<set>
 
 class ContainerObject : public GameObject {
 	public:

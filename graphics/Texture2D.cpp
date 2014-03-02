@@ -1,5 +1,4 @@
 #include "Texture2D.hpp"
-#include "SFML/Graphics.hpp"
 
 Texture2D::Texture2D() : size(0) {
 }
@@ -41,11 +40,18 @@ void Texture2D::loadEmpty(unsigned int sizeX, unsigned int sizeY, Texture::Inter
 void Texture2D::loadFromFile(const std::string& filePath, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
 	//load image
 	VBE_DLOG("* Loading new Texture2D from path " << filePath);
-	sf::Image image;
-	if (!image.loadFromFile(filePath)) {
-		VBE_LOG("#ERROR " << filePath << " didn't load" );
+	int width, height, channels;
+	int comp_req = 0;
+	switch(sourceFormat) {
+		case RGB: comp_req = STBI_rgb; break;
+		case RGBA: comp_req = STBI_rgb_alpha; break;
+		default: break;
 	}
-	loadFromRaw(image.getPixelsPtr(), image.getSize().x, image.getSize().y, sourceFormat, sourceType, internalFormat, mipmap, slot);
+	VBE_ASSERT(comp_req != 0 && sourceType == UNSIGNED_BYTE, "While loading texture: uncompatible source format? Try a RGBA8888 kind of image or a RGB888 one");
+	unsigned char* ptr = stbi_load(filePath.c_str(), &width, &height, &channels, comp_req);
+	VBE_ASSERT(ptr && width && height, "Failed to load image \"" << filePath << "\". Reason : " << stbi_failure_reason());
+	loadFromRaw(ptr, width, height, sourceFormat, sourceType, internalFormat, mipmap, slot);
+	stbi_image_free(ptr);
 }
 
 void Texture2D::loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
