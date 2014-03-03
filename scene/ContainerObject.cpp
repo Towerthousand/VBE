@@ -19,12 +19,14 @@ void ContainerObject::update(float deltaTime) {
 		objectTasksToAdd.pop();
 	}
 
-	for(std::set<GameObject*, FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it)
+	for(std::set<GameObject*, FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it) {
+		mat4f oldTransform = (*it)->transform;
 		(*it)->update(deltaTime);
+		if((*it)->transform != oldTransform) (*it)->propragateTransforms();
+	}
 }
 
 void ContainerObject::draw() const {
-	propragateTransforms();
 	for(std::set<GameObject*, FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
 		(*it)->draw();
 }
