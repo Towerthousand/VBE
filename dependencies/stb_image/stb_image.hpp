@@ -188,6 +188,8 @@
 #include <stdio.h>
 #endif
 
+namespace STBI {
+
 #define STBI_VERSION 1
 
 enum
@@ -321,3 +323,5 @@ extern void stbi_install_YCbCr_to_RGB(stbi_YCbCr_to_RGB_run func);
 }
 #endif
 #endif // STBI_INCLUDE_STB_IMAGE_H
+
+}

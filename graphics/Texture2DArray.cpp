@@ -42,8 +42,8 @@ void Texture2DArray::loadFromFiles(const std::vector<std::string>& filePaths, Te
 	VBE_ASSERT(filePaths.size() > 0, "While loading texture array: you must provide at least one slice (one filepath)");
 	int comp_req = 0;
 	switch(sourceFormat) {
-		case RGB: comp_req = STBI_rgb; break;
-		case RGBA: comp_req = STBI_rgb_alpha; break;
+		case RGB: comp_req = STBI::STBI_rgb; break;
+		case RGBA: comp_req = STBI::STBI_rgb_alpha; break;
 		default: break;
 	}
 	VBE_ASSERT(comp_req != 0 && sourceType == UNSIGNED_BYTE, "While loading texture: uncompatible source format? Try a RGBA8888 kind of image or a RGB888 one");
@@ -53,8 +53,8 @@ void Texture2DArray::loadFromFiles(const std::vector<std::string>& filePaths, Te
 	unsigned char* pixels = nullptr;
 	for (unsigned int i = 0; i < slices; i++) {
 		int width, height, channels;
-		unsigned char* ptr = stbi_load(filePaths[i].c_str(), &width, &height, &channels, comp_req);
-		VBE_ASSERT(ptr && width && height, "Failed to load image \"" << filePaths[i] << "\". Reason : " << stbi_failure_reason());
+		unsigned char* ptr = STBI::stbi_load(filePaths[i].c_str(), &width, &height, &channels, comp_req);
+		VBE_ASSERT(ptr && width && height, "Failed to load image \"" << filePaths[i] << "\". Reason : " << STBI::stbi_failure_reason());
 		if (i == 0) {
 			sizeX = width;
 			sizeY = height;
@@ -62,7 +62,7 @@ void Texture2DArray::loadFromFiles(const std::vector<std::string>& filePaths, Te
 		}
 		VBE_ASSERT(width == int(sizeX) && height == int(sizeY), "Image " << i << ": " << filePaths[i] << " has a different size.");
 		memcpy((void*)&pixels[4*i*sizeX*sizeY*sizeof(unsigned char)], (void*)ptr, 4*sizeX*sizeY*sizeof(unsigned char));
-		stbi_image_free(ptr);
+		STBI::stbi_image_free(ptr);
 	}
 	loadFromRaw(pixels, sizeX, sizeY, slices, sourceFormat, sourceType, internalFormat, mipmap, slot);
 	delete[] pixels;

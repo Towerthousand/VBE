@@ -43,15 +43,15 @@ void Texture2D::loadFromFile(const std::string& filePath, Texture::SourceFormat 
 	int width, height, channels;
 	int comp_req = 0;
 	switch(sourceFormat) {
-		case RGB: comp_req = STBI_rgb; break;
-		case RGBA: comp_req = STBI_rgb_alpha; break;
+		case RGB: comp_req = STBI::STBI_rgb; break;
+		case RGBA: comp_req = STBI::STBI_rgb_alpha; break;
 		default: break;
 	}
 	VBE_ASSERT(comp_req != 0 && sourceType == UNSIGNED_BYTE, "While loading texture: uncompatible source format? Try a RGBA8888 kind of image or a RGB888 one");
-	unsigned char* ptr = stbi_load(filePath.c_str(), &width, &height, &channels, comp_req);
-	VBE_ASSERT(ptr && width && height, "Failed to load image \"" << filePath << "\". Reason : " << stbi_failure_reason());
+	unsigned char* ptr = STBI::stbi_load(filePath.c_str(), &width, &height, &channels, comp_req);
+	VBE_ASSERT(ptr && width && height, "Failed to load image \"" << filePath << "\". Reason : " << STBI::stbi_failure_reason());
 	loadFromRaw(ptr, width, height, sourceFormat, sourceType, internalFormat, mipmap, slot);
-	stbi_image_free(ptr);
+	STBI::stbi_image_free(ptr);
 }
 
 void Texture2D::loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
