@@ -22,6 +22,13 @@ void Camera::rotateGlobal(float angle, vec3f axis) {
 	rotation = glm::rotate(mat4f(1.0), angle, gaxis)*rotation;
 }
 
+void Camera::rotateAround(float angle, const vec3f& axis, const vec3f& center) {
+	vec3f gaxis = vec3f(vec4f(axis.x, axis.y, axis.z, 0)*rotation);
+	rotation = glm::translate(rotation,  center);
+	rotation = glm::rotate(rotation, angle, gaxis);
+	rotation = glm::translate(rotation, -center);
+}
+
 vec3f Camera::getWorldPos() const {
 	return vec3f(fullTransform*vec4f(pos,1));
 }
