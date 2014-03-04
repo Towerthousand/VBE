@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 
-Camera::Camera(const std::string& cameraName, const vec3f& pos, const vec3f& rot)
-	: pos(pos), rot(rot), projection(1.0f), rotation(1.0f) {
+Camera::Camera(const std::string& cameraName, const vec3f& pos)
+	: pos(pos), projection(1.0f), rotation(1.0f) {
 	if(cameraName != "") this->setName(cameraName);
 }
 
@@ -14,12 +14,12 @@ void Camera::update(float deltaTime) {
 }
 
 void Camera::rotateLocal(float angle, vec3f axis) {
-	vec3f gaxis = vec3f(rotation*vec4f(axis.x, axis.y, axis.z, 0));
-	rotation = glm::rotate(mat4f(1.0), angle, gaxis)*rotation;
+	rotation = glm::rotate(mat4f(1.0), angle, axis)*rotation;
 }
 
 void Camera::rotateGlobal(float angle, vec3f axis) {
-	rotation = glm::rotate(mat4f(1.0), angle, axis)*rotation;
+	vec3f gaxis = vec3f(rotation*vec4f(axis.x, axis.y, axis.z, 0));
+	rotation = glm::rotate(mat4f(1.0), angle, gaxis)*rotation;
 }
 
 vec3f Camera::getWorldPos() const {
