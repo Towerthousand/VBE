@@ -10,9 +10,9 @@ class Camera : public GameObject {
 
 		void update(float deltaTime);
 
-		void lookInDir(); //TODO
-		void rotateLocal(float angle, vec3f axis);
-		void rotateGlobal(float angle, vec3f axis);
+		void lookInDir(const vec3f& direction);
+		void rotateLocal(float angle, const vec3f& axis);
+		void rotateGlobal(float angle, const vec3f& axis);
 		void rotateAround(float angle, const vec3f& axis, const vec3f& center);
 
 		vec3f getWorldPos() const;
