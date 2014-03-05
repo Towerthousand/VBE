@@ -19,12 +19,12 @@ AABB::~AABB() {
 }
 
 void AABB::extend(const vec3f &p) {
-    if (p.x < pmin.x)    pmin.x = p.x;
-    if (p.y < pmin.y)    pmin.y = p.y;
-    if (p.z < pmin.z)    pmin.z = p.z;
-    if (p.x > pmax.x)    pmax.x = p.x;
-    if (p.y > pmax.y)    pmax.y = p.y;
-    if (p.z > pmax.z)    pmax.z = p.z;
+	if (p.x < pmin.x) pmin.x = p.x;
+	if (p.y < pmin.y) pmin.y = p.y;
+	if (p.z < pmin.z) pmin.z = p.z;
+	if (p.x > pmax.x) pmax.x = p.x;
+	if (p.y > pmax.y) pmax.y = p.y;
+	if (p.z > pmax.z) pmax.z = p.z;
 }
 
 void AABB::extend(const AABB &aabb) {
@@ -33,13 +33,13 @@ void AABB::extend(const AABB &aabb) {
 }
 
 bool AABB::inside(const vec3f &p) const {
-    if (p.x < pmin.x) return false;
-    if (p.y < pmin.y) return false;
-    if (p.z < pmin.z) return false;
-    if (p.x > pmax.x) return false;
-    if (p.y > pmax.y) return false;
-    if (p.z > pmax.z) return false;
-    return true;
+	if (p.x < pmin.x) return false;
+	if (p.y < pmin.y) return false;
+	if (p.z < pmin.z) return false;
+	if (p.x > pmax.x) return false;
+	if (p.y > pmax.y) return false;
+	if (p.z > pmax.z) return false;
+	return true;
 }
 
 bool AABB::inside(const AABB &aabb) const {
