@@ -44,7 +44,8 @@ SOURCES += \
 	$$PWD/geometry/Collision.cpp \
 	$$PWD/geometry/Ray.cpp \
 	$$PWD/dependencies/stb_image/stb_image.cpp \
-    VBE/geometry/Sphere.cpp
+    VBE/geometry/Sphere.cpp \
+    VBE/graphics/RenderState.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -80,4 +81,5 @@ HEADERS += \
 	$$PWD/geometry/Collision.hpp \
 	$$PWD/geometry/Ray.hpp \
     VBE/dependencies/stb_image/stb_image.hpp \
-    VBE/geometry/Sphere.hpp
+    VBE/geometry/Sphere.hpp \
+    VBE/graphics/RenderState.hpp
