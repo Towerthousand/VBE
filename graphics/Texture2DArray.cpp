@@ -38,7 +38,6 @@ void Texture2DArray::loadEmpty(unsigned int sizeX, unsigned int sizeY, unsigned 
 }
 
 void Texture2DArray::loadFromFiles(const std::vector<std::string>& filePaths, Texture::SourceFormat sourceFormat, Texture::SourceType sourceType, Texture::InternalFormat internalFormat, bool mipmap, int slot) {
-	VBE_DLOG("* Loading new Texture2DArray slice from path " << filePaths[i]);
 	VBE_ASSERT(filePaths.size() > 0, "While loading texture array: you must provide at least one slice (one filepath)");
 	int comp_req = 0;
 	switch(sourceFormat) {
@@ -52,6 +51,7 @@ void Texture2DArray::loadFromFiles(const std::vector<std::string>& filePaths, Te
 	unsigned int slices = filePaths.size();
 	unsigned char* pixels = nullptr;
 	for (unsigned int i = 0; i < slices; i++) {
+		VBE_DLOG("* Loading new Texture2DArray slice from path " << filePaths[i]);
 		int width, height, channels;
 		unsigned char* ptr = STBI::stbi_load(filePaths[i].c_str(), &width, &height, &channels, comp_req);
 		VBE_ASSERT(ptr && width && height, "Failed to load image \"" << filePaths[i] << "\". Reason : " << STBI::stbi_failure_reason());
