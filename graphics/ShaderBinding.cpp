@@ -20,16 +20,16 @@ ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) {
 				GL_ASSERT(glEnableVertexAttribArray(it->second));
 				if(current->conv == Vertex::Element::ConvertToInt)
 					GL_ASSERT(glVertexAttribIPointer(it->second,
-										  current->size,
-										  current->type,
-										  format.vertexSize(),
-										  (GLvoid*)long(format.offset(i))));
+													 current->size,
+													 current->type,
+													 format.vertexSize(),
+													 (GLvoid*)long(format.offset(i))));
 				else
 					GL_ASSERT(glVertexAttribPointer(it->second,
-										  current->size,
-										  current->type, current->conv == Vertex::Element::ConvertToFloatNormalized ? GL_TRUE : GL_FALSE,
-										  format.vertexSize(),
-										  (GLvoid*)long(format.offset(i))));
+													current->size,
+													current->type, current->conv == Vertex::Element::ConvertToFloatNormalized ? GL_TRUE : GL_FALSE,
+													format.vertexSize(),
+													(GLvoid*)long(format.offset(i))));
 			}
 		}
 	}

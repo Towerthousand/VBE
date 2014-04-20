@@ -13,26 +13,26 @@
 #define VBE_ASSERT(expression, string) do \
 { \
 	if(!(expression)) { \
-		Log::error() << "ASSERT FAILED, STOPPING " << Log::Line;\
-		Log::error() << "Reason: " << string << Log::Line; \
-		Log::error() << "At file " << __FILE__ << " inside function " << __FUNCSIG__ << " on line " << __LINE__ << Log::Flush; \
-		std::cout << Log::getContents() << std::endl; \
-		assert(expression); \
-		std::exit(-1); \
+	Log::error() << "ASSERT FAILED, STOPPING " << Log::Line;\
+	Log::error() << "Reason: " << string << Log::Line; \
+	Log::error() << "At file " << __FILE__ << " inside function " << __FUNCSIG__ << " on line " << __LINE__ << Log::Flush; \
+	std::cout << Log::getContents() << std::endl; \
+	assert(expression); \
+	std::exit(-1); \
 	} \
-} while (0)
+	} while (0)
 #else
 #define VBE_ASSERT(expression, string) do \
 { \
 	if(!(expression)) { \
-		Log::error() << "ASSERT FAILED, STOPPING " << Log::Line;\
-		Log::error() << "Reason: " << string << Log::Line; \
-		Log::error() << "At file " << __FILE__ \
-			<< " inside function " << __PRETTY_FUNCTION__ << " on line " << __LINE__ << Log::Flush; \
-		assert(expression); \
-		std::exit(-1); \
+	Log::error() << "ASSERT FAILED, STOPPING " << Log::Line;\
+	Log::error() << "Reason: " << string << Log::Line; \
+	Log::error() << "At file " << __FILE__ \
+	<< " inside function " << __PRETTY_FUNCTION__ << " on line " << __LINE__ << Log::Flush; \
+	assert(expression); \
+	std::exit(-1); \
 	} \
-} while (0)
+	} while (0)
 #endif
 #else
 #define VBE_ASSERT(expression , string)
@@ -45,7 +45,7 @@
 	gl_code; \
 	GLenum __gl_error_code = glGetError(); \
 	VBE_ASSERT(__gl_error_code == GL_NO_ERROR, "OpenGL Error with id: " << __gl_error_code); \
-} while(0)
+	} while(0)
 #else
 #define GL_ASSERT( gl_code ) gl_code
 #endif
@@ -55,12 +55,12 @@
 #define VBE_WARN(expression , string) do \
 { \
 	if(!(expression)) { \
-		Log::warning() << "Warning Condition Failed " << Log::Line;\
-		Log::warning() << "Message: " << string << Log::Line; \
-		Log::warning() << "At file " << __FILE__ << \
-		 " inside function " << __PRETTY_FUNCTION__ << " on line " << __LINE__ << Log::Flush; \
+	Log::warning() << "Warning Condition Failed " << Log::Line;\
+	Log::warning() << "Message: " << string << Log::Line; \
+	Log::warning() << "At file " << __FILE__ << \
+	" inside function " << __PRETTY_FUNCTION__ << " on line " << __LINE__ << Log::Flush; \
 	} \
-} while (0)
+	} while (0)
 #else
 #define VBE_WARN(expression , string)
 #endif

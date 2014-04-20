@@ -39,7 +39,7 @@ class Mesh {
 		PrimitiveType getPrimitiveType() const;
 		bool isIndexed() const;
 
-        AABB getBoundingBox() const;
+		AABB getBoundingBox() const;
 
 		void setPrimitiveType(Mesh::PrimitiveType type);
 		void setVertexData(void* vertexData, unsigned int newVertexCount);
@@ -58,7 +58,7 @@ class Mesh {
 		BufferType bufferType;
 		bool indexed;
 
-        AABB aabb;
+		AABB aabb;
 		friend class OBJLoader;
 };
 

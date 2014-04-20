@@ -1,18 +1,18 @@
 #include "AABB.hpp"
 
 AABB::AABB() {
-    pmax = vec3f(std::numeric_limits<float>::min());
-    pmin = vec3f(std::numeric_limits<float>::max());
+	pmax = vec3f(std::numeric_limits<float>::min());
+	pmin = vec3f(std::numeric_limits<float>::max());
 }
 
 AABB::AABB(const AABB &aabb) {
-    pmin = aabb.pmin;
-    pmax = aabb.pmax;
+	pmin = aabb.pmin;
+	pmax = aabb.pmax;
 }
 
 AABB::AABB(const vec3f &min, const vec3f &max) {
-    this->pmin = min;
-    this->pmax = max;
+	this->pmin = min;
+	this->pmax = max;
 }
 
 AABB::~AABB() {
@@ -28,8 +28,8 @@ void AABB::extend(const vec3f &p) {
 }
 
 void AABB::extend(const AABB &aabb) {
-    this->extend(aabb.pmin);
-    this->extend(aabb.pmax);
+	this->extend(aabb.pmin);
+	this->extend(aabb.pmax);
 }
 
 bool AABB::inside(const vec3f &p) const {
@@ -43,5 +43,5 @@ bool AABB::inside(const vec3f &p) const {
 }
 
 bool AABB::inside(const AABB &aabb) const {
-    return inside(aabb.pmin) && inside(aabb.pmax);
+	return inside(aabb.pmin) && inside(aabb.pmax);
 }

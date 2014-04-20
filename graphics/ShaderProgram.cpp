@@ -193,7 +193,7 @@ void ShaderProgram::retrieveProgramInfo() {
 					// it will return "u_matrixArray[0]".
 					char* c = strrchr(uniformName, '[');
 					if (c) *c = '\0';
-					}
+				}
 
 				// Query the pre-assigned uniform location.
 				uniformLocation = glGetUniformLocation(programHandle, uniformName);

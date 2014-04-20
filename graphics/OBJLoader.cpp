@@ -1,13 +1,12 @@
 #include "OBJLoader.hpp"
 
 struct FunctorComparevec3i{
-	bool operator()(const vec3i& a, const vec3i& b)
-	{
-		if(a.x != b.x) return a.x < b.x;
-		if(a.y != b.y) return a.y < b.y;
-		if(a.z != b.z) return a.z < b.z;
-		return false;
-	}
+		bool operator()(const vec3i& a, const vec3i& b) {
+			if(a.x != b.x) return a.x < b.x;
+			if(a.y != b.y) return a.y < b.y;
+			if(a.z != b.z) return a.z < b.z;
+			return false;
+		}
 };
 
 Mesh* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::BufferType bufferType) {

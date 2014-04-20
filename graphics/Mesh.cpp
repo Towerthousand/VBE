@@ -65,12 +65,12 @@ Mesh::PrimitiveType Mesh::getPrimitiveType() const {
 }
 
 bool Mesh::isIndexed() const {
-    return indexed;
+	return indexed;
 }
 
 AABB Mesh::getBoundingBox() const
 {
-    return aabb;
+	return aabb;
 }
 
 void Mesh::setPrimitiveType(Mesh::PrimitiveType type) {

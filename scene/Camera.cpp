@@ -19,9 +19,9 @@ void Camera::lookInDir(const vec3f& direction) {
 	vec3f right = glm::normalize(glm::cross(dummyUp, front));
 	vec3f up = glm::normalize(glm::cross(front, right));
 	rotation = glm::transpose(mat4f(right.x, right.y, right.z, 0,
-					 up.x   , up.y   , up.z   , 0,
-					 front.x, front.y, front.z, 0,
-					 0      , 0      , 0      , 1));
+									up.x   , up.y   , up.z   , 0,
+									front.x, front.y, front.z, 0,
+									0      , 0      , 0      , 1));
 }
 
 void Camera::rotateLocal(float angle, const vec3f& axis) {

@@ -78,12 +78,12 @@ void GameObject::setUpdatePriority(int newPriority) {
 		container->objectTasksToRemove.push(this);
 		container->objectTasksToAdd.push(this);
 	}
-    updatePriority = newPriority;
+	updatePriority = newPriority;
 }
 
 mat4f GameObject::getFullTransform() const
 {
-    return fullTransform;
+	return fullTransform;
 }
 
 const std::list<GameObject*>& GameObject::getChildren() const {
