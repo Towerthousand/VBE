@@ -4,7 +4,7 @@
 
 Game* Game::instance = nullptr;
 
-Game::Game() :isRunning(true), idCounter(1), fixedFramerate(0), isFixedFramerate(false) {
+Game::Game() :isRunning(true), idCounter(1), fixedUpdateRate(0), isFixedUpdateRate(false) {
 	VBE_ASSERT(Game::instance == nullptr, "Two games created");
 	Environment::startUp();
 	Game::instance = this;
@@ -45,27 +45,37 @@ GameObject* Game::getObjectByID(int id) const {
 	return idMap.at(id);
 }
 
-void Game::setFixedFramerate(int fixedFramerate) {
-	this->fixedFramerate = fixedFramerate;
-	this->isFixedFramerate = true;
+void Game::setFixedUpdateRate(int fixedFramerate) {
+	this->fixedUpdateRate = fixedFramerate;
+	this->isFixedUpdateRate = true;
 }
 
 void Game::setDynamicFramerate() {
-	isFixedFramerate = false;
+	isFixedUpdateRate = false;
 }
 
 // Main game loop
 void Game::run() {
-	if(isFixedFramerate) {
-		float deltaTime = 1.0f/float(fixedFramerate);
+	if(isFixedUpdateRate) {
+		float deltaTime = 1.0f/float(fixedUpdateRate);
+		float time = Environment::getClock();
+		float accumulated = 0.0f;
 		while (isRunning) {
-			update(deltaTime);
+			float newTime = 0.0f;
+			while(accumulated < deltaTime) {
+				newTime = Environment::getClock();
+				accumulated = newTime-time;
+			}
+			time = newTime;
+			while(accumulated >= deltaTime) {
+				update(deltaTime);
+				accumulated -= deltaTime;
+			}
 			draw();
 		}
 	}
 	else {
 		float time = Environment::getClock();
-
 		while (isRunning) {
 			float newTime = Environment::getClock();
 			float deltaTime = newTime-time;

@@ -15,7 +15,7 @@ class Game : public ContainerObject {
 		virtual void update(float deltaTime);
 		virtual void draw();
 
-		void setFixedFramerate(int fixedFramerate);
+		void setFixedUpdateRate(int fixedUpdateRate);
 		void setDynamicFramerate();
 
 		bool isRunning;
@@ -24,8 +24,8 @@ class Game : public ContainerObject {
 		std::map<int, GameObject*> idMap;
 		int idCounter;
 
-		int fixedFramerate;
-		bool isFixedFramerate;
+		int fixedUpdateRate;
+		bool isFixedUpdateRate;
 
 		static Game* instance;
 
