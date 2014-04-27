@@ -60,12 +60,12 @@ void Game::run() {
 		float deltaTime = 1.0f/float(fixedUpdateRate);
 		float time = Environment::getClock();
 		float accumulated = 0.0f;
+		float newTime = 0.0f;
 		while (isRunning) {
-			float newTime = 0.0f;
-			while(accumulated < deltaTime) {
-				newTime = Environment::getClock();
-				accumulated = newTime-time;
-			}
+			if(accumulated < deltaTime) 
+				SDL_Delay((deltaTime-accumulated)*1000);//miliseconds to wait
+			newTime = Environment::getClock();
+			accumulated = newTime-time;
 			time = newTime;
 			while(accumulated >= deltaTime) {
 				update(deltaTime);
