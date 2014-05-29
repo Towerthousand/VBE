@@ -11,8 +11,10 @@ class Mesh {
 		enum PrimitiveType {
 			TRIANGLES = GL_TRIANGLES,
 			TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
+			TRIANGLE_FAN = GL_TRIANGLE_FAN,
 			LINES = GL_LINES,
 			LINE_STRIP = GL_LINE_STRIP,
+			LINE_LOOP = GL_LINE_LOOP,
 			POINTS = GL_POINTS,
 			PATCHES = GL_PATCHES
 		};
@@ -42,8 +44,8 @@ class Mesh {
 		AABB getBoundingBox() const;
 
 		void setPrimitiveType(Mesh::PrimitiveType type);
-		void setVertexData(void* vertexData, unsigned int newVertexCount);
-		void setVertexIndices(unsigned int* indexData, unsigned int newIndexCount);
+		void setVertexData(const void* vertexData, unsigned int newVertexCount);
+		void setVertexIndices(const unsigned int* indexData, unsigned int newIndexCount);
 
 	private:
 		Mesh(Vertex::Format format, BufferType bufferType = STATIC, bool indexed = false);

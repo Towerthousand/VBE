@@ -77,14 +77,14 @@ void Mesh::setPrimitiveType(Mesh::PrimitiveType type) {
 	primitiveType = type;
 }
 
-void Mesh::setVertexData(void* vertexData, unsigned int newVertexCount) {
+void Mesh::setVertexData(const void* vertexData, unsigned int newVertexCount) {
 	vertexCount = newVertexCount;
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
 	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, vertexData, bufferType));
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
 
-void Mesh::setVertexIndices(unsigned int* indexData, unsigned int newIndexCount) {
+void Mesh::setVertexIndices(const unsigned int* indexData, unsigned int newIndexCount) {
 	VBE_ASSERT(indexed, "Cannot set indexes for a non-indexed mesh");
 	indexCount = newIndexCount;
 	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer));
