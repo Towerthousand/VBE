@@ -107,7 +107,7 @@ void RenderTarget::build() {
 			e.renderBuffer = buff;
 		}
 		else {
-			Texture2D* tex = Texture2D::createEmpty(size.x, size.y, e.format);
+			Texture2D* tex = (e.user ? e.texture : Texture2D::createEmpty(size.x, size.y, e.format));
 			tex->bind();
 			GL_ASSERT(glFramebufferTexture(GL_FRAMEBUFFER, e.attachment, tex->getHandle(), 0));
 			e.texture = tex;
