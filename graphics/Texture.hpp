@@ -123,6 +123,7 @@ class Texture {
 		void setSlot(unsigned int newSlot);
 		unsigned int getSlot() const;
 		GLuint getHandle() const;
+		InternalFormat getFormat() const;
 	protected:
 		Texture();
 		GLuint handle;

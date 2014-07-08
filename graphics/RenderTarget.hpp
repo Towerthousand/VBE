@@ -45,10 +45,10 @@ class RenderTarget {
 			else
 				return size;
 		}
-
 		void addRenderBuffer(Attachment target, Texture::InternalFormat format);
 		void addTexture(Attachment target, Texture::InternalFormat format);
-
+		void addCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex);
+		void setCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex);
 		Texture2D* getTextureForAttachment(Attachment attachment);
 		const Texture2D* getTextureForAttachment(Attachment attachment) const;
 
@@ -56,7 +56,6 @@ class RenderTarget {
 		void destroy();
 
 	private:
-
 		void checkSize();
 
 		class RenderBuffer {
@@ -72,7 +71,6 @@ class RenderTarget {
 				GLuint handle;
 		};
 
-
 		class RenderTargetEntry {
 			public:
 				enum Type {
@@ -81,11 +79,14 @@ class RenderTarget {
 				};
 
 				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, Texture::InternalFormat format) :
-					type(type), attachment(attachment), format(format), texture(nullptr), renderBuffer(nullptr) {}
+					type(type), attachment(attachment), format(format), user(false), texture(nullptr), renderBuffer(nullptr) {}
+				RenderTargetEntry(RenderTarget::Attachment attachment, Texture2D* tex) :
+					type(TextureEntry), attachment(attachment), format(tex->getFormat()), user(true), texture(tex), renderBuffer(nullptr) {}
 
 				Type type;
 				RenderTarget::Attachment attachment;
 				Texture::InternalFormat format;
+				bool user;
 
 				Texture2D* texture;
 				RenderBuffer* renderBuffer;

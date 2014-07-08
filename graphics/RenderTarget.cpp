@@ -70,6 +70,21 @@ void RenderTarget::addTexture(RenderTarget::Attachment attachment, Texture::Inte
 	entries.insert(std::pair<Attachment, RenderTargetEntry> (attachment, RenderTargetEntry(RenderTargetEntry::TextureEntry, attachment, format)));
 }
 
+void RenderTarget::addCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex) {
+	VBE_ASSERT(handle == 0, "Cannot add texture to already built RenderTarget. Call RenderTarget::destroy() first or add before building");
+	VBE_ASSERT(entries.find(attachment) == entries.end(), "There's already an entry with the requested Attachment");
+	entries.insert(std::pair<Attachment, RenderTargetEntry> (attachment, RenderTargetEntry(attachment, tex)));
+}
+
+void RenderTarget::setCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex) {
+	VBE_ASSERT(handle == 0, "Cannot set a texture on an already built RenderTarget. Call RenderTarget::destroy() first or set before building");
+	VBE_ASSERT(entries.find(attachment) != entries.end(), "There's no entry with the requested Attachment");
+	RenderTargetEntry& e = entries.at(attachment);
+	VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "Cannot set the texture of a RenderBuffer entry.");
+	VBE_ASSERT(e.user, "Cannot set the texture of a non user-managed Texture entry.");
+	e.texture = tex;
+}
+
 void RenderTarget::build() {
 	VBE_ASSERT(handle == 0, "Cannot rebuild already built RenderTarget. Call RenderTarget::destroy() first");
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget has no textures or render buffers.");
@@ -78,7 +93,7 @@ void RenderTarget::build() {
 
 	GL_ASSERT(glGenFramebuffers(1, &handle));
 	RenderTarget* current = getCurrent();
-	bind(this);//please
+	bind(this);
 
 	std::vector<Attachment> drawAttachments;
 
@@ -125,7 +140,7 @@ void RenderTarget::checkSize() {
 
 	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
 		RenderTargetEntry& e = it->second;
-
+		if(e.user) continue;
 		if(e.type == RenderTargetEntry::RenderBufferEntry)
 			e.renderBuffer->resize(desiredSize.x, desiredSize.y);
 		else
@@ -140,6 +155,7 @@ void RenderTarget::destroy() {
 
 	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
 		RenderTargetEntry& e = it->second;
+		if(e.user) continue;
 
 		if(e.type == RenderTargetEntry::RenderBufferEntry) {
 			delete e.renderBuffer;

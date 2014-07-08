@@ -32,3 +32,7 @@ unsigned int Texture::getSlot() const {
 GLuint Texture::getHandle() const {
 	return handle;
 }
+
+Texture::InternalFormat Texture::getFormat() const {
+	return format;
+}
