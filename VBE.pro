@@ -44,7 +44,8 @@ SOURCES += \
 	$$PWD/geometry/Ray.cpp \
 	$$PWD/dependencies/stb_image/stb_image.cpp \
     VBE/geometry/Sphere.cpp \
-    VBE/graphics/RenderState.cpp
+    VBE/graphics/RenderState.cpp \
+    VBE/graphics/TextureCubemap.cpp
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -81,4 +82,5 @@ HEADERS += \
 	$$PWD/geometry/Ray.hpp \
     VBE/dependencies/stb_image/stb_image.hpp \
     VBE/geometry/Sphere.hpp \
-    VBE/graphics/RenderState.hpp
+    VBE/graphics/RenderState.hpp \
+    VBE/graphics/TextureCubemap.hpp

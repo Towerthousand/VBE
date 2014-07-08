@@ -118,7 +118,7 @@ class Texture {
 			FLOAT_32_UNSIGNED_INT_24_8_REV	= GL_FLOAT_32_UNSIGNED_INT_24_8_REV
 		};
 
-		~Texture();
+		virtual ~Texture();
 
 		void setSlot(unsigned int newSlot);
 		unsigned int getSlot() const;
