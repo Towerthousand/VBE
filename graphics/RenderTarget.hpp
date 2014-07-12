@@ -1,9 +1,9 @@
 #ifndef RENDERTARGET_HPP
 #define RENDERTARGET_HPP
-#include "../tools.hpp"
 #include "environment/Environment.hpp"
 #include "Texture2D.hpp"
 
+class RenderBuffer;
 class RenderTarget {
 	public:
 		enum Attachment {
@@ -51,54 +51,42 @@ class RenderTarget {
 		void setCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex);
 		Texture2D* getTextureForAttachment(Attachment attachment);
 		const Texture2D* getTextureForAttachment(Attachment attachment) const;
-
-		void build();
-		void destroy();
-
+		void ensureValid();
 	private:
-		void checkSize();
-
-		class RenderBuffer {
-			public:
-				RenderBuffer(int width, int height, Texture::InternalFormat format);
-				~RenderBuffer();
-
-				void resize(int width, int height);
-				void bind() const;
-				GLuint getHandle() const;
-			private:
-				Texture::InternalFormat format;
-				GLuint handle;
-		};
-
-		class RenderTargetEntry {
-			public:
+		void valid();
+		struct RenderTargetEntry {
 				enum Type {
 					RenderBufferEntry,
 					TextureEntry
 				};
 
 				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, Texture::InternalFormat format) :
-					type(type), attachment(attachment), format(format), user(false), texture(nullptr), renderBuffer(nullptr) {}
+					type(type), attachment(attachment), format(format), user(false), userUp(true), texture(nullptr), renderBuffer(nullptr) {}
 				RenderTargetEntry(RenderTarget::Attachment attachment, Texture2D* tex) :
-					type(TextureEntry), attachment(attachment), format(tex->getFormat()), user(true), texture(tex), renderBuffer(nullptr) {}
+					type(TextureEntry), attachment(attachment), format(tex->getFormat()), user(true), userUp(false), texture(tex), renderBuffer(nullptr) {}
+				~RenderTargetEntry() {}
 
 				Type type;
 				RenderTarget::Attachment attachment;
 				Texture::InternalFormat format;
 				bool user;
+				bool userUp;
 
 				Texture2D* texture;
 				RenderBuffer* renderBuffer;
 		};
 
+		void registerAttachment(RenderTarget::Attachment a);
+
 		static RenderTarget* current;
 
-		GLuint handle; // 0 if not built
+		GLuint handle;
 		vec2i size;
 		bool screenRelativeSize;
 		float screenSizeMultiplier;
-
+		bool dirty;
+		bool attachDirty;
+		std::vector<Attachment> drawAttachments;
 		std::map<Attachment, RenderTargetEntry> entries;
 };
 

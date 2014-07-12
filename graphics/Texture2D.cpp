@@ -89,6 +89,10 @@ int Texture2D::getHeight() const {
 	return size.y;
 }
 
+vec2i Texture2D::getSize() const {
+	return size;
+}
+
 void Texture2D::bind() const {
 	VBE_ASSERT(handle !=0, "Trying to bind nullptr texture into slot " << slot);
 	GL_ASSERT(glActiveTexture(GL_TEXTURE0 + slot));

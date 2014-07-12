@@ -19,6 +19,7 @@ class Texture2D : public Texture {
 		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
 		int getWidth() const;
 		int getHeight() const;
+		vec2i getSize() const;
 
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap);
