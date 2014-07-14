@@ -64,18 +64,21 @@ void RenderTarget::addRenderBuffer(RenderTarget::Attachment attachment, Texture:
 	VBE_ASSERT(entries.find(attachment) == entries.end(), "There's already an entry with the requested Attachment");
 	entries.insert(std::pair<Attachment, RenderTargetEntry> (attachment, RenderTargetEntry(RenderTargetEntry::RenderBufferEntry, attachment, format)));
 	registerAttachment(attachment);
+    if(this == current) valid();
 }
 
 void RenderTarget::addTexture(RenderTarget::Attachment attachment, Texture::InternalFormat format) {
 	VBE_ASSERT(entries.find(attachment) == entries.end(), "There's already an entry with the requested Attachment");
 	entries.insert(std::pair<Attachment, RenderTargetEntry> (attachment, RenderTargetEntry(RenderTargetEntry::TextureEntry, attachment, format)));
 	registerAttachment(attachment);
+    if(this == current) valid();
 }
 
 void RenderTarget::addCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex) {
 	VBE_ASSERT(entries.find(attachment) == entries.end(), "There's already an entry with the requested Attachment");
 	entries.insert(std::pair<Attachment, RenderTargetEntry> (attachment, RenderTargetEntry(attachment, tex)));
 	registerAttachment(attachment);
+    if(this == current) valid();
 }
 
 void RenderTarget::setCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex) {
@@ -86,6 +89,7 @@ void RenderTarget::setCustomTexture(RenderTarget::Attachment attachment, Texture
 	e.texture = tex;
 	e.userUp = false;
 	dirty = true;
+    if(this == current) valid();
 }
 
 void RenderTarget::valid() {

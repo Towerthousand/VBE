@@ -60,6 +60,8 @@ void Texture2D::loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int
 	format = internalFormat;
 	size = vec2i(sizeX, sizeY);
 	bind();
+    GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+    GL_ASSERT(glPixelStorei(GL_PACK_ALIGNMENT, 1));
 	GL_ASSERT(glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, sizeX, sizeY, 0, sourceFormat, sourceType, (GLvoid*) pixels));
 	if(mipmap) {
 		GL_ASSERT(glGenerateMipmap(GL_TEXTURE_2D));
