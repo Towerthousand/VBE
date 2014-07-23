@@ -36,9 +36,9 @@ class RenderTarget {
 		static void bind(RenderTarget* renderTarget);
 		static RenderTarget* getCurrent();
 
-		int getWidth() const { return size.x; }
-		int getHeight() const { return size.y; }
-		vec2i getSize() const { return size; }
+		int getWidth() const { return (this? size.x : Environment::getScreen()->getWidth());}
+		int getHeight() const { return (this? size.y : Environment::getScreen()->getHeight());}
+		vec2i getSize() const { return (this? size : vec2i(Environment::getScreen()->getSize()));}
 		vec2i getDesiredSize() const {
 			if(screenRelativeSize)
 				return vec2i(int(Environment::getScreen()->getWidth()*screenSizeMultiplier), int(Environment::getScreen()->getHeight()*screenSizeMultiplier));
