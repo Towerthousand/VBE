@@ -4,7 +4,7 @@
 
 class Mesh;
 class ShaderProgram;
-class ShaderBinding {
+class ShaderBinding : public NonCopyable {
 	public:
 		ShaderBinding(const ShaderProgram* program, const Mesh* mesh);
 		~ShaderBinding();

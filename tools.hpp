@@ -1,12 +1,12 @@
 #ifndef TOOLS_HPP
 #define TOOLS_HPP
 
-//External Dependencies
-
 //Image loading
+
 #include "dependencies/stb_image/stb_image.hpp"
 
 //OpenGL (Open Graphics Library)
+
 #define GL_GLEXT_PROTOTYPES 1
 #ifdef WINDOWS
 #include "GL/glew.h"
@@ -15,10 +15,12 @@
 #endif
 
 //GLM (openGL Math)
+
 #include "dependencies/glm/glm.hpp" // vec3, vec4, ivec4, mat4 (core)
 #include "dependencies/glm/gtc/matrix_transform.hpp" // translate, rotate, scale, perspective
 
 //SDL 2.0.1
+
 #include <SDL2/SDL.h>
 
 //STL stuff
@@ -53,6 +55,10 @@
 #include <queue>
 #include <limits>
 #include <set>
+#include <mutex>
+#include <thread>
+#include <AL/al.h>
+#include <AL/alc.h>
 
 //math typedefs
 
@@ -95,5 +101,9 @@ typedef glm::detail::tmat4x4<double> mat4d;
 //Logging system and log macros
 
 #include "utils/Log.hpp"
+
+//NonCopyable protoclass
+
+#include "utils/NonCopyable.hpp"
 
 #endif // TOOLS_HPP

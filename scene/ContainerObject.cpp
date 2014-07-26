@@ -3,6 +3,9 @@
 ContainerObject::ContainerObject() {
 }
 
+ContainerObject::~ContainerObject() {
+}
+
 void ContainerObject::update(float deltaTime) {
 	while(!objectTasksToRemove.empty()) {
 		GameObject* obj = objectTasksToRemove.front();

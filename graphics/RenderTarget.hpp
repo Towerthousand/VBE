@@ -4,7 +4,7 @@
 #include "Texture2D.hpp"
 
 class RenderBuffer;
-class RenderTarget {
+class RenderTarget : public NonCopyable {
 	public:
 		enum Attachment {
 			DEPTH = GL_DEPTH_ATTACHMENT,

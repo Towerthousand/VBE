@@ -3,7 +3,6 @@
 #include "../tools.hpp"
 
 namespace Vertex {
-
 	class Attribute {
 		public:
 			static Attribute& get(int ID);

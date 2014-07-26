@@ -2,7 +2,7 @@
 #define SHADER_HPP
 #include "../tools.hpp"
 
-class Shader {
+class Shader : public NonCopyable  {
 	public:
 		~Shader();
 

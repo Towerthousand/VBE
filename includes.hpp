@@ -13,5 +13,12 @@
 #include "graphics/Uniform.hpp"
 #include "environment/Environment.hpp"
 #include "environment/Screen.hpp"
+#include "audio/Listener.hpp"
+#include "audio/Music.hpp"
+#include "audio/Sound.hpp"
+#include "audio/SoundBuffer.hpp"
+#include "audio/SoundBufferRecorder.hpp"
+#include "audio/SoundRecorder.hpp"
+#include "audio/SoundStream.hpp"
 
 #endif // INCLUDES_HPP

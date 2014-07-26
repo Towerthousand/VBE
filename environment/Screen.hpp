@@ -3,7 +3,7 @@
 #include "tools.hpp"
 #include "StartingConfig.hpp"
 
-class Screen {
+class Screen : public NonCopyable {
 	public:
 		struct DisplayMode {
 				DisplayMode(int h, int w, int r) : height(h), width(w), refreshRate(r) {}
@@ -26,8 +26,6 @@ class Screen {
 			WINDOW_INPUT_FOCUS = SDL_WINDOW_INPUT_FOCUS, //window has input focus
 			WINDOW_MOUSE_FOCUS = SDL_WINDOW_MOUSE_FOCUS //window has mouse focus
 		};
-
-		Screen(StartingConfig config);
 		~Screen();
 
 		static std::vector<DisplayMode> getDisplayModes(unsigned int displayIndex = 0);
@@ -52,6 +50,7 @@ class Screen {
 		bool isFocused() const { return focused; }
 
 	private:
+		Screen(StartingConfig config);
 		friend class Mouse;
 		friend class Environment;
 

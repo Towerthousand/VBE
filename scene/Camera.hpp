@@ -8,8 +8,6 @@ class Camera : public GameObject {
 		Camera(const std::string &cameraName = "", const vec3f& pos = vec3f(0.0f));
 		virtual ~Camera();
 
-		void update(float deltaTime);
-
 		void lookInDir(const vec3f& direction);
 		void rotateLocal(float angle, const vec3f& axis);
 		void rotateGlobal(float angle, const vec3f& axis);
@@ -24,6 +22,8 @@ class Camera : public GameObject {
 		vec3f pos;
 		mat4f projection;
 	protected:
+		virtual void update(float deltaTime);
+
 		mat4f rotation;
 		Frustum frustum;
 };

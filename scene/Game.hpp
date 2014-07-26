@@ -12,13 +12,14 @@ class Game : public ContainerObject {
 		GameObject* getObjectByID(int id) const;
 
 		virtual void run();
-		virtual void update(float deltaTime);
-		virtual void draw();
 
 		void setFixedUpdateRate(int fixedUpdateRate);
 		void setDynamicFramerate();
 
 		bool isRunning;
+	protected:
+		virtual void update(float deltaTime);
+		virtual void draw();
 	private:
 		std::map<std::string, GameObject*> nameMap;
 		std::map<int, GameObject*> idMap;

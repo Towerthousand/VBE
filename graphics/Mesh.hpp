@@ -6,7 +6,7 @@
 
 class ShaderBinding;
 class ShaderProgram;
-class Mesh {
+class Mesh : public NonCopyable {
 	public:
 		enum PrimitiveType {
 			TRIANGLES = GL_TRIANGLES,

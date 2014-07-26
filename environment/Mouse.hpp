@@ -4,20 +4,17 @@
 
 class Mouse {
 	public:
-		Mouse();
-
 		enum Button {
-			Left = 0,
-			Middle,
-			Right,
-			X1,
-			X2,
-			_BUTTON_SIZE
+			Left = SDL_BUTTON_LEFT,
+			Middle = SDL_BUTTON_MIDDLE,
+			Right = SDL_BUTTON_RIGHT,
+			X1 = SDL_BUTTON_X1,
+			X2 = SDL_BUTTON_X2
 		};
 
-		bool isButtonPressed(Button b) const {return !buttonsHeldOld[b] && buttonsHeld[b];}
-		bool isButtonReleased(Button b) const {return buttonsHeldOld[b] && !buttonsHeld[b];}
-		bool isButtonHeld(Button b) const {return buttonsHeld[b];}
+		bool isButtonPressed(Button k) const {return (buttonsHeldOld.find(k) == buttonsHeldOld.end()) && (buttonsHeld.find(k) != buttonsHeld.end());}
+		bool isButtonReleased(Button k) const {return (buttonsHeldOld.find(k) != buttonsHeldOld.end()) && (buttonsHeld.find(k) == buttonsHeld.end());}
+		bool isButtonHeld(Button k) const {return (buttonsHeld.find(k) != buttonsHeld.end());}
 
 		vec2i getMousePos() const {return mousePos;}
 		vec2i getMousePosRelative() const {return mousePosRel;}
@@ -31,6 +28,7 @@ class Mouse {
 		void setGrab(bool grab);
 
 	private:
+		Mouse();
 		friend class Environment;
 
 		void processEvent(const SDL_Event& e);
@@ -38,8 +36,8 @@ class Mouse {
 
 		Button sdlButtonToButton(int button);
 
-		bool buttonsHeld[_BUTTON_SIZE];
-		bool buttonsHeldOld[_BUTTON_SIZE];
+		std::set<Button> buttonsHeld;
+		std::set<Button> buttonsHeldOld;
 
 		vec2i mousePos;
 		vec2i mousePosRel;

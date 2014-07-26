@@ -4,7 +4,6 @@
 
 class Keyboard {
 	public:
-
 		enum Key {
 			Num0 = SDLK_0,
 			Num1 = SDLK_1,
@@ -243,21 +242,18 @@ class Keyboard {
 			RParenthesis = SDLK_RIGHTPAREN,
 			Underscore = SDLK_UNDERSCORE
 		};
-
-		Keyboard();
 		~Keyboard();
 
 		bool isKeyPressed(Key k) const {return (keysHeldOld.find(k) == keysHeldOld.end()) && (keysHeld.find(k) != keysHeld.end());}
 		bool isKeyReleased(Key k) const {return (keysHeldOld.find(k) != keysHeldOld.end()) && (keysHeld.find(k) == keysHeld.end());}
 		bool isKeyHeld(Key k) const {return (keysHeld.find(k) != keysHeld.end());}
-		void update();
-
 	private:
+		Keyboard();
 		friend class Environment;
+		void update();
 		void processEvent(const SDL_Event& event);
 		std::set<Key> keysHeld;
 		std::set<Key> keysHeldOld;
-
 		bool focus;
 };
 

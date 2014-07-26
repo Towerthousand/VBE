@@ -4,7 +4,7 @@
 
 class Shader;
 class Uniform;
-class ShaderProgram {
+class ShaderProgram : public NonCopyable {
 	public:
 		~ShaderProgram();
 

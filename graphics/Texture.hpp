@@ -2,7 +2,7 @@
 #define Texture_HPP
 #include "../tools.hpp"
 
-class Texture {
+class Texture : public NonCopyable {
 	public:
 		enum SourceFormat {
 			DEPTH_COMPONENT	= GL_DEPTH_COMPONENT,

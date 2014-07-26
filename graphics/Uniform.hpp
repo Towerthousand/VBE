@@ -5,7 +5,7 @@
 class Texture2D;
 class Texture3D;
 class Texture2DArray;
-class Uniform {
+class Uniform : public NonCopyable {
 	public:
 		Uniform(unsigned int count, GLenum type, GLint location);
 		~Uniform();

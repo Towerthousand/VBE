@@ -4,13 +4,10 @@
 
 class Game;
 class ContainerObject;
-class GameObject { //scenegraph nodes
+class GameObject : public NonCopyable { //scenegraph nodes
 	public:
 		GameObject();
 		virtual ~GameObject();
-
-		virtual void update(float deltaTime);
-		virtual void draw() const ;
 
 		void addTo(GameObject* parent);
 		void removeAndDelete();
@@ -47,9 +44,12 @@ class GameObject { //scenegraph nodes
 
 		const int id;
 	protected:
+		virtual void update(float deltaTime);
+		virtual void draw() const ;
+		virtual void onObjectAdd(GameObject* object);
+
 		Game* getGame() const;
 		const GameObject* getParent() const;
-		virtual void onObjectAdd(GameObject* object);
 
 		//Model matrix
 		mat4f transform;

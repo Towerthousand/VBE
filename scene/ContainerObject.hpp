@@ -6,6 +6,13 @@
 class ContainerObject : public GameObject {
 	public:
 		ContainerObject();
+		virtual ~ContainerObject();
+	protected:
+		virtual void update(float deltaTime);
+		virtual void draw() const;
+	private:
+		void addToContainer(GameObject* obj);
+		void removeFromContainer(GameObject* obj);
 
 		struct FunctorCompareDraw{
 				bool operator()(const GameObject* a, const GameObject* b) {
@@ -21,13 +28,6 @@ class ContainerObject : public GameObject {
 					return (a->updatePriority < b->updatePriority);
 				}
 		};
-
-		virtual void update(float deltaTime);
-		virtual void draw() const;
-
-	private:
-		void addToContainer(GameObject* obj);
-		void removeFromContainer(GameObject* obj);
 
 		std::set<GameObject*, FunctorCompareDraw> drawTasks;
 		std::set<GameObject*, FunctorCompareUpdate> updateTasks;
