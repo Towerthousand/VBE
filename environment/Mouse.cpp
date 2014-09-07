@@ -31,7 +31,7 @@ void Mouse::processEvent(const SDL_Event& e) {
 }
 
 void Mouse::update() {
-	buttonsHeldOld = buttonsHeldOld;
+	buttonsHeldOld = buttonsHeld;
 	mousePosRel = vec2i(0, 0);
 }
 

@@ -106,4 +106,12 @@ typedef glm::detail::tmat4x4<double> mat4d;
 
 #include "utils/NonCopyable.hpp"
 
+namespace Utils {
+    inline std::string toLower(std::string str) {
+        for (std::string::iterator i = str.begin(); i != str.end(); ++i)
+            *i = static_cast<char>(std::tolower(*i));
+        return str;
+    }
+}
+
 #endif // TOOLS_HPP

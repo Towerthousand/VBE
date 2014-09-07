@@ -15,6 +15,12 @@ class Listener {
 		static void setUpVector(float x, float y, float z);
 		static void setUpVector(const vec3f& upVector);
 		static vec3f getUpVector();
+
+    private:
+        static float listenerVolume;
+        static vec3f listenerPosition;
+        static vec3f listenerDirection;
+        static vec3f listenerUpVector;
 };
 
 #endif // LISTENER_HPP

@@ -33,8 +33,8 @@ class RenderTarget : public NonCopyable {
 		RenderTarget(float mult);
 		~RenderTarget();
 
-		static void bind(RenderTarget* renderTarget);
-		static RenderTarget* getCurrent();
+        static void bind(const RenderTarget* renderTarget);
+        static const RenderTarget *getCurrent();
 
 		int getWidth() const { return (this? size.x : Environment::getScreen()->getWidth());}
 		int getHeight() const { return (this? size.y : Environment::getScreen()->getHeight());}
@@ -51,9 +51,9 @@ class RenderTarget : public NonCopyable {
 		void setCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex);
 		Texture2D* getTextureForAttachment(Attachment attachment);
 		const Texture2D* getTextureForAttachment(Attachment attachment) const;
-		void ensureValid();
+        void ensureValid() const;
 	private:
-		void valid();
+        void valid() const;
 		struct RenderTargetEntry {
 				enum Type {
 					RenderBufferEntry,
@@ -78,16 +78,16 @@ class RenderTarget : public NonCopyable {
 
 		void registerAttachment(RenderTarget::Attachment a);
 
-		static RenderTarget* current;
+        static const RenderTarget* current;
 
 		GLuint handle;
-		vec2i size;
+        mutable vec2i size;
 		bool screenRelativeSize;
 		float screenSizeMultiplier;
-		bool dirty;
-		bool attachDirty;
+        mutable bool dirty;
+        mutable bool attachDirty;
 		std::vector<Attachment> drawAttachments;
-		std::map<Attachment, RenderTargetEntry> entries;
+        mutable std::map<Attachment, RenderTargetEntry> entries;
 };
 
 #endif // RENDERTARGET_HPP

@@ -56,6 +56,7 @@ Mesh* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::BufferTy
 			v.y = 1-v.y;
 			textures.push_back(v);
 		}
+		//f 1/1/1 2/2/2 3/3/3
 		else if (line.substr(0, 2) == "f ") {
 			std::istringstream s(line.substr(2));
 			std::vector<vec3i> vInf(3, vec3i(0));

@@ -1,7 +1,7 @@
 #include "RenderTarget.hpp"
 #include "RenderBuffer.hpp"
 
-RenderTarget* RenderTarget::current = nullptr;
+const RenderTarget* RenderTarget::current = nullptr;
 
 RenderTarget::RenderTarget(int width, int height) : handle(0), size(width, height), screenRelativeSize(false), screenSizeMultiplier(0.0f), dirty(false), attachDirty(true) {
 	VBE_ASSERT(width != 0 && height != 0, "Width or height can't be zero");
@@ -34,7 +34,7 @@ RenderTarget::~RenderTarget() {
 	handle = 0;
 }
 
-void RenderTarget::bind(RenderTarget* target) {
+void RenderTarget::bind(const RenderTarget *target) {
 	if(current == target && (target == nullptr || !target->dirty)) return;
 	if(target == nullptr) { //BIND SCREEN FRAMEBUFFER
 		GL_ASSERT(glViewport(0, 0, Environment::getScreen()->getWidth(), Environment::getScreen()->getHeight()));
@@ -48,7 +48,7 @@ void RenderTarget::bind(RenderTarget* target) {
 	current = target;
 }
 
-RenderTarget* RenderTarget::getCurrent() {
+const RenderTarget* RenderTarget::getCurrent() {
 	return current;
 }
 
@@ -92,7 +92,7 @@ void RenderTarget::setCustomTexture(RenderTarget::Attachment attachment, Texture
     if(this == current) valid();
 }
 
-void RenderTarget::valid() {
+void RenderTarget::valid() const {
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget is invalid because it has no textures nor render buffers.");
 	vec2i desiredSize = getDesiredSize();
 	bool resize = (desiredSize == size);
@@ -135,25 +135,25 @@ void RenderTarget::valid() {
 	dirty = false;
 }
 
+void RenderTarget::ensureValid() const {
+    const RenderTarget* last = current;
+    if(last == this) return;
+    bind(this);
+    bind(last);
+}
+
 const Texture2D* RenderTarget::getTextureForAttachment(RenderTarget::Attachment target) const {
-	VBE_ASSERT(handle != 0, "Can't get texture for attachment without building it first");
 	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");
 	const RenderTargetEntry& e = entries.at(target);
-	VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");
+    VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");
+    ensureValid();
 	return e.texture;
 }
 
-void RenderTarget::ensureValid() {
-	RenderTarget* last = current;
-	if(last == this) return;
-	bind(this);
-	bind(last);
-}
-
 Texture2D* RenderTarget::getTextureForAttachment(RenderTarget::Attachment target) {
-	VBE_ASSERT(handle != 0, "Can't get texture for attachment without building it first");
 	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");
 	RenderTargetEntry& e = entries.at(target);
-	VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");
+    VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");
+    ensureValid();
 	return e.texture;
 }

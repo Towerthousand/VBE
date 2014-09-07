@@ -35,7 +35,7 @@
 	} while (0)
 #endif
 #else
-#define VBE_ASSERT(expression , string)
+#define VBE_ASSERT(expression , string) {}
 #endif
 
 //GL_ASSERT
@@ -62,19 +62,19 @@
 	} \
 	} while (0)
 #else
-#define VBE_WARN(expression , string)
+#define VBE_WARN(expression , string) {}
 #endif
 
 //VBE_LOG,_DLOG
 #ifdef __LOG
 #define VBE_LOG(msg) Log::message() << msg << Log::Flush
 #else
-#define VBE_LOG(msg)
+#define VBE_LOG(msg) {}
 #endif
 #ifdef __DLOG
 #define VBE_DLOG(msg) VBE_LOG(msg)
 #else
-#define VBE_DLOG(msg)
+#define VBE_DLOG(msg) {}
 #endif
 
 class Log {
@@ -150,7 +150,7 @@ class Log {
 };
 
 //Template specialitzations that use private stuff. Implemented in cpp (no actual templating going on)
-template<> const Log& Log::operator<< <Log::LogModifiers>(const Log::LogModifiers& t) const;
+template<> const Log& Log::operator<< (const Log::LogModifiers& t) const;
 
 //Templated, non-member operator overloaders that must be implemented where declared (templates suck at linking)
 //User can define them wherever they want for their own objects.

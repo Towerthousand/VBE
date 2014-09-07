@@ -33,6 +33,7 @@ class SoundRecorder {
 		float           m_processingInterval;    // float period between calls to onProcessSamples
 		bool               m_isCapturing;        // Capturing state
 		std::string        m_deviceName;         // Name of the audio capture device
+        static ALCdevice* captureDevice;
 };
 
 #endif // SOUNDRECORDER_HPP

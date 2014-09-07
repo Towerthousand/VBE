@@ -2,16 +2,6 @@
 #include <cstring>
 #include <cctype>
 
-namespace {
-    // Convert a string to lower case
-    std::string toLower(std::string str)
-    {
-        for (std::string::iterator i = str.begin(); i != str.end(); ++i)
-            *i = static_cast<char>(std::tolower(*i));
-        return str;
-    }
-}
-
 SoundFile::SoundFile() :
 m_file        (NULL),
 m_sampleCount (0),
@@ -203,7 +193,7 @@ int SoundFile::getFormatFromFilename(const std::string& filename) {
     std::string ext = "wav";
     std::string::size_type pos = filename.find_last_of(".");
     if (pos != std::string::npos)
-        ext = toLower(filename.substr(pos + 1));
+        ext = Utils::toLower(filename.substr(pos + 1));
 
     // Match every supported extension with its format constant
     if (ext == "wav"  ) return SF_FORMAT_WAV;

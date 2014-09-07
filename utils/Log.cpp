@@ -8,7 +8,7 @@ Log* Log::warningInstance = nullptr;
 Log* Log::errorInstance   = nullptr;
 std::string Log::outPath = "log.txt";
 
-template<> const Log& Log::operator<< <Log::LogModifiers> (const Log::LogModifiers& t) const {
+template<> const Log& Log::operator<< (const Log::LogModifiers& t) const {
 	switch(t) {
 		case Flush:
 		{
