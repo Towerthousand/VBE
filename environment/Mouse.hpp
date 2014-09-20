@@ -26,9 +26,11 @@ class Mouse {
 		void showCursor();
 
 		void setGrab(bool grab);
+		void setRelativeMouseMode(bool relative);
 
 	private:
 		Mouse();
+		~Mouse();
 		friend class Environment;
 
 		void processEvent(const SDL_Event& e);
@@ -41,6 +43,8 @@ class Mouse {
 
 		vec2i mousePos;
 		vec2i mousePosRel;
+
+		SDL_Cursor* cursor;
 };
 
 #endif // MOUSE_HPP

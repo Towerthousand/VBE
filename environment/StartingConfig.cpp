@@ -28,5 +28,6 @@ StartingConfig::StartingConfig() :
 	GLStereo(false),
 	GLShareContext(false),
 	GLRequestSRGB(false),
-	mouseGrab(false)
+	mouseGrab(false),
+	mouseRelativeMode(false)
 {}

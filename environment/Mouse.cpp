@@ -1,7 +1,14 @@
 #include "Mouse.hpp"
 #include "Environment.hpp"
 
-Mouse::Mouse() : mousePos(0, 0), mousePosRel(0, 0) {
+Mouse::Mouse() : mousePos(0, 0), mousePosRel(0, 0), cursor(nullptr) {
+	cursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+	SDL_SetCursor(cursor);
+	SDL_ShowCursor(1);
+}
+
+Mouse::~Mouse() {
+	SDL_FreeCursor(cursor);
 }
 
 void Mouse::setMousePos(int x, int y) {
@@ -31,20 +38,26 @@ void Mouse::processEvent(const SDL_Event& e) {
 }
 
 void Mouse::update() {
+	int x, y;
+	SDL_GetMouseState(&x, &y);
 	buttonsHeldOld = buttonsHeld;
 	mousePosRel = vec2i(0, 0);
 }
 
 void Mouse::hideCursor() {
-	SDL_ShowCursor(false);
+	SDL_ShowCursor(SDL_DISABLE);
 }
 
 void Mouse::showCursor() {
-	SDL_ShowCursor(true);
+	SDL_ShowCursor(SDL_ENABLE);
 }
 
 void Mouse::setGrab(bool grab) {
 	VBE_ASSERT(Environment::getScreen()->window != nullptr, "Window must be initialized before calling setGrab");
 	SDL_SetWindowGrab(Environment::getScreen()->window, (grab? SDL_TRUE : SDL_FALSE));
-	SDL_SetRelativeMouseMode((grab? SDL_TRUE : SDL_FALSE));
+}
+
+void Mouse::setRelativeMouseMode(bool relative) {
+	VBE_ASSERT(Environment::getScreen()->window != nullptr, "Window must be initialized before calling setRelativeMouseMode");
+	SDL_SetRelativeMouseMode((relative? SDL_TRUE : SDL_FALSE));
 }

@@ -46,6 +46,7 @@ class StartingConfig {
 		bool GLShareContext;
 		bool GLRequestSRGB;
 		bool mouseGrab;
+		bool mouseRelativeMode;
 };
 
 #endif // STARTINGCONFIG_HPP

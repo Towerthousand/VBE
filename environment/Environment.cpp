@@ -28,6 +28,7 @@ void Environment::startUp() {
 	keyboard = new Keyboard();
 
 	mouse->setGrab(initialConfig.mouseGrab);
+	mouse->setRelativeMouseMode(initialConfig.mouseRelativeMode);
 }
 
 void Environment::shutDown() {
