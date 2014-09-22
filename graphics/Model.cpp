@@ -8,7 +8,11 @@ Model::~Model() {
 }
 
 void Model::draw() const {
+	draw(0, mesh->getVertexCount());
+}
+
+void Model::draw(unsigned int firstVertex, unsigned int vertexCount) const {
 	VBE_ASSERT(mesh != nullptr, "Trying to draw with nullptr mesh pointer");
 	VBE_ASSERT(program != nullptr, "Trying to draw with nullptr program pointer");
-	mesh->draw(program);
+	mesh->draw(program, firstVertex, vertexCount);
 }

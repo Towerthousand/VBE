@@ -30,7 +30,7 @@ class Mesh : public NonCopyable {
 
 		~Mesh();
 
-		void draw(const ShaderProgram* program);
+		void draw(const ShaderProgram* program, unsigned int firstVertex, unsigned int vCount);
 
 		const Vertex::Format& getVertexFormat() const;
 		unsigned int getVertexCount() const;

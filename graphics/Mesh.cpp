@@ -24,15 +24,16 @@ Mesh::~Mesh() {
 		delete it->second;
 }
 
-void Mesh::draw(const ShaderProgram *program) {
+void Mesh::draw(const ShaderProgram *program, unsigned int firstVertex, unsigned int vCount) {
 	VBE_ASSERT(program->getHandle() != 0, "nullptr program when about to draw mesh");
+	VBE_ASSERT(firstVertex >= 0 && firstVertex+vCount <= vertexCount && vCount > 0, "Invalid firstVertex");
 	GLuint handle = program->getHandle();
 	if(bindingsCache.find(handle) == bindingsCache.end())
 		bindingsCache.insert(std::pair<GLuint, const ShaderBinding*>(handle, new ShaderBinding(program, this)));
 	const ShaderBinding* binding = bindingsCache.at(handle);
 	program->use();
 	binding->bindVAO();
-	if(!indexed) GL_ASSERT(glDrawArrays(primitiveType, 0, vertexCount));
+	if(!indexed) GL_ASSERT(glDrawArrays(primitiveType, firstVertex, vCount));
 	else GL_ASSERT(glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0));
 }
 

@@ -10,6 +10,7 @@ class Model {
 		~Model();
 
 		void draw() const;
+		void draw(unsigned int firstVertex, unsigned int vertexCount) const;
 
 		mutable Mesh* mesh;
 		mutable ShaderProgram* program;
