@@ -32,16 +32,18 @@ void Mouse::processEvent(const SDL_Event& e) {
 			mousePos = vec2i(e.motion.x, e.motion.y);
 			mousePosRel += vec2i(e.motion.xrel, e.motion.yrel);
 			break;
+		case SDL_MOUSEWHEEL:
+			mouseWheel = vec2i(e.wheel.x, e.wheel.y);
+			break;
 		default:
 			break;
 	}
 }
 
 void Mouse::update() {
-	int x, y;
-	SDL_GetMouseState(&x, &y);
 	buttonsHeldOld = buttonsHeld;
 	mousePosRel = vec2i(0, 0);
+	mouseWheel = vec2i(0, 0);
 }
 
 void Mouse::hideCursor() {

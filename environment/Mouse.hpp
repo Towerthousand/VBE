@@ -18,6 +18,7 @@ class Mouse {
 
 		vec2i getMousePos() const {return mousePos;}
 		vec2i getMousePosRelative() const {return mousePosRel;}
+		vec2i getMouseWheelMovement() const {return mouseWheel;}
 
 		void setMousePos(vec2i pos) { setMousePos(pos.x, pos.y); }
 		void setMousePos(int x, int y);
@@ -43,6 +44,7 @@ class Mouse {
 
 		vec2i mousePos;
 		vec2i mousePosRel;
+		vec2i mouseWheel;
 
 		SDL_Cursor* cursor;
 };
