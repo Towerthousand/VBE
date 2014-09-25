@@ -26,4 +26,6 @@ void Frustum::calculate(mat4f VP) {
 	planes[BOTTOM]	= Plane(vec3f(nbl/nbl.w),vec3f(nbr/nbr.w),vec3f(fbr/fbr.w));
 	planes[LEFT]	= Plane(vec3f(nbl/nbl.w),vec3f(fbl/fbl.w),vec3f(ftl/ftl.w));
 	planes[RIGHT]	= Plane(vec3f(ntr/ntr.w),vec3f(ftr/ftr.w),vec3f(fbr/fbr.w));
+	planes[NEAR]	= Plane(vec3f(nbl/nbl.w),vec3f(ntl/ntl.w),vec3f(ntr/ntr.w));
+	planes[FAR]		= Plane(vec3f(fbr/fbr.w),vec3f(ftr/ftr.w),vec3f(ftl/ftl.w));
 }

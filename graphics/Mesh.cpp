@@ -26,7 +26,7 @@ Mesh::~Mesh() {
 
 void Mesh::draw(const ShaderProgram *program, unsigned int firstVertex, unsigned int vCount) {
 	VBE_ASSERT(program->getHandle() != 0, "nullptr program when about to draw mesh");
-	VBE_ASSERT(firstVertex >= 0 && firstVertex+vCount <= vertexCount && vCount > 0, "Invalid firstVertex");
+	VBE_ASSERT(firstVertex+vCount <= vertexCount && vCount != 0, "Invalid firstVertex");
 	GLuint handle = program->getHandle();
 	if(bindingsCache.find(handle) == bindingsCache.end())
 		bindingsCache.insert(std::pair<GLuint, const ShaderBinding*>(handle, new ShaderBinding(program, this)));

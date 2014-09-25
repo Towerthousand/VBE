@@ -20,7 +20,7 @@ class Frustum {
 		void calculate(mat4f VP);
 	private:
 		friend class Collision;
-		Plane planes[4];
+		Plane planes[6];
 };
 
 #endif // FRUSTUM_HPP

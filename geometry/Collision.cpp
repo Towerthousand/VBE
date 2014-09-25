@@ -1,19 +1,19 @@
 #include "Collision.hpp"
 
 bool Collision::intersects(const Frustum& f, const AABB& b) {
-	for(unsigned int i=0; i < 4; i++)
+	for(unsigned int i=0; i < 6; i++)
 		if(!f.planes[i].inside(b)) return false;
 	return true;
 }
 
 bool Collision::intersects(const Frustum& f, const vec3f& p) {
-	for(unsigned int i=0; i < 4; i++)
+	for(unsigned int i=0; i < 6; i++)
 		if(!f.planes[i].inside(p)) return false;
 	return true;
 }
 
 bool Collision::intersects(const Frustum& f, const Sphere& s) {
-	for(unsigned int i=0; i < 4; i++)
+	for(unsigned int i=0; i < 6; i++)
 		if(!f.planes[i].inside(s)) return false;
 	return true;
 }
