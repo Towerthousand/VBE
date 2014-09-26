@@ -49,4 +49,6 @@ inline float AABB::getRadius() const {
 	return 0.5f*glm::length(pmax - pmin);
 }
 
+const Log&operator << (const Log& log, const AABB& aabb);
+
 #endif // AABB_HPP

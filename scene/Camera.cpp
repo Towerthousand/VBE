@@ -56,3 +56,7 @@ mat4f Camera::getView() const {
 const Frustum&Camera::getFrustum() const {
 	return frustum;
 }
+
+void Camera::recalculateFrustum() {
+	frustum.calculate(projection*getView());
+}

@@ -45,3 +45,9 @@ bool AABB::inside(const vec3f &p) const {
 bool AABB::inside(const AABB &aabb) const {
 	return inside(aabb.pmin) && inside(aabb.pmax);
 }
+
+
+const Log&operator <<(const Log& log, const AABB& aabb) {
+	log << "[Center: " << aabb.getCenter() << ", Dimensions: " << aabb.getDimensions() << "]";
+	return log;
+}
