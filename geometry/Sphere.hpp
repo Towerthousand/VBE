@@ -7,14 +7,11 @@ class Sphere {
 		Sphere(vec3f center, float radius);
 		~Sphere();
 
-		vec3f getCenter() const {return center;}
-		float getRadius() const {return radius;}
+		vec3f center;
+		float radius;
 
 	private:
 		friend class Collision;
-
-		vec3f center;
-		float radius;
 };
 
 #endif // SPHERE_HPP
