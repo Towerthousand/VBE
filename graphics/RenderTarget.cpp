@@ -146,7 +146,7 @@ const Texture2D* RenderTarget::getTextureForAttachment(RenderTarget::Attachment 
 	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");
 	const RenderTargetEntry& e = entries.at(target);
     VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");
-    ensureValid();
+	if(dirty) ensureValid();
 	return e.texture;
 }
 
@@ -154,6 +154,6 @@ Texture2D* RenderTarget::getTextureForAttachment(RenderTarget::Attachment target
 	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");
 	RenderTargetEntry& e = entries.at(target);
     VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");
-    ensureValid();
+	if(dirty) ensureValid();
 	return e.texture;
 }
