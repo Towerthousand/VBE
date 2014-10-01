@@ -95,7 +95,7 @@ void RenderTarget::setCustomTexture(RenderTarget::Attachment attachment, Texture
 void RenderTarget::valid() const {
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget is invalid because it has no textures nor render buffers.");
 	vec2i desiredSize = getDesiredSize();
-	bool resize = (desiredSize == size);
+	bool resize = (desiredSize != size);
 	if(!resize && !dirty) return;
 
 	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {

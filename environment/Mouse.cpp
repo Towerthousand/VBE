@@ -61,5 +61,5 @@ void Mouse::setGrab(bool grab) {
 
 void Mouse::setRelativeMouseMode(bool relative) {
 	VBE_ASSERT(Environment::getScreen()->window != nullptr, "Window must be initialized before calling setRelativeMouseMode");
-	SDL_SetRelativeMouseMode((relative? SDL_TRUE : SDL_FALSE));
+	SDL_SetRelativeMouseMode(relative? SDL_TRUE : SDL_FALSE);
 }
