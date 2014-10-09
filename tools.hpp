@@ -57,8 +57,6 @@
 #include <set>
 #include <mutex>
 #include <thread>
-#include <AL/al.h>
-#include <AL/alc.h>
 
 //math typedefs
 

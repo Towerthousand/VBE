@@ -9,7 +9,7 @@ CONFIG(debug, debug|release) {
 
 TEMPLATE = app
 CONFIG -= qt
-LIBS += -lGL -lSDL2 -lsndfile -lopenal
+LIBS += -lGL -lSDL2
 INCLUDEPATH += $$PWD/
 QMAKE_CXXFLAGS += -std=c++0x
 SOURCES += \
@@ -46,18 +46,7 @@ SOURCES += \
     VBE/geometry/Sphere.cpp \
     VBE/graphics/RenderState.cpp \
     VBE/graphics/TextureCubemap.cpp \
-    VBE/graphics/RenderBuffer.cpp \
-    VBE/audio/ALCheck.cpp \
-    VBE/audio/AudioDevice.cpp \
-    VBE/audio/Listener.cpp \
-    VBE/audio/Music.cpp \
-    VBE/audio/Sound.cpp \
-    VBE/audio/SoundBuffer.cpp \
-    VBE/audio/SoundBufferRecorder.cpp \
-    VBE/audio/SoundFile.cpp \
-    VBE/audio/SoundRecorder.cpp \
-    VBE/audio/SoundSource.cpp \
-    VBE/audio/SoundStream.cpp
+    VBE/graphics/RenderBuffer.cpp 
 
 HEADERS += \
 	$$PWD/tools.hpp \
@@ -97,16 +86,6 @@ HEADERS += \
     VBE/graphics/RenderState.hpp \
     VBE/graphics/TextureCubemap.hpp \
     VBE/graphics/RenderBuffer.hpp \
-    VBE/audio/ALCheck.hpp \
-    VBE/audio/AudioDevice.hpp \
-    VBE/audio/Listener.hpp \
-    VBE/audio/Music.hpp \
-    VBE/audio/Sound.hpp \
-    VBE/audio/SoundBuffer.hpp \
-    VBE/audio/SoundBufferRecorder.hpp \
-    VBE/audio/SoundFile.hpp \
-    VBE/audio/SoundRecorder.hpp \
-    VBE/audio/SoundSource.hpp \
-    VBE/audio/SoundStream.hpp \
     VBE/utils/InputStream.hpp \
     VBE/utils/NonCopyable.hpp
+
