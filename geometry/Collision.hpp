@@ -55,10 +55,6 @@ class Collision {
 		///
 		/// @brief Get the intersection point between an AABB and a Ray
 		///
-		/// @return Pair (bool, float) where the bool tells wether if the test passed
-		///			(the Ray touched the AABB) and in case it did, the distance to the
-		///			ray's origin from the intersection point
-		///
 		static std::pair<bool, float> intersectionPoint(const Ray& r, const AABB& b) {return intersectionPoint(b, r);}
 
 	private:

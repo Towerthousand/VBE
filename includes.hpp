@@ -2,20 +2,35 @@
 #define INCLUDES_HPP
 
 #include "tools.hpp"
-///	@defgroup Scene Scene graph nodes and Game root node
+///	@defgroup Scene Scene Graph
+///
+/// Scene graph nodes and Game root node
+///
 #include "scene/Game.hpp"
 #include "scene/GameObject.hpp"
 #include "scene/Camera.hpp"
-///	@defgroup Geometry Geometry objects and collision tests
+///	@defgroup Geometry Geometry
+///
+/// Geometry objects and collision tests
+///
 #include "geometry/Collision.hpp"
-///	@defgroup Utils Logging system and generic interfaces
+///	@defgroup Utils Utilities
+///
+///	Logging system and generic interfaces
+///
 #include "utils/Manager.hpp"
-///	@defgroup Graphics OpenGL objects and 3D graphics utilities
+///	@defgroup Graphics Graphics
+///
+/// OpenGL objects and 3D graphics utilities
+///
 #include "graphics/Model.hpp"
 #include "graphics/Shader.hpp"
 #include "graphics/ShaderBinding.hpp"
 #include "graphics/Uniform.hpp"
-///	@defgroup System System and I/O classes
+///	@defgroup System System
+///
+/// System and I/O device classes
+///
 #include "environment/Environment.hpp"
 #include "environment/Screen.hpp"
 

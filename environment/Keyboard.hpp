@@ -2,8 +2,14 @@
 #define KEYBOARD_HPP
 #include "tools.hpp"
 
+///
+/// @brief Provides interface for a keyboard device
+///
 class Keyboard {
 	public:
+		///
+		/// \brief Contains all supported keys
+		///
 		enum Key {
 			Num0 = SDLK_0,
 			Num1 = SDLK_1,
@@ -242,13 +248,33 @@ class Keyboard {
 			RParenthesis = SDLK_RIGHTPAREN,
 			Underscore = SDLK_UNDERSCORE
 		};
-		~Keyboard();
 
+		///
+		/// \brief Tells wether the requested key is pressed
+		///
+		/// In this context, "pressed" is interpreted as
+		/// being held in the current state and not in the previous state.
+		///
 		bool isKeyPressed(Key k) const {return (keysHeldOld.find(k) == keysHeldOld.end()) && (keysHeld.find(k) != keysHeld.end());}
+
+		///
+		/// \brief Tells wether the requested key is released
+		///
+		/// In this context, "released" is interpreted as
+		/// not being held in the current state and being held in the previous state.
+		///
 		bool isKeyReleased(Key k) const {return (keysHeldOld.find(k) != keysHeldOld.end()) && (keysHeld.find(k) == keysHeld.end());}
+
+		///
+		/// \brief Tells wether the requested key is held
+		///
+		/// In this context, "held" is interpreted as
+		/// being held in the current state.
+		///
 		bool isKeyHeld(Key k) const {return (keysHeld.find(k) != keysHeld.end());}
 	private:
 		Keyboard();
+		~Keyboard();
 		friend class Environment;
 		void update();
 		void processEvent(const SDL_Event& event);
@@ -256,5 +282,38 @@ class Keyboard {
 		std::set<Key> keysHeldOld;
 		bool focus;
 };
+
+///
+/// @class Keyboard Keyboard.hpp "enviroment/Keyboard.hpp"
+/// @ingroup System
+///
+/// You can use this class within an init Environment to access the current
+/// keyboard device's state. Not all keys are supported in all devices and will
+/// not be ever marked as pressed. The state of this device will be updated to
+/// match recieved events whenever Environment::update() is called.
+///
+/// A Key will just be pressed for one frame (one update()) call. Then held for
+/// an indefinite number of frames and released right after. For Example, if the
+/// user pressed the A Key on frame 1 and released it on frame 4, this would
+/// register (updating the environment every frame of course):
+///
+/// - Frame 1
+///   + Key Keyboard::A is pressed
+///   + Key Keyboard::A is held
+///   + Key Keyboard::A is not released
+/// - Frame 2
+///   + Key Keyboard::A is not pressed
+///   + Key Keyboard::A is held
+///   + Key Keyboard::A is not released
+/// - Frame 3
+///   + Key Keyboard::A is not pressed
+///   + Key Keyboard::A is held
+///   + Key Keyboard::A is not released
+/// - Frame 4
+///   + Key Keyboard::A is not pressed
+///   + Key Keyboard::A is not held
+///   + Key Keyboard::A is released
+///
+/// @see Environment
 
 #endif // KEYBOARD_HPP

@@ -10,7 +10,7 @@ StartingConfig Environment::initialConfig = StartingConfig();
 Environment::Environment() {}
 Environment::~Environment() {}
 
-StartingConfig& Environment::setup() {
+StartingConfig& Environment::config() {
 	VBE_WARN(!running, "Accessing the Environment setup configurations after starting up" << Log::Line <<
 			 "Any changes on this configuration won't affect the running Environment" << Log::Line <<
 			 "To change settings on the run, please interface with the respective device (screen, mouse..)");
@@ -80,10 +80,21 @@ void Environment::update() {
 }
 
 float Environment::getClock() {
+	VBE_ASSERT(running, "Can't get clock, Environment is not initialized");
 	return 0.001f*SDL_GetTicks();
 }
 
 Screen* Environment::getScreen() {
 	VBE_ASSERT(running, "Can't get screen, Environment is not initialized");
 	return screen;
+}
+
+Mouse*Environment::getMouse() {
+	VBE_ASSERT(running, "Can't get mouse, Environment is not initialized");
+	return mouse;
+}
+
+Keyboard*Environment::getKeyboard() {
+	VBE_ASSERT(running, "Can't get keyboard, Environment is not initialized");
+	return keyboard;
 }
