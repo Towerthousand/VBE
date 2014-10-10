@@ -29,3 +29,7 @@ void Frustum::calculate(mat4f VP) {
 	planes[NEAR]	= Plane(vec3f(nbl/nbl.w),vec3f(ntl/ntl.w),vec3f(ntr/ntr.w));
 	planes[FAR]		= Plane(vec3f(fbr/fbr.w),vec3f(ftr/ftr.w),vec3f(ftl/ftl.w));
 }
+
+Plane Frustum::getPlane(Frustum::PlaneID p) {
+	return planes[p];
+}

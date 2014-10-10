@@ -89,3 +89,6 @@ HEADERS += \
     VBE/utils/InputStream.hpp \
     VBE/utils/NonCopyable.hpp
 
+OTHER_FILES += \
+    VBE/doxygenconfig
+

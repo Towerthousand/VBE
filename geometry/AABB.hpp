@@ -35,14 +35,10 @@ class AABB {
 		///
 		/// @brief Extend this AABB to contain a point
 		///
-		/// @param p Point to be included in the AABB
-		///
 		void extend(const vec3f& p);
 
 		///
 		/// @brief Extend this AABB to contain another AABB
-		///
-		/// @param aabb AABB to be included in this AABB
 		///
 		void extend(const AABB& aabb);
 
@@ -50,8 +46,6 @@ class AABB {
 		/// @brief Test a point against this AABB
 		///
 		/// Points on the edge are considered inside
-		///
-		/// @param p Point to be tested
 		///
 		/// @return Wether the point lies inside or not
 		///
@@ -61,8 +55,6 @@ class AABB {
 		/// @brief Test another AABB against this AABB
 		///
 		/// Merely overlapping will not pass this test
-		///
-		/// @param aabb AABB to be tested
 		///
 		/// @return Wether the AABB lies inside or not
 		///
@@ -109,11 +101,11 @@ class AABB {
 		vec3f pmax;
 };
 ///
-/// \class AABB
+/// @class AABB
 ///
 /// This class can be used to test against other geometry objects.
 ///
-/// \see Collision
+/// @see Collision
 ///
 
 inline vec3f AABB::getMin() const {

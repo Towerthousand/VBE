@@ -2,16 +2,46 @@
 #define SPHERE_HPP
 #include "tools.hpp"
 
+///
+/// @brief Represents a 3D Sphere
+///
 class Sphere {
 	public:
-		Sphere(vec3f center, float radius);
-		~Sphere();
+		///
+		/// @brief Default constructor
+		///
+		/// Generated Sphere will be invalid by default
+		///
+		Sphere() : center(0.0f), radius(0.0f) {}
+		///
+		/// @brief Data constructor
+		///
+		/// Will initialize sphere with the provided data
+		///
+		Sphere(vec3f center, float radius) : center(center), radius(radius) {
+		}
 
+		///
+		/// @brief Destructor
+		///
+		~Sphere() {}
+
+		///
+		/// @brief Center of the Sphere
+		///
 		vec3f center;
-		float radius;
 
-	private:
-		friend class Collision;
+		///
+		/// @brief Radius of the Sphere
+		///
+		float radius;
 };
+///
+/// @class Sphere
+///
+/// This class can be used to test against other geometry objects.
+///
+/// @see Collision
+///
 
 #endif // SPHERE_HPP
