@@ -66,7 +66,8 @@ class Collision {
 		~Collision();
 };
 ///
-/// @class Collision
+/// @class Collision Collision.hpp "geometry/Collision.hpp"
+///	@ingroup Geometry
 ///
 /// This class can be used to test geometry objects against each other.
 /// Tested objects should be valid (i.e. no radius of 0 for spheres or negative

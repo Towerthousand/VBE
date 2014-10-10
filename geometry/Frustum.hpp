@@ -55,7 +55,8 @@ class Frustum {
 };
 
 ///
-/// @class Frustum
+/// @class Frustum Frustum.hpp "geometry/Frustum.hpp"
+///	@ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects,
 /// in order to perform fustrum culling for example.

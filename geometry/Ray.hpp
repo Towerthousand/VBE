@@ -39,7 +39,8 @@ class Ray {
 		vec3f dir;
 };
 ///
-/// @brief Ray
+/// @class Ray Ray.hpp "geometry/Ray.hpp"
+///	@ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects.
 ///

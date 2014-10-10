@@ -37,7 +37,8 @@ class Sphere {
 		float radius;
 };
 ///
-/// @class Sphere
+/// @class Sphere Sphere.hpp "geometry/Sphere.hpp"
+///	@ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects.
 ///

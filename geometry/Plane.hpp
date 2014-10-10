@@ -99,7 +99,8 @@ class Plane {
 		float d;
 };
 ///
-/// @class Plane
+/// @class Plane Plane.hpp "geometry/Plane.hpp"
+///	@ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects.
 ///

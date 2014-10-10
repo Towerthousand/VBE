@@ -4,6 +4,9 @@
 #include "Keyboard.hpp"
 #include "Mouse.hpp"
 
+///
+/// @brief Handles environment management and I/O devices
+///
 class Environment {
 	public:
 		static StartingConfig& setup();
@@ -26,5 +29,13 @@ class Environment {
 		static Mouse* mouse;
 		static StartingConfig initialConfig;
 };
-
+///
+/// @class Environment Environment.hpp "environment/Environment.hpp"
+///	@ingroup System
+///
+/// This is the central class for everything system and I/O related.
+///
+/// Before starting up the application you can config the Environment
+/// variables, specified in @ref StartingConfig
+///
 #endif // Environment_HPP

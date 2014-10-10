@@ -101,7 +101,8 @@ class AABB {
 		vec3f pmax;
 };
 ///
-/// @class AABB
+/// @class AABB AABB.hpp "geometry/AABB.hpp"
+///	@ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects.
 ///
