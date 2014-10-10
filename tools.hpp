@@ -1,30 +1,33 @@
 #ifndef TOOLS_HPP
 #define TOOLS_HPP
 
-//Image loading
-
-#include "dependencies/stb_image/stb_image.hpp"
-
 //OpenGL (Open Graphics Library)
-
 #define GL_GLEXT_PROTOTYPES 1
-#ifdef WINDOWS
-#include "GL/glew.h"
+
+#if defined(ANDROID)
+	#include "GLES2/gl2.h"
+	#define VBE_GLES2
+#elif defined(WINDOWS)
+	#include "GL/glew.h"
 #else
-#include <GL/gl.h> //core
+	#include <GL/gl.h> //core
 #endif
 
-//GLM (openGL Math)
+//Image loading
+#include "dependencies/stb_image/stb_image.hpp"
 
+//GLM (openGL Math)
 #include "dependencies/glm/glm.hpp" // vec3, vec4, ivec4, mat4 (core)
 #include "dependencies/glm/gtc/matrix_transform.hpp" // translate, rotate, scale, perspective
 
-//SDL 2.0.1
-
+//SDL 2
+#if defined(ANDROID)
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 
 //STL stuff
-
 #ifdef WINDOWS
 #define _USE_MATH_DEFINES
 /* Constants rounded for 21 decimals. */
@@ -43,6 +46,7 @@
 #define M_SQRT2 1.41421356237309504880
 #define M_SQRT_2 0.707106781186547524401
 #endif
+
 #include <cmath>
 #include <iostream>
 #include <fstream>

@@ -48,7 +48,9 @@ namespace Vertex {
 				UnsignedInt   = GL_UNSIGNED_INT,
 				Float         = GL_FLOAT,
 				Fixed         = GL_FIXED,
-				Double        = GL_DOUBLE
+#ifndef VBE_GLES2
+				Double        = GL_DOUBLE,
+#endif
 			};
 
 			enum Conversion {
