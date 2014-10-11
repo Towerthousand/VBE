@@ -45,9 +45,12 @@ class Manager {
 //default Managers
 extern Manager<RenderTarget>	FrameBuffers;
 extern Manager<Texture2D>		Textures2D;
-extern Manager<Texture2DArray>	Textures2DArrays;
-extern Manager<Texture3D>		Textures3D;
 extern Manager<Mesh>			Meshes;
 extern Manager<ShaderProgram>	Programs;
+
+#ifndef VBE_GLES2
+extern Manager<Texture2DArray>	Textures2DArrays;
+extern Manager<Texture3D>		Textures3D;
+#endif
 
 #endif // MANAGER_HPP

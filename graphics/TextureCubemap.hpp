@@ -17,16 +17,36 @@ class TextureCubemap : public Texture {
 		TextureCubemap();
 		~TextureCubemap();
 
-		static TextureCubemap* createEmpty(unsigned int size, Texture::InternalFormat format = RGBA8, int slot = -1);
-		static TextureCubemap* createFromFiles(const std::vector<std::string>& filePaths, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-		static TextureCubemap* createFromRaw(const void* pixels, unsigned int size, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
 
-		void loadEmpty(unsigned int size, Texture::InternalFormat format = RGBA8, int slot = -1);
-		void loadFromFiles(const std::vector<std::string>& filePaths, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-		void loadFromRaw(const void* pixels, unsigned int size, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
+		static TextureCubemap* createFromFiles(const std::vector<std::string>& filePaths);
+		static TextureCubemap* createFromRaw(
+				const void* pixels,
+				unsigned int size,
+				TextureFormat::Format format = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
+
+		static TextureCubemap* createEmpty(
+				unsigned int size,
+				TextureFormat::Format format = TextureFormat::RGBA);
+
+
+		void loadFromFiles(const std::vector<std::string>& filePaths);
+		void loadFromRaw(
+				const void* pixels,
+				unsigned int size,
+				TextureFormat::Format format = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
+
+		void loadEmpty(
+				unsigned int size,
+				TextureFormat::Format format = TextureFormat::RGBA);
 
 		void resize(unsigned int newSize);
+
+#ifndef VBE_GLES2
 		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
+#endif
+		
 		int getWidth() const;
 		int getHeight() const;
 

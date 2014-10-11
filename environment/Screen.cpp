@@ -2,7 +2,7 @@
 #include "../scene/Game.hpp"
 
 Screen::Screen(StartingConfig config) : window(nullptr), height(config.windowHeight), width(config.windowWidth), fullscreen((config.windowFlags&WINDOW_FULLSCREEN) == 0), focused(true) {
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, config.GLRedSize);
+/*	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, config.GLRedSize);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, config.GLGreenSize);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, config.GLBlueSize);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, config.GLAlphaSize);
@@ -23,11 +23,13 @@ Screen::Screen(StartingConfig config) : window(nullptr), height(config.windowHei
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, config.GLContextFlags);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, config.GLProfile);
 	SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, config.GLShareContext);
-	SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, config.GLRequestSRGB);
+	SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, config.GLRequestSRGB);*/
 
 	window = SDL_CreateWindow(config.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, config.windowFlags);
-	VBE_ASSERT(window != nullptr, "Failed to init window");
+	VBE_ASSERT(window != nullptr, "Failed to init window: "<<SDL_GetError());
 	context = SDL_GL_CreateContext(window);
+	VBE_ASSERT(context != nullptr, "Failed to create OpenGL context"<<SDL_GetError());
+
 	fullscreen = ((config.windowFlags&Screen::WINDOW_FULLSCREEN) != 0 || (config.windowFlags&Screen::WINDOW_FULLSCREEN_DESKTOP));
 	if(fullscreen)
 		setDisplayMode();

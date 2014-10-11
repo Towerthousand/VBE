@@ -9,8 +9,9 @@ class RenderTarget : public NonCopyable {
 		enum Attachment {
 			DEPTH = GL_DEPTH_ATTACHMENT,
 			STENCIL = GL_STENCIL_ATTACHMENT,
-			DEPTH_STENCIL = GL_DEPTH_STENCIL_ATTACHMENT,
 			COLOR0 = GL_COLOR_ATTACHMENT0,
+#ifndef VBE_GLES2
+			DEPTH_STENCIL = GL_DEPTH_STENCIL_ATTACHMENT,
 			COLOR1 = GL_COLOR_ATTACHMENT1,
 			COLOR2 = GL_COLOR_ATTACHMENT2,
 			COLOR3 = GL_COLOR_ATTACHMENT3,
@@ -26,7 +27,16 @@ class RenderTarget : public NonCopyable {
 			COLOR13 = GL_COLOR_ATTACHMENT13,
 			COLOR14 = GL_COLOR_ATTACHMENT14,
 			COLOR15 = GL_COLOR_ATTACHMENT15
+#endif
 		};
+
+		inline bool isColorAttachment(Attachment a) {
+#ifdef VBE_GLES2
+			return a == COLOR0;
+#else
+			return a >= COLOR0 && a <= COLOR15;
+#endif
+		}
 
 		RenderTarget();
 		RenderTarget(int width, int height);
@@ -45,14 +55,15 @@ class RenderTarget : public NonCopyable {
 			else
 				return size;
 		}
-		void addRenderBuffer(Attachment target, Texture::InternalFormat format);
-		void addTexture(Attachment target, Texture::InternalFormat format);
+		// TODO 
+		void addRenderBuffer(Attachment target, TextureFormat::Format format);
+		void addTexture(Attachment target, TextureFormat::Format format);
 		void addCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex);
 		void setCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex);
 		Texture2D* getTextureForAttachment(Attachment attachment);
 		const Texture2D* getTextureForAttachment(Attachment attachment) const;
-        void ensureValid() const;
 	private:
+        void ensureValid() const;
         void valid() const;
 		struct RenderTargetEntry {
 				enum Type {
@@ -60,7 +71,7 @@ class RenderTarget : public NonCopyable {
 					TextureEntry
 				};
 
-				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, Texture::InternalFormat format) :
+				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, TextureFormat::Format format) :
 					type(type), attachment(attachment), format(format), user(false), userUp(true), texture(nullptr), renderBuffer(nullptr) {}
 				RenderTargetEntry(RenderTarget::Attachment attachment, Texture2D* tex) :
 					type(TextureEntry), attachment(attachment), format(tex->getFormat()), user(true), userUp(false), texture(tex), renderBuffer(nullptr) {}
@@ -68,7 +79,7 @@ class RenderTarget : public NonCopyable {
 
 				Type type;
 				RenderTarget::Attachment attachment;
-				Texture::InternalFormat format;
+				TextureFormat::Format format;
 				bool user;
 				bool userUp;
 

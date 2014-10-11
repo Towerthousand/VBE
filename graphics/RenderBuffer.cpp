@@ -1,6 +1,6 @@
 #include "RenderBuffer.hpp"
 
-RenderBuffer::RenderBuffer(int width, int height, Texture::InternalFormat format) : format(format){
+RenderBuffer::RenderBuffer(int width, int height, TextureFormat::Format format) : format(format){
 	GL_ASSERT(glGenRenderbuffers(1, &handle));
 	resize(width, height);
 }

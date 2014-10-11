@@ -2,16 +2,41 @@
 #define TEXTURE3D_HPP
 #include "Texture.hpp"
 
+
+// 3D textures are not supported in GLES2
+#ifndef VBE_GLES2
+
 class Texture3D : public Texture {
 	public:
-		Texture3D();
 		~Texture3D();
 
-		static Texture3D* createEmpty(unsigned int sizeX, unsigned int sizeY, unsigned int sizeZ, Texture::InternalFormat format = RGBA8, int slot = -1);
-		static Texture3D* createFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, unsigned int sizeZ, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
+		static Texture3D* createFromRaw(
+				const void* pixels,
+				unsigned int sizeX,
+				unsigned int sizeY,
+				unsigned int sizeZ,
+				TextureFormat::Format format = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
 
-		void loadEmpty(unsigned int sizeX, unsigned int sizeY, unsigned int sizeZ, Texture::InternalFormat format = RGBA8, int slot = -1);
-		void loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, unsigned int sizeZ, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
+		static Texture3D* createEmpty(
+				unsigned int sizeX,
+				unsigned int sizeY,
+				unsigned int sizeZ,
+				TextureFormat::Format format = TextureFormat::RGBA);
+
+		void loadFromRaw(
+			const void* pixels,
+				unsigned int sizeX,
+				unsigned int sizeY,
+				unsigned int sizeZ,
+				TextureFormat::Format format = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
+
+		void loadEmpty(
+				unsigned int sizeX,
+				unsigned int sizeY,
+				unsigned int sizeZ,
+				TextureFormat::Format format = TextureFormat::RGBA);
 
 		void resize(unsigned int sizeX, unsigned int sizeY, unsigned sizeZ);
 		int getWidth() const;
@@ -23,7 +48,11 @@ class Texture3D : public Texture {
 		void bind() const;
 
 	private:
+		Texture3D();
 		vec3i size;
 };
 
+#endif // VBE_GLES2
+
 #endif // Texture3D_HPP
+

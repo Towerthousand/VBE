@@ -96,7 +96,7 @@ Mesh* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::BufferTy
 		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 		VBE_DLOG("    Not using indexes");
 	}
-	mesh->aabb = aabb;
+//	mesh->aabb = aabb;
 	return mesh;
 }
 
@@ -191,6 +191,6 @@ Mesh* OBJLoader::loadFromOBJTangents(const std::string& filepath, Mesh::BufferTy
 		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 		VBE_DLOG("    Not using indexes");
 	}
-	mesh->aabb = aabb;
+//	mesh->aabb = aabb;
 	return mesh;
 }
