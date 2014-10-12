@@ -2,7 +2,11 @@
 #include <ctime>
 
 std::ostringstream Log::endFile;
+#ifndef VBE_GLES2
 unsigned char Log::flags = Log::Timestamp|Log::AlwaysSave|Log::StandardOut;
+#else
+unsigned char Log::flags = Log::Timestamp|Log::StandardOut;
+#endif
 Log* Log::messageInstance = nullptr;
 Log* Log::warningInstance = nullptr;
 Log* Log::errorInstance   = nullptr;
@@ -30,12 +34,18 @@ template<> const Log& Log::operator<< (const Log::LogModifiers& t) const {
 			}
 			msg << content << "\n";
 			if(flags&StandardOut) {
+#ifndef VBE_GLES2
 				std::cout << msg.str();
 				std::cout.flush();
+#else
+				__android_log_print(ANDROID_LOG_INFO, "VBE", msg.c_str());
+#endif
 			}
 			endFile << msg.str();
 			msg.str("");
+#ifndef VBE_GLES2
 			if(flags&AlwaysSave) save();
+#endif
 			break;
 		}
 		case Line:
