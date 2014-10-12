@@ -114,7 +114,9 @@ class Log {
 		enum LogFlags {
 			Timestamp	= 0x01,
 			StandardOut = 0x02,
+#ifndef VBE_GLES2
 			AlwaysSave = 0x04,
+#endif
 			GMTime = 0x08
 		};
 
@@ -146,7 +148,9 @@ class Log {
 		}
 
 		static std::string getContents() { return endFile.str(); }
-		static std::string setFilePath() { return endFile.str(); }
+#ifndef VBE_GLES2
+		static void setFilePath(std::string newPath) { outPath = newPath; }
+#endif
 };
 
 //Template specialitzations that use private stuff. Implemented in cpp (no actual templating going on)
