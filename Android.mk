@@ -2,13 +2,14 @@ LOCAL_PATH := $(call my-dir)
 
 ###########################
 #
-# VBE shared library
+# VBE static library
 #
 ###########################
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := VBE
+LOCAL_MODULE := VBE_static
+LOCAL_MODULE_FILENAME := libVBE
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)
 
@@ -26,11 +27,10 @@ LOCAL_SRC_FILES := \
 	$(wildcard $(LOCAL_PATH)/utils/*.cpp) \
 	)
 
-LOCAL_SHARED_LIBRARIES := SDL2
+LOCAL_STATIC_LIBRARIES := SDL2_static
 
 LOCAL_CFLAGS += -DGL_GLEXT_PROTOTYPES
 LOCAL_CFLAGS += -std=c++11
-LOCAL_LDLIBS := -ldl -lGLESv1_CM -lGLESv2 -llog -landroid
-APP_STL := gnustl_static
+LOCAL_EXPORT_LDLIBS := -ldl -lGLESv1_CM -lGLESv2 -llog -landroid
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)
