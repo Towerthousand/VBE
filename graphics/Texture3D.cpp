@@ -4,6 +4,7 @@
 #ifndef VBE_GLES2
 
 Texture3D::Texture3D() : size(0) {
+	texType = GL_TEXTURE_3D;
 }
 
 Texture3D::~Texture3D() {
@@ -46,7 +47,7 @@ void Texture3D::loadFromRaw(
 	this->format = format;
 	size = vec3i(sizeX, sizeY, sizeZ);
 	bind();
-    GL_ASSERT(glTexImage3D(GL_TEXTURE_3D, 0, format, sizeX, sizeY, sizeZ, 0, TextureFormat::getBaseFormat(format), sourceType, (GLvoid*) pixels));
+	GL_ASSERT(glTexImage3D(GL_TEXTURE_3D, 0, format, sizeX, sizeY, sizeZ, 0, TextureFormat::getBaseFormat(format), sourceType, (GLvoid*) pixels));
 	setFilter(GL_LINEAR, GL_LINEAR);
 	setWrap(GL_REPEAT);
 }

@@ -1,6 +1,7 @@
 #include "TextureCubemap.hpp"
 
 TextureCubemap::TextureCubemap() : size(0) {
+	texType = GL_TEXTURE_CUBE_MAP;
 }
 
 TextureCubemap::~TextureCubemap() {
@@ -109,7 +110,7 @@ void TextureCubemap::resize(unsigned int newSize) {
 
 #ifndef VBE_GLES2
 void TextureCubemap::setComparison(GLenum func, GLenum mode) {
-    VBE_ASSERT(TextureFormat::isDepth(format), "Can't set comparison for a non-depth, non_stencil texture");
+	VBE_ASSERT(TextureFormat::isDepth(format), "Can't set comparison for a non-depth, non_stencil texture");
 	bind();
 	GL_ASSERT(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_FUNC, func));
 	GL_ASSERT(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, mode));

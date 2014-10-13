@@ -4,6 +4,7 @@
 #ifndef VBE_GLES2
 
 Texture2DArray::Texture2DArray() : size(0) {
+	texType = GL_TEXTURE_2D_ARRAY;
 }
 
 Texture2DArray::~Texture2DArray() {
@@ -104,8 +105,8 @@ void Texture2DArray::resize(unsigned int sizeX, unsigned int sizeY, unsigned int
 
 #ifndef VBE_GLES2
 void Texture2DArray::setComparison(GLenum func, GLenum mode) {
-    VBE_ASSERT(TextureFormat::isDepth(format), "Can't set comparison for a non-depth, non_stencil texture");
-    bind();
+	VBE_ASSERT(TextureFormat::isDepth(format), "Can't set comparison for a non-depth, non_stencil texture");
+	bind();
 	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_COMPARE_FUNC, func));
 	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_COMPARE_MODE, mode));
 }

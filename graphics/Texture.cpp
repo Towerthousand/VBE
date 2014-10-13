@@ -3,7 +3,7 @@
 unsigned int Texture::lastSlot = 0;
 int Texture::maxSlots = -1;
 
-Texture::Texture(): handle(0), slot(0) {
+Texture::Texture(): handle(0), slot(0), texType(0) {
 	if(maxSlots == -1) {
 		int max;
 		GL_ASSERT(glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &max));

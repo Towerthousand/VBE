@@ -16,6 +16,7 @@ class Texture : public NonCopyable {
 		GLuint handle;
 		unsigned int slot;
 		TextureFormat::Format format;
+		GLenum texType;
 	private:
 		static unsigned int lastSlot;
 		static int maxSlots;

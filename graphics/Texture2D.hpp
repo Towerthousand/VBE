@@ -7,7 +7,7 @@ class Texture2D : public Texture {
 		~Texture2D();
 
 		static Texture2D* createFromFile(const std::string& filePath);
-        static Texture2D* createFromFile(const std::string& filePath, TextureFormat::Format customFormat);
+		static Texture2D* createFromFile(const std::string& filePath, TextureFormat::Format customFormat);
 		static Texture2D* createFromRaw(
 				const void* pixels,
 				unsigned int sizeX,
@@ -21,9 +21,9 @@ class Texture2D : public Texture {
 				TextureFormat::Format format = TextureFormat::RGBA);
 
 		void loadFromFile(const std::string& filePath);
-        void loadFromFile(const std::string& filePath, TextureFormat::Format customFormat);
+		void loadFromFile(const std::string& filePath, TextureFormat::Format customFormat);
 		void loadFromRaw(
-			const void* pixels,
+				const void* pixels,
 				unsigned int sizeX,
 				unsigned int sizeY,
 				TextureFormat::Format format = TextureFormat::RGBA,
@@ -48,6 +48,13 @@ class Texture2D : public Texture {
 		void bind() const;
 
 	private:
+
+		void load(const void* pixels,
+				  unsigned int sizeX,
+				  unsigned int sizeY,
+				  TextureFormat::Format format,
+				  TextureFormat::Format sourceFormat,
+				  TextureFormat::SourceType sourceType);
 		Texture2D();
 		vec2i size;
 };
