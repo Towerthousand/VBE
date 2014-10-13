@@ -26,8 +26,10 @@ Screen::Screen(StartingConfig config) : window(nullptr), height(config.windowHei
 	SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, config.GLRequestSRGB);
 
 	window = SDL_CreateWindow(config.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, config.windowFlags);
-	VBE_ASSERT(window != nullptr, "Failed to init window");
+	VBE_ASSERT(window != nullptr, "Failed to init window: "<<SDL_GetError());
 	context = SDL_GL_CreateContext(window);
+	VBE_ASSERT(context != nullptr, "Failed to create OpenGL context"<<SDL_GetError());
+
 	fullscreen = ((config.windowFlags&Screen::WINDOW_FULLSCREEN) != 0 || (config.windowFlags&Screen::WINDOW_FULLSCREEN_DESKTOP));
 	if(fullscreen)
 		setDisplayMode();

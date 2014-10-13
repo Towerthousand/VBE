@@ -2,21 +2,50 @@
 #define TEXTURE2DARRAY_HPP
 #include "Texture.hpp"
 
+// Texture arrays are not supported in GLES2
+#ifndef VBE_GLES2
+
 class Texture2DArray : public Texture {
 	public:
 		Texture2DArray();
 		~Texture2DArray();
 
-		static Texture2DArray* createEmpty(unsigned int sizeX, unsigned int sizeY, unsigned int slices, Texture::InternalFormat format = RGBA8, int slot = -1);
-		static Texture2DArray* createFromFiles(const std::vector<std::string>& filePaths, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-		static Texture2DArray* createFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, unsigned int slices, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
 
-		void loadEmpty(unsigned int sizeX, unsigned int sizeY, unsigned int slices, Texture::InternalFormat format = RGBA8, int slot = -1);
-		void loadFromFiles(const std::vector<std::string>& filePaths, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
-		void loadFromRaw(const void* pixels, unsigned int sizeX, unsigned int sizeY, unsigned int slices, Texture::SourceFormat sourceFormat = RGBA, Texture::SourceType sourceType = UNSIGNED_BYTE, Texture::InternalFormat internalFormat = RGBA8, bool mipmap = false, int slot = -1);
+		static Texture2DArray* createFromFiles(const std::vector<std::string>& filePaths);
+		static Texture2DArray* createFromRaw(
+				const void* pixels,
+				unsigned int sizeX,
+				unsigned int sizeY,
+				unsigned int slices,
+				TextureFormat::Format format = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
+
+		static Texture2DArray* createEmpty(
+				unsigned int sizeX,
+				unsigned int sizeY,
+				unsigned int slices,
+				TextureFormat::Format format = TextureFormat::RGBA);
+
+
+		void loadFromFiles(const std::vector<std::string>& filePaths);
+		void loadFromRaw(
+				const void* pixels,
+				unsigned int sizeX,
+				unsigned int sizeY,
+				unsigned int slices,
+				TextureFormat::Format format = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
+
+		void loadEmpty(
+				unsigned int sizeX,
+				unsigned int sizeY,
+				unsigned int slices,
+				TextureFormat::Format format = TextureFormat::RGBA);
 
 		void resize(unsigned int sizeX, unsigned int sizeY, unsigned int slices);
+#ifndef VBE_GLES2
 		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
+#endif
 		int getWidth()  const;
 		int getHeight() const;
 		int getSlices() const;
@@ -29,4 +58,5 @@ class Texture2DArray : public Texture {
 		vec3i size;
 };
 
+#endif // VBE_GLES2
 #endif // TEXTURE2DARRAY_HPP

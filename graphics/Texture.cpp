@@ -6,7 +6,7 @@ int Texture::maxSlots = -1;
 Texture::Texture(): handle(0), slot(0) {
 	if(maxSlots == -1) {
 		int max;
-		GL_ASSERT(glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS_ARB, &max));
+		GL_ASSERT(glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &max));
 		VBE_DLOG("* Platform info: Max concurrent texture images: " << max);
 		maxSlots = max;
 	}
@@ -33,6 +33,6 @@ GLuint Texture::getHandle() const {
 	return handle;
 }
 
-Texture::InternalFormat Texture::getFormat() const {
+TextureFormat::Format Texture::getFormat() const {
 	return format;
 }

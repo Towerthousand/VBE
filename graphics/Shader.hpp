@@ -11,7 +11,7 @@ class Shader : public NonCopyable  {
 	private:
 		Shader(GLenum type);
 
-		void loadFromFile(const std::string &filename);
+		void loadFromFile(const std::string& filename);
 		void loadFromString(const std::string& content);
 		void compile() const;
 

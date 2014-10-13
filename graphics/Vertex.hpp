@@ -48,9 +48,22 @@ namespace Vertex {
 				UnsignedInt   = GL_UNSIGNED_INT,
 				Float         = GL_FLOAT,
 				Fixed         = GL_FIXED,
-				Double        = GL_DOUBLE
+#ifndef VBE_GLES2
+				Double        = GL_DOUBLE,
+#endif
 			};
-
+			inline bool isIntegerType(Type t) {
+				switch(t) {
+					case GL_FLOAT:
+					case GL_FIXED:
+#ifndef VBE_GLES2
+					case GL_DOUBLE:
+#endif
+						return true;
+					default:
+						return false;
+				}
+			}
 			enum Conversion {
 				ConvertDefault,
 				ConvertToFloat,
@@ -58,8 +71,8 @@ namespace Vertex {
 				ConvertToInt
 			};
 
-			Element(Attribute &attr, unsigned int type, unsigned int size, Conversion conv = ConvertDefault);
-			Element(     int attrID, unsigned int type, unsigned int size, Conversion conv = ConvertDefault);
+			Element(Attribute &attr, Type type, unsigned int size, Conversion conv = ConvertDefault);
+			Element(     int attrID, Type type, unsigned int size, Conversion conv = ConvertDefault);
 			Element(const Element& element);
 
 			Element& operator=(const Element& e);
@@ -67,7 +80,7 @@ namespace Vertex {
 			bool operator != (const Element& e) const;
 
 			Attribute &attr;
-			unsigned int type;
+			Type type;
 			unsigned int size;
 			Conversion conv;
 

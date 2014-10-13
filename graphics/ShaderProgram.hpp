@@ -8,17 +8,21 @@ class ShaderProgram : public NonCopyable {
 	public:
 		~ShaderProgram();
 
+
 		static ShaderProgram* loadFromString(const std::string &vertSource, const std::string &fragSource);
+		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& fp_filename);
+
+#ifndef VBE_GLES2
 		static ShaderProgram* loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
 		static ShaderProgram* loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource);
-		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& fp_filename);
 		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename);
 		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& tc_filename, const std::string& te_filename, const std::string& gp_filename, const std::string& fp_filename);
+#endif
 
 		GLuint getHandle() const {return programHandle;}
 
 		void use() const;
-		bool	 hasUniform(const std::string& name) const;
+		bool hasUniform(const std::string& name) const;
 		Uniform* uniform(const std::string& name) const;
 
 		std::map<std::string, GLint> attributes;

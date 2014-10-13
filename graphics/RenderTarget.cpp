@@ -54,20 +54,20 @@ const RenderTarget* RenderTarget::getCurrent() {
 
 void RenderTarget::registerAttachment(RenderTarget::Attachment a) {
 	dirty = true;
-	if(a >= COLOR0 && a <= COLOR15) {
+	if(isColorAttachment(a)) {
 		drawAttachments.push_back(a);
 		attachDirty = true;
 	}
 }
 
-void RenderTarget::addRenderBuffer(RenderTarget::Attachment attachment, Texture::InternalFormat format) {
+void RenderTarget::addRenderBuffer(RenderTarget::Attachment attachment, TextureFormat::Format format) {
 	VBE_ASSERT(entries.find(attachment) == entries.end(), "There's already an entry with the requested Attachment");
 	entries.insert(std::pair<Attachment, RenderTargetEntry> (attachment, RenderTargetEntry(RenderTargetEntry::RenderBufferEntry, attachment, format)));
 	registerAttachment(attachment);
     if(this == current) valid();
 }
 
-void RenderTarget::addTexture(RenderTarget::Attachment attachment, Texture::InternalFormat format) {
+void RenderTarget::addTexture(RenderTarget::Attachment attachment, TextureFormat::Format format) {
 	VBE_ASSERT(entries.find(attachment) == entries.end(), "There's already an entry with the requested Attachment");
 	entries.insert(std::pair<Attachment, RenderTargetEntry> (attachment, RenderTargetEntry(RenderTargetEntry::TextureEntry, attachment, format)));
 	registerAttachment(attachment);
@@ -112,7 +112,7 @@ void RenderTarget::valid() const {
 			if(e.texture == nullptr || !e.userUp) { //make and bind/just bind texture/usertexture
 				e.texture = (e.user ? e.texture : Texture2D::createEmpty(desiredSize.x, desiredSize.y, e.format));
 				e.texture->bind();
-				GL_ASSERT(glFramebufferTexture(GL_FRAMEBUFFER, e.attachment, e.texture->getHandle(), 0));
+				GL_ASSERT(glFramebufferTexture2D(GL_FRAMEBUFFER, e.attachment, GL_TEXTURE_2D, e.texture->getHandle(), 0));
 				VBE_WARN(e.texture->getSize() == desiredSize, "While validating RenderTarget:" << Log::Line <<
 						 "Custom texture has a different size from the rendertarget's." << Log::Line <<
 						 "This can yield unexpected results");
@@ -122,12 +122,14 @@ void RenderTarget::valid() const {
 		}
 	}
 	if(attachDirty) {
+#ifndef VBE_GLES2
 		if(drawAttachments.size() == 0) {
 			GLenum none = GL_NONE;
 			GL_ASSERT(glDrawBuffers(1, &none));
 		}
 		else
 			GL_ASSERT(glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]));
+#endif
 		attachDirty = false;
 	}
 	VBE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");

@@ -71,12 +71,12 @@ namespace Vertex {
 		return *this;
 	}
 
-	Element::Element(Attribute &attr, unsigned int type, unsigned int size, Conversion conv)
+	Element::Element(Attribute &attr, Type type, unsigned int size, Conversion conv)
 		: attr(attr), type(type), size(size), conv(conv) {
 		calcDefaultConversion();
 	}
 
-	Element::Element(int attrID, unsigned int type, unsigned int size, Conversion conv)
+	Element::Element(int attrID, Type type, unsigned int size, Conversion conv)
 		: attr(Attribute::get(attrID)), type(type), size(size), conv(conv) {
 		calcDefaultConversion();
 
@@ -85,12 +85,10 @@ namespace Vertex {
 	{
 		if(conv == ConvertDefault)
 		{
-			if(type == Vertex::Element::Float ||
-			   type == Vertex::Element::Double ||
-			   type == Vertex::Element::Fixed)
-				conv = ConvertToFloat;
-			else
+			if(Vertex::Element::isIntegerType(type))
 				conv = ConvertToInt;
+			else
+				conv = ConvertToFloat;
 		}
 	}
 

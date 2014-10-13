@@ -31,6 +31,14 @@ ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, cons
 	return p;
 }
 
+
+ShaderProgram* ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& fp_filename) {
+	return loadFromString(readFileIntoString(vp_filename),
+						  readFileIntoString(fp_filename));
+}
+
+#ifndef VBE_GLES2
+
 ShaderProgram*ShaderProgram::loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource) {
 	ShaderProgram* p = new ShaderProgram();
 	Shader* vertex = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
@@ -52,7 +60,7 @@ ShaderProgram*ShaderProgram::loadFromString(const std::string& vertSource, const
 	return p;
 }
 
-ShaderProgram*ShaderProgram::loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource) {
+ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource) {
 	ShaderProgram* p = new ShaderProgram();
 	Shader* vertex   = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
 	Shader* tessctrl = Shader::loadShader(tescSource, GL_TESS_CONTROL_SHADER);
@@ -81,24 +89,20 @@ ShaderProgram*ShaderProgram::loadFromString(const std::string& vertSource, const
 	return p;
 }
 
-ShaderProgram*ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& fp_filename) {
-	return loadFromString(readFileIntoString(vp_filename),
-						  readFileIntoString(fp_filename));
-}
-
-ShaderProgram*ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename) {
+ShaderProgram* ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename) {
 	return loadFromString(readFileIntoString(vp_filename),
 						  readFileIntoString(gp_filename),
 						  readFileIntoString(fp_filename));
 }
 
-ShaderProgram*ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& tc_filename, const std::string& te_filename, const std::string& gp_filename, const std::string& fp_filename) {
+ShaderProgram* ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& tc_filename, const std::string& te_filename, const std::string& gp_filename, const std::string& fp_filename) {
 	return loadFromString(readFileIntoString(vp_filename),
 						  readFileIntoString(tc_filename),
 						  readFileIntoString(te_filename),
 						  readFileIntoString(gp_filename),
 						  readFileIntoString(fp_filename));
 }
+#endif
 
 void ShaderProgram::printInfoLog() {
 	VBE_ASSERT(programHandle != 0, "Trying to query nullptr program");

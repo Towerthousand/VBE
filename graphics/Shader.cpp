@@ -10,25 +10,7 @@ Shader::~Shader() {
 }
 
 Shader* Shader::loadShader(const std::string& data, GLenum shaderType) {
-	switch(shaderType) {
-		case GL_FRAGMENT_SHADER:
-			VBE_DLOG("* Loading new fragment shader");
-			break;
-		case GL_TESS_CONTROL_SHADER:
-			VBE_DLOG("* Loading new tessellation control shader");
-			break;
-		case GL_TESS_EVALUATION_SHADER:
-			VBE_DLOG("* Loading new tessellation evaluation shader");
-			break;
-		case GL_GEOMETRY_SHADER:
-			VBE_DLOG("* Loading new geometry shader");
-			break;
-		case GL_VERTEX_SHADER:
-			VBE_DLOG("* Loading new vertex shader");
-			break;
-		default:
-			break;
-	}
+	VBE_DLOG("* Loading new shader");
 	Shader* s = new Shader(shaderType);
 	s->loadFromString(data);
 	s->compile();
@@ -36,7 +18,7 @@ Shader* Shader::loadShader(const std::string& data, GLenum shaderType) {
 	return s;
 }
 
-void Shader::loadFromString(const std::string &content) {
+void Shader::loadFromString(const std::string& content) {
 	const char* buff = content.c_str();
 	const GLint len = content.size();
 	GL_ASSERT(glShaderSource(shaderHandle, 1, &buff, &len));
