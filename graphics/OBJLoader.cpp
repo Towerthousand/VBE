@@ -33,15 +33,13 @@ Mesh* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::BufferTy
 	std::vector<vert> dataNotIndexed;
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
-	AABB aabb = AABB();
 	std::string line;
 	while (getline(in, line)) {
 		if (line.substr(0, 2) == "v ") {
 			std::istringstream s(line.substr(2));
 			vec3f v;
 			s >> v.x >> v.y >> v.z;
-			vertices.push_back(v);
-			aabb.extend(v);
+            vertices.push_back(v);
 		}
 		else if (line.substr(0, 3) == "vn ") {
 			std::istringstream s(line.substr(3));
@@ -85,18 +83,17 @@ Mesh* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::BufferTy
 	VBE_DLOG(" - Vertex count with indexes: " << dataIndexed.size() << " (" << indices.size() << ") indexes");
 	VBE_DLOG(" - Size with indexes: " << sizeWithIndex << ". Size without indexes: " << sizeWithoutIndex);
 	Mesh* mesh = nullptr;
-	if(sizeWithoutIndex > sizeWithIndex) { //indexed
-		mesh = new Mesh(Vertex::Format(elements), bufferType, true);
+    if(sizeWithoutIndex > sizeWithIndex) { //indexed
+        mesh = Mesh::loadEmpty(Vertex::Format(elements), bufferType, true);
 		mesh->setVertexData(&dataIndexed[0], dataIndexed.size());
 		mesh->setVertexIndices(&indices[0], indices.size());
 		VBE_DLOG("    Using indexes");
 	}
-	else { //not indexed
-		mesh = new Mesh(Vertex::Format(elements), bufferType, false);
+    else { //not indexed
+        mesh = Mesh::loadEmpty(Vertex::Format(elements), bufferType, false);
 		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 		VBE_DLOG("    Not using indexes");
-	}
-//	mesh->aabb = aabb;
+    }
 	return mesh;
 }
 
@@ -126,15 +123,13 @@ Mesh* OBJLoader::loadFromOBJTangents(const std::string& filepath, Mesh::BufferTy
 	std::vector<vert> dataNotIndexed;
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
-	AABB aabb = AABB();
 	std::string line;
 	while (getline(in, line)) {
 		if (line.substr(0, 2) == "v ") {
 			std::istringstream s(line.substr(2));
 			vec3f v;
 			s >> v.x >> v.y >> v.z;
-			vertices.push_back(v);
-			aabb.extend(v);
+            vertices.push_back(v);
 		}
 		else if (line.substr(0, 3) == "vn ") {
 			std::istringstream s(line.substr(3));
@@ -181,16 +176,15 @@ Mesh* OBJLoader::loadFromOBJTangents(const std::string& filepath, Mesh::BufferTy
 	VBE_DLOG(" - Size with indexes: " << sizeWithIndex << ". Size without indexes: " << sizeWithoutIndex);
 	Mesh* mesh = nullptr;
 	if(sizeWithoutIndex > sizeWithIndex) { //indexed
-		mesh = new Mesh(Vertex::Format(elements), bufferType, true);
+        mesh = Mesh::loadEmpty(Vertex::Format(elements), bufferType, true);
 		mesh->setVertexData(&dataIndexed[0], dataIndexed.size());
 		mesh->setVertexIndices(&indices[0], indices.size());
 		VBE_DLOG("    Using indexes");
 	}
 	else { //not indexed
-		mesh = new Mesh(Vertex::Format(elements), bufferType, false);
+        mesh = Mesh::loadEmpty(Vertex::Format(elements), bufferType, false);
 		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 		VBE_DLOG("    Not using indexes");
-	}
-//	mesh->aabb = aabb;
+    }
 	return mesh;
 }

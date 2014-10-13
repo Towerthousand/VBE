@@ -46,7 +46,7 @@ void Texture3D::loadFromRaw(
 	this->format = format;
 	size = vec3i(sizeX, sizeY, sizeZ);
 	bind();
-	GL_ASSERT(glTexImage2D(GL_TEXTURE_3D, 0, format, sizeX, sizeY, sizeZ, 0, TextureFormat::getBaseFormat(format), sourceType, (GLvoid*) pixels));
+    GL_ASSERT(glTexImage3D(GL_TEXTURE_3D, 0, format, sizeX, sizeY, sizeZ, 0, TextureFormat::getBaseFormat(format), sourceType, (GLvoid*) pixels));
 	setFilter(GL_LINEAR, GL_LINEAR);
 	setWrap(GL_REPEAT);
 }

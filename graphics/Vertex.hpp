@@ -49,7 +49,7 @@ namespace Vertex {
 				Float         = GL_FLOAT,
 				Fixed         = GL_FIXED,
 #ifndef VBE_GLES2
-				Double        = GL_DOUBLE,
+                Double        = GL_DOUBLE
 #endif
 			};
 			inline bool isIntegerType(Type t) {
@@ -59,9 +59,9 @@ namespace Vertex {
 #ifndef VBE_GLES2
 					case GL_DOUBLE:
 #endif
-						return true;
+                        return false;
 					default:
-						return false;
+                        return true;
 				}
 			}
 			enum Conversion {

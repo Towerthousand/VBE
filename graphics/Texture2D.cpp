@@ -11,7 +11,13 @@ Texture2D::~Texture2D() {
 Texture2D* Texture2D::createFromFile(const std::string& filePath) {
 	Texture2D* t = new Texture2D();
 	t->loadFromFile(filePath);
-	return t;
+    return t;
+}
+
+Texture2D *Texture2D::createFromFile(const std::string &filePath, TextureFormat::Format customFormat) {
+    Texture2D* t = new Texture2D();
+    t->loadFromFile(filePath, customFormat);
+    return t;
 }
 
 // static
@@ -46,7 +52,26 @@ void Texture2D::loadFromFile(const std::string& filePath) {
 	unsigned char* ptr = STBI::stbi_load(filePath.c_str(), &width, &height, &channels, 0);
 	VBE_ASSERT(ptr && width && height, "Failed to load image \"" << filePath << "\". Reason : " << STBI::stbi_failure_reason());
 	loadFromRaw(ptr, width, height, TextureFormat::channelsToFormat(channels), TextureFormat::UNSIGNED_BYTE);
-	STBI::stbi_image_free(ptr);
+    STBI::stbi_image_free(ptr);
+}
+
+void Texture2D::loadFromFile(const std::string &filePath, TextureFormat::Format customFormat){	//load image
+    VBE_DLOG("* Loading new Texture2D from path " << filePath);
+    int sizeX, sizeY, channels;
+    unsigned char* ptr = STBI::stbi_load(filePath.c_str(), &sizeX, &sizeY, &channels, 0);
+    VBE_ASSERT(ptr && sizeX && sizeY, "Failed to load image \"" << filePath << "\". Reason : " << STBI::stbi_failure_reason());
+
+
+    this->format = format;
+    size = vec2i(sizeX, sizeY);
+    bind();
+    GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+    GL_ASSERT(glPixelStorei(GL_PACK_ALIGNMENT, 1));
+    GL_ASSERT(glTexImage2D(GL_TEXTURE_2D, 0, customFormat, sizeX, sizeY, 0, TextureFormat::channelsToFormat(channels), TextureFormat::UNSIGNED_BYTE, (GLvoid*) ptr));
+    setFilter(GL_LINEAR, GL_LINEAR);
+    setWrap(GL_REPEAT);
+
+    STBI::stbi_image_free(ptr);
 }
 
 void Texture2D::loadFromRaw(
@@ -84,7 +109,7 @@ void Texture2D::resize(unsigned int sizeX, unsigned int sizeY) {
 
 #ifndef VBE_GLES2
 void Texture2D::setComparison(GLenum func, GLenum mode) {
-	VBE_ASSERT(format == DEPTH_COMPONENT16 || format == DEPTH_COMPONENT24 || format == DEPTH_COMPONENT32 || format == DEPTH_COMPONENT32F || format == DEPTH24_STENCIL8 || format == DEPTH32F_STENCIL8, "Can't set comparison for a non-depth, non_stencil texture");
+    VBE_ASSERT(TextureFormat::isDepth(format), "Can't set comparison for a non-depth, non_stencil texture");
 	bind();
 	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, func));
 	GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, mode));

@@ -25,23 +25,23 @@ Mesh::~Mesh() {
 }
 
 void Mesh::draw(const ShaderProgram *program, unsigned int offset, unsigned int length) {
-	VBE_ASSERT(program->getHandle() != 0, "program cannot be null");
-	VBE_ASSERT(length != 0, "length must not be zero");
-	VBE_ASSERT(offset < vertexCount, "offset must be smaller than vertex count");
-	VBE_ASSERT(offset + length <= vertexCount, "offset plus length must be smaller or equal to vertex count");
+    VBE_ASSERT(program->getHandle() != 0, "program cannot be null");
+    VBE_ASSERT(length != 0, "length must not be zero");
+    VBE_ASSERT(offset < vertexCount, "offset must be smaller than vertex count");
+    VBE_ASSERT(offset + length <= vertexCount, "offset plus length must be smaller or equal to vertex count");
 
-	// Get the binding from the cache. If it does not exist, create it.
-	GLuint handle = program->getHandle();
-	if(bindingsCache.find(handle) == bindingsCache.end())
-		bindingsCache.insert(std::pair<GLuint, const ShaderBinding*>(handle, new ShaderBinding(program, this)));
-	const ShaderBinding* binding = bindingsCache.at(handle);
+    // Get the binding from the cache. If it does not exist, create it.
+    GLuint handle = program->getHandle();
+    if(bindingsCache.find(handle) == bindingsCache.end())
+        bindingsCache.insert(std::pair<GLuint, const ShaderBinding*>(handle, new ShaderBinding(program, this)));
+    const ShaderBinding* binding = bindingsCache.at(handle);
 
-	// Bind the program and the binding
-	program->use();
-	binding->enable();
+    // Bind the program and the binding
+    program->use();
+    binding->enable();
 
-	if(!indexed) GL_ASSERT(glDrawArrays(primitiveType, offset, length));
-	else GL_ASSERT(glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0));
+    if(!indexed) GL_ASSERT(glDrawArrays(primitiveType, offset, length));
+    else GL_ASSERT(glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0));
 }
 
 const Vertex::Format& Mesh::getVertexFormat() const {
@@ -65,7 +65,6 @@ GLuint Mesh::getVertexBuffer() const {
 }
 
 GLuint Mesh::getIndexBuffer() const {
-	VBE_ASSERT(indexed, "Mesh is not indexed");
 	return indexBuffer;
 }
 
@@ -96,3 +95,10 @@ void Mesh::setVertexIndices(const unsigned int* indexData, unsigned int newIndex
 	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
+Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType) {
+	return OBJLoader::loadFromOBJTangents(filepath,bufferType);
+}
+
+Mesh* Mesh::loadEmpty(Vertex::Format format, Mesh::BufferType bufferType, bool indexed) {
+	return new Mesh(format, bufferType, indexed);
+}

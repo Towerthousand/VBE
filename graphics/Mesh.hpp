@@ -16,9 +16,7 @@ class Mesh : public NonCopyable {
 			LINE_STRIP = GL_LINE_STRIP,
 			LINE_LOOP = GL_LINE_LOOP,
 			POINTS = GL_POINTS,
-#ifndef VBE_GLES2
-			PATCHES = GL_PATCHES,
-#endif
+			PATCHES = GL_PATCHES
 		};
 
 		enum BufferType {
@@ -27,7 +25,9 @@ class Mesh : public NonCopyable {
 			STREAM = GL_STREAM_DRAW
 		};
 
-		Mesh(Vertex::Format format, BufferType bufferType = STATIC, bool indexed = false);
+		static Mesh* loadFromFile(const std::string filepath, Mesh::BufferType bufferType = STATIC);
+		static Mesh* loadEmpty(Vertex::Format format, Mesh::BufferType bufferType = STATIC, bool indexed = false);
+
 		~Mesh();
 
 		void draw(const ShaderProgram* program, unsigned int firstVertex, unsigned int vCount);
@@ -41,11 +41,15 @@ class Mesh : public NonCopyable {
 		PrimitiveType getPrimitiveType() const;
 		bool isIndexed() const;
 
+		AABB getBoundingBox() const;
+
 		void setPrimitiveType(Mesh::PrimitiveType type);
 		void setVertexData(const void* vertexData, unsigned int newVertexCount);
 		void setVertexIndices(const unsigned int* indexData, unsigned int newIndexCount);
 
 	private:
+		Mesh(Vertex::Format format, BufferType bufferType = STATIC, bool indexed = false);
+
 		std::map<GLuint, const ShaderBinding*> bindingsCache;
 		const Vertex::Format vertexFormat;
 		unsigned int vertexCount;

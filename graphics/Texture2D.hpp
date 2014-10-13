@@ -7,6 +7,7 @@ class Texture2D : public Texture {
 		~Texture2D();
 
 		static Texture2D* createFromFile(const std::string& filePath);
+        static Texture2D* createFromFile(const std::string& filePath, TextureFormat::Format customFormat);
 		static Texture2D* createFromRaw(
 				const void* pixels,
 				unsigned int sizeX,
@@ -20,6 +21,7 @@ class Texture2D : public Texture {
 				TextureFormat::Format format = TextureFormat::RGBA);
 
 		void loadFromFile(const std::string& filePath);
+        void loadFromFile(const std::string& filePath, TextureFormat::Format customFormat);
 		void loadFromRaw(
 			const void* pixels,
 				unsigned int sizeX,

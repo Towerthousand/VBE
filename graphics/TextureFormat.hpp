@@ -27,7 +27,7 @@ class TextureFormat {
 			RGB_INTEGER		= GL_RGB_INTEGER,
 			RGBA_INTEGER	= GL_RGBA_INTEGER,
 			BGR_INTEGER		= GL_BGR_INTEGER,
-			BGRA_INTEGER	= GL_BGRA_INTEGER		
+            BGRA_INTEGER	= GL_BGRA_INTEGER,
 #endif
 
 			// Sized formats, only in desktop OpenGL
@@ -115,8 +115,7 @@ class TextureFormat {
 			FLOAT							= GL_FLOAT,
 			UNSIGNED_BYTE_3_3_2				= GL_UNSIGNED_BYTE_3_3_2,
 			UNSIGNED_BYTE_2_3_3_REV			= GL_UNSIGNED_BYTE_2_3_3_REV,
-			UNSIGNED_SHORT_5_6_5_REV		= GL_UNSIGNED_SHORT_5_6_5_REV,
-			UNSIGNED_SHORT_4_4_4_4			= GL_UNSIGNED_SHORT_4_4_4_4,
+            UNSIGNED_SHORT_5_6_5_REV		= GL_UNSIGNED_SHORT_5_6_5_REV,
 			UNSIGNED_SHORT_4_4_4_4_REV		= GL_UNSIGNED_SHORT_4_4_4_4_REV,
 			UNSIGNED_SHORT_1_5_5_5_REV		= GL_UNSIGNED_SHORT_1_5_5_5_REV,
 			UNSIGNED_INT_8_8_8_8			= GL_UNSIGNED_INT_8_8_8_8,
@@ -222,10 +221,28 @@ class TextureFormat {
 				case 4:
 					return RGBA;
 				default:
-					VBE_ASSERT(ptr && width && height, "Failed to load image \"" << filePath << "\". Invalid component count: " << components);
+                    VBE_ASSERT(false,"Invalid component count: " << channels);
 					return TextureFormat::RGBA;
 			}
 		}
+
+#ifndef VBE_GLES2
+        inline static bool isDepth(Format f) {
+            switch(f) {
+                case DEPTH24_STENCIL8:
+                case DEPTH32F_STENCIL8:
+                case DEPTH_COMPONENT:
+                case DEPTH_COMPONENT24:
+                case DEPTH_COMPONENT32:
+                case DEPTH_COMPONENT32F:
+                case DEPTH_STENCIL:
+                    return true;
+                default:
+                    return false;
+            }
+            return false;
+        }
+#endif
 
 	private:
 		TextureFormat();

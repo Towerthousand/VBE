@@ -50,13 +50,13 @@ void ShaderBinding::applyAttributes() const {
 			if(current->attr.hasName(it->first)) {
 				GL_ASSERT(glEnableVertexAttribArray(it->second));
 #ifndef VBE_GLES2
-				if(current->conv == Vertex::Element::ConvertToInt)
-					GL_ASSERT(glVertexAttribIPointer(it->second,
-													 current->size,
-													 current->type,
-													 format.vertexSize(),
-													 (GLvoid*)long(format.offset(i))));
-				else
+                if(current->conv == Vertex::Element::ConvertToInt)
+                    GL_ASSERT(glVertexAttribIPointer(it->second,
+                                                     current->size,
+                                                     current->type,
+                                                     format.vertexSize(),
+                                                     (GLvoid*)long(format.offset(i))));
+                else
 #endif
 					GL_ASSERT(glVertexAttribPointer(it->second,
 													current->size,
