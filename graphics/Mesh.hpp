@@ -16,7 +16,9 @@ class Mesh : public NonCopyable {
 			LINE_STRIP = GL_LINE_STRIP,
 			LINE_LOOP = GL_LINE_LOOP,
 			POINTS = GL_POINTS,
+#ifndef VBE_GLES2
 			PATCHES = GL_PATCHES
+#endif
 		};
 
 		enum BufferType {
