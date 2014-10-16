@@ -56,6 +56,9 @@ class Screen : public NonCopyable {
 		// Cerrar la screen
 		~Screen();
 
+		// Run event loop. Must be called every frame.
+		void update();
+
 		DisplayMode getDisplayMode() const;
 		void setDisplayMode(DisplayMode mode);
 
