@@ -1,6 +1,7 @@
 #ifndef SHADERBINDING_HPP
 #define SHADERBINDING_HPP
-#include "../tools.hpp"
+
+#include <VBE/utils/NonCopyable.hpp>
 
 #ifndef VBE_GLES2
 #define SHADERBINDING_USE_VAO
@@ -13,6 +14,9 @@ class ShaderBinding : public NonCopyable {
 		ShaderBinding(const ShaderProgram* program, const Mesh* mesh);
 		~ShaderBinding();
 
+#ifdef SHADERBINDING_USE_VAO
+		static void bindNull();
+#endif
 		void enable() const;
 	private:
 		void applyAttributes() const;

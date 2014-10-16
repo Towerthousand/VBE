@@ -23,6 +23,15 @@ ShaderBinding::~ShaderBinding() {
 #endif
 }
 
+#ifdef SHADERBINDING_USE_VAO
+void ShaderBinding::bindNull() {
+	if(currentVAO != 0) {
+		GL_ASSERT(glBindVertexArray(0));
+		currentVAO = 0;
+	}
+}
+#endif
+
 void ShaderBinding::enable() const {
 #ifdef SHADERBINDING_USE_VAO
 	VBE_ASSERT(vertexArrayObject != 0, "nullptr VAO when about to bind");
