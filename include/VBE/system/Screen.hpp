@@ -26,20 +26,29 @@ class Screen : public NonCopyable {
 					return refreshRate;
 				}
 
-				unsigned int isWindowed() const {
-					return windowed;
+				unsigned int isFullscreen() const {
+					return fullscreen;
+				}
+
+				// El usuario no puede crear FullscreenModes, solo puede usar los
+				// que le da getFullscreenModes()
+				// Si que puede crear windowed modes con el tamanyo que le de la gana.
+
+				// Los windowed modes no tienen refresh rate, usan la del desktop no?
+				DisplayMode createWindowedMode(int width, int height) {
+					return DisplayMode(width, height, 0, false);
 				}
 			private:
-				DisplayMode(int w, int h, int r) : width(w), height(h), refreshRate(r) {}
+				DisplayMode(int w, int h, int r, bool f) : width(w), height(h), refreshRate(r), fullscreen(f) {}
 				unsigned int width;
 				unsigned int height;
 				unsigned int refreshRate;
-				bool windowed;
+				bool fullscreen;
 
 				friend class Screen;
 		};
 
-		static std::vector<DisplayMode> getFullscreenModes(unsigned int displayIndex = 0);
+		static std::vector<DisplayMode> getFullscreenModes();
 
 		// Crear la screen
 		Screen(DisplayMode mode, ContextSettings contextSettings = ContextSettings());
@@ -47,24 +56,16 @@ class Screen : public NonCopyable {
 		// Cerrar la screen
 		~Screen();
 
-		void resize(unsigned int newWidth, unsigned int newHeight);
-		void setDisplayMode(unsigned int displayMode = 0, unsigned int displayIndex = 0);
-		void setDesktopDisplayMode();
-		void goFullscreen(unsigned int displayMode = 0, unsigned int displayIndex = 0);
-		void goWindowed(unsigned int newWidth, unsigned int newHeight);
-		void swapBuffers() const;
-		void setTitle(std::string newTitle);
-		void setPosition(unsigned int x, unsigned int y);
-		void setBorder(bool border);
+		DisplayMode getDisplayMode() const;
+		void setDisplayMode(DisplayMode mode);
 
-		unsigned int getDisplayCount() const;
-		DisplayMode getCurrentDisplayMode(int displayIndex = 0) const;
-		bool isWindowInit() const { return (window != nullptr); }
-		unsigned int getHeight() const { return height; }
-		unsigned int getWidth() const { return width; }
-		vec2ui getSize() const { return vec2ui(width,height); }
 		std::string getTitle() const;
-		bool isFocused() const { return focused; }
+		void setTitle(std::string newTitle);
+
+		bool isFocused() const;
+		void setPosition(unsigned int x, unsigned int y);
+
+		void swapBuffers() const;
 };
 
 #endif // SCREEN_HPP
