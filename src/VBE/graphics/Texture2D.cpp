@@ -1,4 +1,8 @@
-#include "Texture2D.hpp"
+#include <VBE/config.hpp>
+#include <VBE/dependencies/stb_image/stb_image.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/Texture2D.hpp>
+#include <VBE/system/Log.hpp>
 
 Texture2D::Texture2D() : size(0) {
 	texType = GL_TEXTURE_2D;

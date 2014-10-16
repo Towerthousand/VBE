@@ -1,14 +1,16 @@
-#include "RenderTarget.hpp"
-#include "RenderBuffer.hpp"
+#include <VBE/config.hpp>
+#include <VBE/graphics/RenderBuffer.cpp>
+#include <VBE/graphics/RenderTarget.hpp>
+#include <VBE/system/Screen.hpp>
 
 const RenderTarget* RenderTarget::current = nullptr;
 
-RenderTarget::RenderTarget(int width, int height) : handle(0), size(width, height), screenRelativeSize(false), screenSizeMultiplier(0.0f), dirty(false), attachDirty(true) {
+RenderTarget::RenderTarget(unsigned int width, unsigned int height) : handle(0), size(width, height), screenRelativeSize(false), screenSizeMultiplier(0.0f), dirty(false), attachDirty(true) {
 	VBE_ASSERT(width != 0 && height != 0, "Width or height can't be zero");
 	GL_ASSERT(glGenFramebuffers(1, &handle));
 }
 
-RenderTarget::RenderTarget() : handle(0), size(int(Environment::getScreen()->getWidth()), int(Environment::getScreen()->getHeight())), screenRelativeSize(true), screenSizeMultiplier(1), dirty(false), attachDirty(true) {
+RenderTarget::RenderTarget(float mult) : handle(0), screenRelativeSize(true), screenSizeMultiplier(mult), dirty(false), attachDirty(true) {
 	GL_ASSERT(glGenFramebuffers(1, &handle));
 }
 
@@ -30,10 +32,31 @@ RenderTarget::~RenderTarget() {
 	handle = 0;
 }
 
+vec2ui RenderTarget::getSize() const {
+	if(screenRelativeSize) {
+		vec2ui screenSize = Screen::getInstance()->getDisplayMode().getSize();
+		return vec2ui(
+			static_cast<unsigned int>(screenSize.x*screenSizeMultiplier),
+			static_cast<unsigned int>(screenSize.y*screenSizeMultiplier));
+	}
+	else
+		return size;
+}
+
+unsigned int RenderTarget::getWidth() const {
+	return getSize().x;
+}
+
+unsigned int RenderTarget::getHeight() const {
+	return getSize().y;
+}
+
+// static
 void RenderTarget::bind(const RenderTarget *target) {
 	if(current == target && (target == nullptr || !target->dirty)) return;
 	if(target == nullptr) { //BIND SCREEN FRAMEBUFFER
-		GL_ASSERT(glViewport(0, 0, Environment::getScreen()->getWidth(), Environment::getScreen()->getHeight()));
+		vec2ui screenSize = Screen::getInstance()->getDisplayMode().getSize();
+		GL_ASSERT(glViewport(0, 0, screenSize.x, screenSize.y));
 		GL_ASSERT(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 	else {
@@ -90,9 +113,10 @@ void RenderTarget::setCustomTexture(RenderTarget::Attachment attachment, Texture
 
 void RenderTarget::valid() const {
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget is invalid because it has no textures nor render buffers.");
-	if(!dirty) return;
+	vec2ui desiredSize = getSize();
+	bool resize = (desiredSize != size);
+	if(!resize && !dirty) return;
 
-	vec2i desiredSize = getSize();
 	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
 		RenderTargetEntry& e = it->second;
 		if(e.type == RenderTargetEntry::RenderBufferEntry) {
@@ -108,8 +132,9 @@ void RenderTarget::valid() const {
 				e.texture = (e.user ? e.texture : Texture2D::createEmpty(desiredSize.x, desiredSize.y, e.format));
 				e.texture->bind();
 				GL_ASSERT(glFramebufferTexture2D(GL_FRAMEBUFFER, e.attachment, GL_TEXTURE_2D, e.texture->getHandle(), 0));
-				VBE_ASSERT(e.texture->getSize() == desiredSize, "While validating RenderTarget:" << Log::Line <<
-						 "Custom texture has a different size from the rendertarget.");
+				VBE_WARN(e.texture->getSize() == desiredSize, "While validating RenderTarget:" << Log::Line <<
+						 "Custom texture has a different size from the rendertarget's." << Log::Line <<
+						 "This can yield unexpected results");
 				e.userUp = true;
 			}
 			else if(resize && !e.user) e.texture->resize(desiredSize.x, desiredSize.y);
@@ -127,6 +152,7 @@ void RenderTarget::valid() const {
 		attachDirty = false;
 	}
 	VBE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");
+	size = desiredSize;
 	dirty = false;
 }
 

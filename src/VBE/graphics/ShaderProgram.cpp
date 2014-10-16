@@ -1,6 +1,11 @@
-#include "ShaderProgram.hpp"
-#include "Uniform.hpp"
-#include "Shader.hpp"
+#include <string>
+
+#include <VBE/config.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/Shader.hpp>
+#include <VBE/graphics/ShaderProgram.hpp>
+#include <VBE/graphics/Uniform.hpp>
+#include <VBE/system/Log.hpp>
 
 GLuint ShaderProgram::current(0);
 

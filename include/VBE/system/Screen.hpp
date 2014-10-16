@@ -18,8 +18,8 @@ class Screen : public NonCopyable {
 					return height;
 				}
 
-				vec2u getSize() const  {
-					return vec2u(width, height);
+				vec2ui getSize() const  {
+					return vec2ui(width, height);
 				}
 
 				unsigned int getRefreshRate() const {
@@ -69,6 +69,9 @@ class Screen : public NonCopyable {
 		void setPosition(unsigned int x, unsigned int y);
 
 		void swapBuffers() const;
+
+		// Returns a pointer to the Screen instance.
+		static Screen* getInstance();
 };
 
 #endif // SCREEN_HPP

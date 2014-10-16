@@ -1,7 +1,11 @@
-#include "Uniform.hpp"
-#include "Texture2D.hpp"
-#include "Texture3D.hpp"
-#include "Texture2DArray.hpp"
+#include <VBE/config.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/Texture2D.hpp>
+#include <VBE/graphics/Texture3D.hpp>
+#include <VBE/graphics/Texture2DArray.hpp>
+#include <VBE/graphics/TextureCubemap.hpp>
+#include <VBE/graphics/Uniform.hpp>
+#include <VBE/system/Log.hpp>
 
 Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 	dirty(true), count(count), type(type), location(location) {

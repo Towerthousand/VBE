@@ -1,4 +1,4 @@
-#include "Collision.hpp"
+#include <VBE/geometry/Collision.hpp>
 
 bool Collision::intersects(const Frustum& f, const AABB& b) {
 	for(unsigned int i=0; i < 6; i++)

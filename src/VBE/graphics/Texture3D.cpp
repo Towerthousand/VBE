@@ -1,4 +1,8 @@
-#include "Texture3D.hpp"
+#include <VBE/config.hpp>
+#include <VBE/dependencies/stb_image/stb_image.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/Texture3D.hpp>
+#include <VBE/system/Log.hpp>
 
 // 3D textures are not supported in GLES2
 #ifndef VBE_GLES2

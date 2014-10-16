@@ -1,5 +1,7 @@
-#include "Model.hpp"
-#include "Mesh.hpp"
+#include <VBE/graphics/Mesh.hpp>
+#include <VBE/graphics/Model.hpp>
+#include <VBE/graphics/ShaderProgram.hpp>
+#include <VBE/system/Log.hpp>
 
 Model::Model() : mesh(nullptr), program(nullptr) {
 }

@@ -1,4 +1,4 @@
-#include "Frustum.hpp"
+#include <VBE/geometry/Frustum.hpp>
 
 Frustum::Frustum() {
 }

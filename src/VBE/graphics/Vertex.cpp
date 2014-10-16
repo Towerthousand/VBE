@@ -1,4 +1,7 @@
-#include "Vertex.hpp"
+#include <VBE/config.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/Vertex.hpp>
+#include <VBE/system/Log.hpp>
 
 namespace Vertex {
 

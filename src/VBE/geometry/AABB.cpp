@@ -1,4 +1,4 @@
-#include "AABB.hpp"
+#include <VBE/geometry/AABB.hpp>
 
 AABB::AABB() {
 	pmax = vec3f(std::numeric_limits<float>::min());

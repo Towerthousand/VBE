@@ -1,4 +1,8 @@
-#include "TextureCubemap.hpp"
+#include <VBE/config.hpp>
+#include <VBE/dependencies/stb_image/stb_image.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/TextureCubemap.hpp>
+#include <VBE/system/Log.hpp>
 
 TextureCubemap::TextureCubemap() : size(0) {
 	texType = GL_TEXTURE_CUBE_MAP;

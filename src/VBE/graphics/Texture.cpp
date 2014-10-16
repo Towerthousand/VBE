@@ -1,4 +1,7 @@
-#include "Texture.hpp"
+#include <VBE/config.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/Texture.hpp>
+#include <VBE/system/Log.hpp>
 
 unsigned int Texture::lastSlot = 0;
 int Texture::maxSlots = -1;

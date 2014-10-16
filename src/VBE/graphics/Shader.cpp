@@ -1,4 +1,7 @@
-#include "Shader.hpp"
+#include <string>
+
+#include <VBE/system/Log.hpp>
+#include <VBE/graphics/Shader.hpp>
 
 Shader::Shader(GLenum type) {
 	shaderHandle = glCreateShader(type);

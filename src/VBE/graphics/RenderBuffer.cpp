@@ -1,4 +1,4 @@
-#include "RenderBuffer.hpp"
+#include <VBE/graphics/RenderBuffer.hpp>
 
 RenderBuffer::RenderBuffer(int width, int height, TextureFormat::Format format) : format(format){
 	GL_ASSERT(glGenRenderbuffers(1, &handle));

@@ -16,8 +16,6 @@ class ContextSettings {
 			ESProfile = 0x04,
 		};
 
-		unsigned int width;
-		unsigned int height;
 		unsigned int major;
 		unsigned int minor;
 		unsigned int redBits;
@@ -42,8 +40,6 @@ class ContextSettings {
 		bool requestSRGB;
 
 		ContextSettings() :
-			width(0),
-			height(0),
 #ifndef VBE_ES2
 			major(4),
 			minor(2),

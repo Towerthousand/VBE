@@ -1,4 +1,4 @@
-#include "Plane.hpp"
+#include <VBE/geometry/Plane.hpp>
 
 Plane::Plane(vec3f p0, vec3f p1, vec3f p2) {
 	vec3f v = p1-p0;

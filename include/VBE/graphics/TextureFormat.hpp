@@ -3,6 +3,7 @@
 
 #include <VBE/config.hpp>
 #include <VBE/graphics/OpenGL.hpp>
+#include <VBE/system/Log.hpp>
 
 class TextureFormat {
 	public:
@@ -223,7 +224,7 @@ class TextureFormat {
 				case 4:
 					return RGBA;
 				default:
-                    VBE_ASSERT(false,"Invalid component count: " << channels);
+                    VBE_ASSERT(false, "Invalid component count: " << channels);
 					return TextureFormat::RGBA;
 			}
 		}

@@ -45,22 +45,16 @@ class RenderTarget : public NonCopyable {
 #endif
 		}
 
-		RenderTarget();
-		RenderTarget(int width, int height);
+		RenderTarget(unsigned int width, unsigned int height);
+		RenderTarget(float mult);
 		~RenderTarget();
+		
+		static void bind(const RenderTarget* renderTarget);
+		static const RenderTarget *getCurrent();
 
-        static void bind(const RenderTarget* renderTarget);
-        static const RenderTarget *getCurrent();
-
-		int getWidth() const {
-			return size.x;
-		}
-		int getHeight() const {
-			return size.y;
-		}
-		vec2i getSize() const {
-			return size;
-		}
+		unsigned int getWidth() const;
+		unsigned int getHeight() const;
+		vec2ui getSize() const;
 
 		// TODO 
 		void addRenderBuffer(Attachment target, TextureFormat::Format format);
@@ -70,8 +64,8 @@ class RenderTarget : public NonCopyable {
 		Texture2D* getTextureForAttachment(Attachment attachment);
 		const Texture2D* getTextureForAttachment(Attachment attachment) const;
 	private:
-        void ensureValid() const;
-        void valid() const;
+		void ensureValid() const;
+		void valid() const;
 		struct RenderTargetEntry {
 				enum Type {
 					RenderBufferEntry,
@@ -96,14 +90,17 @@ class RenderTarget : public NonCopyable {
 
 		void registerAttachment(RenderTarget::Attachment a);
 
-        static const RenderTarget* current;
+		static const RenderTarget* current;
 
 		GLuint handle;
-        mutable vec2i size;
-        mutable bool dirty;
-        mutable bool attachDirty;
+		mutable vec2ui size;
+		bool screenRelativeSize;
+		float screenSizeMultiplier;
+		mutable bool dirty;
+		mutable bool attachDirty;
 		std::vector<Attachment> drawAttachments;
-        mutable std::map<Attachment, RenderTargetEntry> entries;
+		mutable std::map<Attachment, RenderTargetEntry> entries;
 };
+
 
 #endif // RENDERTARGET_HPP

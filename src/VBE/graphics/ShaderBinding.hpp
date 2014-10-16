@@ -1,6 +1,8 @@
 #ifndef SHADERBINDING_HPP
 #define SHADERBINDING_HPP
 
+#include <VBE/config.hpp>
+#include <VBE/graphics/OpenGL.hpp>
 #include <VBE/utils/NonCopyable.hpp>
 
 #ifndef VBE_GLES2
@@ -14,18 +16,18 @@ class ShaderBinding : public NonCopyable {
 		ShaderBinding(const ShaderProgram* program, const Mesh* mesh);
 		~ShaderBinding();
 
-#ifdef SHADERBINDING_USE_VAO
-		static void bindNull();
-#endif
-		void enable() const;
+		// Binds a ShaderBinding.
+		static void bind(const ShaderBinding* binding);
 	private:
-		void applyAttributes() const;
+		void enableAttributes() const;
+		void disableAttributes() const;
 
 		const ShaderProgram* program;
 		const Mesh* mesh;
 
+		static const ShaderBinding* currentBind;
+
 #ifdef SHADERBINDING_USE_VAO
-		static GLuint currentVAO;
 		GLuint vertexArrayObject;
 #endif
 };

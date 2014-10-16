@@ -1,4 +1,6 @@
-#include "OBJLoader.hpp"
+#include <VBE/graphics/OBJLoader.hpp>
+#include <VBE/math.hpp>
+#include <VBE/system/Log.hpp>
 
 struct FunctorComparevec3i{
 		bool operator()(const vec3i& a, const vec3i& b) {

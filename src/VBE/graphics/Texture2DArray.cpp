@@ -1,4 +1,7 @@
-#include "Texture2DArray.hpp"
+#include <VBE/config.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/Texture2DArray.hpp>
+#include <VBE/system/Log.hpp>
 
 // Texture arrays are not supported in GLES2
 #ifndef VBE_GLES2

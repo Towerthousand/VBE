@@ -1,9 +1,11 @@
-#include "ShaderBinding.hpp"
-#include "ShaderProgram.hpp"
-#include "Mesh.hpp"
+#include <VBE/config.hpp>
+#include <VBE/graphics/Mesh.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/ShaderBinding.hpp>
+#include <VBE/graphics/ShaderProgram.hpp>
+#include <VBE/system/Log.hpp>
 
 #ifdef SHADERBINDING_USE_VAO
-GLuint ShaderBinding::currentVAO = 0;
 #endif
 
 ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) :
@@ -23,28 +25,27 @@ ShaderBinding::~ShaderBinding() {
 #endif
 }
 
+const ShaderBinding* ShaderBinding::currentBind = nullptr;
+
+void ShaderBinding::bind(const ShaderBinding* binding) {
+	if(binding == currentBind) return;
+
 #ifdef SHADERBINDING_USE_VAO
-void ShaderBinding::bindNull() {
-	if(currentVAO != 0) {
+	if(binding != nullptr)
+		GL_ASSERT(glBindVertexArray(binding->vertexArrayObject));
+	else
 		GL_ASSERT(glBindVertexArray(0));
-		currentVAO = 0;
-	}
-}
-#endif
-
-void ShaderBinding::enable() const {
-#ifdef SHADERBINDING_USE_VAO
-	VBE_ASSERT(vertexArrayObject != 0, "nullptr VAO when about to bind");
-	if(vertexArrayObject != currentVAO) {
-		GL_ASSERT(glBindVertexArray(vertexArrayObject));
-		currentVAO = vertexArrayObject;
-	}
 #else
-	applyAttributes();
+	if(currentBind != nullptr)
+		currentBind->disableAttributes();
+	if(bind != nullptr)
+		currentBind->enableAttributes();
 #endif
+	currentBind = binding;
 }
 
-void ShaderBinding::applyAttributes() const {
+
+void ShaderBinding::enableAttributes() const {
 	VBE_ASSERT(mesh->getVertexBuffer() != 0, "mesh vertex buffer is null");
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, mesh->getVertexBuffer()));
 	if(mesh->isIndexed()) {
@@ -72,6 +73,18 @@ void ShaderBinding::applyAttributes() const {
 													current->type, current->conv == Vertex::Element::ConvertToFloatNormalized ? GL_TRUE : GL_FALSE,
 													format.vertexSize(),
 													(GLvoid*)long(format.offset(i))));
+			}
+		}
+	}
+}
+
+void ShaderBinding::disableAttributes() const {
+	const Vertex::Format format = mesh->getVertexFormat();
+	for(std::map<std::string, GLint>::const_iterator it = program->attributes.begin(); it != program->attributes.end(); ++it) {
+		for(unsigned int i = 0; i < format.elementCount(); ++i) {
+			const Vertex::Element* current = &format.element(i);
+			if(current->attr.hasName(it->first)) {
+				GL_ASSERT(glDisableVertexAttribArray(it->second));
 			}
 		}
 	}

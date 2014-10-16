@@ -3,6 +3,7 @@
 
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/graphics/TextureFormat.hpp>
+#include <VBE/utils/NonCopyable.hpp>
 
 class Texture : public NonCopyable {
 	public:
