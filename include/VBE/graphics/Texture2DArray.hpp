@@ -46,16 +46,17 @@ class Texture2DArray : public Texture {
 #ifndef VBE_GLES2
 		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
 #endif
-		int getWidth()  const;
-		int getHeight() const;
-		int getSlices() const;
+		unsigned int getWidth() const;
+		unsigned int getHeight() const;
+		vec3ui getSize() const;
+		unsigned int getSlices() const;
 
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap);
 		void bind() const;
 
 	private:
-		vec3i size;
+		vec3ui size;
 };
 
 #endif // VBE_GLES2

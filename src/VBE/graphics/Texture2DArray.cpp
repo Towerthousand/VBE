@@ -1,3 +1,6 @@
+#include <cstring>
+
+#include <VBE/dependencies/stb_image/stb_image.hpp>
 #include <VBE/config.hpp>
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/graphics/Texture2DArray.hpp>
@@ -115,16 +118,20 @@ void Texture2DArray::setComparison(GLenum func, GLenum mode) {
 }
 #endif
 
-int Texture2DArray::getWidth() const {
+unsigned int Texture2DArray::getWidth() const {
 	return size.x;
 }
 
-int Texture2DArray::getHeight() const {
+unsigned int Texture2DArray::getHeight() const {
 	return size.y;
 }
 
-int Texture2DArray::getSlices() const {
+unsigned int Texture2DArray::getSlices() const {
 	return size.z;
+}
+
+vec3ui Texture2DArray::getSize() const {
+	return size;
 }
 
 void Texture2DArray::bind() const {

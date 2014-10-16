@@ -16,8 +16,8 @@ class ContextSettings {
 			ESProfile = 0x04,
 		};
 
-		unsigned int major;
-		unsigned int minor;
+		unsigned int versionMajor;
+		unsigned int versionMinor;
 		unsigned int redBits;
 		unsigned int greenBits;
 		unsigned int blueBits;
@@ -41,11 +41,11 @@ class ContextSettings {
 
 		ContextSettings() :
 #ifndef VBE_ES2
-			major(4),
-			minor(2),
+			versionMajor(4),
+			versionMinor(2),
 #else
-			major(2),
-			minor(0),
+			versionMajor(2),
+			versionMinor(0),
 #endif
 			redBits(8),
 			greenBits(8),

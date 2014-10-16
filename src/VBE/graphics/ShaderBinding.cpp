@@ -14,8 +14,7 @@ ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) :
 #ifdef SHADERBINDING_USE_VAO
 	GL_ASSERT(glGenVertexArrays(1, &vertexArrayObject));
 	GL_ASSERT(glBindVertexArray(vertexArrayObject));
-	applyAttributes();
-	GL_ASSERT(glBindVertexArray(currentVAO));
+	enableAttributes();
 #endif
 }
 

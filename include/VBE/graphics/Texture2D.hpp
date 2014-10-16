@@ -39,9 +39,9 @@ class Texture2D : public Texture {
 #ifndef VBE_GLES2
 		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
 #endif
-		int getWidth() const;
-		int getHeight() const;
-		vec2i getSize() const;
+		unsigned int getWidth() const;
+		unsigned int getHeight() const;
+		vec2ui getSize() const;
 
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap);
@@ -56,7 +56,7 @@ class Texture2D : public Texture {
 				  TextureFormat::Format sourceFormat,
 				  TextureFormat::SourceType sourceType);
 		Texture2D();
-		vec2i size;
+		vec2ui size;
 };
 
 #endif // TEXTURE2D_HPP

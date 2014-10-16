@@ -1,5 +1,6 @@
-#include "GameObject.hpp"
-#include "Game.hpp"
+#include <VBE/scenegraph/GameObject.hpp>
+#include <VBE/scenegraph/Game.hpp>
+#include <VBE/system/Log.hpp>
 
 GameObject::GameObject() : id(Game::i() != nullptr?Game::i()->idCounter++:-1),
 	transform(1.0f), fullTransform(1.0f), parent(nullptr), drawPriority(0),

@@ -90,15 +90,15 @@ void Texture2D::setComparison(GLenum func, GLenum mode) {
 }
 #endif
 
-int Texture2D::getWidth() const {
+unsigned int Texture2D::getWidth() const {
 	return size.x;
 }
 
-int Texture2D::getHeight() const {
+unsigned int Texture2D::getHeight() const {
 	return size.y;
 }
 
-vec2i Texture2D::getSize() const {
+vec2ui Texture2D::getSize() const {
 	return size;
 }
 

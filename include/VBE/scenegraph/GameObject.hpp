@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include <VBE/math.hpp>
 #include <VBE/utils/NonCopyable.hpp>
 
 class Game;

@@ -39,9 +39,10 @@ class Texture3D : public Texture {
 				TextureFormat::Format format = TextureFormat::RGBA);
 
 		void resize(unsigned int sizeX, unsigned int sizeY, unsigned sizeZ);
-		int getWidth() const;
-		int getHeight() const;
-		int getDepth() const;
+		unsigned int getWidth() const;
+		unsigned int getHeight() const;
+		unsigned int getDepth() const;
+		vec3ui getSize() const;
 
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap);
@@ -49,7 +50,7 @@ class Texture3D : public Texture {
 
 	private:
 		Texture3D();
-		vec3i size;
+		vec3ui size;
 };
 
 #endif // VBE_GLES2

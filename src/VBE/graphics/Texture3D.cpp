@@ -68,17 +68,22 @@ void Texture3D::resize(unsigned int sizeX, unsigned int sizeY, unsigned sizeZ) {
 	loadEmpty(sizeX, sizeY, sizeZ, format);
 }
 
-int Texture3D::getWidth() const {
+unsigned int Texture3D::getWidth() const {
 	return size.x;
 }
 
-int Texture3D::getHeight() const {
+unsigned int Texture3D::getHeight() const {
 	return size.y;
 }
 
-int Texture3D::getDepth() const {
+unsigned int Texture3D::getDepth() const {
 	return size.z;
 }
+
+vec3ui Texture3D::getSize() const {
+	return size;
+}
+
 
 void Texture3D::bind() const {
 	VBE_ASSERT(handle !=0, "Cannot bind null texture");

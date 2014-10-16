@@ -1,4 +1,4 @@
-#include "Log.hpp"
+#include <VBE/system/Log.hpp>
 #include <ctime>
 
 std::ostringstream Log::endFile;

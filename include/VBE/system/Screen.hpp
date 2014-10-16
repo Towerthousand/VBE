@@ -6,6 +6,7 @@
 
 #include <VBE/system/ContextSettings.hpp>
 
+class ScreenImpl;
 class Screen : public NonCopyable {
 	public:
 		class DisplayMode {
@@ -35,7 +36,7 @@ class Screen : public NonCopyable {
 				// Si que puede crear windowed modes con el tamanyo que le de la gana.
 
 				// Los windowed modes no tienen refresh rate, usan la del desktop no?
-				DisplayMode createWindowedMode(int width, int height) {
+				static DisplayMode createWindowedMode(int width, int height) {
 					return DisplayMode(width, height, 0, false);
 				}
 			private:
@@ -72,6 +73,13 @@ class Screen : public NonCopyable {
 
 		// Returns a pointer to the Screen instance.
 		static Screen* getInstance();
+
+	private:
+		ScreenImpl* impl;
+		std::string title;
+		DisplayMode displayMode;
+		static Screen* instance;
+
 };
 
 #endif // SCREEN_HPP

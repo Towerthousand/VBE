@@ -1,3 +1,4 @@
+#include <cstring>
 #include <string>
 
 #include <VBE/config.hpp>
@@ -200,6 +201,8 @@ void ShaderProgram::retrieveProgramInfo() {
 					// seem to be consistent across different drivers/implementations in how it returns
 					// array uniforms. On some systems it will return "u_matrixArray", while on others
 					// it will return "u_matrixArray[0]".
+
+					//TODO rewrite this using std::string please
 					char* c = strrchr(uniformName, '[');
 					if (c) *c = '\0';
 				}

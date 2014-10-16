@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <VBE/config.hpp>
 #include <VBE/dependencies/stb_image/stb_image.hpp>
 #include <VBE/graphics/OpenGL.hpp>

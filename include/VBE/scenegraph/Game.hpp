@@ -1,6 +1,10 @@
 #ifndef GAME_HPP
 #define GAME_HPP
-#include "ContainerObject.hpp"
+
+#include<map>
+
+#include <VBE/scenegraph/GameObject.hpp>
+#include <VBE/scenegraph/ContainerObject.hpp>
 
 class Game : public ContainerObject {
 	public:
