@@ -6,18 +6,18 @@
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/system/Log.hpp>
 
-Mesh::Mesh(Vertex::Format format, BufferType bufferType, bool indexed) :
+Mesh::Mesh(const Vertex::Format& format, MeshType type, BufferType bufferType) :
 	vertexFormat(format),
 	vertexCount(0),
 	indexCount(0),
 	vertexBuffer(0),
 	primitiveType(TRIANGLES),
-	bufferType(bufferType),
-	indexed(indexed) {
+	meshType(type),
+	bufferType(bufferType) {
 	GL_ASSERT(glGenBuffers(1, &vertexBuffer));
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
 	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, 0, nullptr, bufferType));
-	if(indexed) GL_ASSERT(glGenBuffers(1, &indexBuffer));
+	if(isIndexed()) GL_ASSERT(glGenBuffers(1, &indexBuffer));
 }
 
 Mesh::~Mesh() {
@@ -25,6 +25,10 @@ Mesh::~Mesh() {
 		GL_ASSERT(glDeleteBuffers(1, &vertexBuffer));
 	for(std::map<GLuint, const ShaderBinding*>::iterator it = bindingsCache.begin(); it != bindingsCache.end(); ++it)
 		delete it->second;
+}
+
+void Mesh::draw(const ShaderProgram *program) {
+	draw(program, 0, vertexCount);
 }
 
 void Mesh::draw(const ShaderProgram *program, unsigned int offset, unsigned int length) {
@@ -43,8 +47,10 @@ void Mesh::draw(const ShaderProgram *program, unsigned int offset, unsigned int 
     program->use();
     ShaderBinding::bind(binding);
  
-    if(!indexed) GL_ASSERT(glDrawArrays(primitiveType, offset, length));
-    else GL_ASSERT(glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0));
+	if(isIndexed())
+		GL_ASSERT(glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0));
+	else
+		GL_ASSERT(glDrawArrays(primitiveType, offset, length));
 }
 
 const Vertex::Format& Mesh::getVertexFormat() const {
@@ -76,7 +82,7 @@ Mesh::PrimitiveType Mesh::getPrimitiveType() const {
 }
 
 bool Mesh::isIndexed() const {
-	return indexed;
+	return meshType == Indexed;
 }
 
 void Mesh::setPrimitiveType(Mesh::PrimitiveType type) {
@@ -93,7 +99,7 @@ void Mesh::setVertexData(const void* vertexData, unsigned int newVertexCount) {
 
 void Mesh::setVertexIndices(const unsigned int* indexData, unsigned int newIndexCount) {
 	ShaderBinding::bind(nullptr);
-	VBE_ASSERT(indexed, "Cannot set indexes for a non-indexed mesh");
+	VBE_ASSERT(isIndexed(), "Cannot set indexes for a non-indexed mesh");
 	indexCount = newIndexCount;
 	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer));
 	GL_ASSERT(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), indexData, bufferType));
@@ -104,6 +110,6 @@ Mesh* Mesh::loadFromFile(const std::string filepath, Mesh::BufferType bufferType
 	return OBJLoader::loadFromOBJTangents(filepath,bufferType);
 }
 
-Mesh* Mesh::loadEmpty(Vertex::Format format, Mesh::BufferType bufferType, bool indexed) {
-	return new Mesh(format, bufferType, indexed);
+Mesh* Mesh::loadEmpty(const Vertex::Format& format, Mesh::MeshType type, Mesh::BufferType bufferType) {
+	return new Mesh(format, type, bufferType);
 }

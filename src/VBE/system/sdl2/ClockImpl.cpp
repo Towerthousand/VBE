@@ -1,5 +1,5 @@
 #include <VBE/system/sdl2/ClockImpl.hpp>
-#include <SDL2/SDL.h>
+#include <VBE/system/sdl2/sdl2.hpp>
 
 // static
 float ClockImpl::getSeconds() {

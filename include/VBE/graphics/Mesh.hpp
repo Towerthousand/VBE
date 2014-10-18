@@ -32,12 +32,18 @@ class Mesh : public NonCopyable {
 			STREAM = GL_STREAM_DRAW
 		};
 
+		enum MeshType {
+			NotIndexed,
+			Indexed
+		};
+
 		static Mesh* loadFromFile(const std::string filepath, Mesh::BufferType bufferType = STATIC);
-		static Mesh* loadEmpty(Vertex::Format format, Mesh::BufferType bufferType = STATIC, bool indexed = false);
+		static Mesh* loadEmpty(const Vertex::Format& format, MeshType type = NotIndexed, Mesh::BufferType bufferType = STATIC);
 
 		~Mesh();
 
-		void draw(const ShaderProgram* program, unsigned int firstVertex, unsigned int vCount);
+		void draw(const ShaderProgram* program);
+		void draw(const ShaderProgram* program, unsigned int offset, unsigned int length);
 
 		const Vertex::Format& getVertexFormat() const;
 		unsigned int getVertexCount() const;
@@ -53,7 +59,7 @@ class Mesh : public NonCopyable {
 		void setVertexIndices(const unsigned int* indexData, unsigned int newIndexCount);
 
 	private:
-		Mesh(Vertex::Format format, BufferType bufferType = STATIC, bool indexed = false);
+		Mesh(const Vertex::Format& format, MeshType type = NotIndexed, Mesh::BufferType bufferType = STATIC);
 
 		std::map<GLuint, const ShaderBinding*> bindingsCache;
 		const Vertex::Format vertexFormat;
@@ -62,8 +68,8 @@ class Mesh : public NonCopyable {
 		GLuint vertexBuffer;
 		GLuint indexBuffer;
 		PrimitiveType primitiveType;
+		MeshType meshType;
 		BufferType bufferType;
-		bool indexed;
 };
 
 #endif // MESH_HPP

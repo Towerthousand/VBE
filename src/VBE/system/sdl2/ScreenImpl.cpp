@@ -13,12 +13,14 @@ void ScreenImpl::initSDL() {
 	if(isSDLInit) return;
 	VBE_ASSERT(SDL_WasInit(SDL_INIT_EVERYTHING) == 0, "SDL Has been init from outside of this application");
 	int ret = SDL_Init(SDL_INIT_EVERYTHING);
-	VBE_ASSERT(ret == 0, "Error when initializating SDL" << SDL_GetError());
+	VBE_ASSERT(ret == 0, "Error when initializating SDL: " << SDL_GetError());
 	isSDLInit = true;
 }
 
 // static
 std::vector<Screen::DisplayMode> ScreenImpl::getFullscreenModes() {
+	initSDL();
+
 	// We have no multiple screen support in VBE for now, we just
 	// use the main screen.
 	const int displayIndex = 0;
@@ -27,7 +29,7 @@ std::vector<Screen::DisplayMode> ScreenImpl::getFullscreenModes() {
 	int numModes = SDL_GetNumDisplayModes(displayIndex);
 	for(int i = 0; i < numModes; ++i) {
 		SDL_DisplayMode mode;
-		SDL_GetDisplayMode(displayIndex, i, &mode);
+		SDL_ASSERT(SDL_GetDisplayMode(displayIndex, i, &mode));
 
 		Screen::DisplayMode dm(mode.w, mode.h, mode.refresh_rate, Screen::DisplayMode::Fullscreen);
 
@@ -87,15 +89,15 @@ void ScreenImpl::create(Screen::DisplayMode mode, ContextSettings config) {
 
 		// Recover the SDL DisplayMode from the VBE DisplayMode
 		SDL_DisplayMode sdlMode;
-		SDL_GetDisplayMode(displayIndex, mode.implementationData, &sdlMode);
+		SDL_ASSERT(SDL_GetDisplayMode(displayIndex, mode.implementationData, &sdlMode));
 
-		SDL_SetWindowDisplayMode(window, &sdlMode);
-		SDL_SetWindowFullscreen(window, SDL_TRUE);
+		SDL_ASSERT(SDL_SetWindowDisplayMode(window, &sdlMode));
+		SDL_ASSERT(SDL_SetWindowFullscreen(window, SDL_TRUE));
 	}
 
 	// Create the GL context
 	context = SDL_GL_CreateContext(window);
-	VBE_ASSERT(context != nullptr, "Failed to create OpenGL context"<<SDL_GetError());
+	VBE_ASSERT(context != nullptr, "Failed to create OpenGL context: "<<SDL_GetError());
 
 	// Finally show the window.
 	SDL_ShowWindow(window);
@@ -120,13 +122,13 @@ void ScreenImpl::setDisplayMode(Screen::DisplayMode mode) {
 
 		// Recover the SDL DisplayMode from the VBE DisplayMode
 		SDL_DisplayMode sdlMode;
-		SDL_GetDisplayMode(displayIndex, mode.implementationData, &sdlMode);
+		SDL_ASSERT(SDL_GetDisplayMode(displayIndex, mode.implementationData, &sdlMode));
 
-		SDL_SetWindowDisplayMode(window, &sdlMode);
-		SDL_SetWindowFullscreen(window, SDL_TRUE);
+		SDL_ASSERT(SDL_SetWindowDisplayMode(window, &sdlMode));
+		SDL_ASSERT(SDL_SetWindowFullscreen(window, SDL_TRUE));
 	}
 	else { // Windowed
-		SDL_SetWindowFullscreen(window, SDL_FALSE);
+		SDL_ASSERT(SDL_SetWindowFullscreen(window, SDL_FALSE));
 		SDL_SetWindowSize(window, mode.getWidth(), mode.getHeight());
 	}
 }

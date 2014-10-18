@@ -3,8 +3,7 @@
 
 #include <VBE/system/Mouse.hpp>
 #include <VBE/system/Keyboard.hpp>
-
-#include <SDL2/SDL.h>
+#include <VBE/system/sdl2/sdl2.hpp>
 
 
 class InputImpl {

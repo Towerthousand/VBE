@@ -2,11 +2,11 @@
 #define SCREENIMPL_HPP
 
 #include <string>
-#include <SDL2/SDL.h>
 
 #include <VBE/math.hpp>
 #include <VBE/system/Screen.hpp>
 #include <VBE/system/ContextSettings.hpp>
+#include <VBE/system/sdl2/sdl2.hpp>
 
 class ScreenImpl {
 	public:

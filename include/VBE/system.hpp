@@ -1,3 +1,4 @@
+#include <VBE/system/Clock.hpp>
 #include <VBE/system/ContextSettings.hpp>
 #include <VBE/system/InputStream.hpp>
 #include <VBE/system/Keyboard.hpp>

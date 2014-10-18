@@ -86,13 +86,13 @@ Mesh* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::BufferTy
 	VBE_DLOG(" - Size with indexes: " << sizeWithIndex << ". Size without indexes: " << sizeWithoutIndex);
 	Mesh* mesh = nullptr;
     if(sizeWithoutIndex > sizeWithIndex) { //indexed
-        mesh = Mesh::loadEmpty(Vertex::Format(elements), bufferType, true);
+		mesh = Mesh::loadEmpty(Vertex::Format(elements), Mesh::Indexed, bufferType);
 		mesh->setVertexData(&dataIndexed[0], dataIndexed.size());
 		mesh->setVertexIndices(&indices[0], indices.size());
 		VBE_DLOG("    Using indexes");
 	}
     else { //not indexed
-        mesh = Mesh::loadEmpty(Vertex::Format(elements), bufferType, false);
+		mesh = Mesh::loadEmpty(Vertex::Format(elements), Mesh::NotIndexed, bufferType);
 		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 		VBE_DLOG("    Not using indexes");
     }
@@ -178,13 +178,13 @@ Mesh* OBJLoader::loadFromOBJTangents(const std::string& filepath, Mesh::BufferTy
 	VBE_DLOG(" - Size with indexes: " << sizeWithIndex << ". Size without indexes: " << sizeWithoutIndex);
 	Mesh* mesh = nullptr;
 	if(sizeWithoutIndex > sizeWithIndex) { //indexed
-        mesh = Mesh::loadEmpty(Vertex::Format(elements), bufferType, true);
+		mesh = Mesh::loadEmpty(Vertex::Format(elements), Mesh::Indexed, bufferType);
 		mesh->setVertexData(&dataIndexed[0], dataIndexed.size());
 		mesh->setVertexIndices(&indices[0], indices.size());
 		VBE_DLOG("    Using indexes");
 	}
 	else { //not indexed
-        mesh = Mesh::loadEmpty(Vertex::Format(elements), bufferType, false);
+		mesh = Mesh::loadEmpty(Vertex::Format(elements), Mesh::NotIndexed, bufferType);
 		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 		VBE_DLOG("    Not using indexes");
     }

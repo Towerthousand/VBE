@@ -20,10 +20,11 @@ INCLUDEPATH += include src
 #__DLOG will output all VBE_DLOG(..). This is detailed log info, use it for debugging.
 # Disable all three for faster internets
 
-QMAKE_CXXFLAGS += -std=c++0x
+include(../common.pri)
 
 OTHER_FILES += \
-    doxygenconfig
+    doxygenconfig \
+    VBE.pri
 
 HEADERS += \
     include/VBE/config.hpp \
@@ -76,7 +77,8 @@ HEADERS += \
     src/VBE/system/ScreenImpl.hpp \
     src/VBE/system/ClockImpl.hpp \
     src/VBE/system/InputImpl.hpp \
-    src/VBE/system/sdl2/InputImpl.hpp
+    src/VBE/system/sdl2/InputImpl.hpp \
+    src/VBE/system/sdl2/sdl2.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
