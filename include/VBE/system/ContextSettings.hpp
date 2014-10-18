@@ -1,6 +1,12 @@
 #ifndef STARTINGCONFIG_HPP
 #define STARTINGCONFIG_HPP
 
+
+///
+/// \brief The ContextSettings class
+///
+/// Contains the settings for the OpenGL context creation used when creating a Screen.
+///
 class ContextSettings {
 	public:
 		enum ContextFlag {

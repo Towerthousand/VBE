@@ -1,6 +1,13 @@
 #ifndef INPUTSTREAM_HPP
 #define INPUTSTREAM_HPP
 
+
+///
+/// \brief The InputStream class can be used to read an input stream of data.
+/// Several implementations exist that read from several sources, such as
+/// FileInputStream, which reads from regular files, or ResourceInputStream, which
+/// reads from asset files in the APK in Android.
+///
 class InputStream {
 	public :
 		virtual ~InputStream() {}

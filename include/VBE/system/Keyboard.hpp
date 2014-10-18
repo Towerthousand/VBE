@@ -2,12 +2,12 @@
 #define KEYBOARD_HPP
 
 ///
-/// @brief Provides interface for a keyboard device
+/// \brief The Keyboard class provides support to read the keyboard.
 ///
 class Keyboard {
 	public:
 		///
-		/// \brief Contains all supported keys
+		/// \brief Contains all supported keys.
 		///
 		enum Key {
 			Num0,
@@ -250,17 +250,17 @@ class Keyboard {
 		};
 
 		///
-		/// \brief Tells wether the requested key is pressed (held down)
+		/// \brief Tells whether the given key is pressed (held down)
 		///
 		static bool pressed(Key k);
 
 		///
-		/// \brief Tells wether the requested key is just released (It was not pressed on the last frame and now it is.)
+		/// \brief Tells whether the given key has just been pressed (It was not pressed on the last frame and now it is.)
 		///
 		static bool justPressed(Key k);
 
 		///
-		/// \brief Tells wether the requested key is just released (It was pressed on the last frame and it's now released.)
+		/// \brief Tells whether the given key has just been released (It was pressed on the last frame and it's now released.)
 		///
 		static bool justReleased(Key k);
 };
