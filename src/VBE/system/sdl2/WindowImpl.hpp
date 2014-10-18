@@ -1,20 +1,20 @@
-#ifndef SCREENIMPL_HPP
-#define SCREENIMPL_HPP
+#ifndef WINDOWIMPL_HPP
+#define WINDOWIMPL_HPP
 
 #include <string>
 
 #include <VBE/math.hpp>
-#include <VBE/system/Screen.hpp>
+#include <VBE/system/Window.hpp>
 #include <VBE/system/ContextSettings.hpp>
 #include <VBE/system/sdl2/sdl2.hpp>
 
-class ScreenImpl {
+class WindowImpl {
 	public:
-		static std::vector<Screen::DisplayMode> getFullscreenModes();
-		static void create(Screen::DisplayMode mode, ContextSettings contextSettings);
+		static std::vector<Window::DisplayMode> getFullscreenModes();
+		static void create(Window::DisplayMode mode, ContextSettings contextSettings);
 		static void destroy();
 
-		static void setDisplayMode(Screen::DisplayMode mode);
+		static void setDisplayMode(Window::DisplayMode mode);
 		static vec2ui getSize();
 
 		static void update();
@@ -38,4 +38,4 @@ class ScreenImpl {
 		friend class InputImpl;
 };
 
-#endif // SCREENIMPL_HPP
+#endif // WINDOWIMPL_HPP

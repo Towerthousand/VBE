@@ -1,15 +1,15 @@
-#include <VBE/system/sdl2/ScreenImpl.hpp>
+#include <VBE/system/sdl2/WindowImpl.hpp>
 #include <VBE/system/sdl2/InputImpl.hpp>
 #include <VBE/system/Log.hpp>
 
 // static
-bool ScreenImpl::isSDLInit = false;
-SDL_Window* ScreenImpl::window;
-SDL_GLContext ScreenImpl::context;
-bool ScreenImpl::focused = false;
+bool WindowImpl::isSDLInit = false;
+SDL_Window* WindowImpl::window;
+SDL_GLContext WindowImpl::context;
+bool WindowImpl::focused = false;
 
 //static
-void ScreenImpl::initSDL() {
+void WindowImpl::initSDL() {
 	if(isSDLInit) return;
 	VBE_ASSERT(SDL_WasInit(SDL_INIT_EVERYTHING) == 0, "SDL Has been init from outside of this application");
 	int ret = SDL_Init(SDL_INIT_EVERYTHING);
@@ -18,20 +18,20 @@ void ScreenImpl::initSDL() {
 }
 
 // static
-std::vector<Screen::DisplayMode> ScreenImpl::getFullscreenModes() {
+std::vector<Window::DisplayMode> WindowImpl::getFullscreenModes() {
 	initSDL();
 
-	// We have no multiple screen support in VBE for now, we just
-	// use the main screen.
+	// We have no multiple Window support in VBE for now, we just
+	// use the main Window.
 	const int displayIndex = 0;
 
-	std::vector<Screen::DisplayMode> v;
+	std::vector<Window::DisplayMode> v;
 	int numModes = SDL_GetNumDisplayModes(displayIndex);
 	for(int i = 0; i < numModes; ++i) {
 		SDL_DisplayMode mode;
 		SDL_ASSERT(SDL_GetDisplayMode(displayIndex, i, &mode));
 
-		Screen::DisplayMode dm(mode.w, mode.h, mode.refresh_rate, Screen::DisplayMode::Fullscreen);
+		Window::DisplayMode dm(mode.w, mode.h, mode.refresh_rate, Window::DisplayMode::Fullscreen);
 
 		// Save the SDL displaymode index so we can
 		// recover the displaymode later.
@@ -42,14 +42,14 @@ std::vector<Screen::DisplayMode> ScreenImpl::getFullscreenModes() {
 }
 
 // static
-vec2ui ScreenImpl::getSize() {
+vec2ui WindowImpl::getSize() {
 	int x, y;
 	SDL_GetWindowSize(window, &x, &y);
 	return vec2ui(x, y);
 }
 
 // static
-void ScreenImpl::create(Screen::DisplayMode mode, ContextSettings config) {
+void WindowImpl::create(Window::DisplayMode mode, ContextSettings config) {
 	initSDL();
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, config.redBits);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, config.greenBits);
@@ -75,16 +75,16 @@ void ScreenImpl::create(Screen::DisplayMode mode, ContextSettings config) {
 	SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, config.requestSRGB);
 
 	// Create the window, but not show it yet because we need to set the display mode
-	// if the window is fullscreen.
+	// if the window is Fullscreen.
 	window = SDL_CreateWindow("VBE Game",
 							  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 							  mode.getWidth(), mode.getHeight(),
 							  SDL_WINDOW_OPENGL);
 	VBE_ASSERT(window != nullptr, "Failed to init window: "<<SDL_GetError());
 
-	if(mode.getType() == Screen::DisplayMode::Fullscreen) {
-		// We have no multiple screen support in VBE for now, we just
-		// use the main screen.
+	if(mode.getType() == Window::DisplayMode::Fullscreen) {
+		// We have no multiple Window support in VBE for now, we just
+		// use the main Window.
 		const int displayIndex = 0;
 
 		// Recover the SDL DisplayMode from the VBE DisplayMode
@@ -107,17 +107,17 @@ void ScreenImpl::create(Screen::DisplayMode mode, ContextSettings config) {
 }
 
 // static
-void ScreenImpl::destroy() {
+void WindowImpl::destroy() {
 	SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow(window);
 	window = nullptr;
 }
 
 // static
-void ScreenImpl::setDisplayMode(Screen::DisplayMode mode) {
-	if(mode.getType() == Screen::DisplayMode::Fullscreen) {
-		// We have no multiple screen support in VBE for now, we just
-		// use the main screen.
+void WindowImpl::setDisplayMode(Window::DisplayMode mode) {
+	if(mode.getType() == Window::DisplayMode::Fullscreen) {
+		// We have no multiple Window support in VBE for now, we just
+		// use the main Window.
 		const int displayIndex = 0;
 
 		// Recover the SDL DisplayMode from the VBE DisplayMode
@@ -134,7 +134,7 @@ void ScreenImpl::setDisplayMode(Screen::DisplayMode mode) {
 }
 
 // static
-void ScreenImpl::update() {
+void WindowImpl::update() {
 	InputImpl::update();
 
 	SDL_Event e;
@@ -147,7 +147,7 @@ void ScreenImpl::update() {
 				exit(1);
 
 				// We don't want to force users to use Game.
-				// Game should check if the screen has closed, not otherwise.
+				// Game should check if the Window has closed, not otherwise.
 				// TODO fix
 				//if(Game::i() != nullptr)
 				//	Game::i()->isRunning = false;
@@ -178,7 +178,7 @@ void ScreenImpl::update() {
 }
 
 
-void ScreenImpl::processEvent(const SDL_Event &e) {
+void WindowImpl::processEvent(const SDL_Event &e) {
 	switch(e.window.type) {
 		case SDL_WINDOWEVENT_CLOSE:
 			//TODO FIX THIS
@@ -207,22 +207,22 @@ void ScreenImpl::processEvent(const SDL_Event &e) {
 
 
 // static
-void ScreenImpl::setTitle(std::string newTitle) {
+void WindowImpl::setTitle(std::string newTitle) {
 	SDL_SetWindowTitle(window, newTitle.c_str());
 }
 
 // static
-bool ScreenImpl::isFocused() {
+bool WindowImpl::isFocused() {
 	return focused;
 }
 
 // static
-void ScreenImpl::setPosition(unsigned int x, unsigned int y) {
-//	VBE_ASSERT(!fullscreen, "Window must not be fullscreen to call setPosition");
+void WindowImpl::setPosition(unsigned int x, unsigned int y) {
+//	VBE_ASSERT(!Fullscreen, "Window must not be Fullscreen to call setPosition");
 	SDL_SetWindowPosition(window, x, y);
 }
 
 // static
-void ScreenImpl::swapBuffers() {
+void WindowImpl::swapBuffers() {
 	SDL_GL_SwapWindow(window);
 }

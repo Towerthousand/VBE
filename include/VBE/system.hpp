@@ -4,4 +4,4 @@
 #include <VBE/system/Keyboard.hpp>
 #include <VBE/system/Log.hpp>
 #include <VBE/system/Mouse.hpp>
-#include <VBE/system/Screen.hpp>
+#include <VBE/system/Window.hpp>

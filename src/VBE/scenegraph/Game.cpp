@@ -1,6 +1,6 @@
 #include <VBE/scenegraph/Game.hpp>
 #include <VBE/system/Clock.hpp>
-#include <VBE/system/Screen.hpp>
+#include <VBE/system/Window.hpp>
 #include <VBE/system/Log.hpp>
 
 Game* Game::instance = nullptr;
@@ -21,13 +21,13 @@ Game::~Game() {
 }
 
 void Game::update(float deltaTime) {
-	Screen::getInstance()->update();
+	Window::getInstance()->update();
 	ContainerObject::update(deltaTime);
 }
 
 void Game::draw() {
 	ContainerObject::draw();
-	Screen::getInstance()->swapBuffers();
+	Window::getInstance()->swapBuffers();
 }
 
 GameObject* Game::getObjectByName(std::string name) const {

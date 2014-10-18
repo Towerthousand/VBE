@@ -1,7 +1,7 @@
 #include <VBE/config.hpp>
 #include <VBE/graphics/RenderBuffer.cpp>
 #include <VBE/graphics/RenderTarget.hpp>
-#include <VBE/system/Screen.hpp>
+#include <VBE/system/Window.hpp>
 
 const RenderTarget* RenderTarget::current = nullptr;
 
@@ -34,7 +34,7 @@ RenderTarget::~RenderTarget() {
 
 vec2ui RenderTarget::getSize() const {
 	if(screenRelativeSize) {
-		vec2ui screenSize = Screen::getInstance()->getSize();
+		vec2ui screenSize = Window::getInstance()->getSize();
 		return vec2ui(
 			static_cast<unsigned int>(screenSize.x*screenSizeMultiplier),
 			static_cast<unsigned int>(screenSize.y*screenSizeMultiplier));
@@ -55,7 +55,7 @@ unsigned int RenderTarget::getHeight() const {
 void RenderTarget::bind(const RenderTarget *target) {
 	if(current == target && (target == nullptr || !target->dirty)) return;
 	if(target == nullptr) { //BIND SCREEN FRAMEBUFFER
-		vec2ui screenSize = Screen::getInstance()->getSize();
+		vec2ui screenSize = Window::getInstance()->getSize();
 		GL_ASSERT(glViewport(0, 0, screenSize.x, screenSize.y));
 		GL_ASSERT(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}

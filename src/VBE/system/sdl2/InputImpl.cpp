@@ -1,5 +1,5 @@
 #include <VBE/system/sdl2/InputImpl.hpp>
-#include <VBE/system/sdl2/ScreenImpl.hpp>
+#include <VBE/system/sdl2/WindowImpl.hpp>
 #include <VBE/system/Log.hpp>
 
 // static
@@ -49,10 +49,10 @@ InputImpl::KeyState InputImpl::getMouseButtonState(Mouse::Button button) {
 }
 
 void InputImpl::setMousePosition(int x, int y) {
-	if(!ScreenImpl::isFocused() || relativeMouse)
+	if(!WindowImpl::isFocused() || relativeMouse)
 		return;
 
-	SDL_WarpMouseInWindow(ScreenImpl::window, x, y);
+	SDL_WarpMouseInWindow(WindowImpl::window, x, y);
 	mousePos = vec2i(x, y);
 }
 
@@ -61,7 +61,7 @@ void InputImpl::setCursorVisible(bool visible) {
 }
 
 void InputImpl::setGrab(bool grab) {
-	SDL_SetWindowGrab(ScreenImpl::window, (grab ? SDL_TRUE : SDL_FALSE));
+	SDL_SetWindowGrab(WindowImpl::window, (grab ? SDL_TRUE : SDL_FALSE));
 }
 
 void InputImpl::setRelativeMouseMode(bool relative) {

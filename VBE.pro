@@ -41,7 +41,6 @@ HEADERS += \
     include/VBE/system/Keyboard.hpp \
     include/VBE/system/Log.hpp \
     include/VBE/system/Mouse.hpp \
-    include/VBE/system/Screen.hpp \
     include/VBE/scenegraph/Camera.hpp \
     include/VBE/scenegraph/ContainerObject.hpp \
     include/VBE/scenegraph/Game.hpp \
@@ -73,12 +72,13 @@ HEADERS += \
     src/VBE/dependencies/stb_image/stb_image.hpp \
     include/VBE/system/Clock.hpp \
     src/VBE/system/sdl2/ClockImpl.hpp \
-    src/VBE/system/sdl2/ScreenImpl.hpp \
-    src/VBE/system/ScreenImpl.hpp \
     src/VBE/system/ClockImpl.hpp \
     src/VBE/system/InputImpl.hpp \
     src/VBE/system/sdl2/InputImpl.hpp \
-    src/VBE/system/sdl2/sdl2.hpp
+    src/VBE/system/sdl2/sdl2.hpp \
+    include/VBE/system/Window.hpp \
+    src/VBE/system/WindowImpl.hpp \
+    src/VBE/system/sdl2/WindowImpl.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -106,10 +106,10 @@ SOURCES += \
     src/VBE/scenegraph/Game.cpp \
     src/VBE/scenegraph/GameObject.cpp \
     src/VBE/system/Log.cpp \
-    src/VBE/system/Screen.cpp \
     src/VBE/system/Mouse.cpp \
     src/VBE/system/Keyboard.cpp \
     src/VBE/system/Clock.cpp \
     src/VBE/system/sdl2/ClockImpl.cpp \
-    src/VBE/system/sdl2/ScreenImpl.cpp \
-    src/VBE/system/sdl2/InputImpl.cpp
+    src/VBE/system/sdl2/InputImpl.cpp \
+    src/VBE/system/Window.cpp \
+    src/VBE/system/sdl2/WindowImpl.cpp
