@@ -1,17 +1,25 @@
 #include<VBE/system/Screen.hpp>
 #include<VBE/system/sdl2/ScreenImpl.hpp>
+#include<VBE/system/Log.hpp>
 
 
-static std::vector<DisplayMode> Screen::getFullscreenModes();
+// static
+std::vector<Screen::DisplayMode> Screen::getFullscreenModes() {
+	return ScreenImpl::getFullscreenModes();
+}
 
 // Crear la screen
-Screen::Screen(DisplayMode mode, ContextSettings contextSettings) {
+Screen::Screen(Screen::DisplayMode mode, ContextSettings contextSettings) {
+	VBE_ASSERT(instance == nullptr, "Only one screen can exist at a time");
+
 	instance = this;
 	ScreenImpl::create(mode, contextSettings);
 }
 
 // Cerrar la screen
 Screen::~Screen() {
+	VBE_ASSERT(instance == this, "wtf");
+
 	instance = nullptr;
 	ScreenImpl::destroy();
 }
@@ -21,12 +29,11 @@ void Screen::update() {
 	ScreenImpl::update();
 }
 
-DisplayMode Screen::getDisplayMode() const {
-	return displayMode;
+vec2ui Screen::getSize() const {
+	return ScreenImpl::getSize();
 }
 
 void Screen::setDisplayMode(DisplayMode mode) {
-	displayMode = mode;
 	ScreenImpl::setDisplayMode(mode);
 }
 

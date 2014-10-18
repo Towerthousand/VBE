@@ -1,6 +1,8 @@
 #ifndef MOUSE_HPP
 #define MOUSE_HPP
 
+#include <VBE/math.hpp>
+
 class Mouse {
 	public:
 		enum Button {
@@ -8,22 +10,21 @@ class Mouse {
 			Middle,
 			Right,
 			X1,
-			X2
+			X2,
+			ButtonCount
 		};
 
+		static bool pressed(Button k);
 		static bool justPressed(Button k);
 		static bool justReleased(Button k);
-		static bool pressed(Button k);
 
 		static vec2i position();
-		static vec2i mouseWheelMovement();
+		static vec2i wheelMovement();
 
 		static void setPosition(vec2i pos);
 		static void setPosition(int x, int y);
 
-		static void hideCursor();
-		static void showCursor();
-
+		static void setCursorVisible(bool visible);
 		static void setGrab(bool grab);
 		static void setRelativeMode(bool relative);
 

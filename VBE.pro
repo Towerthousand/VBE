@@ -72,7 +72,11 @@ HEADERS += \
     src/VBE/dependencies/stb_image/stb_image.hpp \
     include/VBE/system/Clock.hpp \
     src/VBE/system/sdl2/ClockImpl.hpp \
-    src/VBE/system/sdl2/ScreenImpl.hpp
+    src/VBE/system/sdl2/ScreenImpl.hpp \
+    src/VBE/system/ScreenImpl.hpp \
+    src/VBE/system/ClockImpl.hpp \
+    src/VBE/system/InputImpl.hpp \
+    src/VBE/system/sdl2/InputImpl.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -105,4 +109,5 @@ SOURCES += \
     src/VBE/system/Keyboard.cpp \
     src/VBE/system/Clock.cpp \
     src/VBE/system/sdl2/ClockImpl.cpp \
-    src/VBE/system/sdl2/ScreenImpl.cpp
+    src/VBE/system/sdl2/ScreenImpl.cpp \
+    src/VBE/system/sdl2/InputImpl.cpp

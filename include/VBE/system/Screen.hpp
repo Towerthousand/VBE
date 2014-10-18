@@ -4,13 +4,20 @@
 #include <string>
 #include <vector>
 
+#include <VBE/math.hpp>
 #include <VBE/system/ContextSettings.hpp>
+#include <VBE/utils/NonCopyable.hpp>
 
 class ScreenImpl;
 class Screen : public NonCopyable {
 	public:
 		class DisplayMode {
 			public:
+				enum Type {
+					Fullscreen,
+					Windowed
+				};
+
 				unsigned int getWidth() const {
 					return width;
 				}
@@ -27,8 +34,8 @@ class Screen : public NonCopyable {
 					return refreshRate;
 				}
 
-				unsigned int isFullscreen() const {
-					return fullscreen;
+				Type getType() const {
+					return type;
 				}
 
 				// El usuario no puede crear FullscreenModes, solo puede usar los
@@ -37,16 +44,20 @@ class Screen : public NonCopyable {
 
 				// Los windowed modes no tienen refresh rate, usan la del desktop no?
 				static DisplayMode createWindowedMode(int width, int height) {
-					return DisplayMode(width, height, 0, false);
+					return DisplayMode(width, height, 0, Windowed);
 				}
 			private:
-				DisplayMode(int w, int h, int r, bool f) : width(w), height(h), refreshRate(r), fullscreen(f) {}
+				DisplayMode(int w, int h, int r, Type t) : width(w), height(h), refreshRate(r), type(t) {}
 				unsigned int width;
 				unsigned int height;
 				unsigned int refreshRate;
-				bool fullscreen;
+				Type type;
+
+				// Implementation defined, do not use.
+				int implementationData;
 
 				friend class Screen;
+				friend class ScreenImpl;
 		};
 
 		static std::vector<DisplayMode> getFullscreenModes();
@@ -60,7 +71,7 @@ class Screen : public NonCopyable {
 		// Run event loop. Must be called every frame.
 		void update();
 
-		DisplayMode getDisplayMode() const;
+		vec2ui getSize() const;
 		void setDisplayMode(DisplayMode mode);
 
 		std::string getTitle() const;
@@ -77,7 +88,7 @@ class Screen : public NonCopyable {
 	private:
 		ScreenImpl* impl;
 		std::string title;
-		DisplayMode displayMode;
+
 		static Screen* instance;
 
 };
