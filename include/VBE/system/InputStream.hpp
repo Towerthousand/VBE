@@ -10,7 +10,7 @@
 ///
 class InputStream {
 	public :
-		virtual ~InputStream() {}
+		virtual ~InputStream() = default;
 		virtual long int read(void* data, long int size) = 0;
 		virtual long int seek(long int position) = 0;
 		virtual long int tell() = 0;

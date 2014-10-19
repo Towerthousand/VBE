@@ -78,7 +78,8 @@ HEADERS += \
     src/VBE/system/sdl2/sdl2.hpp \
     include/VBE/system/Window.hpp \
     src/VBE/system/WindowImpl.hpp \
-    src/VBE/system/sdl2/WindowImpl.hpp
+    src/VBE/system/sdl2/WindowImpl.hpp \
+    include/VBE/system/FileInputStream.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -112,4 +113,5 @@ SOURCES += \
     src/VBE/system/sdl2/ClockImpl.cpp \
     src/VBE/system/sdl2/InputImpl.cpp \
     src/VBE/system/Window.cpp \
-    src/VBE/system/sdl2/WindowImpl.cpp
+    src/VBE/system/sdl2/WindowImpl.cpp \
+    src/VBE/system/FileInputStream.cpp
