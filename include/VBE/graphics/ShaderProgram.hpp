@@ -30,20 +30,20 @@ class ShaderProgram : public NonCopyable {
 		bool hasUniform(const std::string& name) const;
 		Uniform* uniform(const std::string& name) const;
 
-		std::map<std::string, GLint> attributes;
-		std::map<std::string, Uniform*> uniforms;
-
+		const std::map<std::string, GLint>& getAttributes() const { return attributes; }
 	private:
 		ShaderProgram();
 
 		void link();
 		void retrieveProgramInfo();
 		void printInfoLog();
-		static std::string readFileIntoString(const std::string& filename);
-
-		static GLuint current;
 
 		GLuint programHandle;
+		std::map<std::string, GLint> attributes;
+		std::map<std::string, Uniform*> uniforms;
+
+		static std::string readFileIntoString(const std::string& filename);
+		static GLuint current;
 };
 
 

@@ -48,21 +48,21 @@ void ShaderBinding::enableAttributes() const {
 	mesh->bindBuffers();
 
 	const Vertex::Format format = mesh->getVertexFormat();
-	for(std::map<std::string, GLint>::const_iterator it = program->attributes.begin(); it != program->attributes.end(); ++it) {
+	for(const std::pair<std::string, GLint>& attr: program->getAttributes()) {
 		for(unsigned int i = 0; i < format.elementCount(); ++i) {
 			const Vertex::Element* current = &format.element(i);
-			if(current->attr.hasName(it->first)) {
-				GL_ASSERT(glEnableVertexAttribArray(it->second));
+			if(current->attr.hasName(attr.first)) {
+				GL_ASSERT(glEnableVertexAttribArray(attr.second));
 #ifndef VBE_GLES2
                 if(current->conv == Vertex::Element::ConvertToInt)
-                    GL_ASSERT(glVertexAttribIPointer(it->second,
+					GL_ASSERT(glVertexAttribIPointer(attr.second,
                                                      current->size,
                                                      current->type,
                                                      format.vertexSize(),
                                                      (GLvoid*)long(format.offset(i))));
                 else
 #endif
-					GL_ASSERT(glVertexAttribPointer(it->second,
+					GL_ASSERT(glVertexAttribPointer(attr.second,
 													current->size,
 													current->type, current->conv == Vertex::Element::ConvertToFloatNormalized ? GL_TRUE : GL_FALSE,
 													format.vertexSize(),
@@ -74,11 +74,11 @@ void ShaderBinding::enableAttributes() const {
 
 void ShaderBinding::disableAttributes() const {
 	const Vertex::Format format = mesh->getVertexFormat();
-	for(std::map<std::string, GLint>::const_iterator it = program->attributes.begin(); it != program->attributes.end(); ++it) {
+	for(const std::pair<std::string, GLint>& attr: program->getAttributes()) {
 		for(unsigned int i = 0; i < format.elementCount(); ++i) {
 			const Vertex::Element* current = &format.element(i);
-			if(current->attr.hasName(it->first)) {
-				GL_ASSERT(glDisableVertexAttribArray(it->second));
+			if(current->attr.hasName(attr.first)) {
+				GL_ASSERT(glDisableVertexAttribArray(attr.second));
 			}
 		}
 	}
