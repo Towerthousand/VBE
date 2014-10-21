@@ -44,7 +44,6 @@ HEADERS += \
     include/VBE/scenegraph/ContainerObject.hpp \
     include/VBE/scenegraph/Game.hpp \
     include/VBE/scenegraph/GameObject.hpp \
-    include/VBE/graphics/Model.hpp \
     include/VBE/graphics/OBJLoader.hpp \
     include/VBE/graphics/OpenGL.hpp \
     include/VBE/graphics/RenderBuffer.hpp \
@@ -91,7 +90,6 @@ SOURCES += \
     src/VBE/geometry/Frustum.cpp \
     src/VBE/geometry/Plane.cpp \
     src/VBE/graphics/Mesh.cpp \
-    src/VBE/graphics/Model.cpp \
     src/VBE/graphics/OBJLoader.cpp \
     src/VBE/graphics/RenderBuffer.cpp \
     src/VBE/graphics/RenderTarget.cpp \
