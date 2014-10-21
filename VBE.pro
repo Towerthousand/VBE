@@ -9,10 +9,6 @@ unix {
     INSTALLS += target
 }
 
-CONFIG(debug, debug|release) {
-  DEFINES += "__DEBUG" "__LOG"
-}
-
 INCLUDEPATH += include src
 
 #__DEBUG will make asserts on all risky operations, and will output a detailed error message if it fails
@@ -34,7 +30,6 @@ HEADERS += \
     include/VBE/scenegraph.hpp \
     include/VBE/system.hpp \
     include/VBE/VBE.hpp \
-    include/VBE/utils/Manager.hpp \
     include/VBE/utils/NonCopyable.hpp \
     include/VBE/system/ContextSettings.hpp \
     include/VBE/system/Keyboard.hpp \
