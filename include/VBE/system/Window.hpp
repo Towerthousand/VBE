@@ -173,6 +173,21 @@ class Window : public NonCopyable {
 		bool isFocused() const;
 
 		///
+		/// \brief returns wether the window has been requested to close. This can happen through a quit event
+		/// (alt+F4, system call or similar), a window close or a call to setClosing().
+		/// \return whether the Window is closing.
+		///
+		bool isClosing() const;
+
+		///
+		/// \brief set the closing status of the window. Setting it won't have any direct effect on the application,
+		/// but you can use it to discard user-mode quits. For example, to implement a warning before closing.
+		///	Remember that system-mode quits may kill your application anyway.
+		/// \param newClosing the new state for the window.
+		///
+		void setClosing(bool newClosing);
+
+		///
 		/// \brief setPosition Sets the Window position in pixe.s, relative the the computer Window.
 		/// \param x the X coordinate of the position.
 		/// \param y the Y coordinate of the position.

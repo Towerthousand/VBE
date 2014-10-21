@@ -7,6 +7,7 @@ bool WindowImpl::isSDLInit = false;
 SDL_Window* WindowImpl::window;
 SDL_GLContext WindowImpl::context;
 bool WindowImpl::focused = false;
+bool WindowImpl::closing = false;
 
 //static
 void WindowImpl::initSDL() {
@@ -141,19 +142,8 @@ void WindowImpl::update() {
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
 
-			// System events
+			// System/window events
 			case SDL_QUIT:
-				// TODO: Exit properly
-				exit(1);
-
-				// We don't want to force users to use Game.
-				// Game should check if the Window has closed, not otherwise.
-				// TODO fix
-				//if(Game::i() != nullptr)
-				//	Game::i()->isRunning = false;
-				break;
-
-				// Window events
 			case SDL_WINDOWEVENT:
 				processEvent(e);
 				break;
@@ -179,11 +169,13 @@ void WindowImpl::update() {
 
 
 void WindowImpl::processEvent(const SDL_Event &e) {
+	if(e.type == SDL_QUIT) {
+		closing = true;
+		return;
+	}
 	switch(e.window.type) {
 		case SDL_WINDOWEVENT_CLOSE:
-			//TODO FIX THIS
-			//if(Game::i() != nullptr)
-			//	Game::i()->isRunning = false;
+			closing = true;
 			break;
 		case SDL_WINDOWEVENT_FOCUS_GAINED:
 			focused = true;
@@ -212,8 +204,18 @@ void WindowImpl::setTitle(std::string newTitle) {
 }
 
 // static
+void WindowImpl::setClosing(bool newClosing) {
+	closing = newClosing;
+}
+
+// static
 bool WindowImpl::isFocused() {
 	return focused;
+}
+
+// static
+bool WindowImpl::isClosing() {
+	return closing;
 }
 
 // static

@@ -19,7 +19,9 @@ class WindowImpl {
 
 		static void update();
 		static void setTitle(std::string newTitle);
+		static void setClosing(bool newClosing);
 		static bool isFocused();
+		static bool isClosing();
 		static void setPosition(unsigned int x, unsigned int y);
 
 		static void swapBuffers();
@@ -34,6 +36,7 @@ class WindowImpl {
 		static SDL_Window* window;
 		static SDL_GLContext context;
 		static bool focused;
+		static bool closing;
 
 		friend class InputImpl;
 };

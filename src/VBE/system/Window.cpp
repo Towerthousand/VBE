@@ -47,6 +47,14 @@ bool Window::isFocused() const {
 	return WindowImpl::isFocused();
 }
 
+bool Window::isClosing() const {
+	return WindowImpl::isClosing();
+}
+
+void Window::setClosing(bool newClosing) {
+	WindowImpl::setClosing(newClosing);
+}
+
 void Window::setPosition(unsigned int x, unsigned int y) {
 	WindowImpl::setPosition(x, y);
 }
