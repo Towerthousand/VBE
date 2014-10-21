@@ -4,7 +4,6 @@
 
 class TextureCubemap : public Texture {
 	public:
-
 		enum cubeFaces {
 			CUBEMAP_POSITIVE_X = GL_TEXTURE_CUBE_MAP_POSITIVE_X,
 			CUBEMAP_NEGATIVE_X = GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
@@ -15,47 +14,30 @@ class TextureCubemap : public Texture {
 		};
 
 		TextureCubemap();
-		~TextureCubemap();
 
-
-		static TextureCubemap* createFromFiles(const std::vector<std::string>& filePaths);
-		static TextureCubemap* createFromRaw(
-				const void* pixels,
-				unsigned int size,
-				TextureFormat::Format format = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
-
-		static TextureCubemap* createEmpty(
-				unsigned int size,
-				TextureFormat::Format format = TextureFormat::RGBA);
-
-
-		void loadFromFiles(const std::vector<std::string>& filePaths);
-		void loadFromRaw(
-				const void* pixels,
-				unsigned int size,
-				TextureFormat::Format format = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
+		void loadFromFiles(
+				const std::vector<std::string>& filePaths,
+				TextureFormat::Format internalFormat = TextureFormat::AUTO);
 
 		void loadEmpty(
 				unsigned int size,
-				TextureFormat::Format format = TextureFormat::RGBA);
+				TextureFormat::Format internalFormat = TextureFormat::RGBA);
 
-		void resize(unsigned int newSize);
+		void loadFromRaw(
+				const void* pixels,
+				unsigned int size,
+				TextureFormat::Format sourceFormat = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE,
+				TextureFormat::Format internalFormat = TextureFormat::AUTO);
 
-#ifndef VBE_GLES2
-		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
-#endif
-		
-		int getWidth() const;
-		int getHeight() const;
+		unsigned int getSize() const;
 
-		void setFilter(GLenum min, GLenum mag);
-		void setWrap(GLenum wrap);
-		void bind() const;
+		static void bind(const TextureCubemap* tex) {
+			Texture::bind(Texture::TypeCubemap, tex);
+		}
 
 	private:
-		int size;
+		unsigned int size;
 };
 
 #endif // TEXTURECUBEMAP_HPP

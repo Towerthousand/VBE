@@ -2,54 +2,31 @@
 #define TEXTURE3D_HPP
 #include "Texture.hpp"
 
-
 // 3D textures are not supported in GLES2
 #ifndef VBE_GLES2
 
 class Texture3D : public Texture {
 	public:
-		~Texture3D();
-
-		static Texture3D* createFromRaw(
-				const void* pixels,
-				unsigned int sizeX,
-				unsigned int sizeY,
-				unsigned int sizeZ,
-				TextureFormat::Format format = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
-
-		static Texture3D* createEmpty(
-				unsigned int sizeX,
-				unsigned int sizeY,
-				unsigned int sizeZ,
-				TextureFormat::Format format = TextureFormat::RGBA);
-
-		void loadFromRaw(
-			const void* pixels,
-				unsigned int sizeX,
-				unsigned int sizeY,
-				unsigned int sizeZ,
-				TextureFormat::Format format = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
+		Texture3D();
 
 		void loadEmpty(
-				unsigned int sizeX,
-				unsigned int sizeY,
-				unsigned int sizeZ,
-				TextureFormat::Format format = TextureFormat::RGBA);
+				vec3ui size,
+				TextureFormat::Format internalFormat = TextureFormat::RGBA);
 
-		void resize(unsigned int sizeX, unsigned int sizeY, unsigned sizeZ);
-		unsigned int getWidth() const;
-		unsigned int getHeight() const;
-		unsigned int getDepth() const;
+		void loadFromRaw(
+				const void* pixels,
+				vec3ui size,
+				TextureFormat::Format sourceFormat = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE,
+				TextureFormat::Format internalFormat = TextureFormat::AUTO);
+
 		vec3ui getSize() const;
 
-		void setFilter(GLenum min, GLenum mag);
-		void setWrap(GLenum wrap);
-		void bind() const;
+		static void bind(const Texture3D* tex) {
+			Texture::bind(Texture::Type3D, tex);
+		}
 
 	private:
-		Texture3D();
 		vec3ui size;
 };
 

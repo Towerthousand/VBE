@@ -8,6 +8,7 @@
 class TextureFormat {
 	public:
 		enum Format {
+			AUTO = 0,
 
 #ifdef VBE_GLES2
 			ALPHA           = GL_ALPHA,

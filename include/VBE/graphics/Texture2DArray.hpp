@@ -8,52 +8,27 @@
 class Texture2DArray : public Texture {
 	public:
 		Texture2DArray();
-		~Texture2DArray();
 
-
-		static Texture2DArray* createFromFiles(const std::vector<std::string>& filePaths);
-		static Texture2DArray* createFromRaw(
-				const void* pixels,
-				unsigned int sizeX,
-				unsigned int sizeY,
-				unsigned int slices,
-				TextureFormat::Format format = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
-
-		static Texture2DArray* createEmpty(
-				unsigned int sizeX,
-				unsigned int sizeY,
-				unsigned int slices,
-				TextureFormat::Format format = TextureFormat::RGBA);
-
-
-		void loadFromFiles(const std::vector<std::string>& filePaths);
-		void loadFromRaw(
-				const void* pixels,
-				unsigned int sizeX,
-				unsigned int sizeY,
-				unsigned int slices,
-				TextureFormat::Format format = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
+		void loadFromFiles(
+				const std::vector<std::string>& filePaths,
+				TextureFormat::Format internalFormat = TextureFormat::AUTO);
 
 		void loadEmpty(
-				unsigned int sizeX,
-				unsigned int sizeY,
-				unsigned int slices,
-				TextureFormat::Format format = TextureFormat::RGBA);
+				vec3ui size,
+				TextureFormat::Format internalFormat = TextureFormat::RGBA);
 
-		void resize(unsigned int sizeX, unsigned int sizeY, unsigned int slices);
-#ifndef VBE_GLES2
-		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
-#endif
-		unsigned int getWidth() const;
-		unsigned int getHeight() const;
+		void loadFromRaw(
+				const void* pixels,
+				vec3ui size,
+				TextureFormat::Format sourceFormat = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE,
+				TextureFormat::Format internalFormat = TextureFormat::AUTO);
+
 		vec3ui getSize() const;
-		unsigned int getSlices() const;
 
-		void setFilter(GLenum min, GLenum mag);
-		void setWrap(GLenum wrap);
-		void bind() const;
+		static void bind(const Texture2DArray* tex) {
+			Texture::bind(Texture::Type2DArray, tex);
+		}
 
 	private:
 		vec3ui size;

@@ -129,15 +129,20 @@ void RenderTarget::valid() const {
 		}
 		else {
 			if(e.texture == nullptr || !e.userUp) { //make and bind/just bind texture/usertexture
-				e.texture = (e.user ? e.texture : Texture2D::createEmpty(desiredSize.x, desiredSize.y, e.format));
-				e.texture->bind();
+				if(!e.user) {
+					e.texture = new Texture2D();
+					e.texture->loadEmpty(desiredSize, e.format);
+				}
+
+				Texture2D::bind(e.texture);
 				GL_ASSERT(glFramebufferTexture2D(GL_FRAMEBUFFER, e.attachment, GL_TEXTURE_2D, e.texture->getHandle(), 0));
 				VBE_WARN(e.texture->getSize() == desiredSize, "While validating RenderTarget:" << Log::Line <<
 						 "Custom texture has a different size from the rendertarget's." << Log::Line <<
 						 "This can yield unexpected results");
 				e.userUp = true;
 			}
-			else if(resize && !e.user) e.texture->resize(desiredSize.x, desiredSize.y);
+			else if(resize && !e.user)
+				e.texture->loadEmpty(desiredSize, e.texture->getFormat());
 		}
 	}
 	if(attachDirty) {
