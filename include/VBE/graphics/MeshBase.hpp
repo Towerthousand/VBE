@@ -47,13 +47,15 @@ class MeshBase : public NonCopyable {
 		void setVertexData(const void* vertexData, unsigned int newVertexCount);
 
 		virtual void bindBuffers() const;
+
+		friend void swap(MeshBase& a, MeshBase& b);
 	protected:
 		MeshBase(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
 		void setupShaderBinding(const ShaderProgram* program);
 
 	private:
 		std::map<GLuint, const ShaderBinding*> bindingsCache;
-		const Vertex::Format vertexFormat;
+		Vertex::Format vertexFormat;
 		unsigned int vertexCount;
 		GLuint vertexBuffer;
 		PrimitiveType primitiveType;

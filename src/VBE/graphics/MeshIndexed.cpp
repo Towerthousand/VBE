@@ -15,6 +15,19 @@ MeshIndexed::~MeshIndexed() {
 		GL_ASSERT(glDeleteBuffers(1, &indexBuffer));
 }
 
+
+MeshIndexed::MeshIndexed(MeshIndexed&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Element>())) {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+MeshIndexed& MeshIndexed::operator=(MeshIndexed&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+
 void MeshIndexed::bindBuffers() const {
 	MeshBase::bindBuffers();
 	VBE_ASSERT(getIndexBuffer() != 0, "mesh index buffer is null");
@@ -45,4 +58,11 @@ void MeshIndexed::setIndexData(const unsigned int* indexData, unsigned int newIn
 	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer));
 	GL_ASSERT(glBufferData(GL_ELEMENT_ARRAY_BUFFER, newIndexCount * sizeof(unsigned int), indexData, getBufferType()));
 	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+}
+
+void swap(MeshIndexed& a, MeshIndexed& b) {
+	using std::swap;
+	swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
+	swap(a.indexCount, b.indexCount);
+	swap(a.indexBuffer, b.indexBuffer);
 }

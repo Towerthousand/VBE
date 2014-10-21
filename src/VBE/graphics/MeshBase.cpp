@@ -75,3 +75,14 @@ void MeshBase::setVertexData(const void* vertexData, unsigned int newVertexCount
 	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, vertexData, bufferType));
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
+
+void swap(MeshBase& a, MeshBase& b) {
+	using std::swap;
+
+	swap(a.bindingsCache, b.bindingsCache);
+	swap(a.vertexFormat, b.vertexFormat);
+	swap(a.vertexCount, b.vertexCount);
+	swap(a.vertexBuffer, b.vertexBuffer);
+	swap(a.primitiveType, b.primitiveType);
+	swap(a.bufferType, b.bufferType);
+}

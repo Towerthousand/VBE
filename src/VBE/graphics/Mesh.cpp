@@ -9,6 +9,17 @@ Mesh::Mesh(const Vertex::Format& format, MeshBase::BufferType bufferType) :
 	MeshBase(format, bufferType) {
 }
 
+Mesh::Mesh(Mesh&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Element>())){
+	using std::swap;
+	swap(*this, rhs);
+}
+
+Mesh& Mesh::operator=(Mesh&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
 void Mesh::draw(const ShaderProgram* program) {
 	draw(program, 0, getVertexCount());
 }
@@ -25,4 +36,7 @@ void Mesh::draw(const ShaderProgram* program, unsigned int offset, unsigned int 
 	GL_ASSERT(glDrawArrays(getPrimitiveType(), offset, length));
 }
 
-
+void swap(Mesh& a, Mesh& b) {
+	using std::swap;
+	swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
+}
