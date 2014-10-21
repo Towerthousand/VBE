@@ -6,6 +6,7 @@
 InputImpl::KeyState InputImpl::keyboardState[Keyboard::KeyCount];
 InputImpl::KeyState InputImpl::mouseButtonState[Mouse::ButtonCount];
 vec2i InputImpl::mousePos;
+vec2i InputImpl::lastMousePos;
 vec2i InputImpl::mouseWheel;
 bool InputImpl::relativeMouse;
 
@@ -36,6 +37,7 @@ void InputImpl::update() {
 		keyboardState[i] = nextState(keyboardState[i]);
 	for(int i = 0; i < Mouse::ButtonCount; i++)
 		mouseButtonState[i] = nextState(mouseButtonState[i]);
+	lastMousePos = mousePos;
 }
 
 // static

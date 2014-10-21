@@ -26,6 +26,7 @@ class InputImpl {
 		static void setMousePosition(int x, int y);
 
 		static vec2i getMousePosition() { return mousePos; }
+		static vec2i getMouseDisplacement() { return mousePos-lastMousePos; }
 		static vec2i getMouseWheelMovement() { return mouseWheel; }
 
 		static void setCursorVisible(bool visible);
@@ -40,6 +41,7 @@ class InputImpl {
 		static KeyState keyboardState[Keyboard::KeyCount];
 		static KeyState mouseButtonState[Mouse::ButtonCount];
 		static vec2i mousePos;
+		static vec2i lastMousePos;
 		static vec2i mouseWheel;
 		static bool relativeMouse;
 };

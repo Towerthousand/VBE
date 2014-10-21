@@ -26,6 +26,10 @@ vec2i Mouse::position() {
 	return InputImpl::getMousePosition();
 }
 
+vec2i Mouse::displacement() {
+	return InputImpl::getMouseDisplacement();
+}
+
 // static
 vec2i Mouse::wheelMovement() {
 	return InputImpl::getMouseWheelMovement();
