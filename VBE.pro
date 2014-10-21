@@ -37,7 +37,6 @@ HEADERS += \
     include/VBE/utils/Manager.hpp \
     include/VBE/utils/NonCopyable.hpp \
     include/VBE/system/ContextSettings.hpp \
-    include/VBE/system/InputStream.hpp \
     include/VBE/system/Keyboard.hpp \
     include/VBE/system/Log.hpp \
     include/VBE/system/Mouse.hpp \
@@ -45,7 +44,6 @@ HEADERS += \
     include/VBE/scenegraph/ContainerObject.hpp \
     include/VBE/scenegraph/Game.hpp \
     include/VBE/scenegraph/GameObject.hpp \
-    include/VBE/graphics/Mesh.hpp \
     include/VBE/graphics/Model.hpp \
     include/VBE/graphics/OBJLoader.hpp \
     include/VBE/graphics/OpenGL.hpp \
@@ -79,7 +77,10 @@ HEADERS += \
     include/VBE/system/Window.hpp \
     src/VBE/system/WindowImpl.hpp \
     src/VBE/system/sdl2/WindowImpl.hpp \
-    include/VBE/system/FileInputStream.hpp
+    include/VBE/system/Storage.hpp \
+    src/VBE/system/StorageImpl.hpp \
+    src/VBE/system/sdl2/StorageImpl.hpp \
+    include/VBE/graphics/Mesh.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -114,4 +115,5 @@ SOURCES += \
     src/VBE/system/sdl2/InputImpl.cpp \
     src/VBE/system/Window.cpp \
     src/VBE/system/sdl2/WindowImpl.cpp \
-    src/VBE/system/FileInputStream.cpp
+    src/VBE/system/sdl2/StorageImpl.cpp \
+    src/VBE/system/Storage.cpp

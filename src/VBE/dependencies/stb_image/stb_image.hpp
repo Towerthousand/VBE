@@ -61,6 +61,8 @@
 
 */
 
+//#define STBI_NO_STDIO
+
 #ifndef STBI_INCLUDE_STB_IMAGE_H
 #define STBI_INCLUDE_STB_IMAGE_H
 
