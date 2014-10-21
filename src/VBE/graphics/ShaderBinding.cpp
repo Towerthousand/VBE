@@ -1,5 +1,5 @@
 #include <VBE/config.hpp>
-#include <VBE/graphics/Mesh.hpp>
+#include <VBE/graphics/MeshBase.hpp>
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/graphics/ShaderBinding.hpp>
 #include <VBE/graphics/ShaderProgram.hpp>
@@ -8,7 +8,7 @@
 #ifdef SHADERBINDING_USE_VAO
 #endif
 
-ShaderBinding::ShaderBinding(const ShaderProgram* program, const Mesh* mesh) :
+ShaderBinding::ShaderBinding(const ShaderProgram* program, const MeshBase* mesh) :
 		program(program), mesh(mesh) {
 	VBE_DLOG("* New shaderbinding between program with pointer " << program << " and mesh with pointer " << mesh );
 #ifdef SHADERBINDING_USE_VAO
@@ -45,12 +45,7 @@ void ShaderBinding::bind(const ShaderBinding* binding) {
 
 
 void ShaderBinding::enableAttributes() const {
-	VBE_ASSERT(mesh->getVertexBuffer() != 0, "mesh vertex buffer is null");
-	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, mesh->getVertexBuffer()));
-	if(mesh->isIndexed()) {
-		VBE_ASSERT(mesh->getIndexBuffer() != 0, "mesh index buffer is null");
-		GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndexBuffer()));
-	}
+	mesh->bindBuffers();
 
 	const Vertex::Format format = mesh->getVertexFormat();
 	for(std::map<std::string, GLint>::const_iterator it = program->attributes.begin(); it != program->attributes.end(); ++it) {

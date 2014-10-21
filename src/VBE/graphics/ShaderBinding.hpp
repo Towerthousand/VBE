@@ -9,11 +9,11 @@
 #define SHADERBINDING_USE_VAO
 #endif
 
-class Mesh;
+class MeshBase;
 class ShaderProgram;
 class ShaderBinding : public NonCopyable {
 	public:
-		ShaderBinding(const ShaderProgram* program, const Mesh* mesh);
+		ShaderBinding(const ShaderProgram* program, const MeshBase* mesh);
 		~ShaderBinding();
 
 		// Binds a ShaderBinding.
@@ -23,7 +23,7 @@ class ShaderBinding : public NonCopyable {
 		void disableAttributes() const;
 
 		const ShaderProgram* program;
-		const Mesh* mesh;
+		const MeshBase* mesh;
 
 		static const ShaderBinding* currentBind;
 

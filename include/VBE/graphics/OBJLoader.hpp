@@ -3,12 +3,12 @@
 
 #include <string>
 
-#include <VBE/graphics/Mesh.hpp>
+#include <VBE/graphics/MeshBase.hpp>
 
 class OBJLoader {
 	public:
-		static Mesh* loadFromOBJStandard(const std::string& filepath, Mesh::BufferType bufferType);
-		static Mesh* loadFromOBJTangents(const std::string& filepath, Mesh::BufferType bufferType);
+		static MeshBase* loadFromOBJStandard(const std::string& filepath, Mesh::BufferType bufferType);
+		static MeshBase* loadFromOBJTangents(const std::string& filepath, Mesh::BufferType bufferType);
 	private:
 		OBJLoader();
 		~OBJLoader();

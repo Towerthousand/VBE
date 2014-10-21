@@ -1,4 +1,5 @@
 #include <VBE/graphics/Mesh.hpp>
+#include <VBE/graphics/MeshIndexed.hpp>
 #include <VBE/graphics/Model.hpp>
 #include <VBE/graphics/OBJLoader.hpp>
 #include <VBE/graphics/RenderBuffer.hpp>
