@@ -192,6 +192,7 @@ void ShaderProgram::retrieveProgramInfo() {
 			GLint uniformSize;
 			GLenum uniformType;
 			GLint uniformLocation;
+			unsigned int texUnit = 0;
 			for (int i = 0; i < activeUniforms; ++i) {
 				// Query uniform info.
 				GL_ASSERT(glGetActiveUniform(programHandle, i, length, nullptr, &uniformSize, &uniformType, uniformName));
@@ -211,7 +212,7 @@ void ShaderProgram::retrieveProgramInfo() {
 				uniformLocation = glGetUniformLocation(programHandle, uniformName);
 				VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to get uniform location");
 				Uniform* uniform = new Uniform(uniformSize, uniformType, uniformLocation);
-
+				if(Uniform::isSampler(uniformType)) uniform->texUnit = texUnit++;
 				uniforms[uniformName] = uniform;
 			}
 			delete[] uniformName;

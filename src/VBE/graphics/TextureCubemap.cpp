@@ -59,7 +59,7 @@ void TextureCubemap::loadFromRaw(
 
 	this->format = internalFormat;
 	this->size = size;
-	TextureCubemap::bind(this);
+	TextureCubemap::bind(this, 0);
 
 	unsigned char* pface = (unsigned char*)pixels;
 	for (int i = 0; i < 6; i++) {

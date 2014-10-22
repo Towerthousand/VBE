@@ -32,8 +32,8 @@ class TextureCubemap : public Texture {
 
 		unsigned int getSize() const;
 
-		static void bind(const TextureCubemap* tex) {
-			Texture::bind(Texture::TypeCubemap, tex);
+		static void bind(const TextureCubemap* tex, int slot) {
+			Texture::bind(Texture::TypeCubemap, tex, slot);
 		}
 
 	private:

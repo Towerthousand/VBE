@@ -44,7 +44,7 @@ void Texture2D::loadFromRaw(
 
 	this->format = internalFormat;
 	this->size = size;
-	Texture2D::bind(this);
+	Texture2D::bind(this, 0);
 	GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
 	GL_ASSERT(glPixelStorei(GL_PACK_ALIGNMENT, 1));
 	GL_ASSERT(glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, size.x, size.y, 0, sourceFormat, sourceType, (GLvoid*) pixels));
@@ -53,7 +53,7 @@ void Texture2D::loadFromRaw(
 }
 
 void Texture2D::generateMipmap() {
-	Texture2D::bind(this);
+	Texture2D::bind(this, 0);
 	GL_ASSERT(glGenerateMipmap(GL_TEXTURE_2D));
 	setFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
 }

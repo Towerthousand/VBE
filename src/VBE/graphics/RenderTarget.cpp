@@ -134,7 +134,7 @@ void RenderTarget::valid() const {
 					e.texture->loadEmpty(desiredSize, e.format);
 				}
 
-				Texture2D::bind(e.texture);
+				Texture2D::bind(e.texture, 0);
 				GL_ASSERT(glFramebufferTexture2D(GL_FRAMEBUFFER, e.attachment, GL_TEXTURE_2D, e.texture->getHandle(), 0));
 				VBE_WARN(e.texture->getSize() == desiredSize, "While validating RenderTarget:" << Log::Line <<
 						 "Custom texture has a different size from the rendertarget's." << Log::Line <<

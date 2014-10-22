@@ -47,6 +47,8 @@ class Uniform : public NonCopyable {
 		void log();
 
 	private:
+		static bool isSampler(GLenum uniformType);
+
 		void ready();
 		void setBytes(const char* val);
 		bool compare(const char* val) const;
@@ -55,6 +57,7 @@ class Uniform : public NonCopyable {
 		unsigned int count;
 		GLenum type;
 		GLint location;
+		unsigned int texUnit; //only valid if sampler
 		std::vector<char> lastValue;
 
 		friend class ShaderProgram;

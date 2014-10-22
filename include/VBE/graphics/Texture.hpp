@@ -18,8 +18,6 @@ class Texture : public NonCopyable {
 
 		virtual ~Texture();
 
-		void setSlot(unsigned int newSlot);
-		unsigned int getSlot() const;
 		GLuint getHandle() const;
 		TextureFormat::Format getFormat() const;
 		Type getType() const;
@@ -36,16 +34,13 @@ class Texture : public NonCopyable {
 		Texture(Type type);
 
 		GLuint handle;
-		unsigned int slot;
 		TextureFormat::Format format;
 
-		static void bind(Type type, const Texture* tex);
+		static void bind(Type type, const Texture* tex, int slot);
 	private:
 		Type type;
 
-		static unsigned int lastSlot;
 		static int maxSlots;
-		static const Texture** current;
 };
 
 #endif // Texture_HPP

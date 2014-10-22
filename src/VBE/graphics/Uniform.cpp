@@ -8,7 +8,7 @@
 #include <VBE/system/Log.hpp>
 
 Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
-	dirty(true), count(count), type(type), location(location) {
+	dirty(true), count(count), type(type), location(location), texUnit(-1) {
 	unsigned int size = 0;
 	switch(type) {
 		case GL_FLOAT:
@@ -130,24 +130,21 @@ void Uniform::set(const std::vector<mat4f> &val) {
 
 void Uniform::set(const Texture2D* val) {
 	VBE_ASSERT(type == GL_SAMPLER_2D || type == GL_SAMPLER_2D_SHADOW, "Wrong uniform type. Location " << this->location);
-	Texture2D::bind(val);
-	unsigned int slot = val->getSlot();
-	setBytes((char*)&slot);
+	Texture2D::bind(val, texUnit);
+	setBytes((char*)&texUnit);
 }
 
 #ifndef VBE_GLES2
 void Uniform::set(const Texture3D* val) {
 	VBE_ASSERT(type == GL_SAMPLER_3D, "Wrong uniform type. Location " << this->location);
-	Texture3D::bind(val);
-	unsigned int slot = val->getSlot();
-	setBytes((char*)&slot);
+	Texture3D::bind(val, texUnit);
+	setBytes((char*)&texUnit);
 }
 
 void Uniform::set(const Texture2DArray* val) {
 	VBE_ASSERT(type == GL_SAMPLER_2D_ARRAY, "Wrong uniform type. Location " << this->location);
-	Texture2DArray::bind(val);
-	unsigned int slot = val->getSlot();
-	setBytes((char*)&slot);
+	Texture2DArray::bind(val, texUnit);
+	setBytes((char*)&texUnit);
 }
 #endif
 
@@ -213,4 +210,19 @@ void Uniform::log() {
 		default: s = "UNKNOWN_TYPE"; break;
 	}
 	VBE_DLOG("    Type: " << s);
+}
+
+bool Uniform::isSampler(GLenum uniformType) {
+	switch(uniformType) {
+		case GL_SAMPLER_2D:
+#ifndef VBE_GLES2
+		case GL_SAMPLER_2D_SHADOW:
+		case GL_SAMPLER_2D_ARRAY:
+		case GL_SAMPLER_3D:
+			return true;
+		default:
+			break;
+#endif
+	}
+	return false;
 }

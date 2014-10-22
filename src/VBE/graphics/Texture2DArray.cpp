@@ -69,7 +69,7 @@ void Texture2DArray::loadFromRaw(
 
 	this->format = internalFormat;
 	this->size = size;
-	Texture2DArray::bind(this);
+	Texture2DArray::bind(this, 0);
 	GL_ASSERT(glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, internalFormat, size.x, size.y, size.z, 0, sourceFormat, sourceType, (GLvoid*) pixels));
 	setFilter(GL_LINEAR, GL_LINEAR);
 	setWrap(GL_REPEAT);

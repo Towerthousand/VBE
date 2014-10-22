@@ -26,8 +26,8 @@ class Texture2DArray : public Texture {
 
 		vec3ui getSize() const;
 
-		static void bind(const Texture2DArray* tex) {
-			Texture::bind(Texture::Type2DArray, tex);
+		static void bind(const Texture2DArray* tex, int slot) {
+			Texture::bind(Texture::Type2DArray, tex, slot);
 		}
 
 	private:

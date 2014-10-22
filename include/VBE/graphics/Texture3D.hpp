@@ -22,8 +22,8 @@ class Texture3D : public Texture {
 
 		vec3ui getSize() const;
 
-		static void bind(const Texture3D* tex) {
-			Texture::bind(Texture::Type3D, tex);
+		static void bind(const Texture3D* tex, int slot) {
+			Texture::bind(Texture::Type3D, tex, slot);
 		}
 
 	private:
