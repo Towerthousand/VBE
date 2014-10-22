@@ -23,12 +23,12 @@ void Texture::bind(Texture::Type type, const Texture* tex) {
 	const Texture* curr = current[tex->slot];
 	if(curr == tex) return;
 
-	glActiveTexture(GL_TEXTURE0 + tex->slot);
+	GL_ASSERT(glActiveTexture(GL_TEXTURE0 + tex->slot));
 
 	if(tex != nullptr)
-		glBindTexture(type, tex->handle);
+		GL_ASSERT(glBindTexture(type, tex->handle));
 	else
-		glBindTexture(type, 0);
+		GL_ASSERT(glBindTexture(type, 0));
 
 	current[tex->slot] = tex;
 }
