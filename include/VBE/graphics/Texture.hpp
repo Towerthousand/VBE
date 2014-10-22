@@ -9,24 +9,12 @@
 class Texture : public NonCopyable {
 	public:
 		enum Type {
-			Type2D,
-			Type2DArray,
-			Type3D,
-			TypeCubemap,
+			Type2D = GL_TEXTURE_2D,
+			Type2DArray = GL_TEXTURE_2D_ARRAY,
+			Type3D = GL_TEXTURE_3D,
+			TypeCubemap = GL_TEXTURE_CUBE_MAP,
 			TypeCount
 		};
-
-		static GLenum typeToGL(Type t) {
-			switch(t) {
-				case Type2D: return GL_TEXTURE_2D;
-				case Type2DArray: return GL_TEXTURE_2D_ARRAY;
-				case Type3D: return GL_TEXTURE_3D;
-				case TypeCubemap: return GL_TEXTURE_CUBE_MAP;
-				default:
-					VBE_ASSERT(false, "Invalid Texture::Type value: " << t);
-					return 0;
-			}
-		}
 
 		virtual ~Texture();
 
@@ -57,7 +45,7 @@ class Texture : public NonCopyable {
 
 		static unsigned int lastSlot;
 		static int maxSlots;
-		static const Texture* current[TypeCount];
+		static const Texture** current;
 };
 
 #endif // Texture_HPP

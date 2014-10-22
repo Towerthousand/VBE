@@ -6,12 +6,13 @@
 // static
 unsigned int Texture::lastSlot = 0;
 int Texture::maxSlots = -1;
-const Texture* Texture::current[Texture::TypeCount];
+const Texture** Texture::current = nullptr;
 
 //static
 unsigned int Texture::getMaxSlots() {
 	if(maxSlots == -1) {
 		GL_ASSERT(glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxSlots));
+		current = new const Texture*[maxSlots];
 		VBE_DLOG("* Platform info: Max concurrent texture images: " << maxSlots);
 	}
 	return maxSlots;
@@ -19,15 +20,17 @@ unsigned int Texture::getMaxSlots() {
 
 // static
 void Texture::bind(Texture::Type type, const Texture* tex) {
-	const Texture* curr = current[type];
+	const Texture* curr = current[tex->slot];
 	if(curr == tex) return;
 
-	if(tex == nullptr)
-		glBindTexture(typeToGL(type), tex->handle);
-	else
-		glBindTexture(typeToGL(type), 0);
+	glActiveTexture(GL_TEXTURE0 + tex->slot);
 
-	current[type] = tex;
+	if(tex != nullptr)
+		glBindTexture(type, tex->handle);
+	else
+		glBindTexture(type, 0);
+
+	current[tex->slot] = tex;
 }
 
 Texture::Texture(Type type): handle(0), slot(0), type(type) {
@@ -66,19 +69,19 @@ Texture::Type Texture::getType() const {
 void Texture::setComparison(GLenum func, GLenum mode) {
 	VBE_ASSERT(TextureFormat::isDepth(format), "Can't set comparison for a non-depth, non_stencil texture");
 	Texture::bind(type, this);
-	GL_ASSERT(glTexParameteri(typeToGL(type), GL_TEXTURE_COMPARE_FUNC, func));
-	GL_ASSERT(glTexParameteri(typeToGL(type), GL_TEXTURE_COMPARE_MODE, mode));
+	GL_ASSERT(glTexParameteri(type, GL_TEXTURE_COMPARE_FUNC, func));
+	GL_ASSERT(glTexParameteri(type, GL_TEXTURE_COMPARE_MODE, mode));
 }
 #endif
 
 void Texture::setFilter(GLenum min, GLenum mag) {
 	Texture::bind(type, this);
-	GL_ASSERT(glTexParameteri(typeToGL(type), GL_TEXTURE_MIN_FILTER, min));
-	GL_ASSERT(glTexParameteri(typeToGL(type), GL_TEXTURE_MAG_FILTER, mag));
+	GL_ASSERT(glTexParameteri(type, GL_TEXTURE_MIN_FILTER, min));
+	GL_ASSERT(glTexParameteri(type, GL_TEXTURE_MAG_FILTER, mag));
 }
 
 void Texture::setWrap(GLenum wrap) {
 	Texture::bind(type, this);
-	GL_ASSERT(glTexParameteri(typeToGL(type), GL_TEXTURE_WRAP_S, wrap));
-	GL_ASSERT(glTexParameteri(typeToGL(type), GL_TEXTURE_WRAP_T, wrap));
+	GL_ASSERT(glTexParameteri(type, GL_TEXTURE_WRAP_S, wrap));
+	GL_ASSERT(glTexParameteri(type, GL_TEXTURE_WRAP_T, wrap));
 }
