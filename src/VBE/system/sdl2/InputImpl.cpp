@@ -114,6 +114,7 @@ Mouse::Button InputImpl::convertSdlButton(int button) {
 		case SDL_BUTTON_X2: return Mouse::X2;
 		default:
 			VBE_ASSERT(false, "Invalid SDL button code");
+			return Mouse::Left;
 	}
 }
 
@@ -358,6 +359,7 @@ Keyboard::Key InputImpl::convertSdlKey(int key) {
 		case SDLK_UNDERSCORE: return Keyboard::Underscore;
 		default:
 			VBE_ASSERT(false, "Invalid SDL button code");
+			return Keyboard::A;
 	}
 }
 
