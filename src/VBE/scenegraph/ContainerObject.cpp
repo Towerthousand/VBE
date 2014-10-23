@@ -5,6 +5,12 @@ ContainerObject::ContainerObject() {
 }
 
 ContainerObject::~ContainerObject() {
+	for(std::set<GameObject*, FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end();) {
+		GameObject* obj = *it;
+		drawTasks.erase(obj);
+		it = updateTasks.erase(it);
+		delete obj;
+	}
 }
 
 void ContainerObject::update(float deltaTime) {

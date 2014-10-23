@@ -37,7 +37,7 @@ void GameObject::addTo(GameObject *newParent) {
 }
 
 void GameObject::removeAndDelete() {
-	//This will remove the object from the tree and it will tell the game to stop tracking
+	//This will remove the object from the tree and it will tell the container to stop tracking
 	//these objects and delete them.
 	removeFromParent();
 	markForDelete();
@@ -82,8 +82,7 @@ void GameObject::setUpdatePriority(int newPriority) {
 	updatePriority = newPriority;
 }
 
-mat4f GameObject::getFullTransform() const
-{
+mat4f GameObject::getFullTransform() const {
 	return fullTransform;
 }
 

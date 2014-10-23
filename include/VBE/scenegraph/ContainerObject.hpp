@@ -14,8 +14,8 @@ class ContainerObject : public GameObject {
 		virtual void update(float deltaTime);
 		virtual void draw() const;
 	private:
-		void addToContainer(GameObject* obj);
-		void removeFromContainer(GameObject* obj);
+		void addToContainer(GameObject* obj) override;
+		void removeFromContainer(GameObject* obj) override;
 
 		struct FunctorCompareDraw{
 				bool operator()(const GameObject* a, const GameObject* b) {
@@ -39,6 +39,7 @@ class ContainerObject : public GameObject {
 		std::queue<GameObject*> objectTasksToRemove;
 
 		friend class GameObject;
+		friend class Game;
 };
 
 #endif // CONTAINEROBJECT_HPP

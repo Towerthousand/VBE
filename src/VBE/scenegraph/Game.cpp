@@ -2,6 +2,7 @@
 #include <VBE/system/Clock.hpp>
 #include <VBE/system/Window.hpp>
 #include <VBE/system/Log.hpp>
+#include <VBE/system/Keyboard.hpp>
 
 Game* Game::instance = nullptr;
 
@@ -14,6 +15,16 @@ Game::Game() :isRunning(true), idCounter(1), fixedUpdateRate(0), isFixedUpdateRa
 
 Game::~Game() {
 	//Free resources, delete scenegraph nodes and close windows
+
+	//do this here instead of letting ContainerObject do it, so that the shutdown cleanup is done after everything has been actually deleted.
+	for(std::set<GameObject*, FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end();) {
+		GameObject* obj = *it;
+		drawTasks.erase(obj);
+		it = updateTasks.erase(it);
+		delete obj;
+	}
+
+	//At this point everything should be totally gone.
 	VBE_LOG("* EXITING GAME: CLEARING RESOURCES" );
 	isRunning = false;
 	Game::instance = nullptr;
@@ -57,7 +68,7 @@ void Game::run() {
 		float accumulated = 0.0f;
 		float newTime = 0.0f;
 		while (isRunning) {
-			if(accumulated < deltaTime) 
+			if(accumulated < deltaTime)
 				Clock::sleepSeconds(deltaTime-accumulated);//miliseconds to wait
 			newTime = Clock::getSeconds();
 			accumulated = newTime-time;
