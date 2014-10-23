@@ -28,6 +28,10 @@ class Texture2D : public Texture {
 			Texture::bind(Texture::Type2D, tex, slot);
 		}
 
+		Texture2D(Texture2D&& rhs);
+		Texture2D& operator=(Texture2D&& rhs);
+		friend void swap(Texture2D& a, Texture2D& b);
+
 	private:
 		vec2ui size;
 };

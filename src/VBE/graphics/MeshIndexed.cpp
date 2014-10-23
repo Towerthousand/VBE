@@ -16,7 +16,7 @@ MeshIndexed::~MeshIndexed() {
 }
 
 
-MeshIndexed::MeshIndexed(MeshIndexed&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Element>())) {
+MeshIndexed::MeshIndexed(MeshIndexed&& rhs) : MeshIndexed(Vertex::Format(std::vector<Vertex::Element>())) {
 	using std::swap;
 	swap(*this, rhs);
 }

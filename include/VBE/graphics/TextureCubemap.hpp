@@ -36,6 +36,9 @@ class TextureCubemap : public Texture {
 			Texture::bind(Texture::TypeCubemap, tex, slot);
 		}
 
+		TextureCubemap(TextureCubemap&& rhs);
+		TextureCubemap& operator=(TextureCubemap&& rhs);
+		friend void swap(TextureCubemap& a, TextureCubemap& b);
 	private:
 		unsigned int size;
 };

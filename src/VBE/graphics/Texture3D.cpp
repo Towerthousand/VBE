@@ -38,4 +38,21 @@ vec3ui Texture3D::getSize() const {
 	return size;
 }
 
+Texture3D::Texture3D(Texture3D&& rhs) : Texture3D() {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+Texture3D& Texture3D::operator=(Texture3D&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+void swap(Texture3D& a, Texture3D& b) {
+	using std::swap;
+	swap(static_cast<Texture&>(a), static_cast<Texture&>(b));
+	swap(a.size, b.size);
+}
+
 #endif // VBE_GLES2

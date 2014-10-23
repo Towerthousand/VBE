@@ -10,6 +10,7 @@
 class Texture2D;
 class Texture3D;
 class Texture2DArray;
+class Texture;
 class Uniform : public NonCopyable {
 	public:
 		Uniform(unsigned int count, GLenum type, GLint location);
@@ -38,9 +39,12 @@ class Uniform : public NonCopyable {
 		void set(const mat4f &val);
 		void set(const std::vector<mat4f> &val);
 		
+		void set(const Texture2D* val);
 		void set(const Texture2D& val);
 #ifndef VBE_GLES2
+		void set(const Texture3D* val);
 		void set(const Texture3D& val);
+		void set(const Texture2DArray* val);
 		void set(const Texture2DArray& val);
 #endif
 

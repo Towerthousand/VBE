@@ -19,6 +19,14 @@ unsigned int Texture::getMaxSlots() {
 	return maxSlots;
 }
 
+void swap(Texture& a, Texture& b) {
+	using std::swap;
+
+	swap(a.handle, b.handle);
+	swap(a.format, b.format);
+	swap(a.type, b.type);
+}
+
 // static
 void Texture::bind(Texture::Type type, const Texture* tex, unsigned int slot) {
 	VBE_ASSERT(slot < getMaxSlots(), "Invalid texture slot on Texture::bind");

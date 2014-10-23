@@ -30,6 +30,10 @@ class Texture2DArray : public Texture {
 			Texture::bind(Texture::Type2DArray, tex, slot);
 		}
 
+		Texture2DArray(Texture2DArray&& rhs);
+		Texture2DArray& operator=(Texture2DArray&& rhs);
+		friend void swap(Texture2DArray& a, Texture2DArray& b);
+
 	private:
 		vec3ui size;
 };

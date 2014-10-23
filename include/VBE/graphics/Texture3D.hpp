@@ -26,6 +26,10 @@ class Texture3D : public Texture {
 			Texture::bind(Texture::Type3D, tex, slot);
 		}
 
+		Texture3D(Texture3D&& rhs);
+		Texture3D& operator=(Texture3D&& rhs);
+		friend void swap(Texture3D& a, Texture3D& b);
+
 	private:
 		vec3ui size;
 };

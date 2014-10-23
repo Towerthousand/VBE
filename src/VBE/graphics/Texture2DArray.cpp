@@ -79,4 +79,21 @@ vec3ui Texture2DArray::getSize() const {
 	return size;
 }
 
+Texture2DArray::Texture2DArray(Texture2DArray&& rhs) : Texture2DArray() {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+Texture2DArray& Texture2DArray::operator=(Texture2DArray&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+void swap(Texture2DArray& a, Texture2DArray& b) {
+	using std::swap;
+	swap(static_cast<Texture&>(a), static_cast<Texture&>(b));
+	swap(a.size, b.size);
+}
+
 #endif // VBE_GLES2

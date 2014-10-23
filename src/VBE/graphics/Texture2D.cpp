@@ -61,3 +61,20 @@ void Texture2D::generateMipmap() {
 vec2ui Texture2D::getSize() const {
 	return size;
 }
+
+Texture2D::Texture2D(Texture2D&& rhs) : Texture2D() {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+Texture2D& Texture2D::operator=(Texture2D&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+void swap(Texture2D& a, Texture2D& b) {
+	using std::swap;
+	swap(static_cast<Texture&>(a), static_cast<Texture&>(b));
+	swap(a.size, b.size);
+}

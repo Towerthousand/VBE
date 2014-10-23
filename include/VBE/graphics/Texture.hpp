@@ -27,9 +27,9 @@ class Texture : public NonCopyable {
 #endif
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap);
-
 		static unsigned int getMaxSlots();
 
+		friend void swap(Texture& a, Texture& b);
 	protected:
 		Texture(Type type);
 
