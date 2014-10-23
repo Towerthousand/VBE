@@ -32,7 +32,7 @@ class TextureCubemap : public Texture {
 
 		unsigned int getSize() const;
 
-		static void bind(const TextureCubemap* tex, int slot) {
+		static void bind(const TextureCubemap* tex, unsigned int slot) {
 			Texture::bind(Texture::TypeCubemap, tex, slot);
 		}
 

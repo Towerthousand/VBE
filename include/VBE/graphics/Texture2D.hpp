@@ -24,7 +24,7 @@ class Texture2D : public Texture {
 		void generateMipmap();
 		vec2ui getSize() const;
 
-		static void bind(const Texture2D* tex, int slot) {
+		static void bind(const Texture2D* tex, unsigned int slot) {
 			Texture::bind(Texture::Type2D, tex, slot);
 		}
 
