@@ -128,22 +128,22 @@ void Uniform::set(const std::vector<mat4f> &val) {
 	setBytes((char*)&val[0][0][0]);
 }
 
-void Uniform::set(const Texture2D* val) {
+void Uniform::set(const Texture2D& val) {
 	VBE_ASSERT(type == GL_SAMPLER_2D || type == GL_SAMPLER_2D_SHADOW, "Wrong uniform type. Location " << this->location);
-	Texture2D::bind(val, texUnit);
+	Texture2D::bind(&val, texUnit);
 	setBytes((char*)&texUnit);
 }
 
 #ifndef VBE_GLES2
-void Uniform::set(const Texture3D* val) {
+void Uniform::set(const Texture3D& val) {
 	VBE_ASSERT(type == GL_SAMPLER_3D, "Wrong uniform type. Location " << this->location);
-	Texture3D::bind(val, texUnit);
+	Texture3D::bind(&val, texUnit);
 	setBytes((char*)&texUnit);
 }
 
-void Uniform::set(const Texture2DArray* val) {
+void Uniform::set(const Texture2DArray& val) {
 	VBE_ASSERT(type == GL_SAMPLER_2D_ARRAY, "Wrong uniform type. Location " << this->location);
-	Texture2DArray::bind(val, texUnit);
+	Texture2DArray::bind(&val, texUnit);
 	setBytes((char*)&texUnit);
 }
 #endif
