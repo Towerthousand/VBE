@@ -20,6 +20,7 @@ include(../common.pri)
 
 OTHER_FILES += \
     doxygenconfig \
+    src/VBE/system/android/ClockImpl.hpp \
     VBE.pri
 
 HEADERS += \
@@ -76,7 +77,10 @@ HEADERS += \
     src/VBE/system/sdl2/StorageImpl.hpp \
     include/VBE/graphics/Mesh.hpp \
     include/VBE/graphics/MeshBase.hpp \
-    include/VBE/graphics/MeshIndexed.hpp
+    include/VBE/graphics/MeshIndexed.hpp \
+    src/VBE/system/android/WindowImpl.hpp \
+    src/VBE/system/android/StorageImpl.hpp \
+    src/VBE/system/android/InputImpl.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
