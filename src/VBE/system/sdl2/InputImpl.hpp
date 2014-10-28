@@ -9,25 +9,15 @@
 class InputImpl {
 	public:
 		static void init();
-		static void update();
 		static void processEvent(const SDL_Event& e);
 
-
-		enum KeyState {
-			Released,
-			JustPressed,
-			Pressed,
-			JustReleased
-		};
-
-		static KeyState getKeyState(Keyboard::Key key);
-		static KeyState getMouseButtonState(Mouse::Button button);
+		static const bool* getKeyPresses();
+		static const bool* getMouseButtonPresses();
 
 		static void setMousePosition(int x, int y);
 
 		static vec2i getMousePosition() { return mousePos; }
-		static vec2i getMouseDisplacement() { return mousePos-lastMousePos; }
-		static vec2i getMouseWheelMovement() { return mouseWheel; }
+		static vec2i getMouseWheelPosition() { return mouseWheelPos; }
 
 		static void setCursorVisible(bool visible);
 		static void setGrab(bool grab);
@@ -36,13 +26,11 @@ class InputImpl {
 	private:
 		static Mouse::Button convertSdlButton(int button);
 		static Keyboard::Key convertSdlKey(int key);
-		static KeyState nextState(KeyState state);
 
-		static KeyState keyboardState[Keyboard::KeyCount];
-		static KeyState mouseButtonState[Mouse::ButtonCount];
+		static bool keyPresses[Keyboard::KeyCount];
+		static bool mouseButtonPresses[Mouse::ButtonCount];
 		static vec2i mousePos;
-		static vec2i lastMousePos;
-		static vec2i mouseWheel;
+		static vec2i mouseWheelPos;
 		static bool relativeMouse;
 };
 

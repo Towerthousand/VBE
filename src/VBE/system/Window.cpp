@@ -1,7 +1,8 @@
 #include<VBE/system/Window.hpp>
 #include<VBE/system/sdl2/WindowImpl.hpp>
 #include<VBE/system/Log.hpp>
-
+#include<VBE/system/Keyboard.hpp>
+#include<VBE/system/Mouse.hpp>
 
 // static
 std::vector<Window::DisplayMode> Window::getFullscreenModes() {
@@ -13,6 +14,9 @@ Window::Window(Window::DisplayMode mode, ContextSettings contextSettings) {
 
 	instance = this;
 	WindowImpl::create(mode, contextSettings);
+
+	Keyboard::init();
+	Mouse::init();
 }
 
 Window::~Window() {
@@ -23,6 +27,11 @@ Window::~Window() {
 }
 
 void Window::update() {
+	// First we have to update Keyboard and Mouse to save the old keys.
+	Keyboard::update();
+	Mouse::update();
+
+	// After we process the events.
 	WindowImpl::update();
 }
 

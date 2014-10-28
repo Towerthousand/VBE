@@ -136,8 +136,6 @@ void WindowImpl::setDisplayMode(Window::DisplayMode mode) {
 
 // static
 void WindowImpl::update() {
-	InputImpl::update();
-
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {

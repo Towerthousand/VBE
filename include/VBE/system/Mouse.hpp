@@ -42,15 +42,20 @@ class Mouse {
 		static vec2i position();
 
 		///
-		/// \brief Get mouse displacement from last frame.
-		/// Will return displacement from last frame's position
-		/// \return the mouse displacement.
+		/// \brief Get mouse movement since last frame.
+		/// \return the mouse movement.
 		///
-		static vec2i displacement();
+		static vec2i movement();
 
 		///
-		/// \brief Gets the mouse wheel movement. Mouse wheel ticks are accumulated
+		/// \brief Gets the mouse wheel position. Mouse wheel ticks are accumulated
 		/// in this value, similar to the relative mouse mode.
+		/// \return the mouse wheel position.
+		///
+		static vec2i wheelPosition();
+
+		///
+		/// \brief Gets the mouse wheel movement since last frame.
 		/// \return the mouse wheel movement.
 		///
 		static vec2i wheelMovement();
@@ -90,6 +95,16 @@ class Mouse {
 		/// \param relative whether to enable or disable relative mode.
 		///
 		static void setRelativeMode(bool relative);
+
+
+	private:
+		static void init();
+		static void update();
+		static bool oldMouseButtonPresses[Mouse::ButtonCount];
+		static vec2i oldMousePos;
+		static vec2i oldMouseWheelPos;
+
+		friend class Window;
 };
 
 #endif // MOUSE_HPP

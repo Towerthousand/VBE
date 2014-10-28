@@ -3,51 +3,32 @@
 #include <VBE/system/Log.hpp>
 
 // static
-InputImpl::KeyState InputImpl::keyboardState[Keyboard::KeyCount];
-InputImpl::KeyState InputImpl::mouseButtonState[Mouse::ButtonCount];
+bool InputImpl::keyPresses[Keyboard::KeyCount];
+bool InputImpl::mouseButtonPresses[Mouse::ButtonCount];
 vec2i InputImpl::mousePos;
-vec2i InputImpl::lastMousePos;
-vec2i InputImpl::mouseWheel;
+vec2i InputImpl::mouseWheelPos;
 bool InputImpl::relativeMouse;
 
 // static
 void InputImpl::init() {
 	mousePos = vec2i(0, 0);
-	mouseWheel = vec2i(0, 0);
+	mouseWheelPos = vec2i(0, 0);
 	relativeMouse = false;
 
 	for(int i = 0; i < Keyboard::KeyCount; i++)
-		keyboardState[i] = Released;
+		keyPresses[i] = false;
 	for(int i = 0; i < Mouse::ButtonCount; i++)
-		mouseButtonState[i] = Released;
+		mouseButtonPresses[i] = false;
 }
 
 // static
-InputImpl::KeyState InputImpl::nextState(InputImpl::KeyState state) {
-	switch(state) {
-		case JustPressed: return Pressed;
-		case JustReleased: return Released;
-		default: return state;
-	}
+const bool* InputImpl::getKeyPresses() {
+	return keyPresses;
 }
 
 // static
-void InputImpl::update() {
-	for(int i = 0; i < Keyboard::KeyCount; i++)
-		keyboardState[i] = nextState(keyboardState[i]);
-	for(int i = 0; i < Mouse::ButtonCount; i++)
-		mouseButtonState[i] = nextState(mouseButtonState[i]);
-	lastMousePos = mousePos;
-}
-
-// static
-InputImpl::KeyState InputImpl::getKeyState(Keyboard::Key key) {
-	return keyboardState[key];
-}
-
-// static
-InputImpl::KeyState InputImpl::getMouseButtonState(Mouse::Button button) {
-	return mouseButtonState[button];
+const bool* InputImpl::getMouseButtonPresses() {
+	return mouseButtonPresses;
 }
 
 void InputImpl::setMousePosition(int x, int y) {
@@ -77,18 +58,18 @@ void InputImpl::processEvent(const SDL_Event& e) {
 	switch(e.type) {
 		// Keyboard events
 		case SDL_KEYDOWN:
-			keyboardState[convertSdlKey(e.key.keysym.sym)] = JustPressed;
+			keyPresses[convertSdlKey(e.key.keysym.sym)] = true;
 			break;
 		case SDL_KEYUP:
-			keyboardState[convertSdlKey(e.key.keysym.sym)] = JustReleased;
+			keyPresses[convertSdlKey(e.key.keysym.sym)] = false;
 			break;
 
 		// Mouse events
 		case SDL_MOUSEBUTTONDOWN:
-			mouseButtonState[convertSdlButton(e.button.button)] = JustPressed;
+			mouseButtonPresses[convertSdlButton(e.button.button)] = true;
 			break;
 		case SDL_MOUSEBUTTONUP:
-			mouseButtonState[convertSdlButton(e.button.button)] = JustReleased;
+			mouseButtonPresses[convertSdlButton(e.button.button)] = false;
 			break;
 		case SDL_MOUSEMOTION:
 			if(relativeMouse)
@@ -97,7 +78,7 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				mousePos = vec2i(e.motion.x, e.motion.y);
 			break;
 		case SDL_MOUSEWHEEL:
-			mouseWheel = vec2i(e.wheel.x, e.wheel.y);
+			mouseWheelPos += vec2i(e.wheel.x, e.wheel.y);
 			break;
 		default:
 			break;

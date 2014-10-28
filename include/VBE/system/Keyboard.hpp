@@ -263,6 +263,14 @@ class Keyboard {
 		/// \brief Tells whether the given key has just been released (It was pressed on the last frame and it's now released.)
 		///
 		static bool justReleased(Key k);
+
+
+	private:
+		static void init();
+		static void update();
+		static bool oldKeyPresses[Keyboard::KeyCount];
+
+		friend class Window;
 };
 
 ///
