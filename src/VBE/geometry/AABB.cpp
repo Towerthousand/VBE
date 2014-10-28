@@ -1,7 +1,7 @@
 #include <VBE/geometry/AABB.hpp>
 
 AABB::AABB() {
-	pmax = vec3f(std::numeric_limits<float>::min());
+	pmax = vec3f(std::numeric_limits<float>::lowest());
 	pmin = vec3f(std::numeric_limits<float>::max());
 }
 
