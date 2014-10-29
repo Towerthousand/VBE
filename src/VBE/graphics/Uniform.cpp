@@ -230,14 +230,17 @@ void Uniform::log() {
 bool Uniform::isSampler(GLenum uniformType) {
 	switch(uniformType) {
 		case GL_SAMPLER_2D:
+			return true;
 #ifndef VBE_GLES2
 		case GL_SAMPLER_2D_SHADOW:
+			return true;
 		case GL_SAMPLER_2D_ARRAY:
+			return true;
 		case GL_SAMPLER_3D:
 			return true;
+#endif
 		default:
 			break;
-#endif
 	}
 	return false;
 }
