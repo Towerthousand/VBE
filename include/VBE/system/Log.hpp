@@ -5,10 +5,11 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <VBE/config.hpp>
 #include <VBE/math.hpp> // vec3, vec4, ivec4, mat4 (core)
 
 //VBE_ASSERT
-#ifdef __DEBUG
+#ifdef VBE_DEBUG
 #ifdef WINDOWS
 #define VBE_ASSERT(expression, string) do \
 { \
@@ -39,7 +40,7 @@
 #endif
 
 //GL_ASSERT
-#ifdef __DEBUG
+#ifdef VBE_DEBUG
 #define GL_ASSERT( gl_code ) do \
 { \
 	gl_code; \
@@ -51,7 +52,7 @@
 #endif
 
 //VBE_WARNING
-#ifdef __DEBUG
+#ifdef VBE_DEBUG
 #define VBE_WARN(expression , string) do \
 { \
 	if(!(expression)) { \
