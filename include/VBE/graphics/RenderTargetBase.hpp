@@ -1,5 +1,5 @@
-#ifndef RENDERTARGET_HPP
-#define RENDERTARGET_HPP
+#ifndef RENDERTARGETBASE_HPP
+#define RENDERTARGETBASE_HPP
 
 #include <vector>
 #include <map>
@@ -11,7 +11,7 @@
 #include <VBE/utils/NonCopyable.hpp>
 
 class RenderBuffer;
-class RenderTarget : public NonCopyable {
+class RenderTargetBase : public NonCopyable {
 	public:
 		enum Attachment {
 			DEPTH = GL_DEPTH_ATTACHMENT,
@@ -45,52 +45,42 @@ class RenderTarget : public NonCopyable {
 #endif
 		}
 
-		RenderTarget(unsigned int width, unsigned int height);
-		RenderTarget(float mult);
-		~RenderTarget();
+		RenderTargetBase(unsigned int width, unsigned int height);
+		RenderTargetBase(float mult);
+		virtual ~RenderTargetBase();
 		
-		static void bind(const RenderTarget* renderTarget);
-		static const RenderTarget *getCurrent();
+		static void bind(const RenderTargetBase* renderTarget);
+		static const RenderTargetBase* getCurrent();
 
 		unsigned int getWidth() const;
 		unsigned int getHeight() const;
 		vec2ui getSize() const;
 
-		// TODO 
-		void addRenderBuffer(Attachment target, TextureFormat::Format format);
-		void addTexture(Attachment target, TextureFormat::Format format);
-		void addCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex);
-		void setCustomTexture(RenderTarget::Attachment attachment, Texture2D* tex);
-		Texture2D* getTextureForAttachment(Attachment attachment);
-		const Texture2D* getTextureForAttachment(Attachment attachment) const;
-	private:
+		void addDrawAttachment(RenderTargetBase::Attachment a);
+	protected:
 		void ensureValid() const;
-		void valid() const;
+		void valid() const = 0; //validate this framebuffer pls
 		struct RenderTargetEntry {
 				enum Type {
 					RenderBufferEntry,
 					TextureEntry
 				};
 
-				RenderTargetEntry(Type type, RenderTarget::Attachment attachment, TextureFormat::Format format) :
-					type(type), attachment(attachment), format(format), user(false), userUp(true), texture(nullptr), renderBuffer(nullptr) {}
-				RenderTargetEntry(RenderTarget::Attachment attachment, Texture2D* tex) :
-					type(TextureEntry), attachment(attachment), format(tex->getFormat()), user(true), userUp(false), texture(tex), renderBuffer(nullptr) {}
+				RenderTargetEntry(Texture* texture, RenderTargetBase::Attachment attachment) :
+					type(TextureEntry), attachment(attachment), texture(texture), renderBuffer(nullptr) {}
+				RenderTargetEntry(RenderTargetBase::Attachment attachment, RenderBuffer* renderBuffer) :
+					type(RenderBufferEntry), attachment(attachment), texture(nullptr), renderBuffer(renderBuffer) {}
 				~RenderTargetEntry() {}
 
 				Type type;
-				RenderTarget::Attachment attachment;
-				TextureFormat::Format format;
-				bool user;
-				bool userUp;
-
+				RenderTargetBase::Attachment attachment;
 				Texture2D* texture;
 				RenderBuffer* renderBuffer;
 		};
 
-		void registerAttachment(RenderTarget::Attachment a);
+		void registerAttachment(RenderTargetBase::Attachment a);
 
-		static const RenderTarget* current;
+		static const RenderTargetBase* current;
 
 		GLuint handle;
 		mutable vec2ui size;
@@ -99,8 +89,9 @@ class RenderTarget : public NonCopyable {
 		mutable bool dirty;
 		mutable bool attachDirty;
 		std::vector<Attachment> drawAttachments;
-		mutable std::map<Attachment, RenderTargetEntry> entries;
+		std::vector<Attachment> allAttachments;
+		mutable std::vector<RenderTargetEntry> entries;
 };
 
 
-#endif // RENDERTARGET_HPP
+#endif // RENDERTARGETBASE_HPP
