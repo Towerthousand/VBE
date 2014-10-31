@@ -6,6 +6,7 @@
 Shader::Shader(GLenum type) {
 	shaderHandle = glCreateShader(type);
 	GL_ASSERT({});
+	VBE_ASSERT(shaderHandle != 0, "Failed to create shader");
 }
 
 Shader::~Shader() {

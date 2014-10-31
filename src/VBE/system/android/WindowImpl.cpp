@@ -22,6 +22,7 @@ std::vector<Window::DisplayMode> WindowImpl::getFullscreenModes() {
 
 // static
 void WindowImpl::create(Window::DisplayMode mode, ContextSettings config) {
+	VBE_LOG("Creating WindowImpl");
 	focused = false;
 	// Wait for Android to focus and start our window.
 	update();
@@ -46,18 +47,17 @@ void WindowImpl::update() {
 	// Read all pending events.
 	int ident;
 	int events;
-	struct android_poll_source* source;
+	struct android_poll_source* source = NULL;
 
 	// If focused, we loop until all events are read, then continue
 	// to draw the next frame of animation.
 	// If not, we wait for events, blocking if needed, until we become focused.
-	while (focused && (ident=ALooper_pollAll(focused ? 0 : -1, NULL, &events,
-			(void**)&source)) >= 0) {
-
+	while ((ident=ALooper_pollAll(focused ? 0 : -1, NULL, &events, (void**)&source)) >= 0 || !focused) {
 		// Process this event.
 		if (source != NULL) {
 			source->process(app, source);
 		}
+		source = NULL;
 	}
 }
 
@@ -103,15 +103,19 @@ void WindowImpl::handleAndroidAppCmd(struct android_app* app, int32_t cmd) {
 			// cool story bro
 			break;
 		case APP_CMD_INIT_WINDOW:
+			VBE_LOG("Init window");
 			initWindow();
 			break;
 		case APP_CMD_TERM_WINDOW:
+			VBE_LOG("Term window");
 			termWindow();
 			break;
 		case APP_CMD_GAINED_FOCUS:
+			VBE_LOG("Gained focus");
 			focused = true;
 			break;
 		case APP_CMD_LOST_FOCUS:
+			VBE_LOG("Lost focus");
 			focused = false;
 			break;
 	}
@@ -129,6 +133,7 @@ void WindowImpl::initWindow() {
 	 * component compatible with on-screen windows
 	 */
 	const EGLint attribs[] = {
+			EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
 			EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
 			EGL_BLUE_SIZE, 8,
 			EGL_GREEN_SIZE, 8,
@@ -152,13 +157,22 @@ void WindowImpl::initWindow() {
 	ANativeWindow_setBuffersGeometry(app->window, 0, 0, format);
 
 	surface = eglCreateWindowSurface(display, eglConfig, app->window, NULL);
-	context = eglCreateContext(display, eglConfig, NULL, NULL);
+
+
+	EGLint context_attr[] = {
+		EGL_CONTEXT_CLIENT_VERSION, 2,
+		EGL_NONE
+	};
+	context = eglCreateContext(display, eglConfig, NULL, context_attr);
 		
 	VBE_ASSERT(eglMakeCurrent(display, surface, surface, context) == EGL_TRUE, "Unable to eglMakeCurrent");
 
 	eglQuerySurface(display, surface, EGL_WIDTH, &width);
 	eglQuerySurface(display, surface, EGL_HEIGHT, &height);
 
+	VBE_LOG("+++++++++++++++++++++++++++++++++++++++++++++++");
+	VBE_LOG((const char*) glGetString(GL_VERSION));
+	VBE_LOG("+++++++++++++++++++++++++++++++++++++++++++++++");
 }
 
 void WindowImpl::termWindow() {

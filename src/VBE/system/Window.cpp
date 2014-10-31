@@ -1,5 +1,5 @@
 #include<VBE/system/Window.hpp>
-#include<VBE/system/sdl2/WindowImpl.hpp>
+#include<VBE/system/WindowImpl.hpp>
 #include<VBE/system/Log.hpp>
 #include<VBE/system/Keyboard.hpp>
 #include<VBE/system/Mouse.hpp>

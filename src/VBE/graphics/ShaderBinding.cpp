@@ -37,14 +37,16 @@ void ShaderBinding::bind(const ShaderBinding* binding) {
 #else
 	if(currentBind != nullptr)
 		currentBind->disableAttributes();
-	if(bind != nullptr)
-		currentBind->enableAttributes();
+	if(binding != nullptr)
+		binding->enableAttributes();
 #endif
 	currentBind = binding;
 }
 
 
 void ShaderBinding::enableAttributes() const {
+	VBE_ASSERT(mesh != nullptr, "Mesh cannot be nullptr");
+	VBE_ASSERT(program != nullptr, "Program cannot be nullptr");
 	mesh->bindBuffers();
 
 	const Vertex::Format format = mesh->getVertexFormat();
@@ -73,6 +75,9 @@ void ShaderBinding::enableAttributes() const {
 }
 
 void ShaderBinding::disableAttributes() const {
+	VBE_ASSERT(mesh != nullptr, "Mesh cannot be nullptr");
+	VBE_ASSERT(program != nullptr, "Program cannot be nullptr");
+
 	const Vertex::Format format = mesh->getVertexFormat();
 	for(const std::pair<std::string, GLint>& attr: program->getAttributes()) {
 		for(unsigned int i = 0; i < format.elementCount(); ++i) {
