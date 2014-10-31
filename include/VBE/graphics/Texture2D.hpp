@@ -1,13 +1,17 @@
 #ifndef TEXTURE2D_HPP
 #define TEXTURE2D_HPP
+
+#include <iostream>
+#include <memory>
+
 #include "Texture.hpp"
 
 class Texture2D : public Texture {
 	public:
 		Texture2D();
 
-		void loadFromFile(
-				const std::string& filePath,
+		void load(
+				std::unique_ptr<std::istream> in,
 				TextureFormat::Format internalFormat = TextureFormat::AUTO);
 
 		void loadEmpty(

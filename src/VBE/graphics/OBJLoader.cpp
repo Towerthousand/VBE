@@ -14,7 +14,7 @@ struct FunctorComparevec3i{
 		}
 };
 
-MeshBase* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::BufferType bufferType) {
+MeshBase* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from path " << filepath << ". Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
@@ -26,9 +26,6 @@ MeshBase* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::Buff
 			vec3f pos, nor;
 			vec2f tex;
 	};
-
-	std::ifstream in(filepath.c_str(), std::ifstream::in);
-	VBE_ASSERT(in, "While importing OBJ: Cannot open " << filepath );
 
 	std::vector<vec3f> vertices;
 	std::vector<vec3f> normals;
@@ -102,7 +99,7 @@ MeshBase* OBJLoader::loadFromOBJStandard(const std::string& filepath, Mesh::Buff
 	return mesh;
 }
 
-MeshBase* OBJLoader::loadFromOBJTangents(const std::string& filepath, Mesh::BufferType bufferType) {
+MeshBase* OBJLoader::loadFromOBJTangents(std::istream& in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from path " << filepath << ". Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
@@ -115,9 +112,6 @@ MeshBase* OBJLoader::loadFromOBJTangents(const std::string& filepath, Mesh::Buff
 			vec3f pos, nor, tan;
 			vec2f tex;
 	};
-
-	std::ifstream in(filepath.c_str(), std::ifstream::in);
-	VBE_ASSERT(in, "While importing OBJ: Cannot open " << filepath );
 
 	std::vector<vec3f> vertices;
 	std::vector<vec3f> normals;

@@ -2,6 +2,7 @@
 
 #include <VBE/config.hpp>
 #include <VBE/dependencies/stb_image/stb_image.hpp>
+#include <VBE/graphics/Image.hpp>
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/graphics/TextureCubemap.hpp>
 #include <VBE/system/Log.hpp>
@@ -9,10 +10,10 @@
 TextureCubemap::TextureCubemap() : Texture(Texture::TypeCubemap), size(0) {
 }
 
-void TextureCubemap::loadFromFiles(
-		const std::vector<std::string>& filePaths,
+void TextureCubemap::load(
+		std::vector<std::unique_ptr<std::istream>>& files,
 		TextureFormat::Format internalFormat) {
-	VBE_ASSERT(filePaths.size() == 6, "You must provide 6 filepaths to load a cubemap");
+	VBE_ASSERT(files.size() == 6, "You must provide 6 filepaths to load a cubemap");
 	const int slices = 6;
 
 	unsigned int size = 0;
@@ -20,22 +21,18 @@ void TextureCubemap::loadFromFiles(
 
 	unsigned char* pixels = nullptr;
 	for (unsigned int i = 0; i < slices; i++) {
-		VBE_DLOG("* Loading new TextureCubemap slice from path " << filePaths[i]);
-		int sliceSizeX, sliceSizeY, sliceChannels;
-		unsigned char* ptr = STBI::stbi_load(filePaths[i].c_str(), &sliceSizeX, &sliceSizeY, &sliceChannels, 0);
-		VBE_ASSERT(ptr && sliceSizeX && sliceSizeY, "Failed to load image \"" << filePaths[i] << "\". Reason : " << STBI::stbi_failure_reason());
-		VBE_ASSERT(sliceSizeX == sliceSizeY, "Failed to load image \"" << filePaths[i] << "\". Images in a cubemap must be square");
+		Image img = Image::load(std::move(files[i]));
+		VBE_ASSERT(img.getSize().x == img.getSize().y, "Images in a cubemap must be square");
 		if (i == 0) {
-			size = sliceSizeX;
-			channels = sliceChannels;
+			size = img.getSize().x;
+			channels = img.getChannels();
 			pixels = new unsigned char[channels*size*size*slices];
 		}
-		VBE_ASSERT(sliceSizeX == int(size), "Image " << i << ": " << filePaths[i] << " has a different size.");
-		VBE_ASSERT(sliceChannels == int(channels), "Image " << i << ": " << filePaths[i] << " has a different channel count.");
+		VBE_ASSERT(img.getSize().x == size, "Image " << i << " has a different size.");
+		VBE_ASSERT(img.getChannels() == channels, "Image " << i << " has a different channel count.");
 
 		const int sliceSize = channels*size*size*sizeof(unsigned char);
-		memcpy(pixels + sliceSize*i, ptr, sliceSize);
-		STBI::stbi_image_free(ptr);
+		memcpy(pixels + sliceSize*i, img.getData(), sliceSize);
 	}
 
 	TextureFormat::Format sourceFormat = TextureFormat::channelsToFormat(channels);

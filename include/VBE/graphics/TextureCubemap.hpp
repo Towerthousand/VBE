@@ -1,5 +1,7 @@
 #ifndef TEXTURECUBEMAP_HPP
 #define TEXTURECUBEMAP_HPP
+
+#include <memory>
 #include "Texture.hpp"
 
 class TextureCubemap : public Texture {
@@ -15,8 +17,8 @@ class TextureCubemap : public Texture {
 
 		TextureCubemap();
 
-		void loadFromFiles(
-				const std::vector<std::string>& filePaths,
+		void load(
+				std::vector<std::unique_ptr<std::istream>>& files,
 				TextureFormat::Format internalFormat = TextureFormat::AUTO);
 
 		void loadEmpty(

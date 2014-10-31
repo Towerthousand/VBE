@@ -2,6 +2,7 @@
 #define SHADERPROGRAM_HPP
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include <VBE/config.hpp>
@@ -15,13 +16,13 @@ class ShaderProgram : public NonCopyable {
 		~ShaderProgram();
 
 		static ShaderProgram* loadFromString(const std::string &vertSource, const std::string &fragSource);
-		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& fp_filename);
+		static ShaderProgram* load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag);
 
 #ifndef VBE_GLES2
 		static ShaderProgram* loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
 		static ShaderProgram* loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource);
-		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename);
-		static ShaderProgram* loadFromFile(const std::string& vp_filename, const std::string& tc_filename, const std::string& te_filename, const std::string& gp_filename, const std::string& fp_filename);
+		static ShaderProgram* load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
+		static ShaderProgram* load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
 #endif
 
 		GLuint getHandle() const {return programHandle;}
@@ -42,7 +43,7 @@ class ShaderProgram : public NonCopyable {
 		std::map<std::string, GLint> attributes;
 		std::map<std::string, Uniform*> uniforms;
 
-		static std::string readFileIntoString(const std::string& filename);
+		static std::string readFileIntoString(std::unique_ptr<std::istream> file);
 		static GLuint current;
 };
 

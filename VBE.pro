@@ -81,7 +81,8 @@ HEADERS += \
     src/VBE/system/sdl2/StorageImpl.hpp \
     include/VBE/graphics/Mesh.hpp \
     include/VBE/graphics/MeshBase.hpp \
-    include/VBE/graphics/MeshIndexed.hpp
+    include/VBE/graphics/MeshIndexed.hpp \
+    include/VBE/graphics/Image.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -118,4 +119,5 @@ SOURCES += \
     src/VBE/system/sdl2/StorageImpl.cpp \
     src/VBE/system/Storage.cpp \
     src/VBE/graphics/MeshBase.cpp \
-    src/VBE/graphics/MeshIndexed.cpp
+    src/VBE/graphics/MeshIndexed.cpp \
+    src/VBE/graphics/Image.cpp
