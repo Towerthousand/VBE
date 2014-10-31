@@ -47,7 +47,6 @@ HEADERS += \
     include/VBE/graphics/OBJLoader.hpp \
     include/VBE/graphics/OpenGL.hpp \
     include/VBE/graphics/RenderBuffer.hpp \
-    include/VBE/graphics/RenderTarget.hpp \
     include/VBE/graphics/Shader.hpp \
     include/VBE/graphics/ShaderProgram.hpp \
     include/VBE/graphics/Texture.hpp \
@@ -82,6 +81,8 @@ HEADERS += \
     include/VBE/graphics/Mesh.hpp \
     include/VBE/graphics/MeshBase.hpp \
     include/VBE/graphics/MeshIndexed.hpp \
+    include/VBE/graphics/RenderTargetBase.hpp \
+    include/VBE/graphics/RenderTarget.hpp \
     include/VBE/graphics/Image.hpp
 
 SOURCES += \
@@ -93,7 +94,6 @@ SOURCES += \
     src/VBE/graphics/Mesh.cpp \
     src/VBE/graphics/OBJLoader.cpp \
     src/VBE/graphics/RenderBuffer.cpp \
-    src/VBE/graphics/RenderTarget.cpp \
     src/VBE/graphics/Shader.cpp \
     src/VBE/graphics/ShaderBinding.cpp \
     src/VBE/graphics/ShaderProgram.cpp \
@@ -120,4 +120,6 @@ SOURCES += \
     src/VBE/system/Storage.cpp \
     src/VBE/graphics/MeshBase.cpp \
     src/VBE/graphics/MeshIndexed.cpp \
+    src/VBE/graphics/RenderTargetBase.cpp \
+    src/VBE/graphics/RenderTarget.cpp \
     src/VBE/graphics/Image.cpp
