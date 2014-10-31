@@ -1,17 +1,21 @@
 #include <VBE/graphics/RenderBuffer.hpp>
 
-RenderBuffer::RenderBuffer(int width, int height, TextureFormat::Format format) : format(format){
+RenderBuffer::RenderBuffer(vec2ui size, TextureFormat::Format format) : size(size), format(format), handle(0){
 	GL_ASSERT(glGenRenderbuffers(1, &handle));
-	resize(width, height);
+	resize(size);
 }
 
 RenderBuffer::~RenderBuffer() {
 	GL_ASSERT(glDeleteRenderbuffers(1, &handle));
 }
 
-void RenderBuffer::resize(int width, int height) {
+void RenderBuffer::resize(vec2ui size) {
 	bind();
-	GL_ASSERT(glRenderbufferStorage(GL_RENDERBUFFER, format, width, height));
+	GL_ASSERT(glRenderbufferStorage(GL_RENDERBUFFER, format, size.x, size.y));
+}
+
+vec2ui RenderBuffer::getSize() const {
+	return size;
 }
 
 void RenderBuffer::bind() const {

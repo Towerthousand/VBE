@@ -60,7 +60,7 @@ GLenum Texture::typeToGL(Texture::Type t) {
 	return 0;
 }
 
-Texture::Texture(Type type): handle(0), type(type) {
+Texture::Texture(Type type): handle(0), format(TextureFormat::RGBA8), type(type) {
 	getMaxSlots();
 	GL_ASSERT(glGenTextures(1, &handle));
 	VBE_ASSERT(handle != 0, "Failed to create texture");

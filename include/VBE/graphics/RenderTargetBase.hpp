@@ -1,16 +1,18 @@
 #ifndef RENDERTARGETBASE_HPP
 #define RENDERTARGETBASE_HPP
 
-#include <vector>
+#include <set>
 #include <map>
+#include <vector>
 
 #include <VBE/config.hpp>
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/graphics/Texture2D.hpp>
+#include <VBE/graphics/Texture2DArray.hpp>
+#include <VBE/graphics/RenderBuffer.hpp>
 #include <VBE/math.hpp>
 #include <VBE/utils/NonCopyable.hpp>
 
-class RenderBuffer;
 class RenderTargetBase : public NonCopyable {
 	public:
 		enum Attachment {
@@ -44,10 +46,6 @@ class RenderTargetBase : public NonCopyable {
 			return a >= COLOR0 && a <= COLOR15;
 #endif
 		}
-
-		RenderTargetBase(unsigned int width, unsigned int height);
-		RenderTargetBase(float mult);
-		virtual ~RenderTargetBase();
 		
 		static void bind(const RenderTargetBase* renderTarget);
 		static const RenderTargetBase* getCurrent();
@@ -56,29 +54,35 @@ class RenderTargetBase : public NonCopyable {
 		unsigned int getHeight() const;
 		vec2ui getSize() const;
 
-		void addDrawAttachment(RenderTargetBase::Attachment a);
+		void enableAttachment(RenderTargetBase::Attachment a);
+		void disableAttachment(RenderTargetBase::Attachment a);
 	protected:
+		RenderTargetBase(unsigned int width, unsigned int height, int numLayers);
+		RenderTargetBase(float mult, int numLayers);
+		virtual ~RenderTargetBase();
+
 		void ensureValid() const;
-		void valid() const = 0; //validate this framebuffer pls
+		void valid() const; //validate this framebuffer pls
 		struct RenderTargetEntry {
 				enum Type {
 					RenderBufferEntry,
-					TextureEntry
+					Texture2DEntry,
+					Texture2DArrayEntry
 				};
 
-				RenderTargetEntry(Texture* texture, RenderTargetBase::Attachment attachment) :
-					type(TextureEntry), attachment(attachment), texture(texture), renderBuffer(nullptr) {}
-				RenderTargetEntry(RenderTargetBase::Attachment attachment, RenderBuffer* renderBuffer) :
-					type(RenderBufferEntry), attachment(attachment), texture(nullptr), renderBuffer(renderBuffer) {}
+				RenderTargetEntry(RenderBuffer* renderBuffer) :
+					type(RenderBufferEntry), renderBuffer(renderBuffer), texture2D(nullptr), texture2DArray(nullptr) {}
+				RenderTargetEntry(Texture2D* texture) :
+					type(Texture2DEntry), renderBuffer(nullptr), texture2D(texture), texture2DArray(nullptr) {}
+				RenderTargetEntry(Texture2DArray* texture) :
+					type(Texture2DArrayEntry), renderBuffer(nullptr), texture2D(nullptr), texture2DArray(texture) {}
 				~RenderTargetEntry() {}
 
 				Type type;
-				RenderTargetBase::Attachment attachment;
-				Texture2D* texture;
 				RenderBuffer* renderBuffer;
+				Texture2D* texture2D;
+				Texture2DArray* texture2DArray;
 		};
-
-		void registerAttachment(RenderTargetBase::Attachment a);
 
 		static const RenderTargetBase* current;
 
@@ -87,10 +91,10 @@ class RenderTargetBase : public NonCopyable {
 		bool screenRelativeSize;
 		float screenSizeMultiplier;
 		mutable bool dirty;
-		mutable bool attachDirty;
+		unsigned int numLayers;
 		std::vector<Attachment> drawAttachments;
-		std::vector<Attachment> allAttachments;
-		mutable std::vector<RenderTargetEntry> entries;
+		std::set<Attachment> allAttachments;
+		mutable std::map<Attachment, RenderTargetEntry> entries;
 };
 
 

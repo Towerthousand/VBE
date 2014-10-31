@@ -76,7 +76,8 @@ HEADERS += \
     include/VBE/graphics/Mesh.hpp \
     include/VBE/graphics/MeshBase.hpp \
     include/VBE/graphics/MeshIndexed.hpp \
-    include/VBE/graphics/RenderTargetBase.hpp
+    include/VBE/graphics/RenderTargetBase.hpp \
+    include/VBE/graphics/RenderTarget.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -113,4 +114,5 @@ SOURCES += \
     src/VBE/system/Storage.cpp \
     src/VBE/graphics/MeshBase.cpp \
     src/VBE/graphics/MeshIndexed.cpp \
-    src/VBE/graphics/RenderTargetBase.cpp
+    src/VBE/graphics/RenderTargetBase.cpp \
+    src/VBE/graphics/RenderTarget.cpp

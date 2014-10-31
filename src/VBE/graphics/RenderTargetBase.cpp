@@ -1,25 +1,26 @@
 #include <VBE/config.hpp>
-#include <VBE/graphics/RenderBuffer.cpp>
+#include <VBE/graphics/RenderBuffer.hpp>
 #include <VBE/graphics/RenderTargetBase.hpp>
 #include <VBE/system/Window.hpp>
+#include <algorithm>
 
 const RenderTargetBase* RenderTargetBase::current = nullptr;
 
-RenderTargetBase::RenderTargetBase(unsigned int width, unsigned int height) : handle(0), size(width, height), screenRelativeSize(false), screenSizeMultiplier(0.0f), dirty(false), attachDirty(true) {
+RenderTargetBase::RenderTargetBase(unsigned int width, unsigned int height, int numLayers) : handle(0), size(width, height), screenRelativeSize(false), screenSizeMultiplier(0.0f), dirty(false), numLayers(numLayers) {
 	VBE_ASSERT(width != 0 && height != 0, "Width or height can't be zero");
 	GL_ASSERT(glGenFramebuffers(1, &handle));
 }
 
-RenderTargetBase::RenderTargetBase(float mult) : handle(0), screenRelativeSize(true), screenSizeMultiplier(mult), dirty(false), attachDirty(true) {
+RenderTargetBase::RenderTargetBase(float mult, int numLayers) : handle(0), size(0), screenRelativeSize(true), screenSizeMultiplier(mult), dirty(false), numLayers(numLayers) {
 	GL_ASSERT(glGenFramebuffers(1, &handle));
 }
 
 RenderTargetBase::~RenderTargetBase() {
 	GL_ASSERT(glDeleteFramebuffers(1, &handle));
-	for(RenderTargetEntry& e : entries) {
-		if(e.type == RenderTargetEntry::RenderBufferEntry) {
-			delete e.renderBuffer;
-			e.renderBuffer = nullptr;
+	for(std::pair<const Attachment,RenderTargetEntry>& it  : entries) {
+		if(it.second.type == RenderTargetEntry::RenderBufferEntry) {
+			delete it.second.renderBuffer;
+			it.second.renderBuffer = nullptr;
 		}
 	}
 	GL_ASSERT(glDeleteFramebuffers(1, &handle));
@@ -30,11 +31,25 @@ vec2ui RenderTargetBase::getSize() const {
 	if(screenRelativeSize) {
 		vec2ui screenSize = Window::getInstance()->getSize();
 		return vec2ui(
-			static_cast<unsigned int>(screenSize.x*screenSizeMultiplier),
-			static_cast<unsigned int>(screenSize.y*screenSizeMultiplier));
+					static_cast<unsigned int>(screenSize.x*screenSizeMultiplier),
+					static_cast<unsigned int>(screenSize.y*screenSizeMultiplier));
 	}
 	else
 		return size;
+}
+
+void RenderTargetBase::enableAttachment(RenderTargetBase::Attachment a) {
+	VBE_ASSERT(std::find(allAttachments.begin(), allAttachments.end(), a) == allAttachments.end(), "Trying to enable an already enabled rendering attachment");
+	dirty = true;
+	allAttachments.insert(a);
+	if(isColorAttachment(a)) drawAttachments.push_back(a);
+}
+
+void RenderTargetBase::disableAttachment(RenderTargetBase::Attachment a) {
+	VBE_ASSERT(std::find(allAttachments.begin(), allAttachments.end(), a) != allAttachments.end(), "Trying to disable a non-enabled rendering attachment");
+	dirty = true;
+	allAttachments.erase(a);
+	if(isColorAttachment(a)) drawAttachments.erase(std::find(drawAttachments.begin(), drawAttachments.end(), a));
 }
 
 unsigned int RenderTargetBase::getWidth() const {
@@ -65,15 +80,6 @@ const RenderTargetBase* RenderTargetBase::getCurrent() {
 	return current;
 }
 
-void RenderTargetBase::registerAttachment(RenderTargetBase::Attachment a) {
-	dirty = true;
-	allAttachments.push_back(a);
-	if(isColorAttachment(a)) {
-		drawAttachments.push_back(a);
-		attachDirty = true;
-	}
-}
-
 void RenderTargetBase::ensureValid() const {
 	const RenderTargetBase* last = current;
 	if(last == this) return;
@@ -81,68 +87,62 @@ void RenderTargetBase::ensureValid() const {
 	bind(last);
 }
 
-//void RenderTargetBase::valid() const {
-//	VBE_ASSERT(entries.size() != 0, "This RenderTarget is invalid because it has no textures nor render buffers.");
-//	vec2ui desiredSize = getSize();
-//	bool resize = (desiredSize != size);
-//	if(!resize && !dirty) return;
+void RenderTargetBase::valid() const {
+	VBE_ASSERT(entries.size() != 0, "This RenderTarget is invalid because it has no textures nor render buffers.");
+	VBE_ASSERT(entries.size() == allAttachments.size(), "This RenderTarget is invalid because it has no texture/renderbuffer for at least one of it's enabled attachments");
+	vec2ui desiredSize = getSize();
 
-//	for(std::map<Attachment, RenderTargetEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
-//		RenderTargetEntry& e = it->second;
-//		if(e.type == RenderTargetEntry::RenderBufferEntry) {
-//			if(e.renderBuffer == nullptr) { //make and bind the renderbuffer
-//				e.renderBuffer = new RenderBuffer(desiredSize.x, desiredSize.y, e.format);
-//				e.renderBuffer->bind();
-//				GL_ASSERT(glFramebufferRenderbuffer(GL_FRAMEBUFFER, e.attachment, GL_RENDERBUFFER, e.renderBuffer->getHandle()));
-//			}
-//			else if(resize)	e.renderBuffer->resize(desiredSize.x, desiredSize.y);
-//		}
-//		else {
-//			if(e.texture == nullptr || !e.userUp) { //make and bind/just bind texture/usertexture
-//				if(!e.user) {
-//					e.texture = new Texture2D();
-//					e.texture->loadEmpty(desiredSize, e.format);
-//				}
+	//Check size of all textures, resize if needed and check for entry consistency.
+	for(std::pair<const Attachment, RenderTargetEntry>& it : entries) {
+		RenderTargetEntry& e = it.second;
+		switch(e.type) {
+			case RenderTargetEntry::RenderBufferEntry:
+				VBE_ASSERT(numLayers == 1, "RenderBuffer attached to a RenderTarget with several layers");
+				if(e.renderBuffer->getSize() != desiredSize)	e.renderBuffer->resize(desiredSize);
+				break;
+			case RenderTargetEntry::Texture2DEntry:
+				VBE_ASSERT(numLayers == 1, "Texture2D attached with a RenderTarget with several layers");
+				if(e.texture2D->getSize() != desiredSize) e.texture2D->loadEmpty(desiredSize, e.texture2D->getFormat());
+				break;
+			case RenderTargetEntry::Texture2DArrayEntry:
+				VBE_ASSERT(e.texture2DArray->getSize().z == numLayers, "A Texture2DArray attached to this RenderTarget does not have the same layers as the RenderTarget");
+				if(vec2ui(e.texture2DArray->getSize()) != desiredSize) e.texture2DArray->loadEmpty(vec3ui(desiredSize, numLayers), e.texture2DArray->getFormat());
+				break;
+		}
+	}
+	size = desiredSize;
 
-//				Texture2D::bind(e.texture, 0);
-//				GL_ASSERT(glFramebufferTexture2D(GL_FRAMEBUFFER, e.attachment, GL_TEXTURE_2D, e.texture->getHandle(), 0));
-//				VBE_WARN(e.texture->getSize() == desiredSize, "While validating RenderTarget:" << Log::Line <<
-//						 "Custom texture has a different size from the rendertarget's." << Log::Line <<
-//						 "This can yield unexpected results");
-//				e.userUp = true;
-//			}
-//			else if(resize && !e.user)
-//				e.texture->loadEmpty(desiredSize, e.texture->getFormat());
-//		}
-//	}
-//	if(attachDirty) {
-//#ifndef VBE_GLES2
-//		if(drawAttachments.size() == 0) {
-//			GLenum none = GL_NONE;
-//			GL_ASSERT(glDrawBuffers(1, &none));
-//		}
-//		else
-//			GL_ASSERT(glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]));
-//#endif
-//		attachDirty = false;
-//	}
-//	VBE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");
-//	size = desiredSize;
-//	dirty = false;
-//}
+	if(!dirty) return;
 
-//const Texture2D* RenderTargetBase::getTextureForAttachment(RenderTargetBase::Attachment target) const {
-//	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");
-//	const RenderTargetEntry& e = entries.at(target);
-//    VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");
-//	if(dirty) ensureValid();
-//	return e.texture;
-//}
+	//Rebind all textures
+	for(std::pair<const Attachment, RenderTargetEntry>& it : entries) {
+		RenderTargetEntry& e = it.second;
+		Attachment a = it.first;
+		switch(e.type) {
+			case RenderTargetEntry::RenderBufferEntry:
+				e.renderBuffer->bind();
+				GL_ASSERT(glFramebufferRenderbuffer(GL_FRAMEBUFFER, a, GL_RENDERBUFFER, e.renderBuffer->getHandle()));
+				break;
+			case RenderTargetEntry::Texture2DEntry:
+				Texture2D::bind(e.texture2D, 0);
+				GL_ASSERT(glFramebufferTexture(GL_FRAMEBUFFER, a, e.texture2D->getHandle(), 0));
+				break;
+			case RenderTargetEntry::Texture2DArrayEntry:
+				Texture2DArray::bind(e.texture2DArray, 0);
+				GL_ASSERT(glFramebufferTexture(GL_FRAMEBUFFER, a, e.texture2DArray->getHandle(), 0));
+				break;
+		}
+	}
+	dirty = false;
 
-//Texture2D* RenderTargetBase::getTextureForAttachment(RenderTargetBase::Attachment target) {
-//	VBE_ASSERT(entries.find(target) != entries.end(), "Trying to retrieve unexisting texture from RenderTarget");
-//	RenderTargetEntry& e = entries.at(target);
-//    VBE_ASSERT(e.type == RenderTargetEntry::TextureEntry, "You can't get a texture for a RenderBuffer attachment");
-//	if(dirty) ensureValid();
-//	return e.texture;
-//}
+#ifndef VBE_GLES2
+	//Submit draw buffers
+	if(drawAttachments.size() == 0) {
+		GLenum none = GL_NONE;
+		GL_ASSERT(glDrawBuffers(1, &none));
+	}
+	else GL_ASSERT(glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]));
+#endif
+
+	VBE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");
+}
