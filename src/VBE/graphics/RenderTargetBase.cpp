@@ -17,13 +17,6 @@ RenderTargetBase::RenderTargetBase(float mult, int numLayers) : handle(0), size(
 
 RenderTargetBase::~RenderTargetBase() {
 	GL_ASSERT(glDeleteFramebuffers(1, &handle));
-	for(std::pair<const Attachment,RenderTargetEntry>& it  : entries) {
-		if(it.second.type == RenderTargetEntry::RenderBufferEntry) {
-			delete it.second.renderBuffer;
-			it.second.renderBuffer = nullptr;
-		}
-	}
-	GL_ASSERT(glDeleteFramebuffers(1, &handle));
 	handle = 0;
 }
 
@@ -98,15 +91,18 @@ void RenderTargetBase::valid() const {
 		switch(e.type) {
 			case RenderTargetEntry::RenderBufferEntry:
 				VBE_ASSERT(numLayers == 1, "RenderBuffer attached to a RenderTarget with several layers");
-				if(e.renderBuffer->getSize() != desiredSize)	e.renderBuffer->resize(desiredSize);
+				if(e.renderBuffer->getSize() != desiredSize)
+					e.renderBuffer->resize(desiredSize);
 				break;
 			case RenderTargetEntry::Texture2DEntry:
 				VBE_ASSERT(numLayers == 1, "Texture2D attached with a RenderTarget with several layers");
-				if(e.texture2D->getSize() != desiredSize) e.texture2D->loadEmpty(desiredSize, e.texture2D->getFormat());
+				if(e.texture2D->getSize() != desiredSize)
+					e.texture2D->loadEmpty(desiredSize, e.texture2D->getFormat());
 				break;
 			case RenderTargetEntry::Texture2DArrayEntry:
 				VBE_ASSERT(e.texture2DArray->getSize().z == numLayers, "A Texture2DArray attached to this RenderTarget does not have the same layers as the RenderTarget");
-				if(vec2ui(e.texture2DArray->getSize()) != desiredSize) e.texture2DArray->loadEmpty(vec3ui(desiredSize, numLayers), e.texture2DArray->getFormat());
+				if(vec2ui(e.texture2DArray->getSize()) != desiredSize)
+					e.texture2DArray->loadEmpty(vec3ui(desiredSize, numLayers), e.texture2DArray->getFormat());
 				break;
 		}
 	}
@@ -124,8 +120,8 @@ void RenderTargetBase::valid() const {
 				GL_ASSERT(glFramebufferRenderbuffer(GL_FRAMEBUFFER, a, GL_RENDERBUFFER, e.renderBuffer->getHandle()));
 				break;
 			case RenderTargetEntry::Texture2DEntry:
-				Texture2D::bind(e.texture2D, 0);
-				GL_ASSERT(glFramebufferTexture(GL_FRAMEBUFFER, a, e.texture2D->getHandle(), 0));
+				Texture2D::bind(e.texture2D, rand()%10);
+				GL_ASSERT(glFramebufferTexture2D(GL_FRAMEBUFFER, a, GL_TEXTURE_2D, e.texture2D->getHandle(), 0));
 				break;
 			case RenderTargetEntry::Texture2DArrayEntry:
 				Texture2DArray::bind(e.texture2DArray, 0);
@@ -141,8 +137,10 @@ void RenderTargetBase::valid() const {
 		GLenum none = GL_NONE;
 		GL_ASSERT(glDrawBuffers(1, &none));
 	}
-	else GL_ASSERT(glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]));
+	else {
+		GL_ASSERT(glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]));
+	}
 #endif
-
-	VBE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");
+	GLenum cosa = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	VBE_ASSERT(cosa == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");
 }

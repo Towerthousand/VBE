@@ -10,13 +10,17 @@ RenderTarget::~RenderTarget() {
 }
 
 void RenderTarget::setTexture(RenderTargetBase::Attachment a, Texture2D* tex) {
+	VBE_ASSERT(allAttachments.find(a) != allAttachments.end(), "Trying to set texture to disabled attachment. Enable it first.");
 	if(entries.find(a) != entries.end()) entries.erase(a);
 	entries.insert(std::pair<RenderTargetBase::Attachment, RenderTargetEntry>(a, RenderTargetEntry(tex)));
+	dirty = true;
 }
 
 void RenderTarget::setBuffer(RenderTargetBase::Attachment a, RenderBuffer* buff) {
+	VBE_ASSERT(allAttachments.find(a) != allAttachments.end(), "Trying to set buffer to disabled attachment. Enable it first.");
 	if(entries.find(a) != entries.end()) entries.erase(a);
 	entries.insert(std::pair<RenderTargetBase::Attachment, RenderTargetEntry>(a, RenderTargetEntry(buff)));
+	dirty = true;
 }
 
 Texture2D* RenderTarget::getTexture(RenderTargetBase::Attachment a) {
