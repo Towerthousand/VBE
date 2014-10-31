@@ -11,16 +11,20 @@ unix {
 
 INCLUDEPATH += include src
 
-#__DEBUG will make asserts on all risky operations, and will output a detailed error message if it fails
-#__LOG will output all VBE_LOG(..). This is general (important) info such as resource loading, etc
-#__DLOG will output all VBE_DLOG(..). This is detailed log info, use it for debugging.
-# Disable all three for faster internets
-
 include(../common.pri)
 
 OTHER_FILES += \
-    doxygenconfig \
+    Doxyfile \
     src/VBE/system/android/ClockImpl.hpp \
+    src/VBE/system/android/WindowImpl.hpp \
+    src/VBE/system/android/StorageImpl.hpp \
+    src/VBE/system/android/InputImpl.hpp \
+    src/VBE/system/android/ClockImpl.cpp \
+    src/VBE/system/android/WindowImpl.cpp \
+    src/VBE/system/android/StorageImpl.cpp \
+    src/VBE/system/android/InputImpl.cpp \
+    src/VBE/system/android/ResourceStream.hpp \
+    src/VBE/system/android/ResourceStream.cpp \
     VBE.pri
 
 HEADERS += \
@@ -77,10 +81,7 @@ HEADERS += \
     src/VBE/system/sdl2/StorageImpl.hpp \
     include/VBE/graphics/Mesh.hpp \
     include/VBE/graphics/MeshBase.hpp \
-    include/VBE/graphics/MeshIndexed.hpp \
-    src/VBE/system/android/WindowImpl.hpp \
-    src/VBE/system/android/StorageImpl.hpp \
-    src/VBE/system/android/InputImpl.hpp
+    include/VBE/graphics/MeshIndexed.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
