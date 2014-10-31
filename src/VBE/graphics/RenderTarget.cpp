@@ -1,5 +1,5 @@
 #include <VBE/config.hpp>
-#include <VBE/graphics/RenderBuffer.cpp>
+#include <VBE/graphics/RenderBuffer.hpp>
 #include <VBE/graphics/RenderTarget.hpp>
 #include <VBE/system/Window.hpp>
 
