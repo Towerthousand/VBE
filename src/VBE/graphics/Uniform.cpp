@@ -134,7 +134,11 @@ void Uniform::set(const Texture2D* val) {
 }
 
 void Uniform::set(const Texture2D& val) {
+#ifdef VBE_GLES2
+	VBE_ASSERT(type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
+#else
 	VBE_ASSERT(type == GL_SAMPLER_2D || type == GL_SAMPLER_2D_SHADOW, "Wrong uniform type. Location " << this->location);
+#endif
 	Texture2D::bind(&val, texUnit);
 	setBytes((char*)&texUnit);
 }
