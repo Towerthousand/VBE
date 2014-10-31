@@ -9,7 +9,7 @@ SDL_GLContext WindowImpl::context;
 bool WindowImpl::focused = false;
 bool WindowImpl::closing = false;
 
-//static
+// static
 void WindowImpl::initSDL() {
 	if(isSDLInit) return;
 	VBE_ASSERT(SDL_WasInit(SDL_INIT_EVERYTHING) == 0, "SDL Has been init from outside of this application");
