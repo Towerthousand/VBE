@@ -67,12 +67,12 @@
 #endif
 
 //VBE_LOG,_DLOG
-#ifdef __LOG
+#ifdef VBE_DEBUG
 #define VBE_LOG(msg) Log::message() << msg << Log::Flush
 #else
 #define VBE_LOG(msg) {}
 #endif
-#ifdef __DLOG
+#ifdef VBE_DLOG
 #define VBE_DLOG(msg) VBE_LOG(msg)
 #else
 #define VBE_DLOG(msg) {}
@@ -115,7 +115,7 @@ class Log {
 		enum LogFlags {
 			Timestamp	= 0x01,
 			StandardOut = 0x02,
-#ifndef VBE_GLES2
+#ifndef VBE_SYSTEM_ANDROID
 			AlwaysSave = 0x04,
 #endif
 			GMTime = 0x08
@@ -149,7 +149,7 @@ class Log {
 		}
 
 		static std::string getContents() { return endFile.str(); }
-#ifndef VBE_GLES2
+#ifndef VBE_SYSTEM_ANDROID
 		static void setFilePath(std::string newPath) { outPath = newPath; }
 #endif
 };
