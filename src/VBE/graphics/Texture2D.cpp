@@ -1,5 +1,6 @@
 #include <VBE/config.hpp>
 #include <VBE/dependencies/stb_image/stb_image.hpp>
+#include <VBE/graphics/Image.hpp>
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/graphics/Texture2D.hpp>
 #include <VBE/system/Log.hpp>
@@ -7,22 +8,19 @@
 Texture2D::Texture2D() : Texture(Texture::Type2D), size(0) {
 }
 
-void Texture2D::loadFromFile(
-		const std::string &filePath,
+void Texture2D::load(
+		std::unique_ptr<std::istream> in,
 		TextureFormat::Format internalFormat) {
 
 	VBE_DLOG("* Loading new Texture2D from path " << filePath);
-	int sizeX, sizeY, channels;
-	unsigned char* ptr = STBI::stbi_load(filePath.c_str(), &sizeX, &sizeY, &channels, 0);
-	VBE_ASSERT(ptr && sizeX && sizeY, "Failed to load image \"" << filePath << "\". Reason : " << STBI::stbi_failure_reason());
 
-	TextureFormat::Format sourceFormat = TextureFormat::channelsToFormat(channels);
+	Image img = Image::load(std::move(in));
+
+	TextureFormat::Format sourceFormat = img.getGlFormat();
 	if(internalFormat == TextureFormat::AUTO)
 		internalFormat = sourceFormat;
 
-	loadFromRaw(ptr, vec2ui(sizeX, sizeY), sourceFormat, TextureFormat::UNSIGNED_BYTE, internalFormat);
-
-	STBI::stbi_image_free(ptr);
+	loadFromRaw(img.getData(), img.getSize(), sourceFormat, TextureFormat::UNSIGNED_BYTE, internalFormat);
 }
 
 void Texture2D::loadEmpty(

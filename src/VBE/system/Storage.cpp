@@ -2,7 +2,7 @@
 #include <VBE/system/StorageImpl.hpp>
 
 // static
-std::istream* Storage::openAsset(const std::string& filename) {
+std::unique_ptr<std::istream> Storage::openAsset(const std::string& filename) {
 	return StorageImpl::openAsset(filename);
 }
 

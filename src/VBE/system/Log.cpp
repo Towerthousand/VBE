@@ -1,6 +1,10 @@
 #include <VBE/system/Log.hpp>
 #include <ctime>
 
+#ifdef VBE_SYSTEM_ANDROID
+	#include <android/log.h>
+#endif
+
 std::ostringstream Log::endFile;
 #ifndef VBE_GLES2
 unsigned char Log::flags = Log::Timestamp|Log::AlwaysSave|Log::StandardOut;
@@ -34,16 +38,16 @@ template<> const Log& Log::operator<< (const Log::LogModifiers& t) const {
 			}
 			msg << content << "\n";
 			if(flags&StandardOut) {
-#ifndef VBE_GLES2
+#ifdef VBE_SYSTEM_ANDROID
+				__android_log_write(ANDROID_LOG_INFO, "VBE", msg.str().c_str());
+#else
 				std::cout << msg.str();
 				std::cout.flush();
-#else
-				__android_log_print(ANDROID_LOG_INFO, "VBE", msg.c_str());
 #endif
 			}
 			endFile << msg.str();
 			msg.str("");
-#ifndef VBE_GLES2
+#ifndef VBE_SYSTEM_ANDROID
 			if(flags&AlwaysSave) save();
 #endif
 			break;

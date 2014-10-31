@@ -5,10 +5,11 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <VBE/config.hpp>
 #include <VBE/math.hpp> // vec3, vec4, ivec4, mat4 (core)
 
 //VBE_ASSERT
-#ifdef __DEBUG
+#ifdef VBE_DEBUG
 #ifdef WINDOWS
 #define VBE_ASSERT(expression, string) do \
 { \
@@ -39,7 +40,7 @@
 #endif
 
 //GL_ASSERT
-#ifdef __DEBUG
+#ifdef VBE_DEBUG
 #define GL_ASSERT( gl_code ) do \
 { \
 	gl_code; \
@@ -51,7 +52,7 @@
 #endif
 
 //VBE_WARNING
-#ifdef __DEBUG
+#ifdef VBE_DEBUG
 #define VBE_WARN(expression , string) do \
 { \
 	if(!(expression)) { \
@@ -66,12 +67,12 @@
 #endif
 
 //VBE_LOG,_DLOG
-#ifdef __LOG
+#ifdef VBE_DEBUG
 #define VBE_LOG(msg) Log::message() << msg << Log::Flush
 #else
 #define VBE_LOG(msg) {}
 #endif
-#ifdef __DLOG
+#ifdef VBE_DLOG
 #define VBE_DLOG(msg) VBE_LOG(msg)
 #else
 #define VBE_DLOG(msg) {}
@@ -114,7 +115,7 @@ class Log {
 		enum LogFlags {
 			Timestamp	= 0x01,
 			StandardOut = 0x02,
-#ifndef VBE_GLES2
+#ifndef VBE_SYSTEM_ANDROID
 			AlwaysSave = 0x04,
 #endif
 			GMTime = 0x08
@@ -148,7 +149,7 @@ class Log {
 		}
 
 		static std::string getContents() { return endFile.str(); }
-#ifndef VBE_GLES2
+#ifndef VBE_SYSTEM_ANDROID
 		static void setFilePath(std::string newPath) { outPath = newPath; }
 #endif
 };

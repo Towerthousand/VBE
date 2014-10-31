@@ -38,9 +38,9 @@ ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, cons
 }
 
 
-ShaderProgram* ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& fp_filename) {
-	return loadFromString(readFileIntoString(vp_filename),
-						  readFileIntoString(fp_filename));
+ShaderProgram* ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag) {
+	return loadFromString(readFileIntoString(std::move(vert)),
+						  readFileIntoString(std::move(frag)));
 }
 
 #ifndef VBE_GLES2
@@ -95,18 +95,18 @@ ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, cons
 	return p;
 }
 
-ShaderProgram* ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& gp_filename, const std::string& fp_filename) {
-	return loadFromString(readFileIntoString(vp_filename),
-						  readFileIntoString(gp_filename),
-						  readFileIntoString(fp_filename));
+ShaderProgram* ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
+	return loadFromString(readFileIntoString(std::move(vert)),
+						  readFileIntoString(std::move(geom)),
+						  readFileIntoString(std::move(frag)));
 }
 
-ShaderProgram* ShaderProgram::loadFromFile(const std::string& vp_filename, const std::string& tc_filename, const std::string& te_filename, const std::string& gp_filename, const std::string& fp_filename) {
-	return loadFromString(readFileIntoString(vp_filename),
-						  readFileIntoString(tc_filename),
-						  readFileIntoString(te_filename),
-						  readFileIntoString(gp_filename),
-						  readFileIntoString(fp_filename));
+ShaderProgram* ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
+	return loadFromString(readFileIntoString(std::move(vert)),
+						  readFileIntoString(std::move(tessControl)),
+						  readFileIntoString(std::move(tessEval)),
+						  readFileIntoString(std::move(geom)),
+						  readFileIntoString(std::move(frag)));
 }
 #endif
 
@@ -234,21 +234,18 @@ void ShaderProgram::retrieveProgramInfo() {
 	}
 }
 
-std::string ShaderProgram::readFileIntoString(const std::string& filename){
-	std::ifstream is;
-	is.open(filename, std::ios::in);
-	VBE_ASSERT(!is.fail(), "Failed to get the contents from " << filename );
+std::string ShaderProgram::readFileIntoString(std::unique_ptr<std::istream> file){
 	// get length of file
-	is.seekg(0, std::ios::end);
-	int length = (int) is.tellg();
-	is.seekg(0, std::ios::beg);
+	file->seekg(0, std::ios::end);
+	int length = (int) file->tellg();
+	file->seekg(0, std::ios::beg);
 
-	// allocate memory:
+	// allocate memory
 	std::string s(length, 0);
 
-	// read data as a block:
-	is.read(&s[0], length);
-	is.close();
+	// read data as a block
+	file->read(&s[0], length);
 
+	VBE_LOG("Read file: "<<s);
 	return s;
 }

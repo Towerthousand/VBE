@@ -5,20 +5,17 @@
 
 // static
 bool Mouse::pressed(Button k) {
-	InputImpl::KeyState state = InputImpl::getMouseButtonState(k);
-	return state == InputImpl::Pressed || state == InputImpl::JustPressed;
+	return InputImpl::getMouseButtonPresses()[k];
 }
 
 // static
 bool Mouse::justPressed(Button k) {
-	InputImpl::KeyState state = InputImpl::getMouseButtonState(k);
-	return state == InputImpl::JustPressed;
+	return InputImpl::getMouseButtonPresses()[k] && !oldMouseButtonPresses[k];
 }
 
 // static
 bool Mouse::justReleased(Button k) {
-	InputImpl::KeyState state = InputImpl::getMouseButtonState(k);
-	return state == InputImpl::JustReleased;
+	return !InputImpl::getMouseButtonPresses()[k] && oldMouseButtonPresses[k];
 }
 
 // static
@@ -26,13 +23,18 @@ vec2i Mouse::position() {
 	return InputImpl::getMousePosition();
 }
 
-vec2i Mouse::displacement() {
-	return InputImpl::getMouseDisplacement();
+vec2i Mouse::movement() {
+	return InputImpl::getMousePosition() - oldMousePos;
+}
+
+// static
+vec2i Mouse::wheelPosition() {
+	return InputImpl::getMouseWheelPosition();
 }
 
 // static
 vec2i Mouse::wheelMovement() {
-	return InputImpl::getMouseWheelMovement();
+	return InputImpl::getMouseWheelPosition() - oldMouseWheelPos;
 }
 
 // static
@@ -59,3 +61,29 @@ void Mouse::setGrab(bool grab) {
 void Mouse::setRelativeMode(bool relative) {
 	InputImpl::setRelativeMouseMode(relative);
 }
+
+// static
+void Mouse::init() {
+	for(int i = 0; i < Button::ButtonCount; i++)
+		oldMouseButtonPresses[i] = false;
+
+	oldMousePos = vec2i(0, 0);
+	oldMouseWheelPos = vec2i(0, 0);
+}
+
+// static
+void Mouse::update() {
+	for(int i = 0; i < Button::ButtonCount; i++)
+		oldMouseButtonPresses[i] = InputImpl::getMouseButtonPresses()[i];
+
+	oldMousePos = InputImpl::getMousePosition();
+	oldMouseWheelPos = InputImpl::getMouseWheelPosition();
+}
+
+// static
+bool Mouse::oldMouseButtonPresses[Mouse::ButtonCount];
+// static
+vec2i Mouse::oldMousePos;
+// static
+vec2i Mouse::oldMouseWheelPos;
+

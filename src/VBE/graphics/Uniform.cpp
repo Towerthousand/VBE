@@ -134,7 +134,11 @@ void Uniform::set(const Texture2D* val) {
 }
 
 void Uniform::set(const Texture2D& val) {
+#ifdef VBE_GLES2
+	VBE_ASSERT(type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
+#else
 	VBE_ASSERT(type == GL_SAMPLER_2D || type == GL_SAMPLER_2D_SHADOW, "Wrong uniform type. Location " << this->location);
+#endif
 	Texture2D::bind(&val, texUnit);
 	setBytes((char*)&texUnit);
 }
@@ -230,14 +234,17 @@ void Uniform::log() {
 bool Uniform::isSampler(GLenum uniformType) {
 	switch(uniformType) {
 		case GL_SAMPLER_2D:
+			return true;
 #ifndef VBE_GLES2
 		case GL_SAMPLER_2D_SHADOW:
+			return true;
 		case GL_SAMPLER_2D_ARRAY:
+			return true;
 		case GL_SAMPLER_3D:
 			return true;
+#endif
 		default:
 			break;
-#endif
 	}
 	return false;
 }

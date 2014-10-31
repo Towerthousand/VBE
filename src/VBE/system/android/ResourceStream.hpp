@@ -3,17 +3,12 @@
 
 #include <android/asset_manager.h>
 #include <string>
+#include <iostream>
 
-#include "InputStream.hpp"
-
-class ResourceStream : public InputStream {
+class ResourceStream : public std::istream {
 	public :
 		ResourceStream(const std::string& filename);
 		virtual ~ResourceStream() {}
-		virtual long int read(void* data, long int size);
-		virtual long int seek(long int position);
-		virtual long int tell();
-		virtual long int getSize();
 
 	private:
 		AAsset* asset;

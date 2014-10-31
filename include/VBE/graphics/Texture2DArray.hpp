@@ -1,5 +1,7 @@
 #ifndef TEXTURE2DARRAY_HPP
 #define TEXTURE2DARRAY_HPP
+
+#include <memory>
 #include "Texture.hpp"
 
 // Texture arrays are not supported in GLES2
@@ -9,8 +11,8 @@ class Texture2DArray : public Texture {
 	public:
 		Texture2DArray();
 
-		void loadFromFiles(
-				const std::vector<std::string>& filePaths,
+		void load(
+				std::vector<std::unique_ptr<std::istream>>& files,
 				TextureFormat::Format internalFormat = TextureFormat::AUTO);
 
 		void loadEmpty(

@@ -51,8 +51,10 @@ void Texture::bind(Texture::Type type, const Texture* tex, unsigned int slot) {
 GLenum Texture::typeToGL(Texture::Type t) {
 	switch(t) {
 		case Type2D: return GL_TEXTURE_2D;
+#ifndef VBE_GLES2
 		case Type2DArray: return GL_TEXTURE_2D_ARRAY;
 		case Type3D: return GL_TEXTURE_3D;
+#endif
 		case TypeCubemap: return GL_TEXTURE_CUBE_MAP;
 		default: break;
 	}

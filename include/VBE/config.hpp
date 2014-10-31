@@ -5,3 +5,13 @@
 #else
 	#define VBE_SYSTEM_SDL2
 #endif
+
+
+#define VBE_DEBUG
+
+#if defined(NDEBUG)
+	#undef VBE_DEBUG
+#endif
+#if defined(QT_NO_DEBUG)
+	#undef VBE_DEBUG
+#endif

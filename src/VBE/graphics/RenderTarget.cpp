@@ -1,3 +1,5 @@
+#include <VBE/config.hpp>
+#include <VBE/graphics/RenderBuffer.hpp>
 #include <VBE/graphics/RenderTarget.hpp>
 
 RenderTarget::RenderTarget(unsigned int width, unsigned int height) : RenderTargetBase(width, height, 1) {

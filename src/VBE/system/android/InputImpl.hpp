@@ -3,13 +3,11 @@
 
 #include <VBE/system/Mouse.hpp>
 #include <VBE/system/Keyboard.hpp>
-#include <VBE/system/sdl2/sdl2.hpp>
-
 
 class InputImpl {
 	public:
 		static void init();
-		static void processEvent(const SDL_Event& e);
+//		static void processEvent(const SDL_Event& e);
 
 		static const bool* getKeyPresses();
 		static const bool* getMouseButtonPresses();
@@ -24,9 +22,6 @@ class InputImpl {
 		static void setRelativeMouseMode(bool relative);
 
 	private:
-		static Mouse::Button convertSdlButton(int button);
-		static Keyboard::Key convertSdlKey(int key);
-
 		static bool keyPresses[Keyboard::KeyCount];
 		static bool mouseButtonPresses[Mouse::ButtonCount];
 		static vec2i mousePos;

@@ -1,13 +1,14 @@
-#ifndef STORAGE_HPP
-#define STORAGE_HPP
+#ifndef STORAGEIMPL_H
+#define STORAGEIMPL_H
 
-#include <iostream>
 #include <memory>
 #include <string>
+#include <iostream>
 
-class Storage {
+class StorageImpl {
 	public:
 		static std::unique_ptr<std::istream> openAsset(const std::string& filename);
 };
 
-#endif // STORAGE_HPP
+
+#endif // STORAGEIMPL_H
