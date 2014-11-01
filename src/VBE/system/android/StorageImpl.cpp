@@ -31,7 +31,7 @@ AssetBuf::AssetBuf(const std::string& filename, size_t buff_sz, size_t put_back)
 	buffer_(std::max(buff_sz, put_back_) + put_back_)
 {
 	asset = AAssetManager_open(WindowImpl::app->activity->assetManager, filename.c_str(), AASSET_MODE_UNKNOWN);
-
+	VBE_ASSERT(asset != nullptr, "Could not open asset: "+filename);
 	char *end = &buffer_.front() + buffer_.size();
 	setg(end, end, end);
 }
