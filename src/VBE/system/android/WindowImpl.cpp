@@ -26,8 +26,11 @@ std::vector<Window::DisplayMode> WindowImpl::getFullscreenModes() {
 void WindowImpl::create(Window::DisplayMode mode, ContextSettings config) {
 	VBE_LOG("Creating WindowImpl");
 	focused = false;
+	closing = false;
 	// Wait for Android to focus and start our window.
 	update();
+
+	VBE_ASSERT(!closing, "Closing app when creating window??");
 
 	// Init input
 	InputImpl::init();
@@ -44,7 +47,7 @@ void WindowImpl::setDisplayMode(Window::DisplayMode mode) {
 // static
 void WindowImpl::update() {
 	app->onAppCmd = handleAndroidAppCmd;
-//	state->onInputEvent = engine_handle_input;
+	//	state->onInputEvent = engine_handle_input;
 
 	// Read all pending events.
 	int ident;
@@ -54,7 +57,7 @@ void WindowImpl::update() {
 	// If focused, we loop until all events are read, then continue
 	// to draw the next frame of animation.
 	// If not, we wait for events, blocking if needed, until we become focused.
-	while ((ident=ALooper_pollAll(focused ? 0 : -1, NULL, &events, (void**)&source)) >= 0 || !focused) {
+	while (!closing && ((ident=ALooper_pollAll(focused ? 0 : -1, NULL, &events, (void**)&source)) >= 0 || !focused)) {
 		// Process this event.
 		if (source != NULL) {
 			source->process(app, source);
@@ -121,7 +124,10 @@ void WindowImpl::handleAndroidAppCmd(struct android_app* app, int32_t cmd) {
 			focused = false;
 			break;
 		case APP_CMD_DESTROY:
-			destroyDisplay();
+			// Ask the user to quit.
+			// We can't call destroyDisplay() yet, because quitting will release GL resources.
+			// So we call it when user's main returns.
+			closing = true;
 			break;
 	}
 }
@@ -139,12 +145,12 @@ void WindowImpl::initWindow() {
 		 * component compatible with on-screen windows
 		 */
 		const EGLint attribs[] = {
-				EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-				EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-				EGL_BLUE_SIZE, 8,
-				EGL_GREEN_SIZE, 8,
-				EGL_RED_SIZE, 8,
-				EGL_NONE
+			EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+			EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+			EGL_BLUE_SIZE, 8,
+			EGL_GREEN_SIZE, 8,
+			EGL_RED_SIZE, 8,
+			EGL_NONE
 		};
 		/* Here, the application chooses the configuration it desires. In this
 		 * sample, we have a very simplified selection process, where we pick
@@ -195,12 +201,40 @@ void WindowImpl::termWindow() {
 }
 
 void WindowImpl::destroyDisplay() {
-	if(context != EGL_NO_CONTEXT) {
-		eglDestroyContext(display, context);
-		context = EGL_NO_CONTEXT;
-	}
-	if(display != EGL_NO_DISPLAY) {
+	VBE_LOG("destroyDisplay()");
+	if (display != EGL_NO_DISPLAY) {
+		eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+		if (context != EGL_NO_CONTEXT) {
+			eglDestroyContext(display, context);
+		}
+		if (surface != EGL_NO_SURFACE) {
+			eglDestroySurface(display, surface);
+		}
 		eglTerminate(display);
-		display = EGL_NO_DISPLAY;
 	}
+
+	display = EGL_NO_DISPLAY;
+	context = EGL_NO_CONTEXT;
+	surface = EGL_NO_SURFACE;
+}
+
+extern int main(int argc, char** argv);
+
+void WindowImpl::main(struct android_app* app) {
+	// Make sure glue isn't stripped.
+	app_dummy();
+
+	WindowImpl::app = app;
+
+	// Call user's main.
+	::main(0, NULL);
+
+	ANativeActivity_finish(app->activity);
+	destroyDisplay();
+
+	exit(0);
+}
+
+void android_main(struct android_app* app) {
+	WindowImpl::main(app);
 }

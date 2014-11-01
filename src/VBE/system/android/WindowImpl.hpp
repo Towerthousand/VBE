@@ -33,6 +33,9 @@ class WindowImpl {
 		// This is called as a callback from the android app
 		static void handleAndroidAppCmd(struct android_app* app, int32_t cmd);
 
+		// Main entry point, called from android_main
+		static void main(struct android_app* app);
+
 	private:
 //		static void processEvent(const SDL_Event& e);
 
