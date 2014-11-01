@@ -73,15 +73,17 @@ void RenderTargetBase::valid() const {
 					e.renderBuffer->resize(desiredSize);
 				break;
 			case RenderTargetEntry::Texture2DEntry:
-				VBE_ASSERT(numLayers == 1, "Texture2D attached with a RenderTarget with several layers");
+				VBE_ASSERT(numLayers == 1, "Texture2D attached to a RenderTarget with several layers");
 				if(e.texture2D->getSize() != desiredSize)
 					e.texture2D->loadEmpty(desiredSize, e.texture2D->getFormat());
 				break;
+#ifndef VBE_GLES2
 			case RenderTargetEntry::Texture2DArrayEntry:
 				VBE_ASSERT(e.texture2DArray->getSize().z == numLayers, "A Texture2DArray attached to this RenderTarget does not have the same layers as the RenderTarget");
 				if(vec2ui(e.texture2DArray->getSize()) != desiredSize)
 					e.texture2DArray->loadEmpty(vec3ui(desiredSize, numLayers), e.texture2DArray->getFormat());
 				break;
+#endif
 		}
 	}
 	size = desiredSize;
@@ -101,10 +103,12 @@ void RenderTargetBase::valid() const {
 				Texture2D::bind(e.texture2D, rand()%10);
 				GL_ASSERT(glFramebufferTexture2D(GL_FRAMEBUFFER, a, GL_TEXTURE_2D, e.texture2D->getHandle(), 0));
 				break;
+#ifndef VBE_GLES2
 			case RenderTargetEntry::Texture2DArrayEntry:
 				Texture2DArray::bind(e.texture2DArray, 0);
 				GL_ASSERT(glFramebufferTexture(GL_FRAMEBUFFER, a, e.texture2DArray->getHandle(), 0));
 				break;
+#endif
 		}
 	}
 	dirty = false;

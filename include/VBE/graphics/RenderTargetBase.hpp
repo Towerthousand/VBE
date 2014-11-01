@@ -64,23 +64,29 @@ class RenderTargetBase : public NonCopyable {
 
 		struct RenderTargetEntry {
 				enum Type {
-					RenderBufferEntry,
-					Texture2DEntry,
-					Texture2DArrayEntry
+					RenderBufferEntry = 0,
+#ifndef VBE_GLES2
+					Texture2DArrayEntry,
+#endif
+					Texture2DEntry
 				};
 
 				RenderTargetEntry(RenderBuffer* renderBuffer) :
 					type(RenderBufferEntry), renderBuffer(renderBuffer), texture2D(nullptr), texture2DArray(nullptr) {}
 				RenderTargetEntry(Texture2D* texture) :
 					type(Texture2DEntry), renderBuffer(nullptr), texture2D(texture), texture2DArray(nullptr) {}
+#ifndef VBE_GLES2
 				RenderTargetEntry(Texture2DArray* texture) :
 					type(Texture2DArrayEntry), renderBuffer(nullptr), texture2D(nullptr), texture2DArray(texture) {}
+#endif
 				~RenderTargetEntry() {}
 
 				Type type;
 				RenderBuffer* renderBuffer;
 				Texture2D* texture2D;
+#ifndef VBE_GLES2
 				Texture2DArray* texture2DArray;
+#endif
 		};
 
 		static const RenderTargetBase* current;
