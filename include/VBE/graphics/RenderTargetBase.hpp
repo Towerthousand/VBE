@@ -72,12 +72,12 @@ class RenderTargetBase : public NonCopyable {
 				};
 
 				RenderTargetEntry(RenderBuffer* renderBuffer) :
-					type(RenderBufferEntry), renderBuffer(renderBuffer), texture2D(nullptr), texture2DArray(nullptr) {}
+					type(RenderBufferEntry), renderBuffer(renderBuffer) {}
 				RenderTargetEntry(Texture2D* texture) :
-					type(Texture2DEntry), renderBuffer(nullptr), texture2D(texture), texture2DArray(nullptr) {}
+					type(Texture2DEntry), texture2D(texture) {}
 #ifndef VBE_GLES2
 				RenderTargetEntry(Texture2DArray* texture) :
-					type(Texture2DArrayEntry), renderBuffer(nullptr), texture2D(nullptr), texture2DArray(texture) {}
+					type(Texture2DArrayEntry), texture2DArray(texture) {}
 #endif
 				~RenderTargetEntry() {}
 
