@@ -20,39 +20,6 @@ RenderTargetBase::~RenderTargetBase() {
 	handle = 0;
 }
 
-vec2ui RenderTargetBase::getSize() const {
-	if(screenRelativeSize) {
-		vec2ui screenSize = Window::getInstance()->getSize();
-		return vec2ui(
-					static_cast<unsigned int>(screenSize.x*screenSizeMultiplier),
-					static_cast<unsigned int>(screenSize.y*screenSizeMultiplier));
-	}
-	else
-		return size;
-}
-
-void RenderTargetBase::enableAttachment(RenderTargetBase::Attachment a) {
-	VBE_ASSERT(std::find(allAttachments.begin(), allAttachments.end(), a) == allAttachments.end(), "Trying to enable an already enabled rendering attachment");
-	dirty = true;
-	allAttachments.insert(a);
-	if(isColorAttachment(a)) drawAttachments.push_back(a);
-}
-
-void RenderTargetBase::disableAttachment(RenderTargetBase::Attachment a) {
-	VBE_ASSERT(std::find(allAttachments.begin(), allAttachments.end(), a) != allAttachments.end(), "Trying to disable a non-enabled rendering attachment");
-	dirty = true;
-	allAttachments.erase(a);
-	if(isColorAttachment(a)) drawAttachments.erase(std::find(drawAttachments.begin(), drawAttachments.end(), a));
-}
-
-unsigned int RenderTargetBase::getWidth() const {
-	return getSize().x;
-}
-
-unsigned int RenderTargetBase::getHeight() const {
-	return getSize().y;
-}
-
 // static
 void RenderTargetBase::bind(const RenderTargetBase *target) {
 	if(current == target && (target == nullptr || !target->dirty)) return;
@@ -71,6 +38,17 @@ void RenderTargetBase::bind(const RenderTargetBase *target) {
 
 const RenderTargetBase* RenderTargetBase::getCurrent() {
 	return current;
+}
+
+vec2ui RenderTargetBase::getSize() const {
+	if(screenRelativeSize) {
+		vec2ui screenSize = Window::getInstance()->getSize();
+		return vec2ui(
+					static_cast<unsigned int>(screenSize.x*screenSizeMultiplier),
+					static_cast<unsigned int>(screenSize.y*screenSizeMultiplier));
+	}
+	else
+		return size;
 }
 
 void RenderTargetBase::ensureValid() const {
@@ -143,4 +121,20 @@ void RenderTargetBase::valid() const {
 #endif
 	GLenum cosa = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	VBE_ASSERT(cosa == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");
+}
+
+void RenderTargetBase::enableAttachment(RenderTargetBase::Attachment a) {
+	if(std::find(allAttachments.begin(), allAttachments.end(), a) != allAttachments.end())
+		return;
+	dirty = true;
+	allAttachments.insert(a);
+	if(isColorAttachment(a)) drawAttachments.push_back(a);
+}
+
+void RenderTargetBase::disableAttachment(RenderTargetBase::Attachment a) {
+	if(std::find(allAttachments.begin(), allAttachments.end(), a) == allAttachments.end())
+		return;
+	dirty = true;
+	allAttachments.erase(a);
+	if(isColorAttachment(a)) drawAttachments.erase(std::find(drawAttachments.begin(), drawAttachments.end(), a));
 }

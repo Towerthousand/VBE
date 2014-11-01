@@ -50,12 +50,8 @@ class RenderTargetBase : public NonCopyable {
 		static void bind(const RenderTargetBase* renderTarget);
 		static const RenderTargetBase* getCurrent();
 
-		unsigned int getWidth() const;
-		unsigned int getHeight() const;
 		vec2ui getSize() const;
 
-		void enableAttachment(RenderTargetBase::Attachment a);
-		void disableAttachment(RenderTargetBase::Attachment a);
 	protected:
 		RenderTargetBase(unsigned int width, unsigned int height, int numLayers);
 		RenderTargetBase(float mult, int numLayers);
@@ -63,6 +59,9 @@ class RenderTargetBase : public NonCopyable {
 
 		void ensureValid() const;
 		void valid() const; //validate this framebuffer pls
+		void enableAttachment(RenderTargetBase::Attachment a);
+		void disableAttachment(RenderTargetBase::Attachment a);
+
 		struct RenderTargetEntry {
 				enum Type {
 					RenderBufferEntry,
