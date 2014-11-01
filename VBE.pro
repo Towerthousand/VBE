@@ -23,8 +23,6 @@ OTHER_FILES += \
     src/VBE/system/android/WindowImpl.cpp \
     src/VBE/system/android/StorageImpl.cpp \
     src/VBE/system/android/InputImpl.cpp \
-    src/VBE/system/android/ResourceStream.hpp \
-    src/VBE/system/android/ResourceStream.cpp \
     VBE.pri
 
 HEADERS += \

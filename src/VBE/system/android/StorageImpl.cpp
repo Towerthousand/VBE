@@ -3,7 +3,6 @@
 #include <cstring>
 
 #include <VBE/system/android/StorageImpl.hpp>
-#include <VBE/system/android/ResourceStream.hpp>
 #include <VBE/system/android/WindowImpl.hpp>
 
 // Streambufs are terrible
