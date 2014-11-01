@@ -246,6 +246,5 @@ std::string ShaderProgram::readFileIntoString(std::unique_ptr<std::istream> file
 	// read data as a block
 	file->read(&s[0], length);
 
-	VBE_LOG("Read file: "<<s);
 	return s;
 }
