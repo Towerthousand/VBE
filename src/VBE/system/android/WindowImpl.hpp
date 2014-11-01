@@ -38,6 +38,7 @@ class WindowImpl {
 
 		static void initWindow();
 		static void termWindow();
+		static void destroyDisplay();
 
 		static bool isSDLInit;
 		static bool focused;
@@ -46,6 +47,8 @@ class WindowImpl {
 		static EGLDisplay display;
 		static EGLSurface surface;
 		static EGLContext context;
+		static EGLConfig eglConfig;
+		static EGLint eglFormat;
 		static int width;
 		static int height;
 

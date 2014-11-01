@@ -5,9 +5,11 @@
 // static
 bool WindowImpl::focused = false;
 bool WindowImpl::closing = false;
-EGLDisplay WindowImpl::display;
-EGLSurface WindowImpl::surface;
-EGLContext WindowImpl::context;
+EGLDisplay WindowImpl::display = EGL_NO_DISPLAY;
+EGLSurface WindowImpl::surface = EGL_NO_SURFACE;
+EGLContext WindowImpl::context = EGL_NO_CONTEXT;
+EGLConfig WindowImpl::eglConfig;
+EGLint WindowImpl::eglFormat;
 int WindowImpl::width;
 int WindowImpl::height;
 android_app* WindowImpl::app;
@@ -100,7 +102,7 @@ void WindowImpl::swapBuffers() {
 void WindowImpl::handleAndroidAppCmd(struct android_app* app, int32_t cmd) {
 	switch (cmd) {
 		case APP_CMD_SAVE_STATE:
-			// cool story bro
+			// OMG YOLO SWAG
 			break;
 		case APP_CMD_INIT_WINDOW:
 			VBE_LOG("Init window");
@@ -118,53 +120,58 @@ void WindowImpl::handleAndroidAppCmd(struct android_app* app, int32_t cmd) {
 			VBE_LOG("Lost focus");
 			focused = false;
 			break;
+		case APP_CMD_DESTROY:
+			destroyDisplay();
+			break;
 	}
 }
 
 void WindowImpl::initWindow() {
 
-	display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+	if(display == EGL_NO_DISPLAY) {
+		display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 
-	eglInitialize(display, 0, 0);
+		eglInitialize(display, 0, 0);
 
-	/*
-	 * Here specify the attributes of the desired configuration.
-	 * Below, we select an EGLConfig with at least 8 bits per color
-	 * component compatible with on-screen windows
-	 */
-	const EGLint attribs[] = {
-			EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-			EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-			EGL_BLUE_SIZE, 8,
-			EGL_GREEN_SIZE, 8,
-			EGL_RED_SIZE, 8,
-			EGL_NONE
-	};
-	/* Here, the application chooses the configuration it desires. In this
-	 * sample, we have a very simplified selection process, where we pick
-	 * the first EGLConfig that matches our criteria */
-	EGLint numConfigs;
-	EGLConfig eglConfig;
-	eglChooseConfig(display, attribs, &eglConfig, 1, &numConfigs);
+		/*
+		 * Here specify the attributes of the desired configuration.
+		 * Below, we select an EGLConfig with at least 8 bits per color
+		 * component compatible with on-screen windows
+		 */
+		const EGLint attribs[] = {
+				EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+				EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+				EGL_BLUE_SIZE, 8,
+				EGL_GREEN_SIZE, 8,
+				EGL_RED_SIZE, 8,
+				EGL_NONE
+		};
+		/* Here, the application chooses the configuration it desires. In this
+		 * sample, we have a very simplified selection process, where we pick
+		 * the first EGLConfig that matches our criteria */
+		EGLint numConfigs;
+		eglChooseConfig(display, attribs, &eglConfig, 1, &numConfigs);
 
-	/* EGL_NATIVE_VISUAL_ID is an attribute of the EGLConfig that is
-	 * guaranteed to be accepted by ANativeWindow_setBuffersGeometry().
-	 * As soon as we picked a EGLConfig, we can safely reconfigure the
-	 * ANativeWindow buffers to match, using EGL_NATIVE_VISUAL_ID. */
-	EGLint format;
-	eglGetConfigAttrib(display, eglConfig, EGL_NATIVE_VISUAL_ID, &format);
+		/* EGL_NATIVE_VISUAL_ID is an attribute of the EGLConfig that is
+		 * guaranteed to be accepted by ANativeWindow_setBuffersGeometry().
+		 * As soon as we picked a EGLConfig, we can safely reconfigure the
+		 * ANativeWindow buffers to match, using EGL_NATIVE_VISUAL_ID. */
+		eglGetConfigAttrib(display, eglConfig, EGL_NATIVE_VISUAL_ID, &eglFormat);
+	}
 
-	ANativeWindow_setBuffersGeometry(app->window, 0, 0, format);
+	ANativeWindow_setBuffersGeometry(app->window, 0, 0, eglFormat);
 
 	surface = eglCreateWindowSurface(display, eglConfig, app->window, NULL);
 
+	if(context == EGL_NO_CONTEXT) {
+		VBE_LOG("Creating EGL Context");
+		EGLint context_attr[] = {
+			EGL_CONTEXT_CLIENT_VERSION, 2,
+			EGL_NONE
+		};
+		context = eglCreateContext(display, eglConfig, NULL, context_attr);
+	}
 
-	EGLint context_attr[] = {
-		EGL_CONTEXT_CLIENT_VERSION, 2,
-		EGL_NONE
-	};
-	context = eglCreateContext(display, eglConfig, NULL, context_attr);
-		
 	VBE_ASSERT(eglMakeCurrent(display, surface, surface, context) == EGL_TRUE, "Unable to eglMakeCurrent");
 
 	eglQuerySurface(display, surface, EGL_WIDTH, &width);
@@ -177,18 +184,23 @@ void WindowImpl::initWindow() {
 
 void WindowImpl::termWindow() {
 
-	if (display != EGL_NO_DISPLAY) {
+	if (surface != EGL_NO_SURFACE) {
 		eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-		if (context != EGL_NO_CONTEXT) {
-			eglDestroyContext(display, context);
-		}
-		if (surface != EGL_NO_SURFACE) {
-			eglDestroySurface(display, surface);
-		}
-		eglTerminate(display);
+		eglDestroySurface(display, surface);
+		surface = EGL_NO_SURFACE;
+		//eglTerminate(display);
 	}
+
 	focused = false;
-	display = EGL_NO_DISPLAY;
-	context = EGL_NO_CONTEXT;
-	surface = EGL_NO_SURFACE;
+}
+
+void WindowImpl::destroyDisplay() {
+	if(context != EGL_NO_CONTEXT) {
+		eglDestroyContext(display, context);
+		context = EGL_NO_CONTEXT;
+	}
+	if(display != EGL_NO_DISPLAY) {
+		eglTerminate(display);
+		display = EGL_NO_DISPLAY;
+	}
 }
