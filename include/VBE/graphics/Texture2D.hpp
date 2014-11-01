@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 
-#include "Texture.hpp"
+#include <VBE/graphics/Texture.hpp>
 
 class Texture2D : public Texture {
 	public:
