@@ -126,7 +126,22 @@ void WindowImpl::handleAndroidAppCmd(struct android_app* app, int32_t cmd) {
 		case APP_CMD_DESTROY:
 			// Ask the user to quit.
 			// We can't call destroyDisplay() yet, because quitting will release GL resources.
-			// So we call it when user's main returns.
+			// Even worse, here the window surface is destroyed, but the user needs the GL context
+			// to free the GL resources properly.
+			// Therefore, we create a temporary offscreen surface and use it to bind the context, until
+			// main returns, then we'll call destroyDisplay().
+			//
+			// Yes, this is a terrible hack. Someone kill me.
+
+			EGLint attrib_list[] = {
+				EGL_WIDTH, 1,
+				EGL_HEIGHT,1,
+				EGL_NONE
+			};
+
+			surface = eglCreatePbufferSurface(display, eglConfig, attrib_list);
+			VBE_ASSERT(eglMakeCurrent(display, surface, surface, context) == EGL_TRUE, "Unable to eglMakeCurrent");
+
 			closing = true;
 			break;
 	}
