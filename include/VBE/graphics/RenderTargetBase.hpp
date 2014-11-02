@@ -53,8 +53,8 @@ class RenderTargetBase : public NonCopyable {
 		vec2ui getSize() const;
 
 	protected:
-		RenderTargetBase(unsigned int width, unsigned int height, int numLayers);
-		RenderTargetBase(float mult, int numLayers);
+		RenderTargetBase(unsigned int width, unsigned int height, unsigned int numLayers);
+		RenderTargetBase(float mult, unsigned int numLayers);
 		virtual ~RenderTargetBase();
 
 		void ensureValid() const;

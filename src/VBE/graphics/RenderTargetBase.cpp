@@ -6,12 +6,12 @@
 
 const RenderTargetBase* RenderTargetBase::current = nullptr;
 
-RenderTargetBase::RenderTargetBase(unsigned int width, unsigned int height, int numLayers) : handle(0), size(width, height), screenRelativeSize(false), screenSizeMultiplier(0.0f), dirty(false), numLayers(numLayers) {
+RenderTargetBase::RenderTargetBase(unsigned int width, unsigned int height, unsigned int numLayers) : handle(0), size(width, height), screenRelativeSize(false), screenSizeMultiplier(0.0f), dirty(false), numLayers(numLayers) {
 	VBE_ASSERT(width != 0 && height != 0, "Width or height can't be zero");
 	GL_ASSERT(glGenFramebuffers(1, &handle));
 }
 
-RenderTargetBase::RenderTargetBase(float mult, int numLayers) : handle(0), size(0), screenRelativeSize(true), screenSizeMultiplier(mult), dirty(false), numLayers(numLayers) {
+RenderTargetBase::RenderTargetBase(float mult, unsigned int numLayers) : handle(0), size(0), screenRelativeSize(true), screenSizeMultiplier(mult), dirty(false), numLayers(numLayers) {
 	GL_ASSERT(glGenFramebuffers(1, &handle));
 }
 

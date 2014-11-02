@@ -1,8 +1,8 @@
 #include <VBE/graphics/Mesh.hpp>
 #include <VBE/graphics/MeshIndexed.hpp>
 #include <VBE/graphics/OBJLoader.hpp>
-#include <VBE/graphics/RenderBuffer.hpp>
 #include <VBE/graphics/RenderTarget.hpp>
+#include <VBE/graphics/RenderTargetLayered.hpp>
 #include <VBE/graphics/Shader.hpp>
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/graphics/Texture.hpp>

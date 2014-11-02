@@ -15,7 +15,7 @@ struct FunctorComparevec3i{
 };
 
 MeshBase* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType bufferType) {
-	VBE_DLOG("* Loading new OBJ from path " << filepath << ". Expected format: V/T/N");
+	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
 	elements.push_back(Vertex::Element(Vertex::Attribute::Normal   , Vertex::Element::Float, 3));
@@ -100,7 +100,7 @@ MeshBase* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType buff
 }
 
 MeshBase* OBJLoader::loadFromOBJTangents(std::istream& in, Mesh::BufferType bufferType) {
-	VBE_DLOG("* Loading new OBJ from path " << filepath << ". Expected format: V/T/N");
+	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
 	elements.push_back(Vertex::Element(Vertex::Attribute::Normal   , Vertex::Element::Float, 3));

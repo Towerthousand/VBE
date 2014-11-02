@@ -72,7 +72,7 @@
 #else
 #define VBE_LOG(msg) {}
 #endif
-#ifdef VBE_DLOG
+#ifdef VBE_DETAIL
 #define VBE_DLOG(msg) VBE_LOG(msg)
 #else
 #define VBE_DLOG(msg) {}

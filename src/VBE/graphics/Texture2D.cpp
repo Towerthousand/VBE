@@ -12,7 +12,7 @@ void Texture2D::load(
 		std::unique_ptr<std::istream> in,
 		TextureFormat::Format internalFormat) {
 
-	VBE_DLOG("* Loading new Texture2D from path " << filePath);
+	VBE_DLOG("* Loading new Texture2D from path ");
 
 	Image img = Image::load(std::move(in));
 
