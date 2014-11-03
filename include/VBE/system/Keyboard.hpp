@@ -282,27 +282,27 @@ class Keyboard {
 /// never be marked as pressed. The state of this device will be updated to
 /// match recieved events whenever Environment::update() is called.
 ///
-/// A Key will just be pressed for one frame (one update()) call. Then held for
+/// A Key will be 'just pressed' for only one frame (one update()) call. Then held for
 /// an indefinite number of frames and released right after. For Example, if the
 /// user pressed the A Key on frame 1 and released it on frame 4, this would
 /// register (updating the environment every frame of course):
 ///
 /// - Frame 1
+///   + Key Keyboard::A is just pressed
 ///   + Key Keyboard::A is pressed
-///   + Key Keyboard::A is held
-///   + Key Keyboard::A is not released
+///   + Key Keyboard::A is not just released
 /// - Frame 2
-///   + Key Keyboard::A is not pressed
+///   + Key Keyboard::A is not just pressed
 ///   + Key Keyboard::A is held
-///   + Key Keyboard::A is not released
+///   + Key Keyboard::A is not just released
 /// - Frame 3
-///   + Key Keyboard::A is not pressed
+///   + Key Keyboard::A is not just pressed
 ///   + Key Keyboard::A is held
-///   + Key Keyboard::A is not released
+///   + Key Keyboard::A is not just released
 /// - Frame 4
-///   + Key Keyboard::A is not pressed
+///   + Key Keyboard::A is not just pressed
 ///   + Key Keyboard::A is not held
-///   + Key Keyboard::A is released
+///   + Key Keyboard::A is just released
 ///
 /// @see Environment
 
