@@ -43,7 +43,6 @@ class ShaderProgram : public NonCopyable {
 		std::map<std::string, GLint> attributes;
 		std::map<std::string, Uniform*> uniforms;
 
-		static std::string readFileIntoString(std::unique_ptr<std::istream> file);
 		static GLuint current;
 };
 

@@ -7,6 +7,7 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/graphics/Uniform.hpp>
 #include <VBE/system/Log.hpp>
+#include <VBE/system/Storage.hpp>
 
 GLuint ShaderProgram::current(0);
 
@@ -39,8 +40,8 @@ ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, cons
 
 
 ShaderProgram* ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag) {
-	return loadFromString(readFileIntoString(std::move(vert)),
-						  readFileIntoString(std::move(frag)));
+	return loadFromString(Storage::readToString(std::move(vert)),
+						  Storage::readToString(std::move(frag)));
 }
 
 #ifndef VBE_GLES2
@@ -96,17 +97,17 @@ ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, cons
 }
 
 ShaderProgram* ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
-	return loadFromString(readFileIntoString(std::move(vert)),
-						  readFileIntoString(std::move(geom)),
-						  readFileIntoString(std::move(frag)));
+	return loadFromString(Storage::readToString(std::move(vert)),
+						  Storage::readToString(std::move(geom)),
+						  Storage::readToString(std::move(frag)));
 }
 
 ShaderProgram* ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
-	return loadFromString(readFileIntoString(std::move(vert)),
-						  readFileIntoString(std::move(tessControl)),
-						  readFileIntoString(std::move(tessEval)),
-						  readFileIntoString(std::move(geom)),
-						  readFileIntoString(std::move(frag)));
+	return loadFromString(Storage::readToString(std::move(vert)),
+						  Storage::readToString(std::move(tessControl)),
+						  Storage::readToString(std::move(tessEval)),
+						  Storage::readToString(std::move(geom)),
+						  Storage::readToString(std::move(frag)));
 }
 #endif
 
@@ -232,19 +233,4 @@ void ShaderProgram::retrieveProgramInfo() {
 		VBE_DLOG("  - Name: " << it->first);
 		it->second->log();
 	}
-}
-
-std::string ShaderProgram::readFileIntoString(std::unique_ptr<std::istream> file){
-	// get length of file
-	file->seekg(0, std::ios::end);
-	int length = (int) file->tellg();
-	file->seekg(0, std::ios::beg);
-
-	// allocate memory
-	std::string s(length, 0);
-
-	// read data as a block
-	file->read(&s[0], length);
-
-	return s;
 }
