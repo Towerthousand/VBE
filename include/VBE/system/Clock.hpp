@@ -1,6 +1,9 @@
 #ifndef CLOCK_HPP
 #define CLOCK_HPP
 
+///
+/// \brief The Clock class represents the application's internal clock.
+///
 class Clock {
 	public:
 

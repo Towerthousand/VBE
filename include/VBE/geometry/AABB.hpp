@@ -5,12 +5,12 @@
 #include <VBE/system/Log.hpp>
 
 ///
-/// @brief Represents an Axis-Aliged Bounding Box
+/// \brief Represents an Axis-Aliged Bounding Box
 ///
 class AABB {
 	public:
 		///
-		/// @brief Default constructor
+		/// \brief Default constructor
 		///
 		/// This AABB will be init with the maximum value
 		/// in all three edges for the minimum point
@@ -19,80 +19,80 @@ class AABB {
 		///
 		AABB();
 		///
-		/// @brief Copy constructor
+		/// \brief Copy constructor
 		///
 		/// The minimum and maximum will be copied
 		///
 		AABB(const AABB& aabb);
 		///
-		/// @brief Explicit constructor
+		/// \brief Explicit constructor
 		///
 		AABB(const vec3f& pmin, const vec3f& pmax);
 		///
-		/// @brief Destructor
+		/// \brief Destructor
 		///
 		~AABB();
 
 		///
-		/// @brief Extend this AABB to contain a point
+		/// \brief Extend this AABB to contain a point
 		///
 		void extend(const vec3f& p);
 
 		///
-		/// @brief Extend this AABB to contain another AABB
+		/// \brief Extend this AABB to contain another AABB
 		///
 		void extend(const AABB& aabb);
 
 		///
-		/// @brief Test a point against this AABB
+		/// \brief Test a point against this AABB
 		///
 		/// Points on the edge are considered inside
 		///
-		/// @return Wether the point lies inside or not
+		/// \return Wether the point lies inside or not
 		///
 		bool inside(const vec3f& p) const; //p inside this box
 
 		///
-		/// @brief Test another AABB against this AABB
+		/// \brief Test another AABB against this AABB
 		///
 		/// Merely overlapping will not pass this test
 		///
-		/// @return Wether the AABB lies inside or not
+		/// \return Wether the AABB lies inside or not
 		///
 		bool inside(const AABB& aabb) const; //aabb inside this boxs
 
 		///
-		/// @brief Get the current minimum
+		/// \brief Get the current minimum
 		///
-		/// @return Minimum point
+		/// \return Minimum point
 		///
 		vec3f getMin() const;
 
 		///
-		/// @brief Get the current maximum
+		/// \brief Get the current maximum
 		///
-		/// @return Maximum point
+		/// \return Maximum point
 		///
 		vec3f getMax() const;
 
 		///
-		/// @brief Get the current center
+		/// \brief Get the current center
 		///
-		/// @return Center
+		/// \return Center
 		///
 		vec3f getCenter() const;
 
 		///
-		/// @brief Get the current dimensions
+		/// \brief Get the current dimensions
 		///
-		/// @return Dimensions
+		/// \return Dimensions
 		///
 		vec3f getDimensions() const;
 
 		///
-		/// @brief Get the current radius
+		/// \brief Get the current radius
 		///
-		/// @return Radius
+		/// \return Radius
 		///
 		float getRadius() const;
 
@@ -102,12 +102,12 @@ class AABB {
 		vec3f pmax;
 };
 ///
-/// @class AABB AABB.hpp "geometry/AABB.hpp"
-///	@ingroup Geometry
+/// \class AABB AABB.hpp "geometry/AABB.hpp"
+///	\ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects.
 ///
-/// @see Collision
+/// \see Collision
 ///
 
 inline vec3f AABB::getMin() const {

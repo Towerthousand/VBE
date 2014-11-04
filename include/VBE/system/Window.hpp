@@ -10,6 +10,9 @@
 #include <VBE/system/Log.hpp>
 
 class WindowImpl;
+///
+/// \brief The Window class represents the application's display
+///
 class Window : public NonCopyable {
 	public:
 
@@ -98,9 +101,12 @@ class Window : public NonCopyable {
 				friend class WindowImpl;
 		};
 
+		///
+		/// \brief The VsyncMode enum
+		///
 		enum VsyncMode {
-			DisabledVsync,
-			EnabledVsync,
+			DisabledVsync = 0, ///< The framerate won't be capped
+			EnabledVsync, ///< The framerate will be capped to the screen's refresh rate
 			LateTearingVsync
 		};
 
@@ -131,6 +137,9 @@ class Window : public NonCopyable {
 		///
 		Window(DisplayMode mode, ContextSettings contextSettings = ContextSettings());
 
+		///
+		/// \brief Destructor
+		///
 		~Window();
 
 		///

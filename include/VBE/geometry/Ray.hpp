@@ -3,50 +3,50 @@
 #include <VBE/math.hpp>
 
 ///
-/// @brief Represents a 3D Ray
+/// \brief Represents a 3D Ray
 ///
 class Ray {
 	public:
 		///
-		/// @brief Default constructor
+		/// \brief Default constructor
 		///
 		/// Generated Ray will be invalid by default
 		///
 		Ray() : o(0.0f), dir(0.0f) {}
 
 		///
-		/// @brief Data constructor
+		/// \brief Data constructor
 		///
 		/// Will initialize ray with the provided data
 		///
-		/// @param o Origin of the ray
-		/// @param o Direction of the ray. Doesn't need to be normalized,
+		/// \param o Origin of the ray
+		/// \param o Direction of the ray. Doesn't need to be normalized,
 		/// but it should not be zero.
 		///
 		Ray(vec3f o, vec3f dir) : o(o), dir(glm::normalize(dir)) {}
 
 		///
-		/// @brief Destructor
+		/// \brief Destructor
 		///
 		~Ray() {}
 
 		///
-		/// Origin point of the ray
+		/// \brief Origin point of the ray
 		///
 		vec3f o;
 
 		///
-		/// Normalized direction of the ray
+		/// \brief Normalized direction of the ray
 		///
 		vec3f dir;
 };
 ///
-/// @class Ray Ray.hpp "geometry/Ray.hpp"
-///	@ingroup Geometry
+/// \class Ray Ray.hpp "geometry/Ray.hpp"
+///	\ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects.
 ///
-/// @see Collision
+/// \see Collision
 ///
 
 #endif // RAY_HPP

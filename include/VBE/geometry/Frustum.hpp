@@ -3,12 +3,12 @@
 #include "Plane.hpp"
 
 ///
-/// @brief Represents view frustum for any given View Projection matrix.
+/// \brief Represents view frustum for any given View Projection matrix.
 ///
 class Frustum {
 	public:
 		///
-		/// @brief Identifies each of the planes in this frustum
+		/// \brief Identifies each of the planes in this frustum
 		///
 		enum PlaneID {
 			TOP = 0, ///< Top plane
@@ -20,32 +20,32 @@ class Frustum {
 		};
 
 		///
-		/// @brief Default constructor
+		/// \brief Default constructor
 		///
 		/// This frustum will be invalid untill recalculated
 		///
-		/// @see calculate
+		/// \see calculate
 		///
 		Frustum();
 
 		///
-		/// @brief Destructor
+		/// \brief Destructor
 		///
 		~Frustum();
 
 		///
-		/// @brief Recalculate collision planes for this Frustum
+		/// \brief Recalculate collision planes for this Frustum
 		///
 		/// Will modify the six collision planes to match the given VP matrix.
 		///
-		/// @param VP A valid VP matrix
+		/// \param VP A valid VP matrix
 		///
-		/// @see calculate
+		/// \see calculate
 		///
 		void calculate(mat4f VP);
 
 		///
-		/// @brief Get any given collision Plane on this Frustum
+		/// \brief Get any given collision Plane on this Frustum
 		///
 		Plane getPlane(PlaneID p);
 
@@ -55,12 +55,12 @@ class Frustum {
 };
 
 ///
-/// @class Frustum Frustum.hpp "geometry/Frustum.hpp"
-///	@ingroup Geometry
+/// \class Frustum Frustum.hpp "geometry/Frustum.hpp"
+///	\ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects,
 /// in order to perform fustrum culling for example.
 ///
-/// @see Collision
+/// \see Collision
 ///
 #endif // FRUSTUM_HPP
