@@ -6,15 +6,33 @@ bool Collision::intersects(const Frustum& f, const AABB& b) {
 	return true;
 }
 
+bool Collision::intersects(const Frustum& f, const AABB& b, std::bitset<6> ommitedPlanes) {
+	for(unsigned int i=0; i < 6; i++)
+		if(!ommitedPlanes.test(i) && !f.planes[i].inside(b)) return false;
+	return true;
+}
+
 bool Collision::intersects(const Frustum& f, const vec3f& p) {
 	for(unsigned int i=0; i < 6; i++)
 		if(!f.planes[i].inside(p)) return false;
 	return true;
 }
 
+bool Collision::intersects(const Frustum& f, const vec3f& p, std::bitset<6> ommitedPlanes) {
+	for(unsigned int i=0; i < 6; i++)
+		if(!ommitedPlanes.test(i) && !f.planes[i].inside(p)) return false;
+	return true;
+}
+
 bool Collision::intersects(const Frustum& f, const Sphere& s) {
 	for(unsigned int i=0; i < 6; i++)
 		if(!f.planes[i].inside(s)) return false;
+	return true;
+}
+
+bool Collision::intersects(const Frustum& f, const Sphere& s, std::bitset<6> ommitedPlanes) {
+	for(unsigned int i=0; i < 6; i++)
+		if(!ommitedPlanes.test(i) && !f.planes[i].inside(s)) return false;
 	return true;
 }
 

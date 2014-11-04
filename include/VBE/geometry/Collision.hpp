@@ -3,20 +3,29 @@
 #include "Frustum.hpp"
 #include "Ray.hpp"
 
+#include <bitset>
+
 ///
 /// @brief Collision functions for geometry testing
 ///
 class Collision {
 	public:
 		///
-		/// @brief Test a Frustum against an AABB
+		/// @brief Test an AABB against a Frustum
 		///
 		static bool intersects(const Frustum& f, const AABB& b);
 
 		///
-		/// @brief Test a Frustum against an AABB
+		/// @brief Test an AABB against a Frustum
 		///
 		static bool intersects(const AABB& b, const Frustum& f) {return intersects(f, b);}
+
+		///
+		/// @brief Test an AABB against a Frustum, with ommited planes
+		/// @param ommitedPlanes A bitset of 6 bits where each bit represents wether that
+		///        particular Frustum::PlaneID was ommited from the test
+		///
+		static bool intersects(const Frustum& f, const AABB& b, std::bitset<6> ommitedPlanes);
 
 		///
 		/// @brief Test a point against a Frustum
@@ -29,6 +38,13 @@ class Collision {
 		static bool intersects(const vec3f& p, const Frustum& f) {return intersects(f, p);}
 
 		///
+		/// @brief Test a point against a Frustum, with ommited planes
+		/// @param ommitedPlanes A bitset of 6 bits where each bit represents wether that
+		///        particular Frustum::PlaneID was ommited from the test
+		///
+		static bool intersects(const Frustum& f, const vec3f& b, std::bitset<6> ommitedPlanes);
+
+		///
 		/// @brief Test a Sphere against a Frustum
 		///
 		static bool intersects(const Frustum& f, const Sphere& s);
@@ -37,6 +53,13 @@ class Collision {
 		/// @brief Test a Sphere against a Frustum
 		///
 		static bool intersects(const Sphere& s, const Frustum& f) {return intersects(f, s);}
+
+		///
+		/// @brief Test a Sphere against a Frustum, with ommited planes
+		/// @param ommitedPlanes A bitset of 6 bits where each bit represents wether that
+		///        particular Frustum::PlaneID was ommited from the test
+		///
+		static bool intersects(const Frustum& f, const Sphere& s, std::bitset<6> ommitedPlanes);
 
 		///
 		/// @brief Test an AABB against another AABB
