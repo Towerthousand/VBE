@@ -43,6 +43,10 @@ void Window::setDisplayMode(DisplayMode mode) {
 	WindowImpl::setDisplayMode(mode);
 }
 
+void Window::setVsync(VsyncMode mode) {
+	WindowImpl::setVsync(mode);
+}
+
 std::string Window::getTitle() const {
 	return title;
 }

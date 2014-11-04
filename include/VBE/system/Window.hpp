@@ -98,6 +98,12 @@ class Window : public NonCopyable {
 				friend class WindowImpl;
 		};
 
+		enum VsyncMode {
+			DisabledVsync,
+			EnabledVsync,
+			LateTearingVsync
+		};
+
 		///
 		/// \brief getFullscreenModes returns all the Fullscreen display modes supported by
 		/// the hardware. You must use one of these modes to create a Fullscreen Window.
@@ -151,6 +157,12 @@ class Window : public NonCopyable {
 		/// \param mode the new display mode.
 		///
 		void setDisplayMode(DisplayMode mode);
+
+		///
+		/// \brief setVsync changes the Vsync mode of the Window.
+		/// \param mode the new vsync mode.
+		///
+		void setVsync(VsyncMode mode);
 
 		///
 		/// \brief getTitle gets the title of the Window.

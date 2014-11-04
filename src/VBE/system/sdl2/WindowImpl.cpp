@@ -135,6 +135,27 @@ void WindowImpl::setDisplayMode(Window::DisplayMode mode) {
 }
 
 // static
+void WindowImpl::setVsync(Window::VsyncMode mode) {
+	int num;
+	switch(mode) {
+		case Window::DisabledVsync:
+			num = 0;
+			break;
+		case Window::EnabledVsync:
+			num = 1;
+			break;
+		case Window::LateTearingVsync:
+			num = -1;
+			break;
+		default:
+			VBE_ASSERT(false, "Invalid VsyncMode");
+	}
+
+	SDL_ASSERT(SDL_GL_SetSwapInterval(num));
+}
+
+
+// static
 void WindowImpl::update() {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
