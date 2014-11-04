@@ -14,6 +14,7 @@ void WindowImpl::initSDL() {
 	if(isSDLInit) return;
 	VBE_ASSERT(SDL_WasInit(SDL_INIT_EVERYTHING) == 0, "SDL Has been init from outside of this application");
 	int ret = SDL_Init(SDL_INIT_EVERYTHING);
+	(void) ret;
 	VBE_ASSERT(ret == 0, "Error when initializating SDL: " << SDL_GetError());
 	isSDLInit = true;
 }
@@ -149,6 +150,7 @@ void WindowImpl::setVsync(Window::VsyncMode mode) {
 			break;
 		default:
 			VBE_ASSERT(false, "Invalid VsyncMode");
+			return;
 	}
 
 	SDL_ASSERT(SDL_GL_SetSwapInterval(num));
