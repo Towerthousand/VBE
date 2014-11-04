@@ -123,8 +123,9 @@ void RenderTargetBase::valid() const {
 		GL_ASSERT(glDrawBuffers(drawAttachments.size(), (GLenum*)&drawAttachments[0]));
 	}
 #endif
-	GLenum cosa = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	VBE_ASSERT(cosa == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");
+	GLenum ret = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	(void)ret;
+	VBE_ASSERT(ret == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");
 }
 
 void RenderTargetBase::enableAttachment(RenderTargetBase::Attachment a) {
