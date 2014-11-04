@@ -3843,6 +3843,7 @@ static stbi_uc *stbi_gif_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 {
 	uint8 *u = 0;
 	stbi_gif g;
+	g.out = 0;
 
 	u = stbi_gif_load_next(s, &g, comp, req_comp);
 	if (u == (void *) 1) u = 0;  // end of animated gif marker
