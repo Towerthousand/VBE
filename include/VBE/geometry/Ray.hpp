@@ -41,7 +41,7 @@ class Ray {
 		vec3f dir;
 };
 ///
-/// \class Ray Ray.hpp "geometry/Ray.hpp"
+/// \class Ray Ray.hpp <VBE/geometry/Ray.hpp>
 ///	\ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects.

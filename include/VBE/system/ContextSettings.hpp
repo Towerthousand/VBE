@@ -2,9 +2,7 @@
 #define STARTINGCONFIG_HPP
 
 ///
-/// \brief The ContextSettings class
-///
-/// Contains the settings for the OpenGL context creation used when creating a Screen.
+/// \brief The ContextSettings class contains all the settings for the OpenGL context creation used when creating a Window.
 ///
 class ContextSettings {
 	public:
@@ -171,5 +169,15 @@ class ContextSettings {
 			shareContext(false),
 			requestSRGB(false) {}
 };
+///
+/// \class ContextSettings ContextSettings.hpp <VBE/system/ContextSettings.hpp>
+///	\ingroup System
+///
+/// Remember that, as a rule of thumb, you cannot expect everything you request in this settings
+/// to be available everywhere. If the graphics card doesn't support the OpenGL version you request
+/// (for example) it will quietly provide you an older version instead of directly crashing.
+///
+/// \see Window
+///
 
 #endif // STARTINGCONFIG_HPP

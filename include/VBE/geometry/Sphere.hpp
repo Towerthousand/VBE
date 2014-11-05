@@ -38,7 +38,7 @@ class Sphere {
 		float radius;
 };
 ///
-/// \class Sphere Sphere.hpp "geometry/Sphere.hpp"
+/// \class Sphere Sphere.hpp <VBE/geometry/Sphere.hpp>
 ///	\ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects.

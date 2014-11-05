@@ -233,7 +233,6 @@ class Window : public NonCopyable {
 		std::string title;
 
 		static Window* instance;
-
 };
 
 #endif // WINDOW_HPP

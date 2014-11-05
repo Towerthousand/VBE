@@ -1,3 +1,7 @@
+///	@defgroup System System
+///
+/// System and I/O device classes
+///
 #include <VBE/system/Clock.hpp>
 #include <VBE/system/ContextSettings.hpp>
 #include <VBE/system/Keyboard.hpp>

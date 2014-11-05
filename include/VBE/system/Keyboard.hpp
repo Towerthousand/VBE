@@ -274,8 +274,8 @@ class Keyboard {
 };
 
 ///
-/// @class Keyboard Keyboard.hpp "enviroment/Keyboard.hpp"
-/// @ingroup System
+/// \class Keyboard Keyboard.hpp <VBE/system/Keyboard.hpp>
+/// \ingroup System
 ///
 /// You can use this class within an init Environment to access the current
 /// keyboard device's state. Not all keys are supported in all devices and will
@@ -304,6 +304,5 @@ class Keyboard {
 ///   + Key Keyboard::A is not held
 ///   + Key Keyboard::A is just released
 ///
-/// @see Environment
 
 #endif // KEYBOARD_HPP

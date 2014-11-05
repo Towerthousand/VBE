@@ -8,17 +8,24 @@ class Clock {
 	public:
 
 		///
-		/// \brief getSeconds Gets the value of the clock in seconds.
+		/// \brief Gets the value of the clock in seconds.
 		/// The returned value increases by 1 every second. The origin
 		/// of the clock (the moment when it has the value 0) is unspecified.
 		///
 		static float getSeconds();
 
 		///
-		/// \brief sleepSeconds Sleeps for the specified amount of seconds.
+		/// \brief Sleeps for the specified amount of seconds.
 		/// \param seconds The number of seconds to sleep
 		///
 		static void sleepSeconds(float seconds);
 };
+///
+/// \class Clock Clock.hpp <VBE/system/Clock.hpp>
+///	\ingroup System
+///
+/// With this class you can query the elapsed time since the application started
+/// and a you can also sleep the current thread for any amount of time.
+///
 
 #endif // CLOCK_HPP

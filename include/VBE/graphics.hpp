@@ -1,3 +1,7 @@
+///	@defgroup Graphics Graphics
+///
+/// OpenGL objects and 3D graphics utilities
+///
 #include <VBE/graphics/Mesh.hpp>
 #include <VBE/graphics/MeshIndexed.hpp>
 #include <VBE/graphics/OBJLoader.hpp>

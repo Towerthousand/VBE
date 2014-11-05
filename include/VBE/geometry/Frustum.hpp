@@ -55,7 +55,7 @@ class Frustum {
 };
 
 ///
-/// \class Frustum Frustum.hpp "geometry/Frustum.hpp"
+/// \class Frustum Frustum.hpp <VBE/geometry/Frustum.hpp>
 ///	\ingroup Geometry
 ///
 /// This class can be used to test against other geometry objects,
