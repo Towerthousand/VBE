@@ -38,6 +38,7 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_SAMPLER_2D:
 #ifndef VBE_GLES2
 		case GL_SAMPLER_2D_ARRAY:
+		case GL_SAMPLER_2D_ARRAY_SHADOW:
 		case GL_SAMPLER_2D_SHADOW:
 		case GL_SAMPLER_3D:
 #endif
@@ -161,7 +162,7 @@ void Uniform::set(const Texture2DArray* val) {
 }
 
 void Uniform::set(const Texture2DArray& val) {
-	VBE_ASSERT(type == GL_SAMPLER_2D_ARRAY, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(type == GL_SAMPLER_2D_ARRAY || type == GL_SAMPLER_2D_ARRAY_SHADOW, "Wrong uniform type. Location " << this->location);
 	Texture2DArray::bind(&val, texUnit);
 	setBytes((char*)&texUnit);
 }
@@ -181,6 +182,7 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 		case GL_INT:
 #ifndef VBE_GLES2
 		case GL_SAMPLER_2D_ARRAY:
+		case GL_SAMPLER_2D_ARRAY_SHADOW:
 		case GL_SAMPLER_2D_SHADOW:
 		case GL_SAMPLER_3D:
 #endif
@@ -239,6 +241,8 @@ bool Uniform::isSampler(GLenum uniformType) {
 		case GL_SAMPLER_2D_SHADOW:
 			return true;
 		case GL_SAMPLER_2D_ARRAY:
+			return true;
+		case GL_SAMPLER_2D_ARRAY_SHADOW:
 			return true;
 		case GL_SAMPLER_3D:
 			return true;
