@@ -3,7 +3,7 @@
 
 #include <VBE/graphics/MeshBase.hpp>
 
-class MeshIndexed : public MeshBase {
+class MeshIndexed final : public MeshBase {
 	public:
 		MeshIndexed(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
 		~MeshIndexed() override;

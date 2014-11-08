@@ -82,7 +82,8 @@ HEADERS += \
     include/VBE/graphics/RenderTargetBase.hpp \
     include/VBE/graphics/RenderTarget.hpp \
     include/VBE/graphics/Image.hpp \
-    include/VBE/graphics/RenderTargetLayered.hpp
+    include/VBE/graphics/RenderTargetLayered.hpp \
+    include/VBE/graphics/MeshInterface.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -122,4 +123,5 @@ SOURCES += \
     src/VBE/graphics/RenderTargetBase.cpp \
     src/VBE/graphics/RenderTarget.cpp \
     src/VBE/graphics/Image.cpp \
-    src/VBE/graphics/RenderTargetLayered.cpp
+    src/VBE/graphics/RenderTargetLayered.cpp \
+    src/VBE/graphics/MeshInterface.cpp

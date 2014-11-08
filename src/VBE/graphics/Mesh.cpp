@@ -4,12 +4,11 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
-
 Mesh::Mesh(const Vertex::Format& format, MeshBase::BufferType bufferType) :
 	MeshBase(format, bufferType) {
 }
 
-Mesh::Mesh(Mesh&& rhs) : Mesh(Vertex::Format(std::vector<Vertex::Element>())){
+Mesh::Mesh(Mesh&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Element>())){
 	using std::swap;
 	swap(*this, rhs);
 }

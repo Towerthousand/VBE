@@ -4,14 +4,11 @@
 #include <VBE/graphics/ShaderBinding.hpp>
 
 MeshBase::MeshBase(const Vertex::Format& format, BufferType bufferType) :
-	vertexFormat(format),
-	vertexCount(0),
-	vertexBuffer(0),
-	primitiveType(TRIANGLES),
-	bufferType(bufferType) {
+	MeshInterface(format, bufferType),
+	vertexBuffer(0) {
 	GL_ASSERT(glGenBuffers(1, &vertexBuffer));
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
-	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, 0, nullptr, bufferType));
+	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, 0, nullptr, getBufferType()));
 }
 
 MeshBase::~MeshBase() {
@@ -21,9 +18,20 @@ MeshBase::~MeshBase() {
 		delete it->second;
 }
 
+MeshBase::MeshBase(MeshBase&& rhs) : MeshInterface(Vertex::Format(std::vector<Vertex::Element>())) {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+MeshBase& MeshBase::operator=(MeshBase&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
 void MeshBase::bindBuffers() const {
-	VBE_ASSERT(getVertexBuffer() != 0, "mesh vertex buffer is null");
-	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, getVertexBuffer()));
+	VBE_ASSERT(vertexBuffer != 0, "mesh vertex buffer is null");
+	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
 }
 
 void MeshBase::setupShaderBinding(const ShaderProgram* program) {
@@ -38,33 +46,8 @@ void MeshBase::setupShaderBinding(const ShaderProgram* program) {
 	ShaderBinding::bind(binding);
 }
 
-
-const Vertex::Format& MeshBase::getVertexFormat() const {
-	return vertexFormat;
-}
-
-unsigned int MeshBase::getVertexCount() const {
-	return vertexCount;
-}
-
-unsigned int MeshBase::getVertexSize() const {
-	return vertexFormat.vertexSize();
-}
-
 GLuint MeshBase::getVertexBuffer() const {
 	return vertexBuffer;
-}
-
-MeshBase::PrimitiveType MeshBase::getPrimitiveType() const {
-	return primitiveType;
-}
-
-MeshBase::BufferType MeshBase::getBufferType() const {
-	return bufferType;
-}
-
-void MeshBase::setPrimitiveType(MeshBase::PrimitiveType type) {
-	primitiveType = type;
 }
 
 void MeshBase::setVertexData(const void* vertexData, unsigned int newVertexCount) {
@@ -72,17 +55,13 @@ void MeshBase::setVertexData(const void* vertexData, unsigned int newVertexCount
 	ShaderBinding::bind(nullptr);
 	vertexCount = newVertexCount;
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
-	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, vertexFormat.vertexSize() * vertexCount, vertexData, bufferType));
+	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, getVertexSize() * vertexCount, vertexData, getBufferType()));
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
 
 void swap(MeshBase& a, MeshBase& b) {
 	using std::swap;
-
+	swap(static_cast<MeshInterface&>(a), static_cast<MeshInterface&>(b));
 	swap(a.bindingsCache, b.bindingsCache);
-	swap(a.vertexFormat, b.vertexFormat);
-	swap(a.vertexCount, b.vertexCount);
 	swap(a.vertexBuffer, b.vertexBuffer);
-	swap(a.primitiveType, b.primitiveType);
-	swap(a.bufferType, b.bufferType);
 }

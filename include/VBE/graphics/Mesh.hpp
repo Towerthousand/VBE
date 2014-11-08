@@ -3,7 +3,7 @@
 
 #include <VBE/graphics/MeshBase.hpp>
 
-class Mesh : public MeshBase {
+class Mesh final : public MeshBase {
 	public:
 		Mesh(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
 
