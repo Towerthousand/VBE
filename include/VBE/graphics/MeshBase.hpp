@@ -1,28 +1,55 @@
 #ifndef MESHBASE_HPP
 #define MESHBASE_HPP
-#include <VBE/graphics/MeshInterface.hpp>
+
+#include <VBE/config.hpp>
+#include <VBE/graphics/OpenGL.hpp>
+#include <VBE/graphics/Vertex.hpp>
+#include <VBE/utils/NonCopyable.hpp>
 
 class ShaderBinding;
 class ShaderProgram;
-class MeshBase : public MeshInterface {
+class MeshBase : public NonCopyable {
 	public:
-		MeshBase(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
-		virtual ~MeshBase() override;
-		MeshBase(MeshBase&& rhs);
-		MeshBase& operator=(MeshBase&& rhs);
+		enum PrimitiveType {
+			TRIANGLES = GL_TRIANGLES,
+			TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
+			TRIANGLE_FAN = GL_TRIANGLE_FAN,
+			LINES = GL_LINES,
+			LINE_STRIP = GL_LINE_STRIP,
+			LINE_LOOP = GL_LINE_LOOP,
+			POINTS = GL_POINTS,
+#ifndef VBE_GLES2
+			PATCHES = GL_PATCHES
+#endif
+		};
 
-		virtual void draw(const ShaderProgram* program) override = 0;
-		void setVertexData(const void* vertexData, unsigned int newVertexCount) override final;
-		virtual void bindBuffers() const;
-		GLuint getVertexBuffer() const;
+		enum BufferType {
+			STATIC = GL_STATIC_DRAW,
+			DYNAMIC = GL_DYNAMIC_DRAW,
+			STREAM = GL_STREAM_DRAW
+		};
+
+		MeshBase(const Vertex::Format& format, BufferType bufferType = STATIC);
+		virtual ~MeshBase();
+
+		virtual void draw(const ShaderProgram* program) = 0;
+
+		const Vertex::Format& getVertexFormat() const;
+		unsigned int getVertexCount() const;
+		unsigned int getVertexSize() const;
+		PrimitiveType getPrimitiveType() const;
+		BufferType getBufferType() const;
+
+		void setPrimitiveType(PrimitiveType type);
+		virtual void setVertexData(const void* vertexData, unsigned int newVertexCount) = 0;
 
 		friend void swap(MeshBase& a, MeshBase& b);
 	protected:
-		void setupShaderBinding(const ShaderProgram* program);
-
+		unsigned int vertexCount;
 	private:
-		std::map<GLuint, const ShaderBinding*> bindingsCache;
-		GLuint vertexBuffer;
+		Vertex::Format vertexFormat;
+		PrimitiveType primitiveType;
+		BufferType bufferType;
 };
 
 #endif // MESHBASE_HPP

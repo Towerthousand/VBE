@@ -1,11 +1,11 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
-#include <VBE/graphics/MeshBase.hpp>
+#include <VBE/graphics/MeshSeparate.hpp>
 
-class Mesh final : public MeshBase {
+class Mesh final : public MeshSeparate {
 	public:
-		Mesh(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
+		Mesh(const Vertex::Format& format, MeshSeparate::BufferType bufferType = STATIC);
 
 		Mesh(Mesh&& rhs);
 		Mesh& operator=(Mesh&& rhs);

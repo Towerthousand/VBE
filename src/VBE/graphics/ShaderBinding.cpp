@@ -1,5 +1,5 @@
 #include <VBE/config.hpp>
-#include <VBE/graphics/MeshBase.hpp>
+#include <VBE/graphics/MeshSeparate.hpp>
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/graphics/ShaderBinding.hpp>
 #include <VBE/graphics/ShaderProgram.hpp>
@@ -8,7 +8,7 @@
 #ifdef SHADERBINDING_USE_VAO
 #endif
 
-ShaderBinding::ShaderBinding(const ShaderProgram* program, const MeshBase* mesh) :
+ShaderBinding::ShaderBinding(const ShaderProgram* program, const MeshSeparate* mesh) :
 		program(program), mesh(mesh) {
 	VBE_DLOG("* New shaderbinding between program with pointer " << program << " and mesh with pointer " << mesh );
 #ifdef SHADERBINDING_USE_VAO

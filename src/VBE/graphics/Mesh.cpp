@@ -4,11 +4,11 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
-Mesh::Mesh(const Vertex::Format& format, MeshBase::BufferType bufferType) :
-	MeshBase(format, bufferType) {
+Mesh::Mesh(const Vertex::Format& format, MeshSeparate::BufferType bufferType) :
+	MeshSeparate(format, bufferType) {
 }
 
-Mesh::Mesh(Mesh&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Element>())){
+Mesh::Mesh(Mesh&& rhs) : MeshSeparate(Vertex::Format(std::vector<Vertex::Element>())){
 	using std::swap;
 	swap(*this, rhs);
 }
@@ -37,5 +37,5 @@ void Mesh::draw(const ShaderProgram* program, unsigned int offset, unsigned int 
 
 void swap(Mesh& a, Mesh& b) {
 	using std::swap;
-	swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
+	swap(static_cast<MeshSeparate&>(a), static_cast<MeshSeparate&>(b));
 }

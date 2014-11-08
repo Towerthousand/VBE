@@ -1,11 +1,11 @@
 #ifndef MESHINDEXED_HPP
 #define MESHINDEXED_HPP
 
-#include <VBE/graphics/MeshBase.hpp>
+#include <VBE/graphics/MeshSeparate.hpp>
 
-class MeshIndexed final : public MeshBase {
+class MeshIndexed final : public MeshSeparate {
 	public:
-		MeshIndexed(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
+		MeshIndexed(const Vertex::Format& format, MeshSeparate::BufferType bufferType = STATIC);
 		~MeshIndexed() override;
 		MeshIndexed(MeshIndexed&& rhs);
 		MeshIndexed& operator=(MeshIndexed&& rhs);

@@ -3,8 +3,8 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
-MeshIndexed::MeshIndexed(const Vertex::Format& format, MeshBase::BufferType bufferType) :
-	MeshBase(format, bufferType),
+MeshIndexed::MeshIndexed(const Vertex::Format& format, MeshSeparate::BufferType bufferType) :
+	MeshSeparate(format, bufferType),
 	indexCount(0),
 	indexBuffer(0) {
 	GL_ASSERT(glGenBuffers(1, &indexBuffer));
@@ -15,7 +15,7 @@ MeshIndexed::~MeshIndexed() {
 		GL_ASSERT(glDeleteBuffers(1, &indexBuffer));
 }
 
-MeshIndexed::MeshIndexed(MeshIndexed&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Element>())) {
+MeshIndexed::MeshIndexed(MeshIndexed&& rhs) : MeshSeparate(Vertex::Format(std::vector<Vertex::Element>())) {
 	using std::swap;
 	swap(*this, rhs);
 }
@@ -27,7 +27,7 @@ MeshIndexed& MeshIndexed::operator=(MeshIndexed&& rhs) {
 }
 
 void MeshIndexed::bindBuffers() const {
-	MeshBase::bindBuffers();
+	MeshSeparate::bindBuffers();
 	VBE_ASSERT(getIndexBuffer() != 0, "mesh index buffer is null");
 	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, getIndexBuffer()));
 }
@@ -60,7 +60,7 @@ void MeshIndexed::setIndexData(const unsigned int* indexData, unsigned int newIn
 
 void swap(MeshIndexed& a, MeshIndexed& b) {
 	using std::swap;
-	swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
+	swap(static_cast<MeshSeparate&>(a), static_cast<MeshSeparate&>(b));
 	swap(a.indexCount, b.indexCount);
 	swap(a.indexBuffer, b.indexBuffer);
 }
