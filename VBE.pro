@@ -83,7 +83,8 @@ HEADERS += \
     include/VBE/graphics/Image.hpp \
     include/VBE/graphics/RenderTargetLayered.hpp \
     include/VBE/graphics/MeshSeparate.hpp \
-    include/VBE/graphics/MeshBase.hpp
+    include/VBE/graphics/MeshBase.hpp \
+    include/VBE/graphics/MeshBatched.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -124,4 +125,5 @@ SOURCES += \
     src/VBE/graphics/Image.cpp \
     src/VBE/graphics/RenderTargetLayered.cpp \
     src/VBE/graphics/MeshSeparate.cpp \
-    src/VBE/graphics/MeshBase.cpp
+    src/VBE/graphics/MeshBase.cpp \
+    src/VBE/graphics/MeshBatched.cpp

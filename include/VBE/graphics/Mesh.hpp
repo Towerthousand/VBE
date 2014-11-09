@@ -5,7 +5,7 @@
 
 class Mesh final : public MeshSeparate {
 	public:
-		Mesh(const Vertex::Format& format, MeshSeparate::BufferType bufferType = STATIC);
+		Mesh(const Vertex::Format& format, BufferType bufferType = STATIC);
 
 		Mesh(Mesh&& rhs);
 		Mesh& operator=(Mesh&& rhs);

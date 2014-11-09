@@ -4,7 +4,7 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
-Mesh::Mesh(const Vertex::Format& format, MeshSeparate::BufferType bufferType) :
+Mesh::Mesh(const Vertex::Format& format, BufferType bufferType) :
 	MeshSeparate(format, bufferType) {
 }
 

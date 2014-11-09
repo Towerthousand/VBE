@@ -3,7 +3,7 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
-MeshIndexed::MeshIndexed(const Vertex::Format& format, MeshSeparate::BufferType bufferType) :
+MeshIndexed::MeshIndexed(const Vertex::Format& format, BufferType bufferType) :
 	MeshSeparate(format, bufferType),
 	indexCount(0),
 	indexBuffer(0) {
