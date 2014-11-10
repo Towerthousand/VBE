@@ -17,6 +17,7 @@ class WindowImpl {
 		static void destroy();
 
 		static void setDisplayMode(Window::DisplayMode mode);
+		static void setVsync(Window::VsyncMode mode);
 		static vec2ui getSize();
 
 		static void update();

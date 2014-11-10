@@ -67,6 +67,11 @@ void WindowImpl::update() {
 }
 
 // static
+void WindowImpl::setVsync(Window::VsyncMode mode) {
+	// TODO (n/a?)
+}
+
+// static
 void WindowImpl::setTitle(std::string newTitle) {
 	// Not applicable
 }
