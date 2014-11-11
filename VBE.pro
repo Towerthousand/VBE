@@ -30,7 +30,6 @@ HEADERS += \
     include/VBE/geometry.hpp \
     include/VBE/graphics.hpp \
     include/VBE/math.hpp \
-    include/VBE/scenegraph.hpp \
     include/VBE/system.hpp \
     include/VBE/VBE.hpp \
     include/VBE/utils/NonCopyable.hpp \
@@ -38,10 +37,6 @@ HEADERS += \
     include/VBE/system/Keyboard.hpp \
     include/VBE/system/Log.hpp \
     include/VBE/system/Mouse.hpp \
-    include/VBE/scenegraph/Camera.hpp \
-    include/VBE/scenegraph/ContainerObject.hpp \
-    include/VBE/scenegraph/Game.hpp \
-    include/VBE/scenegraph/GameObject.hpp \
     include/VBE/graphics/OBJLoader.hpp \
     include/VBE/graphics/OpenGL.hpp \
     include/VBE/graphics/RenderBuffer.hpp \
@@ -103,10 +98,6 @@ SOURCES += \
     src/VBE/graphics/TextureCubemap.cpp \
     src/VBE/graphics/Uniform.cpp \
     src/VBE/graphics/Vertex.cpp \
-    src/VBE/scenegraph/Camera.cpp \
-    src/VBE/scenegraph/ContainerObject.cpp \
-    src/VBE/scenegraph/Game.cpp \
-    src/VBE/scenegraph/GameObject.cpp \
     src/VBE/system/Log.cpp \
     src/VBE/system/Mouse.cpp \
     src/VBE/system/Keyboard.cpp \
