@@ -156,42 +156,62 @@ void MeshBatched::Buffer::bindBuffers() const {
 void MeshBatched::Buffer::freeInterval(Interval i) {
 	VBE_ASSERT(i.start + i.count <= totalBufferSize, "Free out of bounds GPU memory");
 	if(i.count == 0) return;
-	//try to merge it with some other interval
-	for(Interval& interval : freeIntervals) {
-		if(interval.start + interval.count == i.start) {
-			interval.count += i.count;
-			return;
-		}
-		else if(interval.start == i.start + i.count) {
-			interval.start = i.start;
-			return;
+	bool merged = false;
+	//merge with previous one if possible
+	std::set<Interval>::iterator lower = std::lower_bound(freeIntervals.begin(), freeIntervals.end(), i);
+	if(lower != freeIntervals.end() && lower != freeIntervals.begin()) {
+		--lower;
+		Interval previous = *lower;
+		if(previous.start + previous.count == i.start) {
+			freeIntervals.erase(previous);
+			previous.count += i.count;
+			freeIntervals.insert(previous);
+			i = previous;
+			merged = true;
 		}
 	}
-	//push it standalone
-	freeIntervals.push_back(i);
+	//merge with next one if possible
+	std::set<Interval>::iterator upper = std::upper_bound(freeIntervals.begin(), freeIntervals.end(), i);
+	if(upper != freeIntervals.end()) {
+		Interval next = *upper;
+		if(next.start == i.start + i.count) {
+			freeIntervals.erase(next);
+			freeIntervals.erase(i);
+			i.count += next.count;
+			freeIntervals.insert(i);
+			merged = true;
+		}
+	}
+	//else, push it standalone
+	if(!merged) freeIntervals.insert(i);
 }
 
 MeshBatched::Buffer::Interval MeshBatched::Buffer::allocateInterval(unsigned int vCount) {
 	Interval ret(0, vCount);
-	for(std::list<Interval>::iterator it = freeIntervals.begin(); it != freeIntervals.end(); ++it) {
-		Interval& i = *it;
+	Interval toReplace(0,0);
+	bool spaceAvailable = false;
+	for(const Interval& i : freeIntervals) {
 		if(i.count >= vCount) {
-			ret.start = i.start;
-			if(i.count == vCount)
-				freeIntervals.erase(it);
-			else {
-				i.count -= vCount;
-				i.start += vCount;
-			}
-			return ret;
+			toReplace = i;
+			spaceAvailable = true;
+			break;
 		}
 	}
-	//buffer must be resized
-	ret.start = totalBufferSize;
-	int resizePower;
-	for(resizePower = 1; vCount > (pow(2, resizePower)-1)*totalBufferSize; ++resizePower);
-	resizeBuffer(pow(2,resizePower)*totalBufferSize);
-	return allocateInterval(vCount); //...meh
+	if(spaceAvailable) {
+		ret.start = toReplace.start;
+		freeIntervals.erase(toReplace);
+		if(toReplace.count > vCount)
+			freeIntervals.insert(Interval(toReplace.start + vCount, toReplace.count - vCount));
+	}
+	else {
+		//buffer must be resized
+		ret.start = totalBufferSize;
+		int resizePower;
+		for(resizePower = 1; vCount > (pow(2, resizePower)-1)*totalBufferSize; ++resizePower);
+		resizeBuffer(pow(2,resizePower)*totalBufferSize);
+		ret = allocateInterval(vCount); //...meh
+	}
+	return ret;
 }
 
 void MeshBatched::Buffer::resizeBuffer(unsigned int newSize) {

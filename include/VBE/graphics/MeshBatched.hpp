@@ -42,6 +42,9 @@ class MeshBatched final : public MeshBase {
 			private:
 				struct Interval {
 					Interval(unsigned int start, unsigned int count) : start(start), count(count) {}
+					bool operator <(const Interval& i) const {
+					   return (start < i.start || (start == i.start && count < i.count));
+					}
 					unsigned int start;
 					unsigned int count;
 				};
@@ -53,7 +56,7 @@ class MeshBatched final : public MeshBase {
 				std::map<GLuint, const ShaderBinding*> bindings;
 				GLuint vertexBuffer;
 				unsigned int totalBufferSize; //in vertices
-				std::list<Interval> freeIntervals; //in vertices
+				std::set<Interval> freeIntervals; //in vertices
 				std::map<MeshBatched*,Interval> usedIntervals; //in vertices
 		};
 
