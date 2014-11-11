@@ -5,9 +5,9 @@
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/graphics/Vertex.hpp>
 #include <VBE/utils/NonCopyable.hpp>
+#include <VBE/graphics/ShaderProgram.hpp>
 
 class ShaderBinding;
-class ShaderProgram;
 class MeshBase : public NonCopyable {
 	public:
 		enum PrimitiveType {

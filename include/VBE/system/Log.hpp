@@ -45,7 +45,7 @@
 { \
 	gl_code; \
 	GLenum __gl_error_code = glGetError(); \
-	VBE_ASSERT(__gl_error_code == GL_NO_ERROR, "OpenGL Error with id: " << __gl_error_code); \
+	VBE_ASSERT(__gl_error_code == GL_NO_ERROR, "OpenGL Error with id: 0x" << std::hex << __gl_error_code << std::dec); \
 	} while(0)
 #else
 #define GL_ASSERT( gl_code ) gl_code

@@ -1,8 +1,8 @@
 #ifndef MESHBATCHED_HPP
 #define MESHBATCHED_HPP
 #include <VBE/graphics/MeshBase.hpp>
-
-//WIP
+#include <set>
+#include <list>
 
 class ShaderBinding;
 class ShaderProgram;
@@ -14,8 +14,8 @@ class MeshBatched final : public MeshBase {
 		MeshBatched& operator=(MeshBatched&& rhs);
 
 		void draw(const ShaderProgram* program) override;
-		void draw(const ShaderProgram* program, unsigned int userData);
 		void draw(const ShaderProgram* program, unsigned int offset, unsigned int length);
+		void draw(const ShaderProgram* program, unsigned int userData);
 		void draw(const ShaderProgram* program, unsigned int offset, unsigned int length, unsigned int userData);
 		void setVertexData(const void* vertexData, unsigned int newVertexCount) override;
 
@@ -25,14 +25,36 @@ class MeshBatched final : public MeshBase {
 
 		friend void swap(MeshBatched& a, MeshBatched& b);
 	private:
-		struct MeshBatch {
-				MeshBatch(const Vertex::Format& format);
-				~MeshBatch();
+		class Buffer {
+			public:
+				Buffer(const Vertex::Format& bufferFormat);
+				~Buffer();
 
-				Vertex::Format format;
-				std::map<GLuint, const ShaderBinding*> bindingsCache;
+				void addMesh(MeshBatched* mesh);
+				void deleteMesh(MeshBatched* mesh);
+				void submitData(MeshBatched* mesh, const void* data, unsigned int vCount);
+				unsigned int getMeshCount();
+				unsigned long int getMeshOffset(MeshBatched* mesh);
+				void setupBinding(const ShaderProgram* program);
+				void bindBuffers() const;
+
+				const Vertex::Format bufferFormat;
+			private:
+				struct Interval {
+					Interval(unsigned int start, unsigned int count) : start(start), count(count) {}
+					unsigned int start;
+					unsigned int count;
+				};
+
+				void freeInterval(Interval i);
+				Interval allocateInterval(unsigned int vCount);
+				void resizeBuffer(unsigned int newSize);
+
+				std::map<GLuint, const ShaderBinding*> bindings;
 				GLuint vertexBuffer;
-				std::vector<MeshBatched*> meshes;
+				unsigned int totalBufferSize; //in vertices
+				std::list<Interval> freeIntervals; //in vertices
+				std::map<MeshBatched*,Interval> usedIntervals; //in vertices
 		};
 
 		struct DrawIndirectCommand {
@@ -42,9 +64,14 @@ class MeshBatched final : public MeshBase {
 				GLuint firstInstance;
 		};
 
+		Buffer* getBuffer() const;
+
 		static bool batching;
+		static ShaderProgram* batchingProgram;
 		static std::vector<DrawIndirectCommand> commands;
-		static std::vector<MeshBatch*> batches;
+		static std::set<Buffer*> batches;
+
+		friend class ShaderBinding;
 };
 
 #endif // MESHBATCHED_HPP

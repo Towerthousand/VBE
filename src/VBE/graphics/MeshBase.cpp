@@ -1,4 +1,5 @@
 #include <VBE/graphics/MeshBase.hpp>
+#include "ShaderBinding.hpp"
 
 MeshBase::MeshBase(const Vertex::Format& format, BufferType bufferType)
 	: vertexCount(0),

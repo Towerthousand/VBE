@@ -4,16 +4,17 @@
 #include <VBE/config.hpp>
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/utils/NonCopyable.hpp>
+#include <VBE/graphics/MeshSeparate.hpp>
+#include <VBE/graphics/MeshBatched.hpp>
 
 #ifndef VBE_GLES2
 #define SHADERBINDING_USE_VAO
 #endif
 
-class MeshSeparate;
-class ShaderProgram;
 class ShaderBinding : public NonCopyable {
 	public:
 		ShaderBinding(const ShaderProgram* program, const MeshSeparate* mesh);
+		ShaderBinding(const ShaderProgram* program, const MeshBatched::Buffer* buffer);
 		~ShaderBinding();
 
 		// Binds a ShaderBinding.
@@ -24,6 +25,7 @@ class ShaderBinding : public NonCopyable {
 
 		const ShaderProgram* program;
 		const MeshSeparate* mesh;
+		const MeshBatched::Buffer* buffer;
 
 		static const ShaderBinding* currentBind;
 
