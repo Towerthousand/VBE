@@ -110,6 +110,7 @@ void WindowImpl::create(Window::DisplayMode mode, ContextSettings config) {
 	glewExperimental = true;
 	GLenum err = glewInit();
 	VBE_ASSERT(err == GLEW_OK, "Failed to initialize GLEW");
+	(void) err;
 	glGetError();
 #endif
 	// Init input
