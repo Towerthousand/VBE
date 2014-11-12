@@ -4,15 +4,21 @@
 #include "ShaderBinding.hpp"
 
 bool MeshBatched::batching = false;
-ShaderProgram* MeshBatched::batchingProgram = nullptr;
+MeshBatched::Buffer* MeshBatched::batchingBuffer = nullptr;
+const ShaderProgram* MeshBatched::batchingProgram = nullptr;
+MeshBase::PrimitiveType MeshBatched::batchingPrimitive = MeshBase::TRIANGLES;
+GLuint MeshBatched::perDrawAttribBuffer = 0;
+unsigned int MeshBatched::perDrawAttribBufferSize = 0;
+GLuint MeshBatched::indirectBuffer = 0;
 std::vector<MeshBatched::DrawIndirectCommand> MeshBatched::commands;
-std::set<MeshBatched::Buffer*> MeshBatched::batches;
+std::set<MeshBatched::Buffer*> MeshBatched::buffers;
 
 MeshBatched::MeshBatched(const Vertex::Format& format) : MeshBase(format, STREAM) {
+	ensureInitBuffers();
 	Buffer* b = getBuffer();
 	if(b == nullptr) {
 		b = new Buffer(format);
-		batches.insert(b);
+		buffers.insert(b);
 	}
 	b->addMesh(this);
 }
@@ -21,7 +27,7 @@ MeshBatched::~MeshBatched() {
 	Buffer* b = getBuffer();
 	b->deleteMesh(this);
 	if(b->getMeshCount() == 0) {
-		batches.erase(b);
+		buffers.erase(b);
 		delete b;
 	}
 }
@@ -41,10 +47,6 @@ void MeshBatched::draw(const ShaderProgram* program) {
 	draw(program, 0, vertexCount);
 }
 
-void MeshBatched::draw(const ShaderProgram* program, unsigned int userData) {
-	draw(program, 0, vertexCount, userData);
-}
-
 void MeshBatched::draw(const ShaderProgram* program, unsigned int offset, unsigned int length) {
 	VBE_ASSERT(program != nullptr, "program cannot be null");
 	VBE_ASSERT(program->getHandle() != 0, "program cannot be null");
@@ -55,11 +57,25 @@ void MeshBatched::draw(const ShaderProgram* program, unsigned int offset, unsign
 	Buffer* b = getBuffer();
 	b->setupBinding(program);
 
-	GL_ASSERT(glDrawArrays(getPrimitiveType(), b->getMeshOffset(this), length));
+	GL_ASSERT(glDrawArrays(getPrimitiveType(), b->getMeshOffset(this) + offset, length));
 }
 
-void MeshBatched::draw(const ShaderProgram* program, unsigned int offset, unsigned int length, unsigned int userData) {
-	//TODO
+void MeshBatched::drawBatched(const ShaderProgram* program) {
+	drawBatched(program, 0, vertexCount);
+}
+
+void MeshBatched::drawBatched(const ShaderProgram* program, unsigned int offset, unsigned int length) {
+	VBE_ASSERT(batching, "Cannot draw a MeshBatched with batching without calling startBatch() first.");
+	Buffer* b = getBuffer();
+	if(batchingBuffer == nullptr) { //first command
+		batchingBuffer = b;
+		batchingProgram = program;
+		batchingPrimitive = getPrimitiveType();
+	}
+	VBE_ASSERT(batchingBuffer == b, "Cannot send two MeshBatched with different formats under the same batch.");
+	VBE_ASSERT(batchingProgram == program, "Cannot use two different programs during the same batch.");
+	VBE_ASSERT(batchingPrimitive == getPrimitiveType(), "Cannot use two different primitives during the same batch.");
+	commands.push_back(DrawIndirectCommand(length, 1, b->getMeshOffset(this) + offset, commands.size()));
 }
 
 void MeshBatched::setVertexData(const void* vertexData, unsigned int newVertexCount) {
@@ -76,20 +92,60 @@ void MeshBatched::startBatch() {
 	VBE_ASSERT(!batching, "Cannot start a new batch without ending the previous one.");
 	resetBatch();
 	batching = true;
-	//TODO
 }
 
 void MeshBatched::endBatch() {
 	VBE_ASSERT(batching, "Cannot end a batch that wasn't started.");
 	batching = false;
-	//TODO
+	if(commands.size() == 0) return;
+	uploadPerDrawData(commands.size());
+	uploadIndirectCommands();
+
+	batchingBuffer->setupBinding(batchingProgram);
+	GL_ASSERT(glMultiDrawArraysIndirect(batchingPrimitive, 0, commands.size(), 0));
+	commands.clear();
+	batchingBuffer = nullptr;
+	batchingProgram = nullptr;
 }
 
 MeshBatched::Buffer* MeshBatched::getBuffer() const {
-	for(Buffer* b : batches)
+	for(Buffer* b : buffers)
 		if(b->bufferFormat == getVertexFormat())
 			return b;
 	return nullptr;
+}
+
+void MeshBatched::ensureInitBuffers() {
+	if(perDrawAttribBuffer == 0) {
+		GL_ASSERT(glGenBuffers(1, &perDrawAttribBuffer));
+		uploadPerDrawData(1);
+	}
+	if(indirectBuffer == 0) {
+		GL_ASSERT(glGenBuffers(1, &indirectBuffer));
+	}
+}
+
+void MeshBatched::uploadPerDrawData(unsigned int size) {
+	if(size <= perDrawAttribBufferSize) return;
+	perDrawAttribBufferSize = size;
+	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, perDrawAttribBuffer));
+	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, size*sizeof(unsigned int), 0, STATIC));
+	GLuint* draw_index = nullptr;
+	GL_ASSERT(draw_index = (GLuint *)glMapBufferRange(GL_ARRAY_BUFFER, 0, size * sizeof(GLuint),
+													  GL_MAP_WRITE_BIT |
+													  GL_MAP_INVALIDATE_BUFFER_BIT));
+	for(unsigned int i = 0; i < size; i++)
+		draw_index[i] = i;
+	GL_ASSERT(glUnmapBuffer(GL_ARRAY_BUFFER));
+}
+
+void MeshBatched::uploadIndirectCommands() {
+	GL_ASSERT(glBindBuffer(GL_DRAW_INDIRECT_BUFFER, indirectBuffer));
+	GL_ASSERT(glBufferData(GL_DRAW_INDIRECT_BUFFER, sizeof(DrawIndirectCommand)*commands.size(), &commands[0], STATIC));
+}
+
+void MeshBatched::bindPerDrawBuffers() {
+	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, perDrawAttribBuffer));
 }
 
 void swap(MeshBatched& a, MeshBatched& b) {

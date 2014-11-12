@@ -53,13 +53,22 @@ void ShaderBinding::bind(const ShaderBinding* binding) {
 	currentBind = binding;
 }
 
-
 void ShaderBinding::enableAttributes() const {
 	if(mesh != nullptr) mesh->bindBuffers();
 	else buffer->bindBuffers();
 
 	const Vertex::Format& format = (mesh != nullptr ? mesh->getVertexFormat() : buffer->bufferFormat);
 	for(const std::pair<std::string, GLint>& attr: program->getAttributes()) {
+#ifndef VBE_GLES2
+		if(attr.first == "draw_index") {
+			VBE_ASSERT(mesh == nullptr, "draw_index name used for vertex attribute on a program that's used in a non-batched mesh");
+			MeshBatched::bindPerDrawBuffers();
+			GL_ASSERT(glEnableVertexAttribArray(attr.second));
+			GL_ASSERT(glVertexAttribIPointer(attr.second, 1, GL_UNSIGNED_INT, 0, 0));
+			GL_ASSERT(glVertexAttribDivisor(attr.second, 1));
+			buffer->bindBuffers();
+		}
+#endif
 		for(unsigned int i = 0; i < format.elementCount(); ++i) {
 			const Vertex::Element* current = &format.element(i);
 			if(current->attr.hasName(attr.first)) {

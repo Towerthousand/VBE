@@ -32,6 +32,15 @@ class Uniform : public NonCopyable {
 
 		void set(const vec4f &val);
 		void set(const std::vector<vec4f> &val);
+
+		void set(const vec2i &val);
+		void set(const std::vector<vec2i> &val);
+
+		void set(const vec3i &val);
+		void set(const std::vector<vec3i> &val);
+
+		void set(const vec4i &val);
+		void set(const std::vector<vec4i> &val);
 		
 		void set(const mat3f &val);
 		void set(const std::vector<mat3f> &val);

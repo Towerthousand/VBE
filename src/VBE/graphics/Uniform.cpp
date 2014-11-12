@@ -23,6 +23,15 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_FLOAT_VEC4:
 			size = sizeof(GLfloat)*4;
 			break;
+		case GL_INT_VEC2:
+			size = sizeof(GLint)*2;
+			break;
+		case GL_INT_VEC3:
+			size = sizeof(GLint)*3;
+			break;
+		case GL_INT_VEC4:
+			size = sizeof(GLint)*4;
+			break;
 		case GL_FLOAT_MAT3:
 			size = sizeof(GLfloat)*12;
 			break;
@@ -109,6 +118,39 @@ void Uniform::set(const std::vector<vec4f> &val) {
 	setBytes((char*)&val[0][0]);
 }
 
+void Uniform::set(const vec2i& val) {
+	VBE_ASSERT(type == GL_INT_VEC2, "Wrong uniform type. Location " << this->location);
+	setBytes((char*)&val[0]);
+}
+
+void Uniform::set(const std::vector<vec2i>& val) {
+	VBE_ASSERT(type == GL_INT_VEC2, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
+	setBytes((char*)&val[0][0]);
+}
+
+void Uniform::set(const vec3i& val) {
+	VBE_ASSERT(type == GL_INT_VEC3, "Wrong uniform type. Location " << this->location);
+	setBytes((char*)&val[0]);
+}
+
+void Uniform::set(const std::vector<vec3i>& val) {
+	VBE_ASSERT(type == GL_INT_VEC3, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
+	setBytes((char*)&val[0][0]);
+}
+
+void Uniform::set(const vec4i& val) {
+	VBE_ASSERT(type == GL_INT_VEC4, "Wrong uniform type. Location " << this->location);
+	setBytes((char*)&val[0]);
+}
+
+void Uniform::set(const std::vector<vec4i>& val) {
+	VBE_ASSERT(type == GL_INT_VEC4, "Wrong uniform type. Location " << this->location);
+	VBE_ASSERT(val.size() == count, "Wrong vector size. Location " << this->location);
+	setBytes((char*)&val[0][0]);
+}
+
 void Uniform::set(const mat3f &val) {
 	VBE_ASSERT(type == GL_FLOAT_MAT3, "Wrong uniform type. Location " << this->location);
 	setBytes((char*)&val[0][0]);
@@ -187,6 +229,9 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 		case GL_SAMPLER_3D:
 #endif
 		case GL_SAMPLER_2D:	GL_ASSERT(glUniform1iv(location, count, (GLint*)&lastValue[0])); break;
+		case GL_INT_VEC2:	GL_ASSERT(glUniform2iv(location, count, (GLint*)&lastValue[0])); break;
+		case GL_INT_VEC3:	GL_ASSERT(glUniform3iv(location, count, (GLint*)&lastValue[0])); break;
+		case GL_INT_VEC4:	GL_ASSERT(glUniform4iv(location, count, (GLint*)&lastValue[0])); break;
 		default:
 			VBE_ASSERT(false, "Unrecognised uniform type " << type);
 			break;
@@ -222,6 +267,9 @@ void Uniform::log() {
 		case GL_FLOAT_MAT4: s = "GL_FLOAT_MAT4"; break;
 		case GL_BOOL:		s = "GL_BOOL"; break;
 		case GL_INT:		s = "GL_INT"; break;
+		case GL_INT_VEC2: s = "GL_INT_VEC2"; break;
+		case GL_INT_VEC3: s = "GL_INT_VEC3"; break;
+		case GL_INT_VEC4: s = "GL_INT_VEC4"; break;
 		case GL_SAMPLER_2D: s = "GL_SAMPLER_2D"; break;
 #ifndef VBE_GLES2
 		case GL_SAMPLER_2D_SHADOW: s = "GL_SAMPLER_2D_SHADOW"; break;

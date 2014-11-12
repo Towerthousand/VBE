@@ -1,6 +1,7 @@
 #include <VBE/system/sdl2/WindowImpl.hpp>
 #include <VBE/system/sdl2/InputImpl.hpp>
 #include <VBE/system/Log.hpp>
+#include <VBE/graphics/OpenGL.hpp>
 
 // static
 bool WindowImpl::isSDLInit = false;
@@ -104,6 +105,13 @@ void WindowImpl::create(Window::DisplayMode mode, ContextSettings config) {
 	// Finally show the window.
 	SDL_ShowWindow(window);
 
+#ifdef VBE_SYSTEM_SDL2
+	//Init glew
+	glewExperimental = true;
+	GLenum err = glewInit();
+	VBE_ASSERT(err == GLEW_OK, "Failed to initialize GLEW");
+	glGetError();
+#endif
 	// Init input
 	InputImpl::init();
 }
