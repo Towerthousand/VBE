@@ -72,7 +72,6 @@ class MeshBatched final : public MeshBase {
 		Buffer* getBuffer() const;
 		static void ensureInitBuffers();
 		static void uploadPerDrawData(unsigned int size);
-		static void uploadIndirectCommands();
 		static void bindPerDrawBuffers();
 
 		//data about current batch (if any)
@@ -84,7 +83,6 @@ class MeshBatched final : public MeshBase {
 		static GLuint perDrawAttribBuffer;
 		static unsigned int perDrawAttribBufferSize;
 		//draw indirect command buffer data
-		static GLuint indirectBuffer;
 		static std::vector<DrawIndirectCommand> commands;
 		//all existing buffers (one per format)
 		static std::set<Buffer*> buffers;

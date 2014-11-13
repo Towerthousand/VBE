@@ -30,6 +30,6 @@ void Frustum::calculate(mat4f VP) {
 	planes[FAR]		= Plane(vec3f(fbr/fbr.w),vec3f(ftr/ftr.w),vec3f(ftl/ftl.w));
 }
 
-Plane Frustum::getPlane(Frustum::PlaneID p) {
+Plane Frustum::getPlane(Frustum::PlaneID p) const {
 	return planes[p];
 }
