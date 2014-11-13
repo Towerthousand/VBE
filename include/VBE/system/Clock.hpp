@@ -13,12 +13,14 @@ class Clock {
 		/// of the clock (the moment when it has the value 0) is unspecified.
 		///
 		static float getSeconds();
+		static long long getMicroseconds();
 
 		///
 		/// \brief Sleeps for the specified amount of seconds.
 		/// \param seconds The number of seconds to sleep
 		///
 		static void sleepSeconds(float seconds);
+		static void sleepMicroseconds(long long useconds);
 };
 ///
 /// \class Clock Clock.hpp <VBE/system/Clock.hpp>

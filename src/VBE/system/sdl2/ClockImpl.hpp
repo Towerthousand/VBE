@@ -4,8 +4,8 @@
 class ClockImpl
 {
 	public:
-		static float getSeconds();
-		static void sleepSeconds(float seconds);
+		static long long getMicroseconds();
+		static void sleepMicroseconds(long long useconds);
 };
 
 #endif // CLOCKIMPL_HPP
