@@ -2,11 +2,11 @@
 #include <VBE/system/sdl2/sdl2.hpp>
 
 // static
-float ClockImpl::getSeconds() {
-	return 0.001f*SDL_GetTicks();
+long long ClockImpl::getMicroseconds() {
+	return SDL_GetTicks() * 1000;
 }
 
 // static
-void ClockImpl::sleepSeconds(float seconds) {
-	SDL_Delay(seconds*1000 + 0.5);
+void ClockImpl::sleepMicroseconds(long long useconds) {
+	SDL_Delay((useconds+500)/1000);
 }
