@@ -10,7 +10,7 @@
 
 //VBE_ASSERT
 #ifdef VBE_DEBUG
-#ifdef WINDOWS
+#ifdef MSC_VER
 #define VBE_ASSERT(expression, string) do \
 { \
 	if(!(expression)) { \

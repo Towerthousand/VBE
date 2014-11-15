@@ -6,6 +6,12 @@
 	#define VBE_SYSTEM_SDL2
 #endif
 
+#if defined(WINDOWS)
+	#define VBE_SYSTEM_WINDOWS
+#else
+	#define VBE_SYSTEM_UNIX
+#endif
+
 
 #define VBE_DEBUG
 
