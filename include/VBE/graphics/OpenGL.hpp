@@ -4,6 +4,7 @@
 #if defined(VBE_GLES2)
 	#include "GLES2/gl2.h"
 #elif defined(WINDOWS)
+	#define GLEW_STATIC
 	#include "GL/glew.h"
 #else
 	#include <GL/glew.h>
