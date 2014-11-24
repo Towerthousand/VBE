@@ -8,8 +8,8 @@
 
 class OBJLoader {
 	public:
-		static MeshSeparate* loadFromOBJStandard(std::istream& in, Mesh::BufferType bufferType);
-		static MeshSeparate* loadFromOBJTangents(std::istream& in, Mesh::BufferType bufferType);
+		static MeshSeparate* loadFromOBJStandard(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType);
+		static MeshSeparate* loadFromOBJTangents(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType);
 	private:
 		OBJLoader();
 		~OBJLoader();

@@ -13,7 +13,7 @@ struct FunctorComparevec3i{
 		}
 };
 
-MeshSeparate* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType bufferType) {
+MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
@@ -35,7 +35,7 @@ MeshSeparate* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType 
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
 	std::string line;
-	while (getline(in, line)) {
+	while (getline(*in, line)) {
 		if (line.substr(0, 2) == "v ") {
 			std::istringstream s(line.substr(2));
 			vec3f v;
@@ -98,7 +98,7 @@ MeshSeparate* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType 
 	return mesh;
 }
 
-MeshSeparate* OBJLoader::loadFromOBJTangents(std::istream& in, Mesh::BufferType bufferType) {
+MeshSeparate* OBJLoader::loadFromOBJTangents(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element(Vertex::Attribute::Position , Vertex::Element::Float, 3));
@@ -122,7 +122,7 @@ MeshSeparate* OBJLoader::loadFromOBJTangents(std::istream& in, Mesh::BufferType 
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
 	std::string line;
-	while (getline(in, line)) {
+	while (getline(*in, line)) {
 		if (line.substr(0, 2) == "v ") {
 			std::istringstream s(line.substr(2));
 			vec3f v;
