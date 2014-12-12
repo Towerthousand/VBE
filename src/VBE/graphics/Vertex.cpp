@@ -4,86 +4,11 @@
 #include <VBE/system/Log.hpp>
 
 namespace Vertex {
-
-	bool Attribute::isAttrsInit = false;
-	std::map<std::string, Attribute*> Attribute::names;
-	std::vector<Attribute*> Attribute::attributes;
-
-	void Attribute::init() {
-		//Default names for default elements
-		attributes.resize(4);
-		attributes[Attribute::Position] = new Attribute(Attribute::Position);
-		attributes[Attribute::Position]->addName("a_position");
-
-		attributes[Attribute::Color] = new Attribute(Attribute::Color);
-		attributes[Attribute::Color]->addName("a_color");
-
-		attributes[Attribute::Normal] = new Attribute(Attribute::Normal);
-		attributes[Attribute::Normal]->addName("a_normal");
-
-		attributes[Attribute::TexCoord] = new Attribute(Attribute::TexCoord);
-		attributes[Attribute::TexCoord]->addName("a_texCoord");
-		isAttrsInit = true;
-	}
-
-	Attribute::Attribute(int id) : id(id) {
-
-	}
-
-	Attribute& Attribute::get(int id) {
-		if (!isAttrsInit) init();
-		VBE_ASSERT(id >= 0 && id < int(attributes.size()), "Bad attrib id: " << id);
-		return *attributes.at(id);
-	}
-
-	Attribute& Attribute::get(const std::string &name) {
-		if (!isAttrsInit) init();
-		std::map<std::string, Attribute*>::iterator it = names.find(name);
-		if (it == names.end()) {
-			attributes.push_back(new Attribute(attributes.size()));
-			it = names.insert(std::pair<std::string, Attribute*>(name, attributes.back())).first;
-		}
-
-		return *(it->second);
-	}
-
-	int Attribute::ID() {
-		return id;
-	}
-
-	bool Attribute::hasName(const std::string &name) const {
-		std::map<std::string, Attribute*>::const_iterator it = names.find(name);
-		if(it != names.end() && it->second->ID() == id)
-			return true;
-		return false;
-	}
-
-	bool Attribute::operator == (const Attribute& a) const {
-		return id == a.id;
-	}
-
-	bool Attribute::operator != (const Attribute& a) const {
-		return id != a.id;
-	}
-
-	Attribute& Attribute::addName(const std::string &name) {
-		std::pair<std::map<std::string, Attribute*>::iterator, bool>
-				result = names.insert(std::pair<std::string, Attribute*>(name, this));
-		if (result.second) attrNames.insert(name);
-
-		return *this;
-	}
-
-	Element::Element(Attribute &attr, Type type, unsigned int size, Conversion conv)
-		: attr(attr), type(type), size(size), conv(conv) {
+	Element::Element(const std::string& name, Type type, unsigned int size, Conversion conv)
+		: name(name), type(type), size(size), conv(conv) {
 		calcDefaultConversion();
 	}
 
-	Element::Element(int attrID, Type type, unsigned int size, Conversion conv)
-		: attr(Attribute::get(attrID)), type(type), size(size), conv(conv) {
-		calcDefaultConversion();
-
-	}
 	void Element::calcDefaultConversion()
 	{
 		if(conv == ConvertDefault)
@@ -95,7 +20,11 @@ namespace Vertex {
 		}
 	}
 
-	Element::Element(const Element &element) : attr(element.attr), type(element.type), size(element.size), conv(element.conv) {
+	Element::Element(const Element &element) : name(element.name), type(element.type), size(element.size), conv(element.conv) {
+	}
+
+	bool Element::hasName(const std::string& name) const {
+		return name == "a_"+this->name;
 	}
 
 	Element& Element::operator=(const Element& e) {
@@ -103,11 +32,11 @@ namespace Vertex {
 	}
 
 	bool Element::operator == (const Element& e) const {
-		return attr == e.attr && size == e.size;
+		return name == e.name && type == e.type && size == e.size && conv == e.conv;
 	}
 
 	bool Element::operator != (const Element& e) const {
-		return attr != e.attr && size != e.size;
+		return !(*this == e);
 	}
 
 	Format::Format() : Format(std::vector<Element>()) {
