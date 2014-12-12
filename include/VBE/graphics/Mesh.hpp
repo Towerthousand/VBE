@@ -5,6 +5,7 @@
 
 class Mesh : public MeshBase {
 	public:
+		Mesh();
 		Mesh(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
 
 		Mesh(Mesh&& rhs);

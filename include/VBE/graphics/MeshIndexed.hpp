@@ -5,6 +5,7 @@
 
 class MeshIndexed : public MeshBase {
 	public:
+		MeshIndexed();
 		MeshIndexed(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
 		~MeshIndexed() override;
 		MeshIndexed(MeshIndexed&& rhs);

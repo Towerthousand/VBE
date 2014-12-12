@@ -97,7 +97,8 @@ namespace Vertex {
 
 	class Format {
 		public:
-			Format(const std::vector<Element> &elements);
+			Format();
+			explicit Format(const std::vector<Element> &elements);
 			~Format();
 
 			const Element& element(unsigned int index) const;

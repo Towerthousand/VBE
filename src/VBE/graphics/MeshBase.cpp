@@ -3,6 +3,9 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/graphics/ShaderBinding.hpp>
 
+MeshBase::MeshBase() : MeshBase(Vertex::Format()) {
+}
+
 MeshBase::MeshBase(const Vertex::Format& format, BufferType bufferType) :
 	vertexFormat(format),
 	vertexCount(0),

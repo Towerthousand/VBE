@@ -110,6 +110,10 @@ namespace Vertex {
 		return attr != e.attr && size != e.size;
 	}
 
+	Format::Format() : Format(std::vector<Element>()) {
+
+	}
+
 	Format::Format(const std::vector<Element> &elements)
 		: elements(elements), offsets(elements.size(), 0), vertSize(0) {
 		unsigned int offset = 0;

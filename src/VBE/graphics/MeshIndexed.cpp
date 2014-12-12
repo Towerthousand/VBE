@@ -3,6 +3,7 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
+
 MeshIndexed::MeshIndexed(const Vertex::Format& format, MeshBase::BufferType bufferType) :
 	MeshBase(format, bufferType),
 	indexCount(0),

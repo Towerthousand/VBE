@@ -4,6 +4,9 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
+Mesh::Mesh() : Mesh(Vertex::Format()) {
+
+}
 
 Mesh::Mesh(const Vertex::Format& format, MeshBase::BufferType bufferType) :
 	MeshBase(format, bufferType) {

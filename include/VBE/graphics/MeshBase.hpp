@@ -50,6 +50,7 @@ class MeshBase : public NonCopyable {
 
 		friend void swap(MeshBase& a, MeshBase& b);
 	protected:
+		MeshBase();
 		MeshBase(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
 		void setupShaderBinding(const ShaderProgram* program);
 
