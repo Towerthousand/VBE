@@ -47,7 +47,7 @@ class Frustum {
 		///
 		/// \brief Get any given collision Plane on this Frustum
 		///
-		Plane getPlane(PlaneID p);
+		Plane getPlane(PlaneID p) const;
 
 	private:
 		friend class Collision;

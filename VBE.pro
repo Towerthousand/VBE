@@ -72,12 +72,14 @@ HEADERS += \
     src/VBE/system/StorageImpl.hpp \
     src/VBE/system/sdl2/StorageImpl.hpp \
     include/VBE/graphics/Mesh.hpp \
-    include/VBE/graphics/MeshBase.hpp \
     include/VBE/graphics/MeshIndexed.hpp \
     include/VBE/graphics/RenderTargetBase.hpp \
     include/VBE/graphics/RenderTarget.hpp \
     include/VBE/graphics/Image.hpp \
-    include/VBE/graphics/RenderTargetLayered.hpp
+    include/VBE/graphics/RenderTargetLayered.hpp \
+    include/VBE/graphics/MeshSeparate.hpp \
+    include/VBE/graphics/MeshBase.hpp \
+    include/VBE/graphics/MeshBatched.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -108,9 +110,11 @@ SOURCES += \
     src/VBE/system/sdl2/WindowImpl.cpp \
     src/VBE/system/sdl2/StorageImpl.cpp \
     src/VBE/system/Storage.cpp \
-    src/VBE/graphics/MeshBase.cpp \
     src/VBE/graphics/MeshIndexed.cpp \
     src/VBE/graphics/RenderTargetBase.cpp \
     src/VBE/graphics/RenderTarget.cpp \
     src/VBE/graphics/Image.cpp \
-    src/VBE/graphics/RenderTargetLayered.cpp
+    src/VBE/graphics/RenderTargetLayered.cpp \
+    src/VBE/graphics/MeshSeparate.cpp \
+    src/VBE/graphics/MeshBase.cpp \
+    src/VBE/graphics/MeshBatched.cpp

@@ -1,16 +1,13 @@
 #ifndef MESHBASE_HPP
 #define MESHBASE_HPP
 
-#include <map>
-#include <string>
-
 #include <VBE/config.hpp>
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/graphics/Vertex.hpp>
 #include <VBE/utils/NonCopyable.hpp>
+#include <VBE/graphics/ShaderProgram.hpp>
 
 class ShaderBinding;
-class ShaderProgram;
 class MeshBase : public NonCopyable {
 	public:
 		enum PrimitiveType {
@@ -32,6 +29,8 @@ class MeshBase : public NonCopyable {
 			STREAM = GL_STREAM_DRAW
 		};
 
+		MeshBase();
+		MeshBase(const Vertex::Format& format, BufferType bufferType = STATIC);
 		virtual ~MeshBase();
 
 		virtual void draw(const ShaderProgram* program) = 0;
@@ -39,26 +38,17 @@ class MeshBase : public NonCopyable {
 		const Vertex::Format& getVertexFormat() const;
 		unsigned int getVertexCount() const;
 		unsigned int getVertexSize() const;
-		GLuint getVertexBuffer() const;
 		PrimitiveType getPrimitiveType() const;
 		BufferType getBufferType() const;
 
-		void setPrimitiveType(MeshBase::PrimitiveType type);
-		void setVertexData(const void* vertexData, unsigned int newVertexCount);
-
-		virtual void bindBuffers() const;
+		void setPrimitiveType(PrimitiveType type);
+		virtual void setVertexData(const void* vertexData, unsigned int newVertexCount) = 0;
 
 		friend void swap(MeshBase& a, MeshBase& b);
 	protected:
-		MeshBase();
-		MeshBase(const Vertex::Format& format, MeshBase::BufferType bufferType = STATIC);
-		void setupShaderBinding(const ShaderProgram* program);
-
-	private:
-		std::map<GLuint, const ShaderBinding*> bindingsCache;
-		Vertex::Format vertexFormat;
 		unsigned int vertexCount;
-		GLuint vertexBuffer;
+	private:
+		Vertex::Format vertexFormat;
 		PrimitiveType primitiveType;
 		BufferType bufferType;
 };

@@ -4,12 +4,12 @@
 #include <string>
 #include <iostream>
 
-#include <VBE/graphics/MeshBase.hpp>
+#include <VBE/graphics/MeshSeparate.hpp>
 
 class OBJLoader {
 	public:
-		static MeshBase* loadFromOBJStandard(std::istream& in, Mesh::BufferType bufferType);
-		static MeshBase* loadFromOBJTangents(std::istream& in, Mesh::BufferType bufferType);
+		static MeshSeparate* loadFromOBJStandard(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType);
+		static MeshSeparate* loadFromOBJTangents(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType);
 	private:
 		OBJLoader();
 		~OBJLoader();

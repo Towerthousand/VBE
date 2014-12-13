@@ -4,6 +4,7 @@
 ///
 #include <VBE/graphics/Mesh.hpp>
 #include <VBE/graphics/MeshIndexed.hpp>
+#include <VBE/graphics/MeshBatched.hpp>
 #include <VBE/graphics/OBJLoader.hpp>
 #include <VBE/graphics/RenderTarget.hpp>
 #include <VBE/graphics/RenderTargetLayered.hpp>

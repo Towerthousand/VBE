@@ -1,4 +1,3 @@
-#include <VBE/graphics/MeshBase.hpp>
 #include <VBE/graphics/Mesh.hpp>
 #include <VBE/graphics/MeshIndexed.hpp>
 #include <VBE/graphics/OBJLoader.hpp>
@@ -14,7 +13,7 @@ struct FunctorComparevec3i{
 		}
 };
 
-MeshBase* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType bufferType) {
+MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element("position" , Vertex::Element::Float, 3));
@@ -36,7 +35,7 @@ MeshBase* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType buff
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
 	std::string line;
-	while (getline(in, line)) {
+	while (getline(*in, line)) {
 		if (line.substr(0, 2) == "v ") {
 			std::istringstream s(line.substr(2));
 			vec3f v;
@@ -84,7 +83,7 @@ MeshBase* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType buff
 	VBE_DLOG(" - Vertex count without indexes: " << dataNotIndexed.size());
 	VBE_DLOG(" - Vertex count with indexes: " << dataIndexed.size() << " (" << indices.size() << ") indexes");
 	VBE_DLOG(" - Size with indexes: " << sizeWithIndex << ". Size without indexes: " << sizeWithoutIndex);
-	MeshBase* mesh = nullptr;
+	MeshSeparate* mesh = nullptr;
     if(sizeWithoutIndex > sizeWithIndex) { //indexed
 		mesh = new MeshIndexed(Vertex::Format(elements), bufferType);
 		mesh->setVertexData(&dataIndexed[0], dataIndexed.size());
@@ -99,7 +98,7 @@ MeshBase* OBJLoader::loadFromOBJStandard(std::istream& in, Mesh::BufferType buff
 	return mesh;
 }
 
-MeshBase* OBJLoader::loadFromOBJTangents(std::istream& in, Mesh::BufferType bufferType) {
+MeshSeparate* OBJLoader::loadFromOBJTangents(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Element> elements;
 	elements.push_back(Vertex::Element("position" , Vertex::Element::Float, 3));
@@ -123,7 +122,7 @@ MeshBase* OBJLoader::loadFromOBJTangents(std::istream& in, Mesh::BufferType buff
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
 	std::string line;
-	while (getline(in, line)) {
+	while (getline(*in, line)) {
 		if (line.substr(0, 2) == "v ") {
 			std::istringstream s(line.substr(2));
 			vec3f v;
@@ -173,7 +172,7 @@ MeshBase* OBJLoader::loadFromOBJTangents(std::istream& in, Mesh::BufferType buff
 	VBE_DLOG(" - Vertex count without indexes: " << dataNotIndexed.size());
 	VBE_DLOG(" - Vertex count with indexes: " << dataIndexed.size() << " (" << indices.size() << ") indexes");
 	VBE_DLOG(" - Size with indexes: " << sizeWithIndex << ". Size without indexes: " << sizeWithoutIndex);
-	MeshBase* mesh = nullptr;
+	MeshSeparate* mesh = nullptr;
 	if(sizeWithoutIndex > sizeWithIndex) { //indexed
 		mesh = new MeshIndexed(Vertex::Format(elements), bufferType);
 		mesh->setVertexData(&dataIndexed[0], dataIndexed.size());
