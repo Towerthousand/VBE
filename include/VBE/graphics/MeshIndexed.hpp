@@ -5,6 +5,7 @@
 
 class MeshIndexed final : public MeshSeparate {
 	public:
+		MeshIndexed();
 		MeshIndexed(const Vertex::Format& format, BufferType bufferType = STATIC);
 		~MeshIndexed() override;
 		MeshIndexed(MeshIndexed&& rhs);

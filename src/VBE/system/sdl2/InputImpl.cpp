@@ -55,21 +55,31 @@ void InputImpl::setRelativeMouseMode(bool relative) {
 
 // static
 void InputImpl::processEvent(const SDL_Event& e) {
+	int key;
+
 	switch(e.type) {
 		// Keyboard events
 		case SDL_KEYDOWN:
-			keyPresses[convertSdlKey(e.key.keysym.sym)] = true;
+			key = convertSdlKey(e.key.keysym.sym);
+			if(key != Keyboard::KeyCount)
+				keyPresses[key] = true;
 			break;
 		case SDL_KEYUP:
-			keyPresses[convertSdlKey(e.key.keysym.sym)] = false;
+			key = convertSdlKey(e.key.keysym.sym);
+			if(key != Keyboard::KeyCount)
+				keyPresses[key] = false;
 			break;
 
 		// Mouse events
 		case SDL_MOUSEBUTTONDOWN:
-			mouseButtonPresses[convertSdlButton(e.button.button)] = true;
+			key = convertSdlButton(e.button.button);
+			if(key != Mouse::ButtonCount)
+				mouseButtonPresses[key] = true;
 			break;
 		case SDL_MOUSEBUTTONUP:
-			mouseButtonPresses[convertSdlButton(e.button.button)] = false;
+			key = convertSdlButton(e.button.button);
+			if(key != Mouse::ButtonCount)
+				mouseButtonPresses[key] = false;
 			break;
 		case SDL_MOUSEMOTION:
 			if(relativeMouse)
@@ -93,9 +103,7 @@ Mouse::Button InputImpl::convertSdlButton(int button) {
 		case SDL_BUTTON_RIGHT: return Mouse::Right;
 		case SDL_BUTTON_X1: return Mouse::X1;
 		case SDL_BUTTON_X2: return Mouse::X2;
-		default:
-			VBE_ASSERT(false, "Invalid SDL button code");
-			return Mouse::Left;
+		default: return Mouse::ButtonCount;
 	}
 }
 
@@ -338,9 +346,7 @@ Keyboard::Key InputImpl::convertSdlKey(int key) {
 		case SDLK_QUOTEDBL: return Keyboard::DoubleQuote;
 		case SDLK_RIGHTPAREN: return Keyboard::RParenthesis;
 		case SDLK_UNDERSCORE: return Keyboard::Underscore;
-		default:
-			VBE_ASSERT(false, "Invalid SDL button code");
-			return Keyboard::A;
+		default: return Keyboard::KeyCount;
 	}
 }
 

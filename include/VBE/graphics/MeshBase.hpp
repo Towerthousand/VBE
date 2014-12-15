@@ -29,6 +29,7 @@ class MeshBase : public NonCopyable {
 			STREAM = GL_STREAM_DRAW
 		};
 
+		MeshBase();
 		MeshBase(const Vertex::Format& format, BufferType bufferType = STATIC);
 		virtual ~MeshBase();
 

@@ -71,7 +71,7 @@ void ShaderBinding::enableAttributes() const {
 #endif
 		for(unsigned int i = 0; i < format.elementCount(); ++i) {
 			const Vertex::Element* current = &format.element(i);
-			if(current->attr.hasName(attr.first)) {
+			if(current->hasName(attr.first)) {
 				GL_ASSERT(glEnableVertexAttribArray(attr.second));
 #ifndef VBE_GLES2
 				if(current->conv == Vertex::Element::ConvertToInt)
@@ -100,7 +100,7 @@ void ShaderBinding::disableAttributes() const {
 	for(const std::pair<std::string, GLint>& attr: program->getAttributes()) {
 		for(unsigned int i = 0; i < format.elementCount(); ++i) {
 			const Vertex::Element* current = &format.element(i);
-			if(current->attr.hasName(attr.first)) {
+			if(current->hasName(attr.first)) {
 				GL_ASSERT(glDisableVertexAttribArray(attr.second));
 			}
 		}
