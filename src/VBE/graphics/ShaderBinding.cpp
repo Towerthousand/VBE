@@ -70,11 +70,11 @@ void ShaderBinding::enableAttributes() const {
 		}
 #endif
 		for(unsigned int i = 0; i < format.elementCount(); ++i) {
-			const Vertex::Element* current = &format.element(i);
+			const Vertex::Attribute* current = &format.element(i);
 			if(current->hasName(attr.first)) {
 				GL_ASSERT(glEnableVertexAttribArray(attr.second));
 #ifndef VBE_GLES2
-				if(current->conv == Vertex::Element::ConvertToInt)
+				if(current->conv == Vertex::Attribute::ConvertToInt)
 					GL_ASSERT(glVertexAttribIPointer(attr.second,
 													 current->size,
 													 current->type,
@@ -84,7 +84,7 @@ void ShaderBinding::enableAttributes() const {
 #endif
 					GL_ASSERT(glVertexAttribPointer(attr.second,
 													current->size,
-													current->type, current->conv == Vertex::Element::ConvertToFloatNormalized ? GL_TRUE : GL_FALSE,
+													current->type, current->conv == Vertex::Attribute::ConvertToFloatNormalized ? GL_TRUE : GL_FALSE,
 													format.vertexSize(),
 													(GLvoid*)long(format.offset(i))));
 			}
@@ -99,7 +99,7 @@ void ShaderBinding::disableAttributes() const {
 	const Vertex::Format format = mesh->getVertexFormat();
 	for(const std::pair<std::string, GLint>& attr: program->getAttributes()) {
 		for(unsigned int i = 0; i < format.elementCount(); ++i) {
-			const Vertex::Element* current = &format.element(i);
+			const Vertex::Attribute* current = &format.element(i);
 			if(current->hasName(attr.first)) {
 				GL_ASSERT(glDisableVertexAttribArray(attr.second));
 			}

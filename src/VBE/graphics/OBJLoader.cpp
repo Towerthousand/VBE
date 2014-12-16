@@ -15,10 +15,10 @@ struct FunctorComparevec3i{
 
 MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
-	std::vector<Vertex::Element> elements;
-	elements.push_back(Vertex::Element("position" , Vertex::Element::Float, 3));
-	elements.push_back(Vertex::Element("normal", Vertex::Element::Float, 3));
-	elements.push_back(Vertex::Element("texcoord", Vertex::Element::Float, 2));
+	std::vector<Vertex::Attribute> elements;
+	elements.push_back(Vertex::Attribute("position" , Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute("normal", Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute("texcoord", Vertex::Attribute::Float, 2));
 
 	struct vert {
 			vert(vec3f pos, vec3f nor, vec2f tex) : pos(pos) , nor(nor), tex(tex) {}
@@ -100,11 +100,11 @@ MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, M
 
 MeshSeparate* OBJLoader::loadFromOBJTangents(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
-	std::vector<Vertex::Element> elements;
-	elements.push_back(Vertex::Element("position" , Vertex::Element::Float, 3));
-	elements.push_back(Vertex::Element("normal", Vertex::Element::Float, 3));
-	elements.push_back(Vertex::Element("tangent" , Vertex::Element::Float, 3));
-	elements.push_back(Vertex::Element("texcoord", Vertex::Element::Float, 2));
+	std::vector<Vertex::Attribute> elements;
+	elements.push_back(Vertex::Attribute("position" , Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute("normal", Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute("tangent" , Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute("texcoord", Vertex::Attribute::Float, 2));
 
 	struct vert {
 			vert(vec3f pos, vec3f nor, vec3f tan, vec2f tex) : pos(pos) , nor(nor), tan(tan), tex(tex) {}

@@ -11,7 +11,7 @@
 
 namespace Vertex {
 
-	class Element {
+	class Attribute {
 		public:
 			enum Type {
 				Byte          = GL_BYTE,
@@ -45,14 +45,14 @@ namespace Vertex {
 				ConvertToInt
 			};
 
-			Element(const std::string& name, Type type, unsigned int size, Conversion conv = ConvertDefault);
-			Element(const Element& element);
+			Attribute(const std::string& name, Type type, unsigned int size, Conversion conv = ConvertDefault);
+			Attribute(const Attribute& element);
 
 			bool hasName(const std::string& name) const;
 
-			Element& operator=(const Element& e);
-			bool operator == (const Element& e) const;
-			bool operator != (const Element& e) const;
+			Attribute& operator=(const Attribute& e);
+			bool operator == (const Attribute& e) const;
+			bool operator != (const Attribute& e) const;
 
 			std::string name;
 			Type type;
@@ -66,10 +66,10 @@ namespace Vertex {
 	class Format {
 		public:
 			Format();
-			explicit Format(const std::vector<Element> &elements);
+			explicit Format(const std::vector<Attribute> &elements);
 			~Format();
 
-			const Element& element(unsigned int index) const;
+			const Attribute& element(unsigned int index) const;
 			unsigned int offset(unsigned int index) const;
 			unsigned int elementCount() const;
 			unsigned int vertexSize() const;
@@ -77,7 +77,7 @@ namespace Vertex {
 			bool operator != (const Format& f) const;
 
 		private:
-			std::vector<Element> elements;
+			std::vector<Attribute> elements;
 			std::vector<unsigned int> offsets;
 			unsigned int vertSize;
 	};

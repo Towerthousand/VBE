@@ -8,6 +8,7 @@ class ShaderBinding;
 class ShaderProgram;
 class MeshBatched final : public MeshBase {
 	public:
+		MeshBatched();
 		MeshBatched(const Vertex::Format& format);
 		virtual ~MeshBatched() override;
 		MeshBatched(MeshBatched&& rhs);

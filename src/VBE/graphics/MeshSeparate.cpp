@@ -18,7 +18,7 @@ MeshSeparate::~MeshSeparate() {
 		delete it->second;
 }
 
-MeshSeparate::MeshSeparate(MeshSeparate&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Element>())) {
+MeshSeparate::MeshSeparate(MeshSeparate&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Attribute>())) {
 	using std::swap;
 	swap(*this, rhs);
 }

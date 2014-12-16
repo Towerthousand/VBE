@@ -12,6 +12,9 @@ unsigned int MeshBatched::perDrawAttribBufferSize = 0;
 std::vector<MeshBatched::DrawIndirectCommand> MeshBatched::commands;
 std::set<MeshBatched::Buffer*> MeshBatched::buffers;
 
+MeshBatched::MeshBatched() : MeshBatched(Vertex::Format()) {
+}
+
 MeshBatched::MeshBatched(const Vertex::Format& format) : MeshBase(format, STREAM) {
 	ensureInitBuffers();
 	Buffer* b = getBuffer();
@@ -31,7 +34,7 @@ MeshBatched::~MeshBatched() {
 	}
 }
 
-MeshBatched::MeshBatched(MeshBatched&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Element>())) {
+MeshBatched::MeshBatched(MeshBatched&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Attribute>())) {
 	using std::swap;
 	swap(*this, rhs);
 }

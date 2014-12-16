@@ -19,7 +19,7 @@ MeshIndexed::~MeshIndexed() {
 		GL_ASSERT(glDeleteBuffers(1, &indexBuffer));
 }
 
-MeshIndexed::MeshIndexed(MeshIndexed&& rhs) : MeshSeparate(Vertex::Format(std::vector<Vertex::Element>())) {
+MeshIndexed::MeshIndexed(MeshIndexed&& rhs) : MeshSeparate(Vertex::Format(std::vector<Vertex::Attribute>())) {
 	using std::swap;
 	swap(*this, rhs);
 }
