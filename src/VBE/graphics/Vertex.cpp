@@ -24,7 +24,7 @@ namespace Vertex {
 	}
 
 	bool Element::hasName(const std::string& name) const {
-		return name == "a_"+this->name;
+		return name == this->name;
 	}
 
 	Element& Element::operator=(const Element& e) {
