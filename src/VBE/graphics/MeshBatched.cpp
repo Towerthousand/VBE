@@ -133,6 +133,7 @@ void MeshBatched::uploadPerDrawData(unsigned int size) {
 	GL_ASSERT(draw_index = (GLuint *)glMapBufferRange(GL_ARRAY_BUFFER, 0, size * sizeof(GLuint),
 													  GL_MAP_WRITE_BIT |
 													  GL_MAP_INVALIDATE_BUFFER_BIT));
+	VBE_ASSERT(draw_index != nullptr, "glMapBufferRange Failed!");
 	for(unsigned int i = 0; i < size; i++)
 		draw_index[i] = i;
 	GL_ASSERT(glUnmapBuffer(GL_ARRAY_BUFFER));
