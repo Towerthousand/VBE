@@ -12,7 +12,7 @@ Mesh::Mesh(const Vertex::Format& format, BufferType bufferType) :
 	MeshSeparate(format, bufferType) {
 }
 
-Mesh::Mesh(Mesh&& rhs) : MeshSeparate(Vertex::Format(std::vector<Vertex::Element>())){
+Mesh::Mesh(Mesh&& rhs) : Mesh() {
 	using std::swap;
 	swap(*this, rhs);
 }
