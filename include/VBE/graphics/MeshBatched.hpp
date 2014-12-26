@@ -13,6 +13,7 @@ class MeshBatched final : public MeshBase {
 		virtual ~MeshBatched() override;
 		MeshBatched(MeshBatched&& rhs);
 		MeshBatched& operator=(MeshBatched&& rhs);
+		friend void swap(MeshBatched& a, MeshBatched& b);
 
 		void draw(const ShaderProgram* program) override;
 		void draw(const ShaderProgram* program, unsigned int offset, unsigned int length);
@@ -23,8 +24,6 @@ class MeshBatched final : public MeshBase {
 		static void resetBatch();
 		static void startBatch();
 		static void endBatch();
-
-		friend void swap(MeshBatched& a, MeshBatched& b);
 	private:
 		class Buffer {
 			public:

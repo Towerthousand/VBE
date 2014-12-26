@@ -16,6 +16,10 @@ class TextureCubemap : public Texture {
 		};
 
 		TextureCubemap();
+		TextureCubemap(TextureCubemap&& rhs);
+		TextureCubemap& operator=(TextureCubemap&& rhs);
+		~TextureCubemap();
+		friend void swap(TextureCubemap& a, TextureCubemap& b);
 
 		void load(
 				std::vector<std::unique_ptr<std::istream>>& files,
@@ -37,10 +41,6 @@ class TextureCubemap : public Texture {
 		static void bind(const TextureCubemap* tex, unsigned int slot) {
 			Texture::bind(Texture::TypeCubemap, tex, slot);
 		}
-
-		TextureCubemap(TextureCubemap&& rhs);
-		TextureCubemap& operator=(TextureCubemap&& rhs);
-		friend void swap(TextureCubemap& a, TextureCubemap& b);
 	private:
 		unsigned int size;
 };

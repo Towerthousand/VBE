@@ -5,7 +5,6 @@
 #include <VBE/system/Log.hpp>
 
 Mesh::Mesh() : Mesh(Vertex::Format()) {
-
 }
 
 Mesh::Mesh(const Vertex::Format& format, BufferType bufferType) :
@@ -23,6 +22,14 @@ Mesh& Mesh::operator=(Mesh&& rhs) {
 	return *this;
 }
 
+Mesh::~Mesh() {
+}
+
+void swap(Mesh& a, Mesh& b) {
+	using std::swap;
+	swap(static_cast<MeshSeparate&>(a), static_cast<MeshSeparate&>(b));
+}
+
 void Mesh::draw(const ShaderProgram* program) {
 	draw(program, 0, getVertexCount());
 }
@@ -37,9 +44,4 @@ void Mesh::draw(const ShaderProgram* program, unsigned int offset, unsigned int 
 	setupShaderBinding(program);
 
 	GL_ASSERT(glDrawArrays(getPrimitiveType(), offset, length));
-}
-
-void swap(Mesh& a, Mesh& b) {
-	using std::swap;
-	swap(static_cast<MeshSeparate&>(a), static_cast<MeshSeparate&>(b));
 }

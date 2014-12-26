@@ -9,6 +9,10 @@
 class Texture2D : public Texture {
 	public:
 		Texture2D();
+		Texture2D(Texture2D&& rhs);
+		Texture2D& operator=(Texture2D&& rhs);
+		~Texture2D();
+		friend void swap(Texture2D& a, Texture2D& b);
 
 		void load(
 				std::unique_ptr<std::istream> in,
@@ -31,10 +35,6 @@ class Texture2D : public Texture {
 		static void bind(const Texture2D* tex, unsigned int slot) {
 			Texture::bind(Texture::Type2D, tex, slot);
 		}
-
-		Texture2D(Texture2D&& rhs);
-		Texture2D& operator=(Texture2D&& rhs);
-		friend void swap(Texture2D& a, Texture2D& b);
 
 	private:
 		vec2ui size;

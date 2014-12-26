@@ -25,15 +25,6 @@ MeshBatched::MeshBatched(const Vertex::Format& format) : MeshBase(format, STREAM
 	b->addMesh(this);
 }
 
-MeshBatched::~MeshBatched() {
-	Buffer* b = getBuffer();
-	b->deleteMesh(this);
-	if(b->getMeshCount() == 0) {
-		buffers.erase(b);
-		delete b;
-	}
-}
-
 MeshBatched::MeshBatched(MeshBatched&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Attribute>())) {
 	using std::swap;
 	swap(*this, rhs);
@@ -43,6 +34,20 @@ MeshBatched& MeshBatched::operator=(MeshBatched&& rhs) {
 	using std::swap;
 	swap(*this, rhs);
 	return *this;
+}
+
+MeshBatched::~MeshBatched() {
+	Buffer* b = getBuffer();
+	b->deleteMesh(this);
+	if(b->getMeshCount() == 0) {
+		buffers.erase(b);
+		delete b;
+	}
+}
+
+void swap(MeshBatched& a, MeshBatched& b) {
+	using std::swap;
+	swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
 }
 
 void MeshBatched::draw(const ShaderProgram* program) {
@@ -141,11 +146,6 @@ void MeshBatched::uploadPerDrawData(unsigned int size) {
 
 void MeshBatched::bindPerDrawBuffers() {
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, perDrawAttribBuffer));
-}
-
-void swap(MeshBatched& a, MeshBatched& b) {
-	using std::swap;
-	swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
 }
 
 MeshBatched::Buffer::Buffer(const Vertex::Format& format)

@@ -8,6 +8,10 @@
 class Texture3D : public Texture {
 	public:
 		Texture3D();
+		Texture3D(Texture3D&& rhs);
+		Texture3D& operator=(Texture3D&& rhs);
+		~Texture3D();
+		friend void swap(Texture3D& a, Texture3D& b);
 
 		void loadEmpty(
 				vec3ui size,
@@ -25,11 +29,6 @@ class Texture3D : public Texture {
 		static void bind(const Texture3D* tex, unsigned int slot) {
 			Texture::bind(Texture::Type3D, tex, slot);
 		}
-
-		Texture3D(Texture3D&& rhs);
-		Texture3D& operator=(Texture3D&& rhs);
-		friend void swap(Texture3D& a, Texture3D& b);
-
 	private:
 		vec3ui size;
 };

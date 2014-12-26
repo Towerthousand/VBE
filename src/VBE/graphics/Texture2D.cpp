@@ -8,6 +8,26 @@
 Texture2D::Texture2D() : Texture(Texture::Type2D), size(0) {
 }
 
+Texture2D::Texture2D(Texture2D&& rhs) : Texture2D() {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+Texture2D& Texture2D::operator=(Texture2D&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+Texture2D::~Texture2D() {
+}
+
+void swap(Texture2D& a, Texture2D& b) {
+	using std::swap;
+	swap(static_cast<Texture&>(a), static_cast<Texture&>(b));
+	swap(a.size, b.size);
+}
+
 void Texture2D::load(
 		std::unique_ptr<std::istream> in,
 		TextureFormat::Format internalFormat) {
@@ -58,21 +78,4 @@ void Texture2D::generateMipmap() {
 
 vec2ui Texture2D::getSize() const {
 	return size;
-}
-
-Texture2D::Texture2D(Texture2D&& rhs) : Texture2D() {
-	using std::swap;
-	swap(*this, rhs);
-}
-
-Texture2D& Texture2D::operator=(Texture2D&& rhs) {
-	using std::swap;
-	swap(*this, rhs);
-	return *this;
-}
-
-void swap(Texture2D& a, Texture2D& b) {
-	using std::swap;
-	swap(static_cast<Texture&>(a), static_cast<Texture&>(b));
-	swap(a.size, b.size);
 }

@@ -18,6 +18,13 @@ MeshSeparate::~MeshSeparate() {
 		delete it->second;
 }
 
+void swap(MeshSeparate& a, MeshSeparate& b) {
+	using std::swap;
+	swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
+	swap(a.bindingsCache, b.bindingsCache);
+	swap(a.vertexBuffer, b.vertexBuffer);
+}
+
 void MeshSeparate::bindBuffers() const {
 	VBE_ASSERT(vertexBuffer != 0, "mesh vertex buffer is null");
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
@@ -46,11 +53,4 @@ void MeshSeparate::setVertexData(const void* vertexData, unsigned int newVertexC
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
 	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, getVertexSize() * vertexCount, vertexData, getBufferType()));
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
-}
-
-void swap(MeshSeparate& a, MeshSeparate& b) {
-	using std::swap;
-	swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
-	swap(a.bindingsCache, b.bindingsCache);
-	swap(a.vertexBuffer, b.vertexBuffer);
 }

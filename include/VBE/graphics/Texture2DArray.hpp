@@ -10,6 +10,10 @@
 class Texture2DArray : public Texture {
 	public:
 		Texture2DArray();
+		Texture2DArray(Texture2DArray&& rhs);
+		Texture2DArray& operator=(Texture2DArray&& rhs);
+		~Texture2DArray();
+		friend void swap(Texture2DArray& a, Texture2DArray& b);
 
 		void load(
 				std::vector<std::unique_ptr<std::istream>>& files,
@@ -31,11 +35,6 @@ class Texture2DArray : public Texture {
 		static void bind(const Texture2DArray* tex, unsigned int slot) {
 			Texture::bind(Texture::Type2DArray, tex, slot);
 		}
-
-		Texture2DArray(Texture2DArray&& rhs);
-		Texture2DArray& operator=(Texture2DArray&& rhs);
-		friend void swap(Texture2DArray& a, Texture2DArray& b);
-
 	private:
 		vec3ui size;
 };

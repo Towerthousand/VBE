@@ -10,6 +10,7 @@ class MeshIndexed final : public MeshSeparate {
 		~MeshIndexed() override;
 		MeshIndexed(MeshIndexed&& rhs);
 		MeshIndexed& operator=(MeshIndexed&& rhs);
+		friend void swap(MeshIndexed& a, MeshIndexed& b);
 
 		void bindBuffers() const override;
 
@@ -17,9 +18,6 @@ class MeshIndexed final : public MeshSeparate {
 		GLuint getIndexBuffer() const;
 		unsigned int getIndexCount() const;
 		void setIndexData(const unsigned int* indexData, unsigned int newIndexCount);
-
-		friend void swap(MeshIndexed& a, MeshIndexed& b);
-
 	private:
 		unsigned int indexCount;
 		GLuint indexBuffer;
