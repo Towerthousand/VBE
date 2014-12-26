@@ -14,6 +14,25 @@ GLuint ShaderProgram::current(0);
 ShaderProgram::ShaderProgram() : programHandle(0) {
 }
 
+ShaderProgram::ShaderProgram(ShaderProgram&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+ShaderProgram& ShaderProgram::operator=(ShaderProgram&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+void swap(ShaderProgram& a, ShaderProgram& b) {
+	using std::swap;
+
+	swap(a.attributes, b.attributes);
+	swap(a.uniforms, b.uniforms);
+	swap(a.programHandle, b.programHandle);
+}
+
 ShaderProgram::~ShaderProgram() {
 	if(programHandle != 0)
 		GL_ASSERT(glDeleteProgram(programHandle));
@@ -21,54 +40,49 @@ ShaderProgram::~ShaderProgram() {
 		delete it->second;
 }
 
-ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, const std::string& fragSource) {
-	ShaderProgram* p = new ShaderProgram();
+void ShaderProgram::loadFromString(const std::string& vertSource, const std::string& fragSource) {
 	Shader* vertex = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
 	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
 	VBE_DLOG("* Creating new shaderProgram");
 
-	p->programHandle = glCreateProgram();
+	programHandle = glCreateProgram();
 
-	vertex->attach(p->programHandle);
-	fragment->attach(p->programHandle);
-	p->link();
-	p->retrieveProgramInfo();
+	vertex->attach(programHandle);
+	fragment->attach(programHandle);
+	link();
+	retrieveProgramInfo();
 	delete vertex;
 	delete fragment;
-	return p;
 }
 
 
-ShaderProgram* ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag) {
-	return loadFromString(Storage::readToString(std::move(vert)),
-						  Storage::readToString(std::move(frag)));
+void ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag) {
+	loadFromString(Storage::readToString(std::move(vert)),
+				   Storage::readToString(std::move(frag)));
 }
 
 #ifndef VBE_GLES2
 
-ShaderProgram*ShaderProgram::loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource) {
-	ShaderProgram* p = new ShaderProgram();
+void ShaderProgram::loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource) {
 	Shader* vertex = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
 	Shader* geometry = Shader::loadShader(geomSource, GL_GEOMETRY_SHADER);
 	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
 	VBE_DLOG("* Creating new shaderProgram");
 
-	p->programHandle = glCreateProgram();
+	programHandle = glCreateProgram();
 	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create program");
 
-	vertex->attach(p->programHandle);
-	geometry->attach(p->programHandle);
-	fragment->attach(p->programHandle);
-	p->link();
-	p->retrieveProgramInfo();
+	vertex->attach(programHandle);
+	geometry->attach(programHandle);
+	fragment->attach(programHandle);
+	link();
+	retrieveProgramInfo();
 	delete vertex;
 	delete geometry;
 	delete fragment;
-	return p;
 }
 
-ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource) {
-	ShaderProgram* p = new ShaderProgram();
+void ShaderProgram::loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource) {
 	Shader* vertex   = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
 	Shader* tessctrl = Shader::loadShader(tescSource, GL_TESS_CONTROL_SHADER);
 	Shader* tesseval = Shader::loadShader(teseSource, GL_TESS_EVALUATION_SHADER);
@@ -76,38 +90,36 @@ ShaderProgram* ShaderProgram::loadFromString(const std::string& vertSource, cons
 	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
 	VBE_DLOG("* Creating new shaderProgram");
 
-	p->programHandle = glCreateProgram();
+	programHandle = glCreateProgram();
 	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create program");
 
-	vertex->attach(p->programHandle);
-	tessctrl->attach(p->programHandle);
-	tesseval->attach(p->programHandle);
-	geometry->attach(p->programHandle);
-	fragment->attach(p->programHandle);
-	p->link();
-	p->retrieveProgramInfo();
+	vertex->attach(programHandle);
+	tessctrl->attach(programHandle);
+	tesseval->attach(programHandle);
+	geometry->attach(programHandle);
+	fragment->attach(programHandle);
+	link();
+	retrieveProgramInfo();
 
 	delete vertex;
 	delete tessctrl;
 	delete tesseval;
 	delete geometry;
 	delete fragment;
-
-	return p;
 }
 
-ShaderProgram* ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
-	return loadFromString(Storage::readToString(std::move(vert)),
-						  Storage::readToString(std::move(geom)),
-						  Storage::readToString(std::move(frag)));
+void ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
+	loadFromString(Storage::readToString(std::move(vert)),
+				   Storage::readToString(std::move(geom)),
+				   Storage::readToString(std::move(frag)));
 }
 
-ShaderProgram* ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
-	return loadFromString(Storage::readToString(std::move(vert)),
-						  Storage::readToString(std::move(tessControl)),
-						  Storage::readToString(std::move(tessEval)),
-						  Storage::readToString(std::move(geom)),
-						  Storage::readToString(std::move(frag)));
+void ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
+	loadFromString(Storage::readToString(std::move(vert)),
+				   Storage::readToString(std::move(tessControl)),
+				   Storage::readToString(std::move(tessEval)),
+				   Storage::readToString(std::move(geom)),
+				   Storage::readToString(std::move(frag)));
 }
 #endif
 
@@ -124,7 +136,7 @@ void ShaderProgram::printInfoLog() {
 }
 
 void ShaderProgram::use() const {
-	VBE_ASSERT(programHandle != 0, "Trying to use nullptr program");
+	VBE_ASSERT(programHandle != 0, "Trying to use null program");
 	if(current != programHandle) {
 		current = programHandle;
 		GL_ASSERT(glUseProgram(programHandle));

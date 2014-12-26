@@ -29,8 +29,6 @@ void swap(Image& a, Image& b) {
 	swap(a.channels, b.channels);
 }
 
-
-
 static int stb_eof(void * user) {
 	std::istream* stream = reinterpret_cast<std::istream*>(user);
 	return stream->eof() || stream->bad() || stream->fail();
@@ -49,7 +47,6 @@ static void stb_skip(void * user, unsigned n) {
 	std::istream* stream = reinterpret_cast<std::istream*>(user);
 	stream->ignore(static_cast<std::streamsize>(n));
 }
-
 
 static const STBI::stbi_io_callbacks stb_callbacks = {
 	stb_read,

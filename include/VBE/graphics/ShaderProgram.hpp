@@ -13,16 +13,20 @@ class Shader;
 class Uniform;
 class ShaderProgram : public NonCopyable {
 	public:
+		ShaderProgram();
+		ShaderProgram(ShaderProgram&& rhs);
+		ShaderProgram& operator=(ShaderProgram&& rhs);
 		~ShaderProgram();
+		friend void swap(ShaderProgram& a, ShaderProgram& b);
 
-		static ShaderProgram* loadFromString(const std::string &vertSource, const std::string &fragSource);
-		static ShaderProgram* load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag);
+		void loadFromString(const std::string &vertSource, const std::string &fragSource);
+		void load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag);
 
 #ifndef VBE_GLES2
-		static ShaderProgram* loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
-		static ShaderProgram* loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource);
-		static ShaderProgram* load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
-		static ShaderProgram* load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
+		void loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource);
+		void loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource);
+		void load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
+		void load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
 #endif
 
 		GLuint getHandle() const {return programHandle;}
@@ -33,7 +37,6 @@ class ShaderProgram : public NonCopyable {
 
 		const std::map<std::string, GLint>& getAttributes() const { return attributes; }
 	private:
-		ShaderProgram();
 
 		void link();
 		void retrieveProgramInfo();
