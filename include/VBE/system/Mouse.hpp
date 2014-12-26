@@ -8,13 +8,16 @@
 ///
 class Mouse {
 	public:
+		///
+		/// \brief The Button enum contains all supported mouse buttons
+		///
 		enum Button {
 			Left,
 			Middle,
 			Right,
 			X1,
 			X2,
-			ButtonCount
+			ButtonCount ///< Not an actual button
 		};
 
 		///
@@ -106,5 +109,11 @@ class Mouse {
 
 		friend class Window;
 };
+///
+/// \class Mouse Mouse.hpp <VBE/system/Mouse.hpp>
+/// \ingroup System
+///
+/// This class will show no input (the states won't change) on mobile devices.
+///
 
 #endif // MOUSE_HPP

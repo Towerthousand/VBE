@@ -101,6 +101,16 @@ class Window : public NonCopyable {
 				friend class Window;
 				friend class WindowImpl;
 		};
+		///
+		/// \class DisplayMode Window.hpp <VBE/system/Window.hpp>
+		/// \ingroup System
+		///
+		/// The DisplayMode class represents a window's format. It can be either Fullscreen or Windowed.
+		/// Windowed display modes are arbitrary in size and refreshratem while fullscreen modes are
+		/// preset and you can query them through Window::getFullscreenModes().
+		///
+		/// \see Window
+		///
 
 		///
 		/// \brief The VsyncMode enum
@@ -119,6 +129,7 @@ class Window : public NonCopyable {
 		/// the first Fullscreen mode is most likely the one you want to use.
 		///
 		/// \return the supported Fullscreen modes.
+		/// \see Window::DisplayMode
 		///
 		static std::vector<DisplayMode> getFullscreenModes();
 
@@ -138,6 +149,7 @@ class Window : public NonCopyable {
 		/// \param mode DisplayMode to use in the Window
 		/// \param contextSettings OpenGL context settings. Optional, if you leave it out it will use
 		/// the default settings, which are OpenGL 4.2 on desktop or OpenGL ES 2 on mobile.
+		/// \see Window::DisplayMode
 		///
 		Window(DisplayMode mode, ContextSettings contextSettings = ContextSettings());
 
@@ -174,6 +186,7 @@ class Window : public NonCopyable {
 		/// different to the one specified in the display mode, see Window constructor for details.
 		///
 		/// \param mode the new display mode.
+		/// \see Window::DisplayMode
 		///
 		void setDisplayMode(DisplayMode mode);
 
@@ -255,5 +268,37 @@ class Window : public NonCopyable {
 
 		static Window* instance;
 };
+///
+/// \class Window Window.hpp <VBE/system/Window.hpp>
+/// \ingroup System
+///
+/// The window holds the OpenGL context where you can draw and display whatever you want. Right now
+/// VBE is single-window: __only one window can be instantiated at a time__. The Window::getInstance()
+/// function will automatically point to the current window instance if existing and return nullptr otherwise.
+///
+/// Calling SwapBuffers will swap the back and front OpenGL buffers. In more detail, this will force all
+/// driver-postponed draw calls to return (stalling de CPU to wait for the GPU) and then switch the front and back
+/// buffers. Understanding this requires basic knowledge of how rendering works: You draw onto an off-screen buffer
+/// (the *back* buffer) while another buffer (the *front* buffer) displays some other content. Once every frame,
+/// you swap these buffers so that the front buffer always has the latest image. You then proceed to draw the next
+/// frame into the back buffer again. You see none of this, it is all done by the driver. Just make sure to call
+/// Window::swapBuffers() once per frame.
+///
+/// When V Sync (wich stands for *vertical sync* is enabled through Window::setVsync() the framerate will behave
+/// different than naturally expected. You may be able to loop your game at 120FPS but with V Sync enabled the
+/// Window::swapBuffers() function will introduce some waiting in orded to cap your framerate to the display's
+/// frequency. If you can only output 60 images (60Hz monitor) per second, your FPS will not go under 16 miliseconds
+/// per frame when V Sync is enabled. This eliminates screen tearing and useless CPU/GPU usage.
+///
+/// You can query wether the user requested a close event (usually through the 'X' window button, or Alt+F4 or something
+/// of the sorts) with Window::isClosing(). This just notifies you that the user wants to exit, but will not shut down
+/// anything. You can ignore the close event with a call to Window::setClosing(). Window::setClosing() can also be used
+/// to invoke close events manually. It is good practice not to ignore user made close events (the user expects the app
+/// to end if they ask it to, otherwise it may become frustrating having to kill it through the taks manager/console).
+///
+/// Note that a system kill event (administrator order to forcefully shut you down) will usually not notify you in any way,
+/// so take it into account when handling non-abortable processes (i.e. payment confirmation, disk save modification) and
+/// take precautions accordingly.
+///
 
 #endif // WINDOW_HPP

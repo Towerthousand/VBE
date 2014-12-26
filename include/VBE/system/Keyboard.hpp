@@ -246,7 +246,7 @@ class Keyboard {
 			DoubleQuote,
 			RParenthesis,
 			Underscore,
-			KeyCount
+			KeyCount ///< Not an actual key
 		};
 
 		///
