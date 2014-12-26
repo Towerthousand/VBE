@@ -18,17 +18,6 @@ MeshSeparate::~MeshSeparate() {
 		delete it->second;
 }
 
-MeshSeparate::MeshSeparate(MeshSeparate&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Attribute>())) {
-	using std::swap;
-	swap(*this, rhs);
-}
-
-MeshSeparate& MeshSeparate::operator=(MeshSeparate&& rhs) {
-	using std::swap;
-	swap(*this, rhs);
-	return *this;
-}
-
 void MeshSeparate::bindBuffers() const {
 	VBE_ASSERT(vertexBuffer != 0, "mesh vertex buffer is null");
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));

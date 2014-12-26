@@ -8,8 +8,6 @@ class MeshSeparate : public MeshBase {
 	public:
 		MeshSeparate(const Vertex::Format& format, BufferType bufferType = STATIC);
 		virtual ~MeshSeparate() override;
-		MeshSeparate(MeshSeparate&& rhs);
-		MeshSeparate& operator=(MeshSeparate&& rhs);
 
 		virtual void draw(const ShaderProgram* program) override = 0;
 		void setVertexData(const void* vertexData, unsigned int newVertexCount) override final;

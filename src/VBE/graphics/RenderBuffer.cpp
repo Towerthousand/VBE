@@ -5,8 +5,27 @@ RenderBuffer::RenderBuffer(vec2ui size, TextureFormat::Format format) : size(siz
 	resize(size);
 }
 
+RenderBuffer::RenderBuffer(RenderBuffer&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+RenderBuffer& RenderBuffer::operator=(RenderBuffer&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
 RenderBuffer::~RenderBuffer() {
 	GL_ASSERT(glDeleteRenderbuffers(1, &handle));
+}
+
+void swap(RenderBuffer& a, RenderBuffer& b) {
+	using std::swap;
+
+	swap(a.format, b.format);
+	swap(a.size, b.size);
+	swap(a.handle, b.handle);
 }
 
 void RenderBuffer::resize(vec2ui size) {
