@@ -277,15 +277,15 @@ class Keyboard {
 /// \class Keyboard Keyboard.hpp <VBE/system/Keyboard.hpp>
 /// \ingroup System
 ///
-/// You can use this class within an init Environment to access the current
-/// keyboard device's state. Not all keys are supported in all devices and will
-/// never be marked as pressed. The state of this device will be updated to
-/// match recieved events whenever Environment::update() is called.
+/// You can use this class within an init environment (one that has a window) to access the current
+/// keyboard device's state. Not all keys are supported in all devices and may
+/// never be marked as pressed (depends on the driver). The state of this device will be updated to
+/// match recieved events whenever Window::update() is called.
 ///
 /// A Key will be 'just pressed' for only one frame (one update()) call. Then held for
 /// an indefinite number of frames and released right after. For Example, if the
 /// user pressed the A Key on frame 1 and released it on frame 4, this would
-/// register (updating the environment every frame of course):
+/// register (updating the window every frame of course):
 ///
 /// - Frame 1
 ///   + Key Keyboard::A is just pressed
