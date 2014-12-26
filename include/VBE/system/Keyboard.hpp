@@ -293,15 +293,15 @@ class Keyboard {
 ///   + Key Keyboard::A is not just released
 /// - Frame 2
 ///   + Key Keyboard::A is not just pressed
-///   + Key Keyboard::A is held
+///   + Key Keyboard::A is pressed
 ///   + Key Keyboard::A is not just released
 /// - Frame 3
 ///   + Key Keyboard::A is not just pressed
-///   + Key Keyboard::A is held
+///   + Key Keyboard::A is pressed
 ///   + Key Keyboard::A is not just released
 /// - Frame 4
 ///   + Key Keyboard::A is not just pressed
-///   + Key Keyboard::A is not held
+///   + Key Keyboard::A is not pressed
 ///   + Key Keyboard::A is just released
 ///
 
