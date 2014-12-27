@@ -37,7 +37,7 @@ class ShaderProgram : public NonCopyable {
 
 		const std::map<std::string, GLint>& getAttributes() const { return attributes; }
 	private:
-
+		void clearEverything();
 		void link();
 		void retrieveProgramInfo();
 		void printInfoLog();

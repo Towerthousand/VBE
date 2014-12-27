@@ -34,13 +34,11 @@ void swap(ShaderProgram& a, ShaderProgram& b) {
 }
 
 ShaderProgram::~ShaderProgram() {
-	if(programHandle != 0)
-		GL_ASSERT(glDeleteProgram(programHandle));
-	for(std::map<std::string, Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it)
-		delete it->second;
+	clearEverything();
 }
 
 void ShaderProgram::loadFromString(const std::string& vertSource, const std::string& fragSource) {
+	clearEverything();
 	Shader* vertex = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
 	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
 	VBE_DLOG("* Creating new shaderProgram");
@@ -64,6 +62,7 @@ void ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std
 #ifndef VBE_GLES2
 
 void ShaderProgram::loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource) {
+	clearEverything();
 	Shader* vertex = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
 	Shader* geometry = Shader::loadShader(geomSource, GL_GEOMETRY_SHADER);
 	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
@@ -83,6 +82,7 @@ void ShaderProgram::loadFromString(const std::string& vertSource, const std::str
 }
 
 void ShaderProgram::loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource) {
+	clearEverything();
 	Shader* vertex   = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
 	Shader* tessctrl = Shader::loadShader(tescSource, GL_TESS_CONTROL_SHADER);
 	Shader* tesseval = Shader::loadShader(teseSource, GL_TESS_EVALUATION_SHADER);
@@ -153,6 +153,9 @@ Uniform* ShaderProgram::uniform(const std::string &name) const {
 	VBE_ASSERT(uniforms.find(name) != uniforms.end(), "Trying to retrieve unexisting uniform " << name);
 	VBE_ASSERT(programHandle != 0, "Trying to retrieve uniform from nullptr program");
 	return uniforms.at(name);
+}
+
+void ShaderProgram::clearEverything() {
 }
 
 void ShaderProgram::link() {
