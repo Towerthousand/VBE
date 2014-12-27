@@ -156,6 +156,12 @@ Uniform* ShaderProgram::uniform(const std::string &name) const {
 }
 
 void ShaderProgram::clearEverything() {
+	if(programHandle != 0)
+		GL_ASSERT(glDeleteProgram(programHandle));
+	for(std::map<std::string, Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it)
+		delete it->second;
+	attributes.clear();
+	programHandle = 0;
 }
 
 void ShaderProgram::link() {
