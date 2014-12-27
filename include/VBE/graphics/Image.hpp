@@ -9,6 +9,7 @@
 
 class Image : public NonCopyable {
 	public:
+		Image();
 		Image(void* data, vec2ui size, unsigned int channels);
 		Image(Image&& rhs);
 		Image& operator=(Image&& rhs);

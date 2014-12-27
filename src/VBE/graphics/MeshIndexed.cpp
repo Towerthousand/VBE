@@ -4,7 +4,6 @@
 #include <VBE/system/Log.hpp>
 
 MeshIndexed::MeshIndexed() : MeshIndexed(Vertex::Format()) {
-
 }
 
 MeshIndexed::MeshIndexed(const Vertex::Format& format, BufferType bufferType) :
@@ -14,7 +13,12 @@ MeshIndexed::MeshIndexed(const Vertex::Format& format, BufferType bufferType) :
 	GL_ASSERT(glGenBuffers(1, &indexBuffer));
 }
 
-MeshIndexed::MeshIndexed(MeshIndexed&& rhs) : MeshSeparate(Vertex::Format(std::vector<Vertex::Attribute>())) {
+MeshIndexed::~MeshIndexed() {
+	if(indexBuffer != 0)
+		GL_ASSERT(glDeleteBuffers(1, &indexBuffer));
+}
+
+MeshIndexed::MeshIndexed(MeshIndexed&& rhs) : MeshIndexed() {
 	using std::swap;
 	swap(*this, rhs);
 }
@@ -23,11 +27,6 @@ MeshIndexed& MeshIndexed::operator=(MeshIndexed&& rhs) {
 	using std::swap;
 	swap(*this, rhs);
 	return *this;
-}
-
-MeshIndexed::~MeshIndexed() {
-	if(indexBuffer != 0)
-		GL_ASSERT(glDeleteBuffers(1, &indexBuffer));
 }
 
 void swap(MeshIndexed& a, MeshIndexed& b) {

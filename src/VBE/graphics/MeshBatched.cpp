@@ -25,7 +25,7 @@ MeshBatched::MeshBatched(const Vertex::Format& format) : MeshBase(format, STREAM
 	b->addMesh(this);
 }
 
-MeshBatched::MeshBatched(MeshBatched&& rhs) : MeshBase(Vertex::Format(std::vector<Vertex::Attribute>())) {
+MeshBatched::MeshBatched(MeshBatched&& rhs) : MeshBatched() {
 	using std::swap;
 	swap(*this, rhs);
 }

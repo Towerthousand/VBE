@@ -1,12 +1,16 @@
 #include <VBE/graphics/Image.hpp>
 #include <VBE/dependencies/stb_image/stb_image.hpp>
 
+Image::Image() :
+	data(nullptr), size(0), channels(0) {
+}
+
 Image::Image(void* data, vec2ui size, unsigned int channels) :
 	data(data), size(size), channels(channels) {
 	VBE_ASSERT(data != nullptr, "Image data cannot be nullptr");
 }
 
-Image::Image(Image&& rhs) {
+Image::Image(Image&& rhs) : Image() {
 	using std::swap;
 	swap(*this, rhs);
 }
@@ -18,7 +22,8 @@ Image& Image::operator=(Image&& rhs) {
 }
 
 Image::~Image() {
-	free(data);
+	if(data != nullptr)
+		free(data);
 }
 
 void swap(Image& a, Image& b) {
