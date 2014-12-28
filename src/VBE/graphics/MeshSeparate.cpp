@@ -26,17 +26,17 @@ void MeshSeparate::bindBuffers() const {
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
 }
 
-void MeshSeparate::setupShaderBinding(const ShaderProgram* program) {
+void MeshSeparate::setupShaderBinding(const ShaderProgram& program) {
 	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 
 	// Get the binding from the cache. If it does not exist, create it.
-	GLuint handle = program->getHandle();
+	GLuint handle = program.getHandle();
 	if(bindingsCache.find(handle) == bindingsCache.end())
-		bindingsCache.insert(std::pair<GLuint, const ShaderBinding*>(handle, new ShaderBinding(program, this)));
+		bindingsCache.insert(std::pair<GLuint, const ShaderBinding*>(handle, new ShaderBinding(&program, this)));
 	const ShaderBinding* binding = bindingsCache.at(handle);
 
 	// Bind the program and the binding
-	program->use();
+	program.use();
 	ShaderBinding::bind(binding);
 }
 

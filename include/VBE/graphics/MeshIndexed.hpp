@@ -13,8 +13,8 @@ class MeshIndexed final : public MeshSeparate {
 
 		void bindBuffers() const override;
 
-		void draw(const ShaderProgram* program) override;
-		void draw(const ShaderProgram* program, unsigned int offset, unsigned int length);
+		void draw(const ShaderProgram& program) override;
+		void draw(const ShaderProgram& program, unsigned int offset, unsigned int length);
 
 		GLuint getIndexBuffer() const;
 		unsigned int getIndexCount() const;

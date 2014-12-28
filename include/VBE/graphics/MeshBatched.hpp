@@ -14,10 +14,10 @@ class MeshBatched final : public MeshBase {
 		MeshBatched(MeshBatched&& rhs);
 		MeshBatched& operator=(MeshBatched&& rhs);
 
-		void draw(const ShaderProgram* program) override;
-		void draw(const ShaderProgram* program, unsigned int offset, unsigned int length);
-		void drawBatched(const ShaderProgram* program);
-		void drawBatched(const ShaderProgram* program, unsigned int offset, unsigned int length);
+		void draw(const ShaderProgram& program) override;
+		void draw(const ShaderProgram& program, unsigned int offset, unsigned int length);
+		void drawBatched(const ShaderProgram& program);
+		void drawBatched(const ShaderProgram& program, unsigned int offset, unsigned int length);
 		void setVertexData(const void* vertexData, unsigned int newVertexCount) override;
 
 		static void resetBatch();
