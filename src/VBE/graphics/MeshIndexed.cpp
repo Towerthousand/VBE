@@ -3,7 +3,7 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
-MeshIndexed::MeshIndexed() : MeshIndexed(Vertex::Format()) {
+MeshIndexed::MeshIndexed() : MeshSeparate() {
 }
 
 MeshIndexed::MeshIndexed(const Vertex::Format& format, BufferType bufferType) :
@@ -36,6 +36,7 @@ void MeshIndexed::bindBuffers() const {
 }
 
 void MeshIndexed::draw(const ShaderProgram *program) {
+	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 	VBE_ASSERT(program != nullptr, "program cannot be null");
 	VBE_ASSERT(program->getHandle() != 0, "program cannot be null");
 
@@ -53,6 +54,8 @@ unsigned int MeshIndexed::getIndexCount() const {
 }
 
 void MeshIndexed::setIndexData(const unsigned int* indexData, unsigned int newIndexCount) {
+	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
+
 	// Bind null shader binding, so we don't change the buffer of the previously bound one.
 	ShaderBinding::bind(nullptr);
 	indexCount = newIndexCount;

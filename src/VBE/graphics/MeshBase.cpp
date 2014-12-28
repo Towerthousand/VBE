@@ -1,7 +1,7 @@
 #include <VBE/graphics/MeshBase.hpp>
 #include "ShaderBinding.hpp"
 
-MeshBase::MeshBase() : MeshBase(Vertex::Format()) {
+MeshBase::MeshBase() {
 }
 
 MeshBase::MeshBase(const Vertex::Format& format, BufferType bufferType)
@@ -14,7 +14,7 @@ MeshBase::MeshBase(const Vertex::Format& format, BufferType bufferType)
 MeshBase::~MeshBase() {
 }
 
-const Vertex::Format&MeshBase::getVertexFormat() const {
+const Vertex::Format& MeshBase::getVertexFormat() const {
 	return vertexFormat;
 }
 

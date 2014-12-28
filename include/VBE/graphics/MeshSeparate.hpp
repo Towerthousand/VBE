@@ -6,6 +6,7 @@ class ShaderBinding;
 class ShaderProgram;
 class MeshSeparate : public MeshBase {
 	public:
+		MeshSeparate();
 		MeshSeparate(const Vertex::Format& format, BufferType bufferType = STATIC);
 		virtual ~MeshSeparate() override;
 

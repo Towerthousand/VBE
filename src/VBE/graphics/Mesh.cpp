@@ -4,8 +4,7 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
-Mesh::Mesh() : Mesh(Vertex::Format()) {
-
+Mesh::Mesh() : MeshSeparate() {
 }
 
 Mesh::Mesh(const Vertex::Format& format, BufferType bufferType) :
@@ -28,6 +27,7 @@ void Mesh::draw(const ShaderProgram* program) {
 }
 
 void Mesh::draw(const ShaderProgram* program, unsigned int offset, unsigned int length) {
+	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 	VBE_ASSERT(program != nullptr, "program cannot be null");
 	VBE_ASSERT(program->getHandle() != 0, "program cannot be null");
 	VBE_ASSERT(length != 0, "length must not be zero");

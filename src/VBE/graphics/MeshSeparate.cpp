@@ -3,6 +3,9 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/graphics/ShaderBinding.hpp>
 
+MeshSeparate::MeshSeparate() : vertexBuffer(0) {
+}
+
 MeshSeparate::MeshSeparate(const Vertex::Format& format, BufferType bufferType) :
 	MeshBase(format, bufferType),
 	vertexBuffer(0) {
@@ -19,11 +22,13 @@ MeshSeparate::~MeshSeparate() {
 }
 
 void MeshSeparate::bindBuffers() const {
-	VBE_ASSERT(vertexBuffer != 0, "mesh vertex buffer is null");
+	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
 }
 
 void MeshSeparate::setupShaderBinding(const ShaderProgram* program) {
+	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
+
 	// Get the binding from the cache. If it does not exist, create it.
 	GLuint handle = program->getHandle();
 	if(bindingsCache.find(handle) == bindingsCache.end())
@@ -40,6 +45,8 @@ GLuint MeshSeparate::getVertexBuffer() const {
 }
 
 void MeshSeparate::setVertexData(const void* vertexData, unsigned int newVertexCount) {
+	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
+
 	// Bind null shader binding, so we don't change the buffer of the previously bound one.
 	ShaderBinding::bind(nullptr);
 	vertexCount = newVertexCount;
