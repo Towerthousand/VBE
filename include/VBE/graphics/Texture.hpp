@@ -31,14 +31,13 @@ class Texture : public NonCopyable {
 
 		friend void swap(Texture& a, Texture& b);
 	protected:
-		Texture(Type type);
-
-		GLuint handle;
-		TextureFormat::Format format;
+		Texture(Type type, TextureFormat::Format format = TextureFormat::RGBA);
 
 		static void bind(Type type, const Texture* tex, unsigned int slot);
 		static GLenum typeToGL(Type t);
 	private:
+		GLuint handle;
+		TextureFormat::Format format;
 		Type type;
 
 		static std::vector<std::vector<GLuint>> current;

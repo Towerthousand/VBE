@@ -7,12 +7,10 @@
 #include <VBE/graphics/TextureCubemap.hpp>
 #include <VBE/system/Log.hpp>
 
-TextureCubemap::TextureCubemap() : Texture(Texture::TypeCubemap), size(0) {
-}
-
-void TextureCubemap::load(
+//static
+TextureCubemap TextureCubemap::load(
 		std::vector<std::unique_ptr<std::istream>>& files,
-		TextureFormat::Format internalFormat) {
+		TextureFormat::Format format) {
 	VBE_ASSERT(files.size() == 6, "You must provide 6 filepaths to load a cubemap");
 	const int slices = 6;
 
@@ -36,26 +34,30 @@ void TextureCubemap::load(
 	}
 
 	TextureFormat::Format sourceFormat = TextureFormat::channelsToFormat(channels);
-	if(internalFormat == TextureFormat::AUTO)
-		internalFormat = sourceFormat;
+	if(format == TextureFormat::AUTO)
+		format = sourceFormat;
 
-	loadFromRaw(pixels, size, sourceFormat, TextureFormat::UNSIGNED_BYTE, internalFormat);
-
+	TextureCubemap res(size, format);
+	res.setData(pixels, sourceFormat, TextureFormat::UNSIGNED_BYTE);
 	delete[] pixels;
+	return res;
 }
 
-void TextureCubemap::loadFromRaw(
-		const void* pixels,
+TextureCubemap::TextureCubemap() : Texture(Texture::TypeCubemap), size(0) {
+}
+
+
+TextureCubemap::TextureCubemap(
 		unsigned int size,
+		TextureFormat::Format format) : Texture(Texture::TypeCubemap, format){
+	setData(nullptr, TextureFormat::getBaseFormat(format), TextureFormat::UNSIGNED_BYTE);
+}
+
+void TextureCubemap::setData(
+		const void* pixels,
 		TextureFormat::Format sourceFormat,
-		TextureFormat::SourceType sourceType,
-		TextureFormat::Format internalFormat) {
+		TextureFormat::SourceType sourceType) {
 
-	if (internalFormat == TextureFormat::AUTO)
-		internalFormat = sourceFormat;
-
-	this->format = internalFormat;
-	this->size = size;
 	TextureCubemap::bind(this, 0);
 
 	unsigned char* pface = (unsigned char*)pixels;
@@ -70,20 +72,13 @@ void TextureCubemap::loadFromRaw(
 			case 5:	target = CUBEMAP_NEGATIVE_Z; break;
 		}
 		if (pface)
-			GL_ASSERT(glTexImage2D(target, 0, internalFormat, size, size, 0, sourceFormat, sourceType, (GLvoid*)(pface + i*size*size*4)));
+			GL_ASSERT(glTexImage2D(target, 0, getFormat(), size, size, 0, sourceFormat, sourceType, (GLvoid*)(pface + i*size*size*4)));
 		else
-			GL_ASSERT(glTexImage2D(target, 0, internalFormat, size, size, 0, sourceFormat, sourceType, 0));
+			GL_ASSERT(glTexImage2D(target, 0, getFormat(), size, size, 0, sourceFormat, sourceType, 0));
 	}
 
 	setFilter(GL_LINEAR, GL_LINEAR);
 	setWrap(GL_CLAMP_TO_EDGE);
-}
-
-
-void TextureCubemap::loadEmpty(
-		unsigned int size,
-		TextureFormat::Format internalFormat) {
-	loadFromRaw(nullptr, size, TextureFormat::getBaseFormat(internalFormat), TextureFormat::UNSIGNED_BYTE, internalFormat);
 }
 
 unsigned int TextureCubemap::getSize() const {

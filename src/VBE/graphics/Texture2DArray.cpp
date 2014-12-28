@@ -10,12 +10,10 @@
 // Texture arrays are not supported in GLES2
 #ifndef VBE_GLES2
 
-Texture2DArray::Texture2DArray() : Texture(Texture::Type2DArray), size(0) {
-}
-
-void Texture2DArray::load(
+//static
+Texture2DArray Texture2DArray::load(
 		std::vector<std::unique_ptr<std::istream>>& files,
-		TextureFormat::Format internalFormat) {
+		TextureFormat::Format format) {
 	unsigned int slices = files.size();
 	VBE_ASSERT(slices > 0, "You must provide at least one slice (one filepath)");
 
@@ -38,35 +36,31 @@ void Texture2DArray::load(
 	}
 
 	TextureFormat::Format sourceFormat = TextureFormat::channelsToFormat(channels);
-	if(internalFormat == TextureFormat::AUTO)
-		internalFormat = sourceFormat;
+	if(format == TextureFormat::AUTO)
+		format = sourceFormat;
 
-	loadFromRaw(pixels, vec3ui(size.x, size.y, slices), sourceFormat, TextureFormat::UNSIGNED_BYTE, internalFormat);
+	Texture2DArray res(vec3ui(size.x, size.y, slices), format);
+	res.setData(pixels, sourceFormat, TextureFormat::UNSIGNED_BYTE);
 	delete[] pixels;
+	return res;
 }
 
-void Texture2DArray::loadEmpty(
+Texture2DArray::Texture2DArray() : Texture(Texture::Type2DArray), size(0) {
+}
+
+Texture2DArray::Texture2DArray(
 		vec3ui size,
-		TextureFormat::Format internalFormat) {
-	loadFromRaw(nullptr, size, TextureFormat::getBaseFormat(internalFormat), TextureFormat::UNSIGNED_BYTE, internalFormat);
+		TextureFormat::Format format) : Texture(Texture::Type2DArray, format){
+	setData(nullptr, TextureFormat::getBaseFormat(format), TextureFormat::UNSIGNED_BYTE);
 }
 
-void Texture2DArray::loadFromRaw(
+void Texture2DArray::setData(
 		const void *pixels,
-		vec3ui size,
 		TextureFormat::Format sourceFormat,
-		TextureFormat::SourceType sourceType,
-		TextureFormat::Format internalFormat) {
+		TextureFormat::SourceType sourceType) {
 
-	if (internalFormat == TextureFormat::AUTO)
-		internalFormat = sourceFormat;
-
-	this->format = internalFormat;
-	this->size = size;
 	Texture2DArray::bind(this, 0);
-	GL_ASSERT(glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, internalFormat, size.x, size.y, size.z, 0, sourceFormat, sourceType, (GLvoid*) pixels));
-	setFilter(GL_LINEAR, GL_LINEAR);
-	setWrap(GL_REPEAT);
+	GL_ASSERT(glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, getFormat(), size.x, size.y, size.z, 0, sourceFormat, sourceType, (GLvoid*) pixels));
 }
 
 vec3ui Texture2DArray::getSize() const {

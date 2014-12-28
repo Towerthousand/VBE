@@ -8,22 +8,17 @@
 
 class Texture2D : public Texture {
 	public:
-		Texture2D();
-
-		void load(
+		static Texture2D load(
 				std::unique_ptr<std::istream> in,
-				TextureFormat::Format internalFormat = TextureFormat::AUTO);
+				TextureFormat::Format format = TextureFormat::AUTO);
 
-		void loadEmpty(
-				vec2ui size,
-				TextureFormat::Format internalFormat = TextureFormat::RGBA);
+		Texture2D();
+		Texture2D(vec2ui size,
+				  TextureFormat::Format format = TextureFormat::RGBA);
 
-		void loadFromRaw(
-				const void* pixels,
-				vec2ui size,
-				TextureFormat::Format sourceFormat = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE,
-				TextureFormat::Format internalFormat = TextureFormat::AUTO);
+		void setData(const void* pixels,
+					 TextureFormat::Format sourceFormat = TextureFormat::RGBA,
+					 TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
 
 		void generateMipmap();
 		vec2ui getSize() const;

@@ -10,28 +10,18 @@
 Texture3D::Texture3D() : Texture(Texture::Type3D), size(0) {
 }
 
-void Texture3D::loadEmpty(
+Texture3D::Texture3D(
 		vec3ui size,
-		TextureFormat::Format internalFormat) {
-	loadFromRaw(nullptr, size, TextureFormat::getBaseFormat(internalFormat), TextureFormat::UNSIGNED_BYTE, internalFormat);
+		TextureFormat::Format format) : Texture(Texture::Type3D, format) {
+	setData(nullptr, TextureFormat::getBaseFormat(format), TextureFormat::UNSIGNED_BYTE);
 }
 
-void Texture3D::loadFromRaw(
+void Texture3D::setData(
 		const void *pixels,
-		vec3ui size,
 		TextureFormat::Format sourceFormat,
-		TextureFormat::SourceType sourceType,
-		TextureFormat::Format internalFormat) {
-
-	if (internalFormat == TextureFormat::AUTO)
-		internalFormat = sourceFormat;
-
-	this->format = internalFormat;
-	this->size = size;
+		TextureFormat::SourceType sourceType) {
 	Texture3D::bind(this, 0);
-	GL_ASSERT(glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, size.x, size.y, size.z, 0, sourceFormat, sourceType, (GLvoid*) pixels));
-	setFilter(GL_LINEAR, GL_LINEAR);
-	setWrap(GL_REPEAT);
+	GL_ASSERT(glTexImage3D(GL_TEXTURE_3D, 0, getFormat(), size.x, size.y, size.z, 0, sourceFormat, sourceType, (GLvoid*) pixels));
 }
 
 vec3ui Texture3D::getSize() const {

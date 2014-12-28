@@ -9,16 +9,14 @@ class Texture3D : public Texture {
 	public:
 		Texture3D();
 
-		void loadEmpty(
+		Texture3D(
 				vec3ui size,
 				TextureFormat::Format internalFormat = TextureFormat::RGBA);
 
-		void loadFromRaw(
+		void setData(
 				const void* pixels,
-				vec3ui size,
 				TextureFormat::Format sourceFormat = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE,
-				TextureFormat::Format internalFormat = TextureFormat::AUTO);
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
 
 		vec3ui getSize() const;
 

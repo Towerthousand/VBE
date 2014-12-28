@@ -15,22 +15,20 @@ class TextureCubemap : public Texture {
 			CUBEMAP_NEGATIVE_Z = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
 		};
 
+		static TextureCubemap load(
+				std::vector<std::unique_ptr<std::istream>>& files,
+				TextureFormat::Format format = TextureFormat::AUTO);
+
 		TextureCubemap();
 
-		void load(
-				std::vector<std::unique_ptr<std::istream>>& files,
-				TextureFormat::Format internalFormat = TextureFormat::AUTO);
-
-		void loadEmpty(
+		TextureCubemap(
 				unsigned int size,
-				TextureFormat::Format internalFormat = TextureFormat::RGBA);
+				TextureFormat::Format format = TextureFormat::RGBA);
 
-		void loadFromRaw(
+		void setData(
 				const void* pixels,
-				unsigned int size,
 				TextureFormat::Format sourceFormat = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE,
-				TextureFormat::Format internalFormat = TextureFormat::AUTO);
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
 
 		unsigned int getSize() const;
 

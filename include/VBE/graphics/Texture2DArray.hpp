@@ -9,22 +9,20 @@
 
 class Texture2DArray : public Texture {
 	public:
-		Texture2DArray();
 
-		void load(
+		static Texture2DArray load(
 				std::vector<std::unique_ptr<std::istream>>& files,
-				TextureFormat::Format internalFormat = TextureFormat::AUTO);
+				TextureFormat::Format format = TextureFormat::AUTO);
 
-		void loadEmpty(
+		Texture2DArray();
+		Texture2DArray(
 				vec3ui size,
-				TextureFormat::Format internalFormat = TextureFormat::RGBA);
+				TextureFormat::Format format = TextureFormat::RGBA);
 
-		void loadFromRaw(
+		void setData(
 				const void* pixels,
-				vec3ui size,
 				TextureFormat::Format sourceFormat = TextureFormat::RGBA,
-				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE,
-				TextureFormat::Format internalFormat = TextureFormat::AUTO);
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
 
 		vec3ui getSize() const;
 

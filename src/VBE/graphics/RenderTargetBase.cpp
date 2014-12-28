@@ -75,13 +75,13 @@ void RenderTargetBase::valid() const {
 			case RenderTargetEntry::Texture2DEntry:
 				VBE_ASSERT(numLayers == 1, "Texture2D attached to a RenderTarget with several layers");
 				if(e.texture2D->getSize() != desiredSize)
-					e.texture2D->loadEmpty(desiredSize, e.texture2D->getFormat());
+					*e.texture2D = Texture2D(desiredSize, e.texture2D->getFormat());
 				break;
 #ifndef VBE_GLES2
 			case RenderTargetEntry::Texture2DArrayEntry:
 				VBE_ASSERT(e.texture2DArray->getSize().z == numLayers, "A Texture2DArray attached to this RenderTarget does not have the same layers as the RenderTarget");
 				if(vec2ui(e.texture2DArray->getSize()) != desiredSize)
-					e.texture2DArray->loadEmpty(vec3ui(desiredSize, numLayers), e.texture2DArray->getFormat());
+					*e.texture2DArray = Texture2DArray(vec3ui(desiredSize, numLayers), e.texture2DArray->getFormat());
 				break;
 #endif
 		}
