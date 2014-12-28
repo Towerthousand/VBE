@@ -66,6 +66,13 @@ Texture::Texture(Type type, TextureFormat::Format format): handle(0), format(for
 	getMaxSlots();
 	GL_ASSERT(glGenTextures(1, &handle));
 	VBE_ASSERT(handle != 0, "Failed to create texture");
+
+	// Default filtering in OpenGL uses mipmaps, which will show black in most cases
+	// where mipmaps are not generated. Change it to a saner default here.
+	setFilter(GL_LINEAR, GL_LINEAR);
+
+	// Set clamp by default too, just in case.
+	setWrap(GL_CLAMP_TO_EDGE);
 }
 
 Texture::~Texture(){
