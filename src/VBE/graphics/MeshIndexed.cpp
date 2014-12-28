@@ -36,13 +36,17 @@ void MeshIndexed::bindBuffers() const {
 }
 
 void MeshIndexed::draw(const ShaderProgram *program) {
+	draw(program, 0, getIndexCount());
+}
+
+void MeshIndexed::draw(const ShaderProgram* program, unsigned int offset, unsigned int length) {
 	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 	VBE_ASSERT(program != nullptr, "program cannot be null");
 	VBE_ASSERT(program->getHandle() != 0, "program cannot be null");
 
 	setupShaderBinding(program);
 
-	GL_ASSERT(glDrawElements(getPrimitiveType(), getIndexCount(), GL_UNSIGNED_INT, 0));
+	GL_ASSERT(glDrawElements(getPrimitiveType(), length, GL_UNSIGNED_INT, (void*)(offset*sizeof(unsigned int))));
 }
 
 GLuint MeshIndexed::getIndexBuffer() const {
