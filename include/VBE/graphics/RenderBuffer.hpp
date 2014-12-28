@@ -6,6 +6,7 @@
 
 class RenderBuffer {
 	public:
+		RenderBuffer();
 		RenderBuffer(vec2ui size, TextureFormat::Format format);
 		RenderBuffer(RenderBuffer&& rhs);
 		RenderBuffer& operator=(RenderBuffer&& rhs);

@@ -1,11 +1,14 @@
 #include <VBE/graphics/RenderBuffer.hpp>
 
+RenderBuffer::RenderBuffer() : size(0), format(TextureFormat::RGB), handle(0) {
+}
+
 RenderBuffer::RenderBuffer(vec2ui size, TextureFormat::Format format) : size(size), format(format), handle(0){
 	GL_ASSERT(glGenRenderbuffers(1, &handle));
 	resize(size);
 }
 
-RenderBuffer::RenderBuffer(RenderBuffer&& rhs) {
+RenderBuffer::RenderBuffer(RenderBuffer&& rhs) : RenderBuffer() {
 	using std::swap;
 	swap(*this, rhs);
 }
@@ -17,7 +20,9 @@ RenderBuffer& RenderBuffer::operator=(RenderBuffer&& rhs) {
 }
 
 RenderBuffer::~RenderBuffer() {
-	GL_ASSERT(glDeleteRenderbuffers(1, &handle));
+	if(handle != 0) {
+		GL_ASSERT(glDeleteRenderbuffers(1, &handle));
+	}
 }
 
 void swap(RenderBuffer& a, RenderBuffer& b) {
@@ -29,8 +34,10 @@ void swap(RenderBuffer& a, RenderBuffer& b) {
 }
 
 void RenderBuffer::resize(vec2ui size) {
+	if(handle == 0) return;
 	bind();
 	GL_ASSERT(glRenderbufferStorage(GL_RENDERBUFFER, format, size.x, size.y));
+	this->size = size;
 }
 
 vec2ui RenderBuffer::getSize() const {
@@ -38,6 +45,7 @@ vec2ui RenderBuffer::getSize() const {
 }
 
 void RenderBuffer::bind() const {
+	if(handle == 0) return;
 	GL_ASSERT(glBindRenderbuffer(GL_RENDERBUFFER, handle));
 }
 
