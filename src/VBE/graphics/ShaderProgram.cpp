@@ -14,112 +14,65 @@ GLuint ShaderProgram::current(0);
 ShaderProgram::ShaderProgram() : programHandle(0) {
 }
 
-ShaderProgram::ShaderProgram(ShaderProgram&& rhs) {
-	using std::swap;
-	swap(*this, rhs);
-}
+ShaderProgram::ShaderProgram(std::initializer_list<std::pair<Shader::Type, std::string>> shaders) {
 
-ShaderProgram& ShaderProgram::operator=(ShaderProgram&& rhs) {
-	using std::swap;
-	swap(*this, rhs);
-	return *this;
-}
+	GL_ASSERT(programHandle = glCreateProgram());
 
-void swap(ShaderProgram& a, ShaderProgram& b) {
-	using std::swap;
+	std::vector<Shader> parts;
+	for(const auto& s : shaders) {
+		Shader shader(s.first, s.second);
+		shader.attach(programHandle);
+		parts.push_back(std::move(shader));
+	}
 
-	swap(a.attributes, b.attributes);
-	swap(a.uniforms, b.uniforms);
-	swap(a.programHandle, b.programHandle);
+	link();
+	retrieveProgramInfo();
 }
 
 ShaderProgram::~ShaderProgram() {
-	clearEverything();
-}
-
-void ShaderProgram::loadFromString(const std::string& vertSource, const std::string& fragSource) {
-	clearEverything();
-	Shader* vertex = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
-	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
-	VBE_DLOG("* Creating new shaderProgram");
-
-	programHandle = glCreateProgram();
-
-	vertex->attach(programHandle);
-	fragment->attach(programHandle);
-	link();
-	retrieveProgramInfo();
-	delete vertex;
-	delete fragment;
+	if(programHandle != 0)
+		GL_ASSERT(glDeleteProgram(programHandle));
+	for(std::map<std::string, Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it)
+		delete it->second;
 }
 
 
-void ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag) {
-	loadFromString(Storage::readToString(std::move(vert)),
-				   Storage::readToString(std::move(frag)));
+ShaderProgram::ShaderProgram(const std::string &vert, const std::string &frag) :
+	ShaderProgram({std::pair<Shader::Type, std::string>(Shader::Type::Vertex, vert),
+				  std::pair<Shader::Type, std::string>(Shader::Type::Fragment, frag)}) {
+}
+
+ShaderProgram::ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag) :
+	ShaderProgram(Storage::readToString(std::move(vert)),
+				  Storage::readToString(std::move(frag))) {
 }
 
 #ifndef VBE_GLES2
-
-void ShaderProgram::loadFromString(const std::string& vertSource, const std::string& geomSource, const std::string& fragSource) {
-	clearEverything();
-	Shader* vertex = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
-	Shader* geometry = Shader::loadShader(geomSource, GL_GEOMETRY_SHADER);
-	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
-	VBE_DLOG("* Creating new shaderProgram");
-
-	programHandle = glCreateProgram();
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create program");
-
-	vertex->attach(programHandle);
-	geometry->attach(programHandle);
-	fragment->attach(programHandle);
-	link();
-	retrieveProgramInfo();
-	delete vertex;
-	delete geometry;
-	delete fragment;
+ShaderProgram::ShaderProgram(const std::string& vert, const std::string& geom, const std::string& frag)
+	: ShaderProgram({std::pair<Shader::Type, std::string>(Shader::Type::Vertex, vert),
+					std::pair<Shader::Type, std::string>(Shader::Type::Geometry, geom),
+					std::pair<Shader::Type, std::string>(Shader::Type::Fragment, frag)}) {
 }
 
-void ShaderProgram::loadFromString(const std::string& vertSource, const std::string& tescSource, const std::string& teseSource, const std::string& geomSource, const std::string& fragSource) {
-	clearEverything();
-	Shader* vertex   = Shader::loadShader(vertSource, GL_VERTEX_SHADER);
-	Shader* tessctrl = Shader::loadShader(tescSource, GL_TESS_CONTROL_SHADER);
-	Shader* tesseval = Shader::loadShader(teseSource, GL_TESS_EVALUATION_SHADER);
-	Shader* geometry = Shader::loadShader(geomSource, GL_GEOMETRY_SHADER);
-	Shader* fragment = Shader::loadShader(fragSource, GL_FRAGMENT_SHADER);
-	VBE_DLOG("* Creating new shaderProgram");
-
-	programHandle = glCreateProgram();
-	VBE_ASSERT(glGetError() == GL_NO_ERROR, "Failed to create program");
-
-	vertex->attach(programHandle);
-	tessctrl->attach(programHandle);
-	tesseval->attach(programHandle);
-	geometry->attach(programHandle);
-	fragment->attach(programHandle);
-	link();
-	retrieveProgramInfo();
-
-	delete vertex;
-	delete tessctrl;
-	delete tesseval;
-	delete geometry;
-	delete fragment;
+ShaderProgram::ShaderProgram(const std::string& vert, const std::string& tessControl, const std::string& tessEval, const std::string& geom, const std::string& frag)
+	: ShaderProgram({std::pair<Shader::Type, std::string>(Shader::Type::Vertex, vert),
+					std::pair<Shader::Type, std::string>(Shader::Type::TessControl, tessControl),
+					std::pair<Shader::Type, std::string>(Shader::Type::TessEval, tessEval),
+					std::pair<Shader::Type, std::string>(Shader::Type::Geometry, geom),
+					std::pair<Shader::Type, std::string>(Shader::Type::Fragment, frag)}) {
 }
 
-void ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
-	loadFromString(Storage::readToString(std::move(vert)),
-				   Storage::readToString(std::move(geom)),
-				   Storage::readToString(std::move(frag)));
+ShaderProgram::ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) :
+	ShaderProgram(Storage::readToString(std::move(vert)),
+				  Storage::readToString(std::move(geom)),
+				  Storage::readToString(std::move(frag))) {
 }
-
-void ShaderProgram::load(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) {
-	loadFromString(Storage::readToString(std::move(vert)),
-				   Storage::readToString(std::move(tessControl)),
-				   Storage::readToString(std::move(tessEval)),
-				   Storage::readToString(std::move(geom)),
-				   Storage::readToString(std::move(frag)));
+ShaderProgram::ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag) :
+	ShaderProgram(Storage::readToString(std::move(vert)),
+				  Storage::readToString(std::move(tessControl)),
+				  Storage::readToString(std::move(tessEval)),
+				  Storage::readToString(std::move(geom)),
+				  Storage::readToString(std::move(frag))) {
 }
 #endif
 
@@ -153,15 +106,6 @@ Uniform* ShaderProgram::uniform(const std::string &name) const {
 	VBE_ASSERT(uniforms.find(name) != uniforms.end(), "Trying to retrieve unexisting uniform " << name);
 	VBE_ASSERT(programHandle != 0, "Trying to retrieve uniform from nullptr program");
 	return uniforms.at(name);
-}
-
-void ShaderProgram::clearEverything() {
-	if(programHandle != 0)
-		GL_ASSERT(glDeleteProgram(programHandle));
-	for(std::map<std::string, Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it)
-		delete it->second;
-	attributes.clear();
-	programHandle = 0;
 }
 
 void ShaderProgram::link() {
@@ -255,3 +199,23 @@ void ShaderProgram::retrieveProgramInfo() {
 		it->second->log();
 	}
 }
+
+ShaderProgram::ShaderProgram(ShaderProgram&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+ShaderProgram& ShaderProgram::operator=(ShaderProgram&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+void swap(ShaderProgram& a, ShaderProgram& b) {
+	using std::swap;
+
+	swap(a.attributes, b.attributes);
+	swap(a.uniforms, b.uniforms);
+	swap(a.programHandle, b.programHandle);
+}
+

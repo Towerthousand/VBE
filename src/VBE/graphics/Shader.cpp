@@ -3,23 +3,20 @@
 #include <VBE/system/Log.hpp>
 #include <VBE/graphics/Shader.hpp>
 
-Shader::Shader(GLenum type) {
-	shaderHandle = glCreateShader(type);
-	GL_ASSERT({});
+Shader::Shader() : shaderHandle(0) {
+}
+
+Shader::Shader(Type type, const std::string& data) {
+	GL_ASSERT(shaderHandle = glCreateShader(type));
 	VBE_ASSERT(shaderHandle != 0, "Failed to create shader");
+
+	loadFromString(data);
+	compile();
 }
 
 Shader::~Shader() {
-	GL_ASSERT(glDeleteShader(shaderHandle));
-}
-
-Shader* Shader::loadShader(const std::string& data, GLenum shaderType) {
-	VBE_DLOG("* Loading new shader");
-	Shader* s = new Shader(shaderType);
-	s->loadFromString(data);
-	s->compile();
-	VBE_DLOG(" - Compiled successfully.");
-	return s;
+	if(shaderHandle != 0)
+		GL_ASSERT(glDeleteShader(shaderHandle));
 }
 
 void Shader::loadFromString(const std::string& content) {
@@ -54,3 +51,22 @@ void Shader::printInfoLog() const {
 		delete[] infoLog;
 	}
 }
+
+
+Shader::Shader(Shader&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+Shader& Shader::operator=(Shader&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+void swap(Shader& a, Shader& b) {
+	using std::swap;
+
+	swap(a.shaderHandle, b.shaderHandle);
+}
+
