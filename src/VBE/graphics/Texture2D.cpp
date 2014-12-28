@@ -21,6 +21,7 @@ Texture2D Texture2D::load(
 
 	Texture2D res(img.getSize(), format);
 	res.setData(img.getData(), sourceFormat, TextureFormat::UNSIGNED_BYTE);
+	return res;
 }
 
 Texture2D::Texture2D() : Texture(Texture::Type2D), size(0) {
