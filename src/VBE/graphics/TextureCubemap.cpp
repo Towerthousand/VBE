@@ -10,26 +10,6 @@
 TextureCubemap::TextureCubemap() : Texture(Texture::TypeCubemap), size(0) {
 }
 
-TextureCubemap::TextureCubemap(TextureCubemap&& rhs) : TextureCubemap() {
-	using std::swap;
-	swap(*this, rhs);
-}
-
-TextureCubemap& TextureCubemap::operator=(TextureCubemap&& rhs) {
-	using std::swap;
-	swap(*this, rhs);
-	return *this;
-}
-
-TextureCubemap::~TextureCubemap() {
-}
-
-void swap(TextureCubemap& a, TextureCubemap& b) {
-	using std::swap;
-	swap(static_cast<Texture&>(a), static_cast<Texture&>(b));
-	swap(a.size, b.size);
-}
-
 void TextureCubemap::load(
 		std::vector<std::unique_ptr<std::istream>>& files,
 		TextureFormat::Format internalFormat) {
@@ -108,4 +88,21 @@ void TextureCubemap::loadEmpty(
 
 unsigned int TextureCubemap::getSize() const {
 	return size;
+}
+
+TextureCubemap::TextureCubemap(TextureCubemap&& rhs) : TextureCubemap() {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+TextureCubemap& TextureCubemap::operator=(TextureCubemap&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+void swap(TextureCubemap& a, TextureCubemap& b) {
+	using std::swap;
+	swap(static_cast<Texture&>(a), static_cast<Texture&>(b));
+	swap(a.size, b.size);
 }

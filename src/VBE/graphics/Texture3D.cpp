@@ -10,26 +10,6 @@
 Texture3D::Texture3D() : Texture(Texture::Type3D), size(0) {
 }
 
-Texture3D::Texture3D(Texture3D&& rhs) : Texture3D() {
-	using std::swap;
-	swap(*this, rhs);
-}
-
-Texture3D& Texture3D::operator=(Texture3D&& rhs) {
-	using std::swap;
-	swap(*this, rhs);
-	return *this;
-}
-
-Texture3D::~Texture3D() {
-}
-
-void swap(Texture3D& a, Texture3D& b) {
-	using std::swap;
-	swap(static_cast<Texture&>(a), static_cast<Texture&>(b));
-	swap(a.size, b.size);
-}
-
 void Texture3D::loadEmpty(
 		vec3ui size,
 		TextureFormat::Format internalFormat) {
@@ -56,6 +36,23 @@ void Texture3D::loadFromRaw(
 
 vec3ui Texture3D::getSize() const {
 	return size;
+}
+
+Texture3D::Texture3D(Texture3D&& rhs) : Texture3D() {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+Texture3D& Texture3D::operator=(Texture3D&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+void swap(Texture3D& a, Texture3D& b) {
+	using std::swap;
+	swap(static_cast<Texture&>(a), static_cast<Texture&>(b));
+	swap(a.size, b.size);
 }
 
 #endif // VBE_GLES2

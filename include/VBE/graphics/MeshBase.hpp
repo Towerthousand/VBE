@@ -32,7 +32,6 @@ class MeshBase : public NonCopyable {
 		MeshBase();
 		MeshBase(const Vertex::Format& format, BufferType bufferType = STATIC);
 		virtual ~MeshBase();
-		friend void swap(MeshBase& a, MeshBase& b);
 
 		virtual void draw(const ShaderProgram* program) = 0;
 
@@ -44,6 +43,8 @@ class MeshBase : public NonCopyable {
 
 		void setPrimitiveType(PrimitiveType type);
 		virtual void setVertexData(const void* vertexData, unsigned int newVertexCount) = 0;
+
+		friend void swap(MeshBase& a, MeshBase& b);
 	protected:
 		unsigned int vertexCount;
 	private:

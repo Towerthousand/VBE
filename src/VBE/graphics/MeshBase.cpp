@@ -14,14 +14,6 @@ MeshBase::MeshBase(const Vertex::Format& format, BufferType bufferType)
 MeshBase::~MeshBase() {
 }
 
-void swap(MeshBase& a, MeshBase& b) {
-	using std::swap;
-	swap(a.vertexFormat, b.vertexFormat);
-	swap(a.vertexCount, b.vertexCount);
-	swap(a.primitiveType, b.primitiveType);
-	swap(a.bufferType, b.bufferType);
-}
-
 const Vertex::Format&MeshBase::getVertexFormat() const {
 	return vertexFormat;
 }
@@ -44,4 +36,12 @@ MeshBase::BufferType MeshBase::getBufferType() const {
 
 void MeshBase::setPrimitiveType(PrimitiveType type) {
 	primitiveType = type;
+}
+
+void swap(MeshBase& a, MeshBase& b) {
+	using std::swap;
+	swap(a.vertexFormat, b.vertexFormat);
+	swap(a.vertexCount, b.vertexCount);
+	swap(a.primitiveType, b.primitiveType);
+	swap(a.bufferType, b.bufferType);
 }

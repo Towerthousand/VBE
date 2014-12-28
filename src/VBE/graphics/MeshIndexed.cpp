@@ -29,13 +29,6 @@ MeshIndexed& MeshIndexed::operator=(MeshIndexed&& rhs) {
 	return *this;
 }
 
-void swap(MeshIndexed& a, MeshIndexed& b) {
-	using std::swap;
-	swap(static_cast<MeshSeparate&>(a), static_cast<MeshSeparate&>(b));
-	swap(a.indexCount, b.indexCount);
-	swap(a.indexBuffer, b.indexBuffer);
-}
-
 void MeshIndexed::bindBuffers() const {
 	MeshSeparate::bindBuffers();
 	VBE_ASSERT(getIndexBuffer() != 0, "mesh index buffer is null");
@@ -66,4 +59,11 @@ void MeshIndexed::setIndexData(const unsigned int* indexData, unsigned int newIn
 	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer));
 	GL_ASSERT(glBufferData(GL_ELEMENT_ARRAY_BUFFER, newIndexCount * sizeof(unsigned int), indexData, getBufferType()));
 	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+}
+
+void swap(MeshIndexed& a, MeshIndexed& b) {
+	using std::swap;
+	swap(static_cast<MeshSeparate&>(a), static_cast<MeshSeparate&>(b));
+	swap(a.indexCount, b.indexCount);
+	swap(a.indexBuffer, b.indexBuffer);
 }
