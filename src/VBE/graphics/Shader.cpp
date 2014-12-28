@@ -53,7 +53,7 @@ void Shader::printInfoLog() const {
 }
 
 
-Shader::Shader(Shader&& rhs) {
+Shader::Shader(Shader&& rhs) : Shader() {
 	using std::swap;
 	swap(*this, rhs);
 }

@@ -200,7 +200,7 @@ void ShaderProgram::retrieveProgramInfo() {
 	}
 }
 
-ShaderProgram::ShaderProgram(ShaderProgram&& rhs) {
+ShaderProgram::ShaderProgram(ShaderProgram&& rhs) : ShaderProgram() {
 	using std::swap;
 	swap(*this, rhs);
 }
