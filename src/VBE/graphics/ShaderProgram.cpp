@@ -32,8 +32,8 @@ ShaderProgram::ShaderProgram(std::initializer_list<std::pair<Shader::Type, std::
 ShaderProgram::~ShaderProgram() {
 	if(programHandle != 0)
 		GL_ASSERT(glDeleteProgram(programHandle));
-	for(std::map<std::string, Uniform*>::iterator it = uniforms.begin(); it != uniforms.end(); ++it)
-		delete it->second;
+	for(const auto& e : uniforms)
+		delete e.second;
 }
 
 
