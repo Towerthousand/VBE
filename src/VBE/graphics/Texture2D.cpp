@@ -27,9 +27,7 @@ Texture2D Texture2D::load(
 Texture2D::Texture2D() : Texture(Texture::Type2D), size(0) {
 }
 
-Texture2D::Texture2D(
-		vec2ui size,
-		TextureFormat::Format format) :
+Texture2D::Texture2D(vec2ui size, TextureFormat::Format format) :
 	Texture(Texture::Type2D, format), size(size) {
 	setData(nullptr, TextureFormat::getBaseFormat(format), TextureFormat::UNSIGNED_BYTE);
 }

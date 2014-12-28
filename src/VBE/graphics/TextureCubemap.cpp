@@ -47,9 +47,8 @@ TextureCubemap::TextureCubemap() : Texture(Texture::TypeCubemap), size(0) {
 }
 
 
-TextureCubemap::TextureCubemap(
-		unsigned int size,
-		TextureFormat::Format format) : Texture(Texture::TypeCubemap, format){
+TextureCubemap::TextureCubemap(unsigned int size, TextureFormat::Format format) :
+	Texture(Texture::TypeCubemap, format), size(size) {
 	setData(nullptr, TextureFormat::getBaseFormat(format), TextureFormat::UNSIGNED_BYTE);
 }
 

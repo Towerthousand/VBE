@@ -10,9 +10,8 @@
 Texture3D::Texture3D() : Texture(Texture::Type3D), size(0) {
 }
 
-Texture3D::Texture3D(
-		vec3ui size,
-		TextureFormat::Format format) : Texture(Texture::Type3D, format) {
+Texture3D::Texture3D(vec3ui size, TextureFormat::Format format) :
+	Texture(Texture::Type3D, format), size(size) {
 	setData(nullptr, TextureFormat::getBaseFormat(format), TextureFormat::UNSIGNED_BYTE);
 }
 
