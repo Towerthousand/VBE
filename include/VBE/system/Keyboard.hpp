@@ -271,6 +271,7 @@ class Keyboard {
 		static bool oldKeyPresses[Keyboard::KeyCount];
 
 		friend class Window;
+		friend class InputImpl;
 };
 
 ///

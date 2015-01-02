@@ -3,6 +3,7 @@
 #include <VBE/system/Log.hpp>
 
 // static
+InputImpl::GamepadImpl InputImpl::controllers[Gamepad::COUNT];
 bool InputImpl::keyPresses[Keyboard::KeyCount];
 bool InputImpl::mouseButtonPresses[Mouse::ButtonCount];
 vec2i InputImpl::mousePos;
@@ -19,6 +20,23 @@ void InputImpl::init() {
 		keyPresses[i] = false;
 	for(int i = 0; i < Mouse::ButtonCount; i++)
 		mouseButtonPresses[i] = false;
+}
+
+// static
+void InputImpl::update()
+{
+	Keyboard::update();
+	Mouse::update();
+
+	for (int i = 0; i < Gamepad::COUNT; i++) {
+		controllers[i].just = 0;
+
+		//we're polling instead of reading events to get directly last position of this frame.
+		for (int j = SDL_CONTROLLER_AXIS_LEFTX; j < SDL_CONTROLLER_AXIS_MAX; ++j) {
+			Gamepad::Axis a = convertSdlControllerAxis(j);
+			controllers[i].axis[a] = SDL_GameControllerGetAxis(controllers[i].gamepad, (SDL_GameControllerAxis) j);
+		}
+	}
 }
 
 // static
@@ -39,6 +57,35 @@ void InputImpl::setMousePosition(int x, int y) {
 	mousePos = vec2i(x, y);
 }
 
+bool InputImpl::isGamepadConnected(int id)
+{
+	return controllers[id].connected;
+}
+
+float InputImpl::getGamepadAxis(int id, int axis)
+{
+	return controllers[id].axis[axis] / 32767.0f;
+}
+
+bool InputImpl::getGamepadButtonPressed(int id, int but)
+{
+	return (controllers[id].state & (1<<but)) != 0;
+}
+
+bool InputImpl::getGamepadButtonJustPressed(int id, int but)
+{
+	GamepadImpl& g = controllers[id];
+	GamepadImpl::GamepadButtonsMask mask = 1 << but;
+	return ((g.state & mask) & (g.just & mask)) != 0;
+}
+
+bool InputImpl::getGamepadButtonJustReleased(int id, int but)
+{
+	GamepadImpl& g = controllers[id];
+	GamepadImpl::GamepadButtonsMask mask = 1 << but;
+	return ((~g.state & mask) & (g.just & mask)) != 0;
+}
+
 void InputImpl::setCursorVisible(bool visible) {
 	SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
 }
@@ -50,6 +97,15 @@ void InputImpl::setGrab(bool grab) {
 void InputImpl::setRelativeMouseMode(bool relative) {
 	relativeMouse = relative;
 	SDL_SetRelativeMouseMode(relative? SDL_TRUE : SDL_FALSE);
+}
+
+int InputImpl::getControllerIndex(SDL_JoystickID instance)
+{
+	for (int i = 0; i < Gamepad::COUNT; ++i)
+		if (controllers[i].connected && controllers[i].instanceId == instance)
+			return i;
+
+	return -1;
 }
 
 
@@ -70,7 +126,7 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				keyPresses[key] = false;
 			break;
 
-		// Mouse events
+			// Mouse events
 		case SDL_MOUSEBUTTONDOWN:
 			key = convertSdlButton(e.button.button);
 			if(key != Mouse::ButtonCount)
@@ -90,6 +146,44 @@ void InputImpl::processEvent(const SDL_Event& e) {
 		case SDL_MOUSEWHEEL:
 			mouseWheelPos += vec2i(e.wheel.x, e.wheel.y);
 			break;
+		case SDL_CONTROLLERAXISMOTION:
+			break;
+		case SDL_CONTROLLERBUTTONDOWN: {
+				int ind = getControllerIndex(e.cbutton.which);
+				if (ind < 0)
+					break;
+
+				Gamepad::Button but = convertSdlControllerButton(e.cbutton.button);
+				controllers[ind].just |= (1 << but);
+				controllers[ind].state |= (1 << but);
+
+				break;
+			}
+		case SDL_CONTROLLERBUTTONUP: {
+				int ind = getControllerIndex(e.cbutton.which);
+				if (ind < 0)
+					break;
+
+				Gamepad::Button but = convertSdlControllerButton(e.cbutton.button);
+				controllers[ind].just |= (1 << but);
+				controllers[ind].state &= ~(1 << but);
+
+				break;
+			}
+		case SDL_CONTROLLERDEVICEADDED:
+			if (e.cdevice.which < Gamepad::COUNT )
+				controllers[e.cdevice.which].open(e.cdevice.which);
+			break;
+		case SDL_CONTROLLERDEVICEREMOVED: {
+				int ind = getControllerIndex(e.cdevice.which);
+				if (ind < 0) {
+					VBE_WARN(ind < 0, "Unknown controller");
+					break;
+				}
+
+				controllers[ind].close();
+				break;
+			}
 		default:
 			break;
 	}
@@ -350,3 +444,98 @@ Keyboard::Key InputImpl::convertSdlKey(int key) {
 	}
 }
 
+
+// static
+Gamepad::Button InputImpl::convertSdlControllerButton(Uint8 button) {
+	switch(button)
+	{
+		case SDL_CONTROLLER_BUTTON_A: return Gamepad::ButtonA;
+		case SDL_CONTROLLER_BUTTON_B: return Gamepad::ButtonB;
+		case SDL_CONTROLLER_BUTTON_X: return Gamepad::ButtonX;
+		case SDL_CONTROLLER_BUTTON_Y: return Gamepad::ButtonY;
+		case SDL_CONTROLLER_BUTTON_BACK: return Gamepad::ButtonBack;
+		case SDL_CONTROLLER_BUTTON_GUIDE: return Gamepad::ButtonGuide;
+		case SDL_CONTROLLER_BUTTON_START: return Gamepad::ButtonStart;
+		case SDL_CONTROLLER_BUTTON_LEFTSTICK: return Gamepad::ButtonLeftStick;
+		case SDL_CONTROLLER_BUTTON_RIGHTSTICK: return Gamepad::ButtonRightStick;
+		case SDL_CONTROLLER_BUTTON_LEFTSHOULDER: return Gamepad::ButtonLeftStick;
+		case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: return Gamepad::ButtonLeftShoulder;
+		case SDL_CONTROLLER_BUTTON_DPAD_UP: return Gamepad::ButtonDUp;
+		case SDL_CONTROLLER_BUTTON_DPAD_DOWN: return Gamepad::ButtonDDown;
+		case SDL_CONTROLLER_BUTTON_DPAD_LEFT: return Gamepad::ButtonDLeft;
+		case SDL_CONTROLLER_BUTTON_DPAD_RIGHT: return Gamepad::ButtonDRight;
+		default: return Gamepad::ButtonInvalid;
+	};
+}
+
+Gamepad::Axis InputImpl::convertSdlControllerAxis(int axis)
+{
+	switch(axis)
+	{
+		case SDL_CONTROLLER_AXIS_LEFTX: return Gamepad::AxisLeftX;
+		case SDL_CONTROLLER_AXIS_LEFTY: return Gamepad::AxisLeftY;
+		case SDL_CONTROLLER_AXIS_RIGHTX: return Gamepad::AxisRightX;
+		case SDL_CONTROLLER_AXIS_RIGHTY: return Gamepad::AxisRightY;
+		case SDL_CONTROLLER_AXIS_TRIGGERLEFT: return Gamepad::AxisTriggerRight;
+		case SDL_CONTROLLER_AXIS_TRIGGERRIGHT: return Gamepad::AxisTriggerLeft;
+		default: return Gamepad::AxisInvalid;
+	};
+}
+
+InputImpl::GamepadImpl::GamepadImpl() :
+	gamepad(nullptr),
+	haptic(nullptr),
+	instanceId(0),
+	state(0),
+	just(0),
+	connected(false)
+{
+
+}
+
+void InputImpl::GamepadImpl::open(int device)
+{
+	gamepad = SDL_GameControllerOpen(device);
+	SDL_Joystick *j = SDL_GameControllerGetJoystick(gamepad);
+	instanceId = SDL_JoystickInstanceID(j);
+	VBE_DLOG("Found controller " << SDL_GameControllerName(gamepad) << ", id " << instanceId << ", device " << device);
+
+	connected = true;
+	if (SDL_JoystickIsHaptic(j))
+	{
+		haptic = SDL_HapticOpenFromJoystick(j);
+		VBE_DLOG("Haptic Effects: " << SDL_HapticNumEffects(haptic));
+		VBE_DLOG("Haptic Query: " << SDL_HapticQuery(haptic));
+		if (SDL_HapticRumbleSupported(haptic))
+		{
+			if (SDL_HapticRumbleInit(haptic) != 0)
+			{
+				VBE_DLOG("Haptic Rumble Init: " << SDL_GetError());
+				SDL_HapticClose(haptic);
+				haptic = nullptr;
+			}
+		}
+		else
+		{
+			SDL_HapticClose(haptic);
+			haptic = nullptr;
+		}
+	}
+}
+
+void InputImpl::GamepadImpl::close()
+{
+	if (connected)
+	{
+		connected = false;
+		if (haptic)
+		{
+			SDL_HapticClose(haptic);
+			haptic = 0;
+		}
+
+		VBE_DLOG("Closing controller " << SDL_GameControllerName(gamepad));
+		SDL_GameControllerClose(gamepad);
+		gamepad = nullptr;
+	}
+}

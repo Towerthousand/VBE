@@ -1,5 +1,6 @@
 #include<VBE/system/Window.hpp>
 #include<VBE/system/WindowImpl.hpp>
+#include<VBE/system/InputImpl.hpp>
 #include<VBE/system/Log.hpp>
 #include<VBE/system/Keyboard.hpp>
 #include<VBE/system/Mouse.hpp>
@@ -28,8 +29,7 @@ Window::~Window() {
 
 void Window::update() {
 	// First we have to update Keyboard and Mouse to save the old keys.
-	Keyboard::update();
-	Mouse::update();
+	InputImpl::update();
 
 	// After we process the events.
 	WindowImpl::update();
