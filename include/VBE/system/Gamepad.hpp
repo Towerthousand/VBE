@@ -1,8 +1,8 @@
 #ifndef GAMEHPP
 #define GAMEHPP
 
-class Gamepad final {
-public:
+class Gamepad {
+	public:
 		static constexpr int COUNT = 4;
 
 		enum Axis {
@@ -36,22 +36,11 @@ public:
 			ButtonCount
 		};
 
-		float axis(Axis a);
-
-		bool pressed(Button b);
-
-		bool justPressed(Button b);
-
-		bool justReleased(Button b);
-
-		bool isConnected();
-
-		static Gamepad getGamepad(int id);
-
-private:
-		Gamepad(int id);
-
-		int id;
+		static float axis(int id, Axis a);
+		static bool pressed(int id, Button b);
+		static bool justPressed(int id, Button b);
+		static bool justReleased(int id, Button b);
+		static bool isConnected(int id);
 };
 
 #endif // GAMEHPP

@@ -6,7 +6,6 @@
 #include <VBE/system/Gamepad.hpp>
 #include <VBE/system/sdl2/sdl2.hpp>
 
-
 class InputImpl {
 	public:
 		static void init();
@@ -35,8 +34,7 @@ class InputImpl {
 
 	private:
 
-		struct GamepadImpl
-		{
+		struct GamepadImpl {
 				GamepadImpl();
 
 				typedef unsigned short GamepadButtonsMask;

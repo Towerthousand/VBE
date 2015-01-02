@@ -28,10 +28,12 @@ Window::~Window() {
 }
 
 void Window::update() {
-	// First we have to update Keyboard and Mouse to save the old keys.
+	// We first save the last frame's input
+	Keyboard::update();
+	Mouse::update();
 	InputImpl::update();
 
-	// After we process the events.
+	// Then we process the events.
 	WindowImpl::update();
 }
 
