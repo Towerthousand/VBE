@@ -175,6 +175,7 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				if (ind < 0)
 					break;
 				controllers[ind].close();
+				controllers[e.cdevice.which] = GamepadImpl();
 				break;
 			}
 		default:
