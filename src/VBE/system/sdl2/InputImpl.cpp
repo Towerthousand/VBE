@@ -131,8 +131,7 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				if (ind < 0)
 					break;
 				Gamepad::Button but = convertSdlControllerButton(e.cbutton.button);
-				controllers[ind].state |= (1 << but);
-
+				controllers[ind].state[but] = true;
 				break;
 			}
 		case SDL_CONTROLLERBUTTONUP: {
@@ -140,8 +139,7 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				if (ind < 0)
 					break;
 				Gamepad::Button but = convertSdlControllerButton(e.cbutton.button);
-				controllers[ind].state &= ~(1 << but);
-
+				controllers[ind].state[but] = false;
 				break;
 			}
 		case SDL_CONTROLLERDEVICEADDED:
@@ -451,7 +449,8 @@ Gamepad::Axis InputImpl::convertSdlControllerAxis(int axis) {
 	};
 }
 
-InputImpl::GamepadImpl::GamepadImpl() : gamepad(nullptr), haptic(nullptr), instanceId(0), state(0), just(0), connected(false) {
+InputImpl::GamepadImpl::GamepadImpl() : gamepad(nullptr), haptic(nullptr), instanceId(0), connected(false) {
+	memset(state, 0, sizeof(state));
 	memset(axis, 0, sizeof(axis));
 }
 

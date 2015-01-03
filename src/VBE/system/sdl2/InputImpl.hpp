@@ -32,18 +32,14 @@ class InputImpl {
 		static int getControllerIndex(SDL_JoystickID instance);
 
 	private:
-
 		struct GamepadImpl {
 				GamepadImpl();
-
-				typedef unsigned short GamepadButtonsMask;
 				typedef short GamepadAxisType;
 
 				SDL_GameController *gamepad;
 				SDL_Haptic *haptic;
 				SDL_JoystickID instanceId;
-				GamepadButtonsMask state;
-				GamepadButtonsMask just;
+				bool state[Gamepad::ButtonCount];
 				GamepadAxisType axis[Gamepad::AxisCount];
 				bool connected;
 
