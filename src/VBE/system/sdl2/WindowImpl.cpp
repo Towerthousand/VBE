@@ -177,21 +177,8 @@ void WindowImpl::update() {
 			case SDL_WINDOWEVENT:
 				processEvent(e);
 				break;
-
-			// Keyboard events
-			case SDL_KEYDOWN:
-			case SDL_KEYUP:
-			case SDL_TEXTEDITING:
-			case SDL_TEXTINPUT:
-			// Mouse events
-			case SDL_MOUSEMOTION:
-			case SDL_MOUSEBUTTONDOWN:
-			case SDL_MOUSEBUTTONUP:
-			case SDL_MOUSEWHEEL:
-			// TODO Touch events
-				InputImpl::processEvent(e);
-				break;
 			default:
+				InputImpl::processEvent(e);
 				break;
 		}
 	}

@@ -1,5 +1,6 @@
 #include<VBE/system/Window.hpp>
 #include<VBE/system/WindowImpl.hpp>
+#include<VBE/system/InputImpl.hpp>
 #include<VBE/system/Log.hpp>
 #include<VBE/system/Keyboard.hpp>
 #include<VBE/system/Mouse.hpp>
@@ -17,6 +18,7 @@ Window::Window(Window::DisplayMode mode, ContextSettings contextSettings) {
 
 	Keyboard::init();
 	Mouse::init();
+	Gamepad::init();
 }
 
 Window::~Window() {
@@ -27,11 +29,12 @@ Window::~Window() {
 }
 
 void Window::update() {
-	// First we have to update Keyboard and Mouse to save the old keys.
+	// We first save the last frame's input
 	Keyboard::update();
 	Mouse::update();
+	Gamepad::update();
 
-	// After we process the events.
+	// Then we process the events.
 	WindowImpl::update();
 }
 
