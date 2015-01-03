@@ -81,7 +81,7 @@ class Gamepad {
 		static bool justReleased(int id, Button b);
 
 		///
-		/// \brief Returns wgether there is a gamepad connected at the fiven port ID.
+		/// \brief Returns whether there is a gamepad connected at the fiven port ID.
 		/// If only 1 gamepad is connected, then isConnected(3) will return false.
 		/// \param id The port being queried
 		/// \return Whether a gamepad is connected or not at the given port
