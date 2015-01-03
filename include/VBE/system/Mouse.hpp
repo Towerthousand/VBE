@@ -108,7 +108,6 @@ class Mouse {
 		static vec2i oldMouseWheelPos;
 
 		friend class Window;
-		friend class InputImpl;
 };
 ///
 /// \class Mouse Mouse.hpp <VBE/system/Mouse.hpp>
