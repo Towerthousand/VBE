@@ -63,6 +63,16 @@ void Mouse::setRelativeMode(bool relative) {
 }
 
 // static
+bool Mouse::listen(MouseListener &listener) {
+	return InputImpl::listen(listener);
+}
+
+// static
+bool Mouse::unlisten(MouseListener &listener) {
+	return InputImpl::unlisten(listener);
+}
+
+// static
 void Mouse::init() {
 	for(int i = 0; i < Button::ButtonCount; i++)
 		oldMouseButtonPresses[i] = false;

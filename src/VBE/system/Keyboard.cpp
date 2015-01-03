@@ -17,6 +17,16 @@ bool Keyboard::justReleased(Keyboard::Key k) {
 }
 
 // static
+bool Keyboard::listen(KeyboardListener &listener) {
+	return InputImpl::listen(listener);
+}
+
+// static
+bool Keyboard::unlisten(KeyboardListener &listener) {
+	return InputImpl::unlisten(listener);
+}
+
+// static
 void Keyboard::init() {
 	for(int i = 0; i < Keyboard::KeyCount; i++)
 		oldKeyPresses[i] = false;

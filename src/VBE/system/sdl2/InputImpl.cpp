@@ -3,6 +3,8 @@
 #include <VBE/system/Log.hpp>
 
 // static
+Emitter<KeyboardListener> InputImpl::keyboardEmitter;
+Emitter<MouseListener> InputImpl::mouseEmitter;
 InputImpl::GamepadImpl InputImpl::controllers[Gamepad::COUNT];
 bool InputImpl::keyPresses[Keyboard::KeyCount];
 bool InputImpl::mouseButtonPresses[Mouse::ButtonCount];
@@ -93,31 +95,60 @@ void InputImpl::processEvent(const SDL_Event& e) {
 			key = convertSdlKey(e.key.keysym.sym);
 			if(key != Keyboard::KeyCount)
 				keyPresses[key] = true;
+
+			keyboardEmitter.all([key] (KeyboardListener& listener) {
+				listener.onKeyDown((Keyboard::Key)key);
+			});
 			break;
 		case SDL_KEYUP:
 			key = convertSdlKey(e.key.keysym.sym);
 			if(key != Keyboard::KeyCount)
 				keyPresses[key] = false;
+
+			keyboardEmitter.all([key] (KeyboardListener& listener) {
+				listener.onKeyUp((Keyboard::Key)key);
+			});
 			break;
 			// Mouse events
 		case SDL_MOUSEBUTTONDOWN:
 			key = convertSdlButton(e.button.button);
-			if(key != Mouse::ButtonCount)
+			if(key != Mouse::ButtonCount) {
 				mouseButtonPresses[key] = true;
+				mouseEmitter.all([key] (MouseListener& listener) {
+					listener.onButtonDown((Mouse::Button)key);
+				});
+			}
 			break;
 		case SDL_MOUSEBUTTONUP:
 			key = convertSdlButton(e.button.button);
-			if(key != Mouse::ButtonCount)
+			if(key != Mouse::ButtonCount) {
 				mouseButtonPresses[key] = false;
+				mouseEmitter.all([key] (MouseListener& listener) {
+					listener.onButtonUp((Mouse::Button)key);
+				});
+			}
 			break;
-		case SDL_MOUSEMOTION:
-			if(relativeMouse)
-				mousePos += vec2i(e.motion.xrel, e.motion.yrel);
-			else
-				mousePos = vec2i(e.motion.x, e.motion.y);
-			break;
-		case SDL_MOUSEWHEEL:
-			mouseWheelPos += vec2i(e.wheel.x, e.wheel.y);
+		case SDL_MOUSEMOTION: {
+				vec2i rel = vec2i(e.motion.xrel, e.motion.yrel);
+				vec2i pos = vec2i(e.motion.x, e.motion.y);
+				if(relativeMouse)
+					mousePos += rel;
+				else
+					mousePos = pos;
+
+				mouseEmitter.all([pos, rel] (MouseListener& listener) {
+					listener.onMotion(pos, rel);
+				});
+				break;
+			}
+		case SDL_MOUSEWHEEL: {
+				vec2i mov = vec2i(e.wheel.x, e.wheel.y);
+				mouseWheelPos += mov;
+				vec2i pos = mouseWheelPos;
+				mouseEmitter.all([pos, mov] (MouseListener& listener) {
+					listener.onWheelMovement(pos, mov);
+				});
+			}
 			break;
 		case SDL_CONTROLLERAXISMOTION: {
 				int ind = getControllerIndex(e.cbutton.which);
@@ -160,7 +191,27 @@ void InputImpl::processEvent(const SDL_Event& e) {
 }
 
 // static
-Mouse::Button InputImpl::convertSdlButton(int button) {
+bool InputImpl::listen(KeyboardListener &listener) {
+	return keyboardEmitter.listen(&listener);
+}
+
+// static
+bool InputImpl::listen(MouseListener &listener) {
+	return mouseEmitter.listen(&listener);
+}
+
+// static
+bool InputImpl::unlisten(KeyboardListener &listener) {
+	return keyboardEmitter.unlisten(&listener);
+}
+
+// static
+bool InputImpl::unlisten(MouseListener &listener){
+	return mouseEmitter.unlisten(&listener);
+}
+
+// static
+Mouse::Button InputImpl::convertSdlButton(Uint8 button) {
 	switch(button) {
 		case SDL_BUTTON_LEFT: return Mouse::Left;
 		case SDL_BUTTON_MIDDLE: return Mouse::Middle;
@@ -172,7 +223,7 @@ Mouse::Button InputImpl::convertSdlButton(int button) {
 }
 
 // static
-Keyboard::Key InputImpl::convertSdlKey(int key) {
+Keyboard::Key InputImpl::convertSdlKey(SDL_Keycode key) {
 	switch(key) {
 		case SDLK_0: return Keyboard::Num0;
 		case SDLK_1: return Keyboard::Num1;

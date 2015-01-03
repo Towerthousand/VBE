@@ -80,7 +80,8 @@ HEADERS += \
     include/VBE/graphics/MeshSeparate.hpp \
     include/VBE/graphics/MeshBase.hpp \
     include/VBE/graphics/MeshBatched.hpp \
-    include/VBE/system/Gamepad.hpp
+    include/VBE/system/Gamepad.hpp \
+    include/VBE/system/Listener.hpp
 
 SOURCES += \
     src/VBE/dependencies/stb_image/stb_image.cpp \
@@ -119,4 +120,5 @@ SOURCES += \
     src/VBE/graphics/MeshSeparate.cpp \
     src/VBE/graphics/MeshBase.cpp \
     src/VBE/graphics/MeshBatched.cpp \
-    src/VBE/system/Gamepad.cpp
+    src/VBE/system/Gamepad.cpp \
+    src/VBE/system/Listener.cpp

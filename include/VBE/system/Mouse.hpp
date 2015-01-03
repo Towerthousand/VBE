@@ -1,7 +1,10 @@
 #ifndef MOUSE_HPP
 #define MOUSE_HPP
 
+#include <VBE/system/Listener.hpp>
 #include <VBE/math.hpp>
+
+class MouseListener;
 
 ///
 /// \brief The Mouse class provides support to read the mouse device.
@@ -99,6 +102,8 @@ class Mouse {
 		///
 		static void setRelativeMode(bool relative);
 
+		static bool listen(MouseListener& listener);
+		static bool unlisten(MouseListener& listener);
 
 	private:
 		static void init();
@@ -115,5 +120,14 @@ class Mouse {
 ///
 /// This class will show no input (the states won't change) on mobile devices.
 ///
+
+class MouseListener : public Listener
+{
+public:
+		virtual void onButtonUp(Mouse::Button key) = 0;
+		virtual void onButtonDown(Mouse::Button key) = 0;
+		virtual void onMotion(vec2i pos, vec2i rel) = 0;
+		virtual void onWheelMovement(vec2i pos, vec2i rel) = 0;
+};
 
 #endif // MOUSE_HPP

@@ -11,6 +11,12 @@ class InputImpl {
 		static void init();
 		static void processEvent(const SDL_Event& e);
 
+		static bool listen(KeyboardListener& listener);
+		static bool listen(MouseListener& listener);
+
+		static bool unlisten(KeyboardListener& listener);
+		static bool unlisten(MouseListener& listener);
+
 		static const bool* getKeyPresses();
 		static const bool* getMouseButtonPresses();
 
@@ -49,11 +55,13 @@ class InputImpl {
 
 		static GamepadImpl controllers[Gamepad::COUNT];
 
-		static Mouse::Button convertSdlButton(int button);
-		static Keyboard::Key convertSdlKey(int key);
+		static Mouse::Button convertSdlButton(Uint8 button);
+		static Keyboard::Key convertSdlKey(SDL_Keycode key);
 		static Gamepad::Button convertSdlControllerButton(Uint8 button);
 		static Gamepad::Axis convertSdlControllerAxis(int axis);
 
+		static Emitter<KeyboardListener> keyboardEmitter;
+		static Emitter<MouseListener> mouseEmitter;
 		static bool keyPresses[Keyboard::KeyCount];
 		static bool mouseButtonPresses[Mouse::ButtonCount];
 		static vec2i mousePos;

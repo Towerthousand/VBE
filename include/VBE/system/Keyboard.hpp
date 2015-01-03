@@ -1,6 +1,10 @@
 #ifndef KEYBOARD_HPP
 #define KEYBOARD_HPP
 
+#include <VBE/system/Listener.hpp>
+
+class KeyboardListener;
+
 ///
 /// \brief The Keyboard class provides support to read the keyboard.
 ///
@@ -264,6 +268,8 @@ class Keyboard {
 		///
 		static bool justReleased(Key k);
 
+		static bool listen(KeyboardListener& listener);
+		static bool unlisten(KeyboardListener& listener);
 
 	private:
 		static void init();
@@ -305,5 +311,12 @@ class Keyboard {
 ///   + Key Keyboard::A is not pressed
 ///   + Key Keyboard::A is just released
 ///
+
+class KeyboardListener : public Listener
+{
+	public:
+		virtual void onKeyUp(Keyboard::Key key) = 0;
+		virtual void onKeyDown(Keyboard::Key key) = 0;
+};
 
 #endif // KEYBOARD_HPP
