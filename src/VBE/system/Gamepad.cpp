@@ -14,7 +14,7 @@ void Gamepad::init() {
 void Gamepad::update() {
 	for(int i = 0; i < COUNT; ++i)
 		for(int j = 0; j < Gamepad::ButtonCount; j++)
-			buttonsOld[i][j] = InputImpl::getGamepadButtonPressed(i, j);
+			buttonsOld[i][j] = InputImpl::getGamepadButtonPressed(i, (Gamepad::Button) j);
 }
 
 //static

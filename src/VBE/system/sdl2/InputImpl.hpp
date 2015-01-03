@@ -21,7 +21,7 @@ class InputImpl {
 
 		static bool isGamepadConnected(int id);
 		static float getGamepadAxis(int id, int axis);
-		static bool getGamepadButtonPressed(int id, int but);
+		static bool getGamepadButtonPressed(int id, Gamepad::Button but);
 		static bool getGamepadButtonJustPressed(int id, int but);
 		static bool getGamepadButtonJustReleased(int id, int but);
 

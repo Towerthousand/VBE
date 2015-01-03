@@ -53,8 +53,8 @@ float InputImpl::getGamepadAxis(int id, int axis) {
 }
 
 //static
-bool InputImpl::getGamepadButtonPressed(int id, int but) {
-	return (controllers[id].state & (1<<but)) != 0;
+bool InputImpl::getGamepadButtonPressed(int id, Gamepad::Button but) {
+	return controllers[id].state[but];
 }
 
 //static
