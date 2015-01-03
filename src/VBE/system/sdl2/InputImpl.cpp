@@ -23,12 +23,6 @@ void InputImpl::init() {
 }
 
 // static
-void InputImpl::update() {
-	for (int i = 0; i < Gamepad::COUNT; i++)
-		controllers[i].just = 0;
-}
-
-// static
 const bool* InputImpl::getKeyPresses() {
 	return keyPresses;
 }
@@ -61,20 +55,6 @@ float InputImpl::getGamepadAxis(int id, int axis) {
 //static
 bool InputImpl::getGamepadButtonPressed(int id, int but) {
 	return (controllers[id].state & (1<<but)) != 0;
-}
-
-//static
-bool InputImpl::getGamepadButtonJustPressed(int id, int but) {
-	GamepadImpl& g = controllers[id];
-	GamepadImpl::GamepadButtonsMask mask = 1 << but;
-	return ((g.state & mask) & (g.just & mask)) != 0;
-}
-
-//static
-bool InputImpl::getGamepadButtonJustReleased(int id, int but) {
-	GamepadImpl& g = controllers[id];
-	GamepadImpl::GamepadButtonsMask mask = 1 << but;
-	return ((~g.state & mask) & (g.just & mask)) != 0;
 }
 
 //static
@@ -151,7 +131,6 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				if (ind < 0)
 					break;
 				Gamepad::Button but = convertSdlControllerButton(e.cbutton.button);
-				controllers[ind].just |= (1 << but);
 				controllers[ind].state |= (1 << but);
 
 				break;
@@ -161,7 +140,6 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				if (ind < 0)
 					break;
 				Gamepad::Button but = convertSdlControllerButton(e.cbutton.button);
-				controllers[ind].just |= (1 << but);
 				controllers[ind].state &= ~(1 << but);
 
 				break;

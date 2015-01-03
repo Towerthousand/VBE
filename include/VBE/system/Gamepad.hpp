@@ -87,6 +87,14 @@ class Gamepad {
 		/// \return Whether a gamepad is connected or not at the given port
 		///
 		static bool isConnected(int id);
+
+	private:
+		static void init();
+		static void update();
+
+		static bool buttonsOld[COUNT][ButtonCount];
+
+		friend class Window;
 };
 ///
 /// \class Gamepad Gamepad.hpp <VBE/system/Gamepad.hpp>

@@ -18,6 +18,7 @@ Window::Window(Window::DisplayMode mode, ContextSettings contextSettings) {
 
 	Keyboard::init();
 	Mouse::init();
+	Gamepad::init();
 }
 
 Window::~Window() {
@@ -31,7 +32,7 @@ void Window::update() {
 	// We first save the last frame's input
 	Keyboard::update();
 	Mouse::update();
-	InputImpl::update();
+	Gamepad::update();
 
 	// Then we process the events.
 	WindowImpl::update();
