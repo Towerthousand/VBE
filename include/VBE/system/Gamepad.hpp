@@ -1,5 +1,5 @@
-#ifndef GAMEHPP
-#define GAMEHPP
+#ifndef GAMEPAD_HPP
+#define GAMEPAD_HPP
 
 ///
 /// \brief The Gamepad provides multiple game gamepad support
@@ -7,7 +7,7 @@
 class Gamepad {
 	public:
 		///
-		/// \brief Represents de maximum number of concurrent gamepads
+		/// \brief Represents the maximum number of concurrent gamepads
 		///
 		static constexpr int COUNT = 4;
 
@@ -57,7 +57,7 @@ class Gamepad {
 		static float axis(int id, Axis a);
 
 		///
-		/// \brief Returns wether a button is pressed
+		/// \brief Returns whether a button is pressed
 		/// \param id The ID of the gamepad, must be between 0 and COUNT-1
 		/// \param b the button being queried
 		/// \return Whether or not this button was pressed or not during this frame
@@ -65,7 +65,7 @@ class Gamepad {
 		static bool pressed(int id, Button b);
 
 		///
-		/// \brief Returns wether a button is just pressed
+		/// \brief Returns whether a button is just pressed
 		/// \param id The ID of the gamepad, must be between 0 and COUNT-1
 		/// \param b the button being queried
 		/// \return Whether or not this button was just pressed or not during this frame
@@ -73,7 +73,7 @@ class Gamepad {
 		static bool justPressed(int id, Button b);
 
 		///
-		/// \brief Returns wether a button is just released
+		/// \brief Returns whether a button is just released
 		/// \param id The ID of the gamepad, must be between 0 and COUNT-1
 		/// \param b the button being queried
 		/// \return Whether or not this button was just released or not during this frame
@@ -81,7 +81,7 @@ class Gamepad {
 		static bool justReleased(int id, Button b);
 
 		///
-		/// \brief Returns wether there is a gamepad connected at the fiven port ID.
+		/// \brief Returns wgether there is a gamepad connected at the fiven port ID.
 		/// If only 1 gamepad is connected, then isConnected(3) will return false.
 		/// \param id The port being queried
 		/// \return Whether a gamepad is connected or not at the given port
@@ -95,4 +95,4 @@ class Gamepad {
 /// This class will show no input (the states won't change) on mobile devices.
 ///
 
-#endif // GAMEHPP
+#endif // GAMEPAD_HPP
