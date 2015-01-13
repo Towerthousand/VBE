@@ -5,13 +5,11 @@
 RenderTarget::RenderTarget(unsigned int width, unsigned int height) : RenderTargetBase(width, height, 1) {
 }
 
-RenderTarget::RenderTarget(float mult) : RenderTargetBase(mult, 1) {
-}
-
 RenderTarget::~RenderTarget() {
 }
 
 void RenderTarget::setTexture(RenderTargetBase::Attachment a, Texture2D* tex) {
+	VBE_ASSERT(tex->getSize() == getSize(), "Incorrect size for Texture2D");
 	enableAttachment(a);
 	if(entries.find(a) != entries.end()) entries.erase(a);
 	entries.insert(std::pair<RenderTargetBase::Attachment, RenderTargetEntry>(a, RenderTargetEntry(tex)));
@@ -19,6 +17,7 @@ void RenderTarget::setTexture(RenderTargetBase::Attachment a, Texture2D* tex) {
 }
 
 void RenderTarget::setBuffer(RenderTargetBase::Attachment a, RenderBuffer* buff) {
+	VBE_ASSERT(buff->getSize() == getSize(), "Incorrect size for RenderBuffer");
 	enableAttachment(a);
 	if(entries.find(a) != entries.end()) entries.erase(a);
 	entries.insert(std::pair<RenderTargetBase::Attachment, RenderTargetEntry>(a, RenderTargetEntry(buff)));

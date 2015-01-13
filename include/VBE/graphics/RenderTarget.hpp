@@ -6,7 +6,6 @@
 class RenderTarget : public RenderTargetBase {
 	public:
 		RenderTarget(unsigned int width, unsigned int height);
-		RenderTarget(float mult);
 		~RenderTarget();
 
 		void setTexture(RenderTargetBase::Attachment a, Texture2D* tex);

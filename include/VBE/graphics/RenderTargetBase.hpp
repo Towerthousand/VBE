@@ -54,7 +54,6 @@ class RenderTargetBase : public NonCopyable {
 
 	protected:
 		RenderTargetBase(unsigned int width, unsigned int height, unsigned int numLayers);
-		RenderTargetBase(float mult, unsigned int numLayers);
 		virtual ~RenderTargetBase();
 
 		void ensureValid() const;
@@ -92,9 +91,7 @@ class RenderTargetBase : public NonCopyable {
 		static const RenderTargetBase* current;
 
 		GLuint handle;
-		mutable vec2ui size;
-		bool screenRelativeSize;
-		float screenSizeMultiplier;
+		const vec2ui size;
 		mutable bool dirty;
 		unsigned int numLayers;
 		std::vector<Attachment> drawAttachments;

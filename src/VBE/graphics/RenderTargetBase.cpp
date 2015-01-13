@@ -6,12 +6,8 @@
 
 const RenderTargetBase* RenderTargetBase::current = nullptr;
 
-RenderTargetBase::RenderTargetBase(unsigned int width, unsigned int height, unsigned int numLayers) : handle(0), size(width, height), screenRelativeSize(false), screenSizeMultiplier(0.0f), dirty(false), numLayers(numLayers) {
+RenderTargetBase::RenderTargetBase(unsigned int width, unsigned int height, unsigned int numLayers) : handle(0), size(width, height), dirty(false), numLayers(numLayers) {
 	VBE_ASSERT(width != 0 && height != 0, "Width or height can't be zero");
-	GL_ASSERT(glGenFramebuffers(1, &handle));
-}
-
-RenderTargetBase::RenderTargetBase(float mult, unsigned int numLayers) : handle(0), size(0), screenRelativeSize(true), screenSizeMultiplier(mult), dirty(false), numLayers(numLayers) {
 	GL_ASSERT(glGenFramebuffers(1, &handle));
 }
 
@@ -41,13 +37,6 @@ const RenderTargetBase* RenderTargetBase::getCurrent() {
 }
 
 vec2ui RenderTargetBase::getSize() const {
-	if(screenRelativeSize) {
-		vec2ui screenSize = Window::getInstance()->getSize();
-		return vec2ui(
-					static_cast<unsigned int>(screenSize.x*screenSizeMultiplier),
-					static_cast<unsigned int>(screenSize.y*screenSizeMultiplier));
-	}
-	else
 		return size;
 }
 
@@ -61,32 +50,6 @@ void RenderTargetBase::ensureValid() const {
 void RenderTargetBase::valid() const {
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget is invalid because it has no textures nor render buffers.");
 	VBE_ASSERT(entries.size() == allAttachments.size(), "This RenderTarget is invalid because it has no texture/renderbuffer for at least one of it's enabled attachments");
-	vec2ui desiredSize = getSize();
-
-	//Check size of all textures, resize if needed and check for entry consistency.
-	for(std::pair<const Attachment, RenderTargetEntry>& it : entries) {
-		RenderTargetEntry& e = it.second;
-		switch(e.type) {
-			case RenderTargetEntry::RenderBufferEntry:
-				VBE_ASSERT(numLayers == 1, "RenderBuffer attached to a RenderTarget with several layers");
-				if(e.renderBuffer->getSize() != desiredSize)
-					e.renderBuffer->resize(desiredSize);
-				break;
-			case RenderTargetEntry::Texture2DEntry:
-				VBE_ASSERT(numLayers == 1, "Texture2D attached to a RenderTarget with several layers");
-				if(e.texture2D->getSize() != desiredSize)
-					*e.texture2D = Texture2D(desiredSize, e.texture2D->getFormat());
-				break;
-#ifndef VBE_GLES2
-			case RenderTargetEntry::Texture2DArrayEntry:
-				VBE_ASSERT(e.texture2DArray->getSize().z == numLayers, "A Texture2DArray attached to this RenderTarget does not have the same layers as the RenderTarget");
-				if(vec2ui(e.texture2DArray->getSize()) != desiredSize)
-					*e.texture2DArray = Texture2DArray(vec3ui(desiredSize, numLayers), e.texture2DArray->getFormat());
-				break;
-#endif
-		}
-	}
-	size = desiredSize;
 
 	if(!dirty) return;
 
@@ -100,7 +63,7 @@ void RenderTargetBase::valid() const {
 				GL_ASSERT(glFramebufferRenderbuffer(GL_FRAMEBUFFER, a, GL_RENDERBUFFER, e.renderBuffer->getHandle()));
 				break;
 			case RenderTargetEntry::Texture2DEntry:
-				Texture2D::bind(e.texture2D, rand()%10);
+				Texture2D::bind(e.texture2D, rand()%10); //wow, such determinism
 				GL_ASSERT(glFramebufferTexture2D(GL_FRAMEBUFFER, a, GL_TEXTURE_2D, e.texture2D->getHandle(), 0));
 				break;
 #ifndef VBE_GLES2
