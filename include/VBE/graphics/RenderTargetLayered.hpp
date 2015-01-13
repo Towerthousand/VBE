@@ -9,7 +9,6 @@
 class RenderTargetLayered : public RenderTargetBase {
 	public:
 		RenderTargetLayered(unsigned int width, unsigned int height, unsigned int layers);
-		RenderTargetLayered(float mult, unsigned int layers);
 		~RenderTargetLayered();
 
 		void setTexture(RenderTargetBase::Attachment a, Texture2DArray* tex);
