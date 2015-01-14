@@ -46,7 +46,7 @@ class ShaderProgram : public NonCopyable {
 		void retrieveProgramInfo();
 		void printInfoLog();
 
-		GLuint programHandle;
+		GLuint programHandle = 0;
 		std::map<std::string, GLint> attributes;
 		std::map<std::string, Uniform*> uniforms;
 

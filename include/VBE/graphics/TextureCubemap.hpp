@@ -40,7 +40,7 @@ class TextureCubemap : public Texture {
 		TextureCubemap& operator=(TextureCubemap&& rhs);
 		friend void swap(TextureCubemap& a, TextureCubemap& b);
 	private:
-		unsigned int size;
+		unsigned int size = 0;
 };
 
 #endif // TEXTURECUBEMAP_HPP

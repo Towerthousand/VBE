@@ -3,7 +3,7 @@
 #include <VBE/system/Log.hpp>
 #include <VBE/graphics/Shader.hpp>
 
-Shader::Shader() : shaderHandle(0) {
+Shader::Shader() {
 }
 
 Shader::Shader(Type type, const std::string& data) {

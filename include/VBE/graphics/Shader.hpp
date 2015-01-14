@@ -31,6 +31,6 @@ class Shader : public NonCopyable  {
 		void compile() const;
 		void printInfoLog() const;
 
-		GLuint shaderHandle;
+		GLuint shaderHandle = 0;
 };
 #endif // SHADER_HPP

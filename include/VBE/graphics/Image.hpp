@@ -23,9 +23,9 @@ class Image : public NonCopyable {
 
 		static Image load(std::unique_ptr<std::istream>in);
 	private:
-		void* data;
-		vec2ui size;
-		unsigned int channels;
+		void* data = nullptr;
+		vec2ui size = vec2ui(0);
+		unsigned int channels = 0;
 };
 
 #endif // IMAGE_HPP

@@ -93,7 +93,7 @@ void Mouse::update() {
 // static
 bool Mouse::oldMouseButtonPresses[Mouse::ButtonCount];
 // static
-vec2i Mouse::oldMousePos;
+vec2i Mouse::oldMousePos = vec2i(0.0f);
 // static
-vec2i Mouse::oldMouseWheelPos;
+vec2i Mouse::oldMouseWheelPos = vec2i(0.0f);
 

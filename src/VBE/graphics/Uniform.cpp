@@ -8,7 +8,7 @@
 #include <VBE/system/Log.hpp>
 
 Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
-	dirty(true), count(count), type(type), location(location), texUnit(-1) {
+	count(count), type(type), location(location) {
 	unsigned int size = 0;
 	switch(type) {
 		case GL_FLOAT:

@@ -43,7 +43,7 @@ TextureCubemap TextureCubemap::load(
 	return res;
 }
 
-TextureCubemap::TextureCubemap() : Texture(Texture::TypeCubemap), size(0) {
+TextureCubemap::TextureCubemap() : Texture(Texture::TypeCubemap) {
 }
 
 

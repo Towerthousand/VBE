@@ -3,12 +3,11 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/graphics/ShaderBinding.hpp>
 
-MeshSeparate::MeshSeparate() : vertexBuffer(0) {
+MeshSeparate::MeshSeparate() {
 }
 
 MeshSeparate::MeshSeparate(const Vertex::Format& format, BufferType bufferType) :
-	MeshBase(format, bufferType),
-	vertexBuffer(0) {
+	MeshBase(format, bufferType) {
 	GL_ASSERT(glGenBuffers(1, &vertexBuffer));
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
 	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, 0, nullptr, getBufferType()));
