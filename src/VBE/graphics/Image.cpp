@@ -1,8 +1,7 @@
 #include <VBE/graphics/Image.hpp>
 #include <VBE/dependencies/stb_image/stb_image.hpp>
 
-Image::Image() :
-	data(nullptr), size(0), channels(0) {
+Image::Image() {
 }
 
 Image::Image(void* data, vec2ui size, unsigned int channels) :

@@ -45,7 +45,7 @@ Texture2DArray Texture2DArray::load(
 	return res;
 }
 
-Texture2DArray::Texture2DArray() : Texture(Texture::Type2DArray), size(0) {
+Texture2DArray::Texture2DArray() : Texture(Texture::Type2DArray) {
 }
 
 Texture2DArray::Texture2DArray(vec3ui size, TextureFormat::Format format) :

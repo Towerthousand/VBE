@@ -36,9 +36,9 @@ class Texture : public NonCopyable {
 		static void bind(Type type, const Texture* tex, unsigned int slot);
 		static GLenum typeToGL(Type t);
 	private:
-		GLuint handle;
-		TextureFormat::Format format;
-		Type type;
+		GLuint handle = 0;
+		TextureFormat::Format format = TextureFormat::RGB;
+		Type type = Type2D;
 
 		static std::vector<std::vector<GLuint>> current;
 		static unsigned int currentUnit;

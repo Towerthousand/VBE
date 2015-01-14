@@ -54,10 +54,10 @@ namespace Vertex {
 			bool operator == (const Attribute& e) const;
 			bool operator != (const Attribute& e) const;
 
-			std::string name;
-			Type type;
-			unsigned int size;
-			Conversion conv;
+			std::string name = "";
+			Type type = Float;
+			unsigned int size = 0;
+			Conversion conv = ConvertDefault;
 
 		private:
 			void calcDefaultConversion();
@@ -79,7 +79,7 @@ namespace Vertex {
 		private:
 			std::vector<Attribute> elements;
 			std::vector<unsigned int> offsets;
-			unsigned int vertSize;
+			unsigned int vertSize = 0;
 	};
 
 } // namespace Vertex

@@ -3,13 +3,11 @@
 #include <VBE/graphics/ShaderProgram.hpp>
 #include <VBE/system/Log.hpp>
 
-MeshIndexed::MeshIndexed() : MeshSeparate(), indexBuffer(0) {
+MeshIndexed::MeshIndexed() : MeshSeparate() {
 }
 
 MeshIndexed::MeshIndexed(const Vertex::Format& format, BufferType bufferType) :
-	MeshSeparate(format, bufferType),
-	indexCount(0),
-	indexBuffer(0) {
+	MeshSeparate(format, bufferType) {
 	GL_ASSERT(glGenBuffers(1, &indexBuffer));
 }
 

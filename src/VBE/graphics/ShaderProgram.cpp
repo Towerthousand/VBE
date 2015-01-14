@@ -9,9 +9,9 @@
 #include <VBE/system/Log.hpp>
 #include <VBE/system/Storage.hpp>
 
-GLuint ShaderProgram::current(0);
+GLuint ShaderProgram::current = 0;
 
-ShaderProgram::ShaderProgram() : programHandle(0) {
+ShaderProgram::ShaderProgram() {
 }
 
 ShaderProgram::ShaderProgram(std::initializer_list<std::pair<Shader::Type, std::string>> shaders) {

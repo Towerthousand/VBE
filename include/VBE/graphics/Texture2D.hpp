@@ -32,7 +32,7 @@ class Texture2D : public Texture {
 		friend void swap(Texture2D& a, Texture2D& b);
 
 	private:
-		vec2ui size;
+		vec2ui size = vec2ui(0);
 };
 
 #endif // TEXTURE2D_HPP

@@ -23,8 +23,8 @@ class MeshIndexed final : public MeshSeparate {
 		friend void swap(MeshIndexed& a, MeshIndexed& b);
 
 	private:
-		unsigned int indexCount;
-		GLuint indexBuffer;
+		unsigned int indexCount = 0;
+		GLuint indexBuffer = 0;
 };
 
 

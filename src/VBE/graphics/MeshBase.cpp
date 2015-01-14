@@ -5,9 +5,7 @@ MeshBase::MeshBase() {
 }
 
 MeshBase::MeshBase(const Vertex::Format& format, BufferType bufferType)
-	: vertexCount(0),
-	  vertexFormat(format),
-	  primitiveType(TRIANGLES),
+	: vertexFormat(format),
 	  bufferType(bufferType) {
 }
 

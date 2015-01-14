@@ -29,7 +29,7 @@ class Texture3D : public Texture {
 		friend void swap(Texture3D& a, Texture3D& b);
 
 	private:
-		vec3ui size;
+		vec3ui size = vec3ui(0);
 };
 
 #endif // VBE_GLES2

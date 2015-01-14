@@ -46,11 +46,11 @@ class MeshBase : public NonCopyable {
 
 		friend void swap(MeshBase& a, MeshBase& b);
 	protected:
-		unsigned int vertexCount;
+		unsigned int vertexCount = 0;
 	private:
 		Vertex::Format vertexFormat;
-		PrimitiveType primitiveType;
-		BufferType bufferType;
+		PrimitiveType primitiveType = TRIANGLES;
+		BufferType bufferType = STATIC;
 };
 
 #endif // MESHBASE_HPP

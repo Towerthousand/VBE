@@ -20,7 +20,7 @@ class MeshSeparate : public MeshBase {
 
 	private:
 		std::map<GLuint, const ShaderBinding*> bindingsCache;
-		GLuint vertexBuffer;
+		GLuint vertexBuffer = 0;
 };
 
 #endif // MESHSEPARATE_HPP

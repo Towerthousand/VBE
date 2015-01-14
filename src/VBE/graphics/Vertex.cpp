@@ -44,7 +44,7 @@ namespace Vertex {
 	}
 
 	Format::Format(const std::vector<Attribute> &elements)
-		: elements(elements), offsets(elements.size(), 0), vertSize(0) {
+		: elements(elements), offsets(elements.size(), 0) {
 		unsigned int offset = 0;
 		for (unsigned int i = 0; i < elements.size(); ++i) {
 			offsets[i] = offset;

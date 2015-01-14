@@ -66,11 +66,11 @@ class Uniform : public NonCopyable {
 		void setBytes(const char* val);
 		bool compare(const char* val) const;
 
-		bool dirty;
-		unsigned int count;
-		GLenum type;
-		GLint location;
-		unsigned int texUnit; //only valid if sampler
+		bool dirty = true;
+		unsigned int count = 0;
+		GLenum type = GL_FLOAT;
+		GLint location = 0;
+		unsigned int texUnit = -1; //only valid if sampler
 		std::vector<char> lastValue;
 
 		friend class ShaderProgram;

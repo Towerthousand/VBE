@@ -98,8 +98,8 @@ class AABB {
 
 	private:
 		friend class Collision;
-		vec3f pmin;
-		vec3f pmax;
+		vec3f pmin = vec3f(std::numeric_limits<float>::max());
+		vec3f pmax = vec3f(std::numeric_limits<float>::lowest());
 };
 ///
 /// \class AABB AABB.hpp <VBE/geometry/AABB.hpp>

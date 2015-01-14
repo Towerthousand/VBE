@@ -18,9 +18,9 @@ class RenderBuffer {
 		void bind() const;
 		GLuint getHandle() const;
 	private:
-		vec2ui size;
-		TextureFormat::Format format;
-		GLuint handle;
+		vec2ui size = vec2ui(0);
+		TextureFormat::Format format = TextureFormat::RGB;
+		GLuint handle = 0;
 };
 
 #endif // RENDERBUFFER_HPP

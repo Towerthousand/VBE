@@ -263,8 +263,7 @@ class Window : public NonCopyable {
 		static Window* getInstance();
 
 	private:
-		WindowImpl* impl;
-		std::string title;
+		std::string title = "VBE Application";
 
 		static Window* instance;
 };

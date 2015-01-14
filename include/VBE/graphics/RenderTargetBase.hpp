@@ -90,10 +90,10 @@ class RenderTargetBase : public NonCopyable {
 
 		static const RenderTargetBase* current;
 
-		GLuint handle;
-		const vec2ui size;
-		mutable bool dirty;
-		unsigned int numLayers;
+		GLuint handle = 0;
+		const vec2ui size = vec2ui(0);
+		mutable bool dirty = false;
+		unsigned int numLayers = 0;
 		std::vector<Attachment> drawAttachments;
 		std::set<Attachment> allAttachments;
 		mutable std::map<Attachment, RenderTargetEntry> entries;

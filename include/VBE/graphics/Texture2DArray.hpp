@@ -35,7 +35,7 @@ class Texture2DArray : public Texture {
 		friend void swap(Texture2DArray& a, Texture2DArray& b);
 
 	private:
-		vec3ui size;
+		vec3ui size = vec3ui(0);
 };
 
 #endif // VBE_GLES2

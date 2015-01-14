@@ -1,6 +1,6 @@
 #include <VBE/geometry/Plane.hpp>
 
-Plane::Plane(vec3f p0, vec3f p1, vec3f p2) {
+Plane::Plane(vec3f p0, vec3f p1, vec3f p2) : n(0), d(0) {
 	vec3f v = p1-p0;
 	vec3f u = p2-p0;
 	n = glm::cross(u,v);
@@ -11,7 +11,7 @@ Plane::Plane(vec3f p0, vec3f p1, vec3f p2) {
 Plane::Plane(vec3f n, vec3f p) : n(glm::normalize(n)), d(-glm::dot(glm::normalize(n),p)) {
 }
 
-Plane::Plane(vec3f n, float d) : n(glm::normalize(n)), d(d/glm::length(n)){
+Plane::Plane(vec3f n, float d) : n(glm::normalize(n)), d(d/glm::length(n)) {
 }
 
 Plane::Plane(vec4f ABCD) : n(vec3f(ABCD)), d(ABCD.z) {

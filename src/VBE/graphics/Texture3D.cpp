@@ -7,7 +7,7 @@
 // 3D textures are not supported in GLES2
 #ifndef VBE_GLES2
 
-Texture3D::Texture3D() : Texture(Texture::Type3D), size(0) {
+Texture3D::Texture3D() : Texture(Texture::Type3D) {
 }
 
 Texture3D::Texture3D(vec3ui size, TextureFormat::Format format) :

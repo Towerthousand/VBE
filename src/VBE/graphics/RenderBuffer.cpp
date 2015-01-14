@@ -1,9 +1,9 @@
 #include <VBE/graphics/RenderBuffer.hpp>
 
-RenderBuffer::RenderBuffer() : size(0), format(TextureFormat::RGB), handle(0) {
+RenderBuffer::RenderBuffer() {
 }
 
-RenderBuffer::RenderBuffer(vec2ui size, TextureFormat::Format format) : size(size), format(format), handle(0){
+RenderBuffer::RenderBuffer(vec2ui size, TextureFormat::Format format) : size(size), format(format) {
 	GL_ASSERT(glGenRenderbuffers(1, &handle));
 	resize(size);
 }
