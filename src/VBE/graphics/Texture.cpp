@@ -30,15 +30,16 @@ void swap(Texture& a, Texture& b) {
 // static
 void Texture::bind(Texture::Type type, const Texture* tex, unsigned int slot) {
 	VBE_ASSERT(slot < getMaxSlots(), "Invalid texture slot on Texture::bind");
-	if(tex != nullptr) {
-		VBE_ASSERT(type == tex->type, "Invalid tex, type on Texture::bind");
-		if(current[type][slot] == tex->handle) return;
-		current[type][slot] = tex->handle;
-	}
 
 	if(currentUnit != slot) {
 		GL_ASSERT(glActiveTexture(GL_TEXTURE0 + slot));
 		currentUnit = slot;
+	}
+
+	if(tex != nullptr) {
+		VBE_ASSERT(type == tex->type, "Invalid tex, type on Texture::bind");
+		if(current[type][slot] == tex->handle) return;
+		current[type][slot] = tex->handle;
 	}
 
 	if(tex != nullptr)
