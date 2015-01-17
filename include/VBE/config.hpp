@@ -13,11 +13,6 @@
 #endif
 
 
-#define VBE_DEBUG
-
-#if defined(NDEBUG)
-	#undef VBE_DEBUG
-#endif
-#if defined(QT_NO_DEBUG)
-	#undef VBE_DEBUG
+#if not defined(NDEBUG) && not defined(QT_NO_DEBUG)
+	#define VBE_DEBUG
 #endif
