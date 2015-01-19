@@ -14,7 +14,7 @@ GLuint ShaderProgram::current = 0;
 ShaderProgram::ShaderProgram() {
 }
 
-ShaderProgram::ShaderProgram(std::initializer_list<std::pair<Shader::Type, std::string>> shaders) {
+ShaderProgram::ShaderProgram(std::vector<std::pair<Shader::Type, std::string>> shaders) {
 
 	GL_ASSERT(programHandle = glCreateProgram());
 
