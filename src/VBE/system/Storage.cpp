@@ -6,6 +6,7 @@ std::unique_ptr<std::istream> Storage::openAsset(const std::string& filename) {
 	return StorageImpl::openAsset(filename);
 }
 
+// static
 std::string Storage::readToString(std::unique_ptr<std::istream> file){
 	// get length of file
 	file->seekg(0, std::ios::end);
@@ -21,3 +22,7 @@ std::string Storage::readToString(std::unique_ptr<std::istream> file){
 	return s;
 }
 
+// static
+void Storage::setAssetPath(std::string path) {
+	StorageImpl::setAssetPath(path);
+}
