@@ -24,6 +24,14 @@ void InputImpl::init() {
 }
 
 // static
+void InputImpl::update() {
+	for(Touch::Finger& finger : fingers) {
+		finger.isNew = false;
+		finger.oldPos = finger.pos;
+	}
+}
+
+// static
 const bool* InputImpl::getKeyPresses() {
 	return keyPresses;
 }
@@ -87,11 +95,6 @@ int InputImpl::getControllerIndex(SDL_JoystickID instance) {
 // static
 void InputImpl::processEvent(const SDL_Event& e) {
 	int key;
-
-	for(Touch::Finger& finger : fingers) {
-		finger.isNew = false;
-		finger.oldPos = finger.pos;
-	}
 
 	switch(e.type) {
 		// Keyboard events

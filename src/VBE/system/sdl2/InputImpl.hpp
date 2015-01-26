@@ -10,6 +10,7 @@
 class InputImpl {
 	public:
 		static void init();
+		static void update();
 		static void processEvent(const SDL_Event& e);
 
 		static const bool* getKeyPresses();

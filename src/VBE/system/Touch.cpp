@@ -1,6 +1,10 @@
 #include <VBE/system/Touch.hpp>
 #include <VBE/system/InputImpl.hpp>
 
+int Touch::Finger::getId() const {
+	return id;
+}
+
 bool Touch::Finger::justPressed() const {
 	return isNew;
 }

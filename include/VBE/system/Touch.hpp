@@ -10,6 +10,7 @@ class Touch {
 	public:
 		class Finger {
 			public:
+				int getId() const;
 				bool justPressed() const;
 				vec2f position() const;
 				vec2f movement() const;
