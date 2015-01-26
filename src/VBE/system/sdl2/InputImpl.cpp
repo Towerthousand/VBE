@@ -154,7 +154,17 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				controllers[e.cdevice.which] = GamepadImpl();
 				break;
 			}
+		case SDL_FINGERDOWN:
+			VBE_LOG("Finger down");
+			break;
+		case SDL_FINGERMOTION:
+			VBE_LOG("Finger move");
+			break;
+		case SDL_FINGERUP:
+			VBE_LOG("Finger up");
+			break;
 		default:
+			VBE_LOG("Random shit");
 			break;
 	}
 }

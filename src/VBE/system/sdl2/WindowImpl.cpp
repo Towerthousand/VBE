@@ -82,7 +82,7 @@ void WindowImpl::create(Window::DisplayMode mode, ContextSettings config) {
 	window = SDL_CreateWindow("VBE Game",
 							  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 							  mode.getWidth(), mode.getHeight(),
-							  SDL_WINDOW_OPENGL);
+							  SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 	VBE_ASSERT(window != nullptr, "Failed to init window: "<<SDL_GetError());
 
 	if(mode.getType() == Window::DisplayMode::Fullscreen) {
