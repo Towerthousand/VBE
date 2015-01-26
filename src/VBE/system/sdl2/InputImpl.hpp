@@ -4,6 +4,7 @@
 #include <VBE/system/Mouse.hpp>
 #include <VBE/system/Keyboard.hpp>
 #include <VBE/system/Gamepad.hpp>
+#include <VBE/system/Touch.hpp>
 #include <VBE/system/sdl2/sdl2.hpp>
 
 class InputImpl {
@@ -31,6 +32,7 @@ class InputImpl {
 
 		static int getControllerIndex(SDL_JoystickID instance);
 
+		static const std::vector<Touch::Finger>& getFingers();
 	private:
 		struct GamepadImpl {
 				GamepadImpl();
@@ -59,6 +61,8 @@ class InputImpl {
 		static vec2i mousePos;
 		static vec2i mouseWheelPos;
 		static bool relativeMouse;
+
+		static std::vector<Touch::Finger> fingers;
 };
 
 #endif // INPUTIMPL_HPP

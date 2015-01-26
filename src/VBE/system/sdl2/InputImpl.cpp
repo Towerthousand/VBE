@@ -9,6 +9,7 @@ bool InputImpl::mouseButtonPresses[Mouse::ButtonCount];
 vec2i InputImpl::mousePos;
 vec2i InputImpl::mouseWheelPos;
 bool InputImpl::relativeMouse;
+std::vector<Touch::Finger> InputImpl::fingers;
 
 // static
 void InputImpl::init() {
@@ -87,6 +88,11 @@ int InputImpl::getControllerIndex(SDL_JoystickID instance) {
 void InputImpl::processEvent(const SDL_Event& e) {
 	int key;
 
+	for(Touch::Finger& finger : fingers) {
+		finger.isNew = false;
+		finger.oldPos = finger.pos;
+	}
+
 	switch(e.type) {
 		// Keyboard events
 		case SDL_KEYDOWN:
@@ -154,17 +160,30 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				controllers[e.cdevice.which] = GamepadImpl();
 				break;
 			}
-		case SDL_FINGERDOWN:
-			VBE_LOG("Finger down");
+		case SDL_FINGERDOWN: {
+			Touch::Finger f;
+			f.id = e.tfinger.fingerId;
+			f.pos = vec2f(e.tfinger.x, e.tfinger.y);
+			f.oldPos = f.pos;
+			f.isNew = true;
+			fingers.push_back(f);
 			break;
+		}
 		case SDL_FINGERMOTION:
-			VBE_LOG("Finger move");
+			for(Touch::Finger& f : fingers)
+				if(f.id == e.tfinger.fingerId)
+					f.pos = vec2f(e.tfinger.x, e.tfinger.y);
 			break;
 		case SDL_FINGERUP:
-			VBE_LOG("Finger up");
+			for(int i = 0; i < (int)fingers.size(); i++) {
+				if(fingers[i].id == e.tfinger.fingerId) {
+					fingers.erase(fingers.begin()+i);
+					break;
+				}
+			}
 			break;
 		default:
-			VBE_LOG("Random shit");
+//			VBE_LOG("Random shit");
 			break;
 	}
 }
@@ -500,4 +519,9 @@ void InputImpl::GamepadImpl::close() {
 		SDL_GameControllerClose(gamepad);
 		gamepad = nullptr;
 	}
+}
+
+// static
+const std::vector<Touch::Finger>& InputImpl::getFingers() {
+	return fingers;
 }
