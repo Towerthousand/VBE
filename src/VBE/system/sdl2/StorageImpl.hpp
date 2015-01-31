@@ -8,6 +8,7 @@
 class StorageImpl {
 	public:
 		static std::unique_ptr<std::istream> openAsset(const std::string& filename);
+		static void setAssetPath(std::string path);
 };
 
 

@@ -11,12 +11,12 @@ class Frustum {
 		/// \brief Identifies each of the planes in this frustum
 		///
 		enum PlaneID {
-			TOP = 0, ///< Top plane
-			BOTTOM, ///< Bottom plane
-			LEFT, ///< Left plane
-			RIGHT, ///< Right plane
-			NEAR, ///< Near plane
-			FAR ///< Far plane
+			TOP_PLANE = 0, ///< Top plane
+			BOTTOM_PLANE, ///< Bottom plane
+			LEFT_PLANE, ///< Left plane
+			RIGHT_PLANE, ///< Right plane
+			NEAR_PLANE, ///< Near plane
+			FAR_PLANE ///< Far plane
 		};
 
 		///

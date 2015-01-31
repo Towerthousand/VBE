@@ -33,6 +33,7 @@ void Window::update() {
 	Keyboard::update();
 	Mouse::update();
 	Gamepad::update();
+	InputImpl::update();
 
 	// Then we process the events.
 	WindowImpl::update();

@@ -4,7 +4,7 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <initializer_list>
+#include <vector>
 
 #include <VBE/config.hpp>
 #include <VBE/graphics/OpenGL.hpp>
@@ -17,7 +17,7 @@ class ShaderProgram : public NonCopyable {
 	public:
 		ShaderProgram();
 
-		ShaderProgram(std::initializer_list<std::pair<Shader::Type, std::string>> shaders);
+		ShaderProgram(std::vector<std::pair<Shader::Type, std::string>> shaders);
 
 		ShaderProgram(const std::string &vert, const std::string &frag);
 		ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag);

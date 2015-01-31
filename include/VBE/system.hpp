@@ -10,3 +10,5 @@
 #include <VBE/system/Gamepad.hpp>
 #include <VBE/system/Storage.hpp>
 #include <VBE/system/Window.hpp>
+#include <VBE/system/Touch.hpp>
+

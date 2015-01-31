@@ -11,6 +11,7 @@ bool InputImpl::mouseButtonPresses[Mouse::ButtonCount];
 vec2i InputImpl::mousePos;
 vec2i InputImpl::mouseWheelPos;
 bool InputImpl::relativeMouse;
+std::vector<Touch::Finger> InputImpl::fingers;
 
 // static
 void InputImpl::init() {
@@ -22,6 +23,14 @@ void InputImpl::init() {
 		keyPresses[i] = false;
 	for(int i = 0; i < Mouse::ButtonCount; i++)
 		mouseButtonPresses[i] = false;
+}
+
+// static
+void InputImpl::update() {
+	for(Touch::Finger& finger : fingers) {
+		finger.isNew = false;
+		finger.oldPos = finger.pos;
+	}
 }
 
 // static
@@ -185,7 +194,30 @@ void InputImpl::processEvent(const SDL_Event& e) {
 				controllers[e.cdevice.which] = GamepadImpl();
 				break;
 			}
+		case SDL_FINGERDOWN: {
+			Touch::Finger f;
+			f.id = e.tfinger.fingerId;
+			f.pos = vec2f(e.tfinger.x, e.tfinger.y);
+			f.oldPos = f.pos;
+			f.isNew = true;
+			fingers.push_back(f);
+			break;
+		}
+		case SDL_FINGERMOTION:
+			for(Touch::Finger& f : fingers)
+				if(f.id == e.tfinger.fingerId)
+					f.pos = vec2f(e.tfinger.x, e.tfinger.y);
+			break;
+		case SDL_FINGERUP:
+			for(int i = 0; i < (int)fingers.size(); i++) {
+				if(fingers[i].id == e.tfinger.fingerId) {
+					fingers.erase(fingers.begin()+i);
+					break;
+				}
+			}
+			break;
 		default:
+//			VBE_LOG("Random shit");
 			break;
 	}
 }
@@ -541,4 +573,9 @@ void InputImpl::GamepadImpl::close() {
 		SDL_GameControllerClose(gamepad);
 		gamepad = nullptr;
 	}
+}
+
+// static
+const std::vector<Touch::Finger>& InputImpl::getFingers() {
+	return fingers;
 }
