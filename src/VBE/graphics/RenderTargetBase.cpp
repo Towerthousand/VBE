@@ -16,6 +16,21 @@ RenderTargetBase::~RenderTargetBase() {
 	handle = 0;
 }
 
+void swap(RenderTargetBase& a, RenderTargetBase& b) {
+	using std::swap;
+
+	//TODO: Fix this with handles!
+	RenderTargetBase::bind(nullptr); //'current' pointer might become invalidated otherwise
+
+	swap(a.handle, b.handle);
+	swap(a.size, b.size);
+	swap(a.dirty, b.dirty);
+	swap(a.numLayers, b.numLayers);
+	swap(a.drawAttachments, b.drawAttachments);
+	swap(a.allAttachments, b.allAttachments);
+	swap(a.entries, b.entries);
+}
+
 // static
 void RenderTargetBase::bind(const RenderTargetBase *target) {
 	if(current == target && (target == nullptr || !target->dirty)) return;
@@ -37,7 +52,11 @@ const RenderTargetBase* RenderTargetBase::getCurrent() {
 }
 
 vec2ui RenderTargetBase::getSize() const {
-		return size;
+	return size;
+}
+
+unsigned int RenderTargetBase::getNumLayers() const {
+	return numLayers;
 }
 
 void RenderTargetBase::ensureValid() const {
