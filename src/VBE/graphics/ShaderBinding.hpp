@@ -23,6 +23,10 @@ class ShaderBinding : public NonCopyable {
 		void enableAttributes() const;
 		void disableAttributes() const;
 
+		//TODO: Fix this with handles!
+		//Having pointers will wreck everything if the user moves the
+		//resource after assigning it. For safety, handles should be
+		//applied.
 		const ShaderProgram* program;
 		const MeshSeparate* mesh;
 		const MeshBatched::Buffer* buffer;

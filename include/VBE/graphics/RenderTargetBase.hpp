@@ -46,12 +46,18 @@ class RenderTargetBase : public NonCopyable {
 			return a >= COLOR0 && a <= COLOR15;
 #endif
 		}
-		
+
+		static void bind(const RenderTargetBase& renderTarget) {
+			bind(&renderTarget);
+		}
+
 		static void bind(const RenderTargetBase* renderTarget);
 		static const RenderTargetBase* getCurrent();
 
 		vec2ui getSize() const;
+		unsigned int getNumLayers() const;
 
+		friend void swap(RenderTargetBase& a, RenderTargetBase& b);
 	protected:
 		RenderTargetBase(unsigned int width, unsigned int height, unsigned int numLayers);
 		virtual ~RenderTargetBase();
@@ -81,6 +87,10 @@ class RenderTargetBase : public NonCopyable {
 				~RenderTargetEntry() {}
 
 				Type type;
+				//TODO: Fix this with handles!
+				//Having pointers will wreck everything if the user moves the
+				//resource after assigning it. For safety, handles should be
+				//applied.
 				RenderBuffer* renderBuffer;
 				Texture2D* texture2D;
 #ifndef VBE_GLES2
@@ -91,7 +101,7 @@ class RenderTargetBase : public NonCopyable {
 		static const RenderTargetBase* current;
 
 		GLuint handle = 0;
-		const vec2ui size = vec2ui(0);
+		/*const*/ vec2ui size = vec2ui(0); //metaphorical const ftw
 		mutable bool dirty = false;
 		unsigned int numLayers = 0;
 		std::vector<Attachment> drawAttachments;
