@@ -7,7 +7,7 @@
 class InputImpl;
 
 ///
-/// \brief The Touch class provides support to read multi-touch gestures
+/// \brief The Touch class provides support to read touch and multi-touch screens
 ///
 class Touch {
 	public:
@@ -17,11 +17,11 @@ class Touch {
 		class Finger {
 			public:
 				///
-				/// \brief Returns the ID of this fingers
+				/// \brief Returns the ID of this finger
 				///
 				int getId() const;
 				///
-				/// \brief Returns whether this finger just made contact with the display
+				/// \brief Returns whether this finger just made contact with the display in this frame
 				///
 				bool justPressed() const;
 				///
@@ -29,7 +29,7 @@ class Touch {
 				///
 				vec2f position() const;
 				///
-				/// \brief Returns the current movement relative to the last frame
+				/// \brief Returns the movement relative to the last frame
 				///
 				vec2f movement() const;
 
@@ -46,14 +46,14 @@ class Touch {
 		/// \class Finger Window.hpp <VBE/system/Touch.hpp>
 		/// \ingroup System
 		///
-		/// Each user finger is kept track of since the moment of contact untill release, and it will
+		/// Each user finger is tracked from the moment of contact until release, and it will
 		/// maintain the same ID throughout the whole gesture.
 		///
 		/// \see Touch
 		///
 
 		///
-		/// \brief Returns a vector reference that contains all the currently tracked fingers
+		/// \brief Returns all the tracked fingers
 		///
 		static const std::vector<Finger>& getFingers();
 };
