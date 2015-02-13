@@ -101,8 +101,8 @@ class Window : public NonCopyable {
 		/// \ingroup System
 		///
 		/// The DisplayMode class represents a window's format. It can be either Fullscreen or Windowed.
-		/// Windowed display modes are arbitrary in size and refreshratem while fullscreen modes are
-		/// preset and you can query them through Window::getFullscreenModes().
+		/// Windowed display modes are arbitrary in size and refresh rate while fullscreen modes are
+		/// preset. You can query available fullscreen modes through Window::getFullscreenModes().
 		///
 		/// \see Window
 		///
