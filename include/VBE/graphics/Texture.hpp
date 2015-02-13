@@ -6,20 +6,41 @@
 #include <VBE/graphics/TextureFormat.hpp>
 #include <VBE/utils/NonCopyable.hpp>
 
+///
+/// \brief Texture is the base class for all the OpenGL texture types.
+///
 class Texture : public NonCopyable {
 	public:
+		///
+		/// \brief The Type enum represents the different OpenGL texture Types, used by the subclasses.
+		///
 		enum Type {
-			Type2D = 0,
-			Type2DArray,
-			Type3D,
-			TypeCubemap,
+			Type2D = 0, //< GL_TEXTURE_2D
+			Type2DArray, //< GL_TEXTURE_2D_ARRAY
+			Type3D, //< GL_TEXTURE_3D
+			TypeCubemap, //< GL_TEXTURE_CUBEMAP
 			TypeCount
 		};
-
+		
+		///
+		/// \brief Destructor
+		///
 		virtual ~Texture();
 
+		///
+		/// \brief Returns the OpenGL handle of this texture
+		///
 		GLuint getHandle() const;
+		
+		///
+		/// \brief Returns this texture's pixel format
+		///
 		TextureFormat::Format getFormat() const;
+		
+		///
+		/// \brief Returns the texture type
+		/// \see Texture::Type
+		///
 		Type getType() const;
 
 #ifndef VBE_GLES2
@@ -44,5 +65,13 @@ class Texture : public NonCopyable {
 		static unsigned int currentUnit;
 		static int maxSlots;
 };
+
+///
+/// \class Window Window.hpp <VBE/system/Window.hpp>
+/// \ingroup System
+///
+/// This base class provides common functionality that is available for all textures, such as setting
+/// the wrapping/filtering/comparing modes.
+///
 
 #endif // Texture_HPP
