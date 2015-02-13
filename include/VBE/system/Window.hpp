@@ -19,11 +19,6 @@ class Window : public NonCopyable {
 		///
 		/// \brief The DisplayMode class represents a display mode that can be used.
 		///
-		/// There are two types of DisplayModes: Fullscreen and Windowed. You can
-		/// create a Windowed mode with the size you want, but you're restricted to
-		/// use the Fullscreen modes from Window::getFullscreenModes(), which
-		/// are the modes supported by the hardware.
-		///
 		class DisplayMode {
 			public:
 
