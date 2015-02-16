@@ -44,12 +44,29 @@ class Texture : public NonCopyable {
 		Type getType() const;
 
 #ifndef VBE_GLES2
+		///
+		/// \brief Sets the comparison function and mode
+		///
 		void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
 #endif
+		///
+		/// \brief Sets the minification (when seen from afar) and magnification (when seen from up close) filter
+		///
 		void setFilter(GLenum min, GLenum mag);
+		
+		///
+		/// \brief Sets the wrap function for texture fetches out of the (0..1) range
+		///
 		void setWrap(GLenum wrap);
+		
+		///
+		/// \brief Returns the maximum number of texture that can be binded at the same time
+		///
 		static unsigned int getMaxSlots();
 
+		///
+		/// \brief Swap operator for the Texture class
+		///
 		friend void swap(Texture& a, Texture& b);
 	protected:
 		Texture(Type type, TextureFormat::Format format = TextureFormat::RGBA);
