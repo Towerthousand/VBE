@@ -23,9 +23,9 @@ class Texture2D : public Texture {
 				TextureFormat::Format format = TextureFormat::AUTO);
 
 		///
-		/// \brief Default constructor. Generates invalid texture (0x0)
+		/// \brief Default constructor. Generates an invalid texture with no pixels.
 		///
-		/// This constructor will generate a texture of size (0,0). This texture is not
+		/// This constructor will generate a texture of size 0. This texture is not
 		/// meant for use in rendering.
 		///
 		Texture2D();
@@ -102,8 +102,8 @@ class Texture2D : public Texture {
 		vec2ui size = vec2ui(0);
 };
 ///
-/// \class Window Window.hpp <VBE/system/Window.hpp>
-/// \ingroup System
+/// \class Texture2D Texture2D.hpp <VBE/graphics/Texture2D.hpp>
+/// \ingroup Graphics
 ///
 
 #endif // TEXTURE2D_HPP
