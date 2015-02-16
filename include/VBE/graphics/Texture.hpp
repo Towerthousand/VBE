@@ -84,8 +84,8 @@ class Texture : public NonCopyable {
 };
 
 ///
-/// \class Window Window.hpp <VBE/system/Window.hpp>
-/// \ingroup System
+/// \class Texture Texture.hpp <VBE/system/Texture.hpp>
+/// \ingroup Graphics
 ///
 /// This base class provides common functionality that is available for all textures, such as setting
 /// the wrapping/filtering/comparing modes.
