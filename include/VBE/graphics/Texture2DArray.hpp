@@ -86,7 +86,7 @@ class Texture2DArray : public Texture {
 		Texture2DArray& operator=(Texture2DArray&& rhs);
 		
 		///
-		/// \brief Swap operator for the Texture2D class
+		/// \brief Swap operator for the Texture2DArray class
 		///
 		friend void swap(Texture2DArray& a, Texture2DArray& b);
 
@@ -94,7 +94,7 @@ class Texture2DArray : public Texture {
 		vec3ui size = vec3ui(0);
 };
 ///
-/// \class Texture2D Texture2D.hpp <VBE/graphics/Texture2D.hpp>
+/// \class Texture2DArray Texture2DArray.hpp <VBE/graphics/Texture2DArray.hpp>
 /// \ingroup Graphics
 ///
 
