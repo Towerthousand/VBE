@@ -46,7 +46,7 @@ class Texture2D : public Texture {
 		///
 		/// \brief Sets the content of the texture
 		///
-		/// The pixels must be hold enough data to fill the texture, otherwise the behaviour is undefined
+		/// The pixels pointer must hold enough data to fill the texture, otherwise the behaviour is undefined
 		///
 		/// \param sourceFormat The format of the pixels pointer
 		/// \param sourceType The data type of the pixels pointer
