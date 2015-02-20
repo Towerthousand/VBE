@@ -84,7 +84,7 @@ class Texture : public NonCopyable {
 };
 
 ///
-/// \class Texture Texture.hpp <VBE/system/Texture.hpp>
+/// \class Texture Texture.hpp <VBE/graphics/Texture.hpp>
 /// \ingroup Graphics
 ///
 /// This base class provides common functionality that is available for all textures, such as setting

@@ -12,7 +12,7 @@ class Texture3D;
 class Texture2DArray;
 class Texture;
 ///
-/// \brief The Uniform class represents an OpenGL Shader Program Uniform
+/// \brief The Uniform class represents an OpenGL ShaderProgram Uniform
 ///
 class Uniform : public NonCopyable {
 	public:
