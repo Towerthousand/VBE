@@ -3,6 +3,9 @@
 // Layered targets are not supported in GLES2
 #ifndef VBE_GLES2
 
+RenderTargetLayered::RenderTargetLayered() : RenderTargetBase(0, 0, 1) {
+}
+
 RenderTargetLayered::RenderTargetLayered(unsigned int width, unsigned int height, unsigned int layers) : RenderTargetBase(width, height, layers) {
 }
 
@@ -17,9 +20,25 @@ void RenderTargetLayered::setTexture(RenderTargetBase::Attachment a, Texture2DAr
 	dirty = true;
 }
 
-Texture2DArray* RenderTargetLayered::getTexture(RenderTargetBase::Attachment a) {
+Texture2DArray* RenderTargetLayered::getTexture(RenderTargetBase::Attachment a) const {
 	VBE_ASSERT(entries.find(a) != entries.end(), "No texture found for the provided attachment");
 	return entries.at(a).texture2DArray;
+}
+
+RenderTargetLayered::RenderTargetLayered(RenderTargetLayered&& rhs) : RenderTargetLayered() {
+	using std::swap;
+	swap(*this, rhs);
+}
+
+RenderTargetLayered& RenderTargetLayered::operator=(RenderTargetLayered&& rhs) {
+	using std::swap;
+	swap(*this, rhs);
+	return *this;
+}
+
+void swap(RenderTargetLayered& a, RenderTargetLayered& b) {
+	using std::swap;
+	swap(static_cast<RenderTargetBase&>(a), static_cast<RenderTargetBase&>(b));
 }
 
 #endif
