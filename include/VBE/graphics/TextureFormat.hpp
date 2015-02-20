@@ -5,8 +5,19 @@
 #include <VBE/graphics/OpenGL.hpp>
 #include <VBE/system/Log.hpp>
 
+///
+/// \brief In the TextureFormat class you will find enums for all sized and base GL pixel formats and pixel source types
+///
 class TextureFormat {
 	public:
+
+		///
+		/// \brief The Format enum has all available formats, sized and unsized.
+		///
+		/// Sized formats are only available on Desktop OpenGL. The only formats
+		/// available in the GLES2 spec are ALPHA, RGB, RGBA, LUMINANCE, RED and LUMINANCE_ALPHA.
+		/// Furthermore, ALPHA, LUMINANCE and LUMINANCE_ALPHA are only available on GLES2
+		///
 		enum Format {
 			AUTO = 0,
 
@@ -103,6 +114,13 @@ class TextureFormat {
 #endif
 		};
 
+		///
+		/// \brief The Format enum has all available formats, sized and unsized.
+		///
+		/// Most sized are only available on Desktop OpenGL. The only types
+		/// available in the GLES2 spec are INT, USIGNED_BYTE, UNSIGNED_SHORT_5_6_5,
+		/// UNSIGNED_SHORT_4_4_4_4 and UNSIGNED_SHORT_5_5_5_1.
+		///
 		enum SourceType {
 			INT								= GL_INT,
 			UNSIGNED_BYTE					= GL_UNSIGNED_BYTE,
@@ -133,6 +151,12 @@ class TextureFormat {
 #endif
 		};
 
+		///
+		/// \brief Returns base format of any given format.
+		///
+		/// Base format for any format is commonly the same format
+		/// without any specific channel width
+		///
 		inline static Format getBaseFormat(Format f) {
 			switch(f) {
 #ifndef VBE_GLES2
@@ -209,6 +233,12 @@ class TextureFormat {
 			}
 		}
 
+		///
+		/// \brief Returns base format for any given number of channels.
+		///
+		/// On GLES2 there is no ordinary 2-channel texture format so that
+		/// is not supported.
+		///
 		inline static Format channelsToFormat(int channels) {
 			switch(channels) {
 				case 1:
@@ -226,11 +256,15 @@ class TextureFormat {
 					return RGBA;
 				default:
                     VBE_ASSERT(false, "Invalid component count: " << channels);
-					return TextureFormat::RGBA;
+					return RGBA;
 			}
 		}
 
 #ifndef VBE_GLES2
+
+		///
+		/// \brief Returns wether the given format has a depth channel or not
+		///
         inline static bool isDepth(Format f) {
             switch(f) {
                 case DEPTH24_STENCIL8:
@@ -251,6 +285,11 @@ class TextureFormat {
 	private:
 		TextureFormat();
 };
+///
+/// \class TextureFormat TextureFormat.hpp <VBE/graphics/TextureFormat.hpp>
+///	\ingroup Graphics
+///
+///
 
 #endif // TextureFormat_HPP
 
