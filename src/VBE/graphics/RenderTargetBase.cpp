@@ -7,7 +7,6 @@
 const RenderTargetBase* RenderTargetBase::current = nullptr;
 
 RenderTargetBase::RenderTargetBase(unsigned int width, unsigned int height, unsigned int numLayers) : size(width, height), numLayers(numLayers) {
-	VBE_ASSERT(width != 0 && height != 0, "Width or height can't be zero");
 	GL_ASSERT(glGenFramebuffers(1, &handle));
 }
 
@@ -67,6 +66,7 @@ void RenderTargetBase::ensureValid() const {
 }
 
 void RenderTargetBase::valid() const {
+	VBE_ASSERT(size.x != 0 && size.y != 0, "Width or height can't be zero");
 	VBE_ASSERT(entries.size() != 0, "This RenderTarget is invalid because it has no textures nor render buffers.");
 	VBE_ASSERT(entries.size() == allAttachments.size(), "This RenderTarget is invalid because it has no texture/renderbuffer for at least one of it's enabled attachments");
 
