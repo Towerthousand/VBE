@@ -4,8 +4,6 @@
 #include <VBE/math.hpp>
 #include <VBE/system/Log.hpp>
 
-AABB OBJLoader::lastLoadedBBox;
-
 std::string OBJLoader::positionAttribName = "position";
 std::string OBJLoader::normalAttribName = "normal";
 std::string OBJLoader::texcoordAttribName = "texcoord";
@@ -37,11 +35,7 @@ void OBJLoader::setTangentAttribName(const std::string& name) {
 	tangentAttribName = name;
 }
 
-AABB OBJLoader::getLastLoadedBoundingBox() {
-	return lastLoadedBBox;
-}
-
-MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
+MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType, AABB* box) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Attribute> elements;
 	elements.push_back(Vertex::Attribute(positionAttribName, Vertex::Attribute::Float, 3));
@@ -62,7 +56,7 @@ MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, M
 	std::vector<vert> dataNotIndexed;
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
-	lastLoadedBBox = AABB();
+	AABB loadedBox;
 
 	std::string line;
 	while (getline(*in, line)) {
@@ -72,7 +66,7 @@ MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, M
 			s >> v.x >> v.y >> v.z;
             vertices.push_back(v);
 
-			lastLoadedBBox.extend(v);
+			loadedBox.extend(v);
 		}
 		else if (line.substr(0, 3) == "vn ") {
 			std::istringstream s(line.substr(3));
@@ -127,10 +121,14 @@ MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, M
 		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 		VBE_DLOG("    Not using indexes");
     }
+
+	if (box != nullptr) {
+		*box = loadedBox;
+	}
 	return mesh;
 }
 
-MeshSeparate* OBJLoader::loadFromOBJTangents(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
+MeshSeparate* OBJLoader::loadFromOBJTangents(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType, AABB* box) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Attribute> elements;
 	elements.push_back(Vertex::Attribute(positionAttribName, Vertex::Attribute::Float, 3));
@@ -153,6 +151,8 @@ MeshSeparate* OBJLoader::loadFromOBJTangents(std::unique_ptr<std::istream> in, M
 	std::vector<vert> dataNotIndexed;
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
+	AABB loadedBox;
+
 	std::string line;
 	while (getline(*in, line)) {
 		if (line.substr(0, 2) == "v ") {
@@ -160,6 +160,8 @@ MeshSeparate* OBJLoader::loadFromOBJTangents(std::unique_ptr<std::istream> in, M
 			vec3f v;
 			s >> v.x >> v.y >> v.z;
             vertices.push_back(v);
+
+			loadedBox.extend(v);
 		}
 		else if (line.substr(0, 3) == "vn ") {
 			std::istringstream s(line.substr(3));
@@ -215,6 +217,10 @@ MeshSeparate* OBJLoader::loadFromOBJTangents(std::unique_ptr<std::istream> in, M
 		mesh = new Mesh(Vertex::Format(elements), bufferType);
 		mesh->setVertexData(&dataNotIndexed[0], dataNotIndexed.size());
 		VBE_DLOG("    Not using indexes");
+	}
+
+	if (box != nullptr) {
+		*box = loadedBox;
 	}
 	return mesh;
 }
