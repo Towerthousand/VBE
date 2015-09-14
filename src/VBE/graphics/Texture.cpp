@@ -57,6 +57,7 @@ GLenum Texture::typeToGL(Texture::Type t) {
 		case Type3D: return GL_TEXTURE_3D;
 #endif
 		case TypeCubemap: return GL_TEXTURE_CUBE_MAP;
+		case TypeCubemapArray: return GL_TEXTURE_CUBE_MAP_ARRAY;
 		default: break;
 	}
 	VBE_ASSERT(false, "Unknown type when trying to convert from Texture::Type to GL enum");
@@ -111,4 +112,10 @@ void Texture::setWrap(GLenum wrap) {
 	Texture::bind(type, this, 0);
 	GL_ASSERT(glTexParameteri(typeToGL(type), GL_TEXTURE_WRAP_S, wrap));
 	GL_ASSERT(glTexParameteri(typeToGL(type), GL_TEXTURE_WRAP_T, wrap));
+}
+
+void Texture::generateMipmap() {
+	Texture::bind(type, this, 0);
+	GL_ASSERT(glGenerateMipmap(typeToGL(type)));
+	setFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
 }

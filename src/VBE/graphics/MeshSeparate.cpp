@@ -54,9 +54,41 @@ void MeshSeparate::setVertexData(const void* vertexData, unsigned int newVertexC
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
 
+void MeshSeparate::setInstanceAttribsFormat(const Vertex::Format& format) {
+	instanceDataFormat = format;
+}
+
+void MeshSeparate::setInstancesData(const void* instancesData, unsigned int instanceCount) {
+	// create the buffer only if we ask to set per instance data, not on mesh creation
+	if (instanceDataBuffer == 0) {
+		GL_ASSERT(glGenBuffers(1, &instanceDataBuffer));
+	}
+	ShaderBinding::bind(nullptr);
+	VBE_ASSERT(instanceDataBuffer != 0, "No instance buffer created for this mesh");
+	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, instanceDataBuffer));
+	GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, instanceDataFormat.vertexSize() * instanceCount, instancesData, MeshBase::DYNAMIC));
+	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
+}
+
+const Vertex::Format& MeshSeparate::getInstanceAttribsFormat() const {
+	return instanceDataFormat;
+}
+
+void MeshSeparate::bindInstanceDataBuffer() const {
+	VBE_ASSERT(getInstanceDataBuffer() != 0, "No instance buffer created for this mesh");
+	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, instanceDataBuffer));
+}
+
+GLuint MeshSeparate::getInstanceDataBuffer() const {
+	return instanceDataBuffer;
+}
+
+
 void swap(MeshSeparate& a, MeshSeparate& b) {
 	using std::swap;
 	swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
 	swap(a.bindingsCache, b.bindingsCache);
 	swap(a.vertexBuffer, b.vertexBuffer);
+	swap(a.instanceDataFormat, b.instanceDataFormat);
+	swap(a.instanceDataBuffer, b.instanceDataBuffer);
 }

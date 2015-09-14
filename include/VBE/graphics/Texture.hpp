@@ -19,6 +19,7 @@ class Texture : public NonCopyable {
 			Type2DArray, //< GL_TEXTURE_2D_ARRAY
 			Type3D, //< GL_TEXTURE_3D
 			TypeCubemap, //< GL_TEXTURE_CUBEMAP
+			TypeCubemapArray, //< GL_TEXTURE_CUBE_MAP_ARRAY
 			TypeCount
 		};
 		
@@ -58,7 +59,18 @@ class Texture : public NonCopyable {
 		/// \brief Sets the wrap function for texture fetches out of the (0..1) range
 		///
 		void setWrap(GLenum wrap);
-		
+
+		///
+		/// \brief Generate mipmap levels
+		///
+		/// This function should be called every time the texture data changes to keep mipmapping working
+		/// In order to make use of mipmapping, the texture min/mag filters should be
+		/// appropiately set to a filter that supports mipmap.
+		///
+		/// \see Texture::setFilter
+		///
+		void generateMipmap();
+				
 		///
 		/// \brief Returns the maximum number of texture that can be binded at the same time
 		///

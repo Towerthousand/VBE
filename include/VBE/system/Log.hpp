@@ -53,6 +53,17 @@
 
 //VBE_WARNING
 #ifdef VBE_DEBUG
+#ifdef MSC_VER
+#define VBE_WARN(expression , string) do \
+{ \
+	if(!(expression)) { \
+	Log::warning() << "Warning Condition Failed " << Log::Line;\
+	Log::warning() << "Message: " << string << Log::Line; \
+	Log::warning() << "At file " << __FILE__ << \
+	" inside function " << __FUNCSIG__ << " on line " << __LINE__ << Log::Flush; \
+	} \
+	} while (0)
+#else
 #define VBE_WARN(expression , string) do \
 { \
 	if(!(expression)) { \
@@ -62,6 +73,7 @@
 	" inside function " << __PRETTY_FUNCTION__ << " on line " << __LINE__ << Log::Flush; \
 	} \
 	} while (0)
+#endif
 #else
 #define VBE_WARN(expression , string) {}
 #endif

@@ -1,15 +1,16 @@
-#ifndef TEXTURE2D_HPP
-#define TEXTURE2D_HPP
+#ifndef TEXTURECUBEMAPARRAY_HPP
+#define TEXTURECUBEMAPARRAY_HPP
 
-#include <iostream>
 #include <memory>
+#include "Texture.hpp"
 
-#include <VBE/graphics/Texture.hpp>
+// Texture arrays are not supported in GLES2
+#ifndef VBE_GLES2
 
 ///
-/// \brief Texture2D represents a GL 2D Texture
+/// \brief TextureCubemapArray represents a GL Cubemap Array Texture
 ///
-class Texture2D : public Texture {
+class TextureCubemapArray : public Texture {
 	public:
 		///
 		/// \brief Loads a new texture from a stream.
@@ -18,8 +19,8 @@ class Texture2D : public Texture {
 		///
 		/// \see Storage
 		/// 
-		static Texture2D load(
-				std::unique_ptr<std::istream> in,
+		static TextureCubemapArray load(
+				std::vector<std::unique_ptr<std::istream>>& files,
 				TextureFormat::Format format = TextureFormat::AUTO);
 
 		///
@@ -28,7 +29,7 @@ class Texture2D : public Texture {
 		/// This constructor will generate a texture of size 0. This texture is not
 		/// meant for use in rendering.
 		///
-		Texture2D();
+		TextureCubemapArray();
 		
 		///
 		/// \brief Size and Format constructor. 
@@ -40,8 +41,10 @@ class Texture2D : public Texture {
 		///
 		/// \see TextureFormat::Format
 		///
-		Texture2D(vec2ui size,
-				  TextureFormat::Format format = TextureFormat::RGBA);
+		TextureCubemapArray(
+				unsigned int size,
+				unsigned int slices,
+				TextureFormat::Format format = TextureFormat::RGBA);
 
 		///
 		/// \brief Sets the content of the texture
@@ -54,45 +57,53 @@ class Texture2D : public Texture {
 		/// \see TextureFormat::Format
 		/// \see TextureFormat::SourceType
 		///
-		void setData(const void* pixels,
-					 TextureFormat::Format sourceFormat = TextureFormat::RGBA,
-					 TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
+		void setData(
+				const void* pixels,
+				TextureFormat::Format sourceFormat = TextureFormat::RGBA,
+				TextureFormat::SourceType sourceType = TextureFormat::UNSIGNED_BYTE);
 
 		///
 		/// \brief Returns the texture size
 		///
-		vec2ui getSize() const;
+		unsigned int getSize() const;
+
+		///
+		/// \brief Returns the number of cubemaps in the array
+		///
+		unsigned int getSlices() const;
 
 		///
 		/// \brief Bind a texture to any given slot
 		///
 		/// Binding this texture will replace whatever texture was previously assigned for this slot
 		///
-		static void bind(const Texture2D* tex, unsigned int slot) {
-			Texture::bind(Texture::Type2D, tex, slot);
+		static void bind(const TextureCubemapArray* tex, unsigned int slot) {
+			Texture::bind(Texture::TypeCubemapArray, tex, slot);
 		}
 
 		///
 		/// \brief Move constructor
 		///
-		Texture2D(Texture2D&& rhs);
+		TextureCubemapArray(TextureCubemapArray&& rhs);
 		
 		///
 		/// \brief Move operator=
 		///
-		Texture2D& operator=(Texture2D&& rhs);
+		TextureCubemapArray& operator=(TextureCubemapArray&& rhs);
 		
 		///
-		/// \brief Swap operator for the Texture2D class
+		/// \brief Swap operator for the Texture2DArray class
 		///
-		friend void swap(Texture2D& a, Texture2D& b);
+		friend void swap(TextureCubemapArray& a, TextureCubemapArray& b);
 
 	private:
-		vec2ui size = vec2ui(0);
+		unsigned int size = 0;
+		unsigned int slices = 0;
 };
 ///
-/// \class Texture2D Texture2D.hpp <VBE/graphics/Texture2D.hpp>
+/// \class Texture2DArray Texture2DArray.hpp <VBE/graphics/Texture2DArray.hpp>
 /// \ingroup Graphics
 ///
 
-#endif // TEXTURE2D_HPP
+#endif // VBE_GLES2
+#endif // TEXTURECUBEMAPARRAY_HPP

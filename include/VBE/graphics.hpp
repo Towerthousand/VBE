@@ -15,5 +15,6 @@
 #include <VBE/graphics/Texture2DArray.hpp>
 #include <VBE/graphics/Texture3D.hpp>
 #include <VBE/graphics/TextureCubemap.hpp>
+#include <VBE/graphics/TextureCubemapArray.hpp>
 #include <VBE/graphics/TextureFormat.hpp>
 #include <VBE/graphics/Uniform.hpp>

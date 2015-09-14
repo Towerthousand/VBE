@@ -45,7 +45,7 @@ namespace Vertex {
 				ConvertToInt
 			};
 
-			Attribute(const std::string& name, Type type, unsigned int size, Conversion conv = ConvertDefault);
+			Attribute(const std::string& name, Type type, unsigned int size, Conversion conv = ConvertDefault, unsigned int divisor = 0);
 			Attribute(const Attribute& element);
 
 			bool hasName(const std::string& name) const;
@@ -58,6 +58,7 @@ namespace Vertex {
 			Type type = Float;
 			unsigned int size = 0;
 			Conversion conv = ConvertDefault;
+			unsigned int divisor = 0;
 
 		private:
 			void calcDefaultConversion();

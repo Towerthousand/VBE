@@ -15,6 +15,8 @@ class MeshIndexed final : public MeshSeparate {
 
 		void draw(const ShaderProgram& program) override;
 		void draw(const ShaderProgram& program, unsigned int offset, unsigned int length);
+		void drawInstanced(const ShaderProgram& program, unsigned int instanceCount) override;
+		void drawInstanced(const ShaderProgram& program, unsigned int instanceCount, unsigned int offset, unsigned int length);
 
 		GLuint getIndexBuffer() const;
 		unsigned int getIndexCount() const;

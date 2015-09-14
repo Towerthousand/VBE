@@ -12,7 +12,7 @@
 	#define VBE_SYSTEM_UNIX
 #endif
 
-#if not defined(NDEBUG) && not defined(QT_NO_DEBUG)
+#if !defined(NDEBUG) && !defined(QT_NO_DEBUG)
 	#define VBE_DEBUG
 	//FIXME
 	#define VBE_DETAIL

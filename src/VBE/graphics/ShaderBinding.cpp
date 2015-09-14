@@ -90,6 +90,36 @@ void ShaderBinding::enableAttributes() const {
 			}
 		}
 	}
+
+	// instancing data format
+	if (mesh != nullptr && mesh->getInstanceAttribsFormat().elementCount() > 0) {
+		mesh->bindInstanceDataBuffer();
+		const Vertex::Format& instFormat = mesh->getInstanceAttribsFormat();
+		for (const std::pair<std::string, GLint>& attr : program->getAttributes()) {
+			for (unsigned int i = 0; i < instFormat.elementCount(); ++i) {
+				const Vertex::Attribute* current = &instFormat.element(i);
+				if (current->hasName(attr.first)) {
+					GL_ASSERT(glEnableVertexAttribArray(attr.second));
+#ifndef VBE_GLES2
+					if (current->conv == Vertex::Attribute::ConvertToInt)
+						GL_ASSERT(glVertexAttribIPointer(attr.second,
+							current->size,
+							current->type,
+							instFormat.vertexSize(),
+							(GLvoid*)long(instFormat.offset(i))));
+					else
+#endif
+						GL_ASSERT(glVertexAttribPointer(attr.second,
+							current->size,
+							current->type, current->conv == Vertex::Attribute::ConvertToFloatNormalized ? GL_TRUE : GL_FALSE,
+							instFormat.vertexSize(),
+							(GLvoid*)long(instFormat.offset(i))));
+
+					GL_ASSERT(glVertexAttribDivisor(attr.second, current->divisor));
+				}
+			}
+		}
+	}
 }
 
 void ShaderBinding::disableAttributes() const {

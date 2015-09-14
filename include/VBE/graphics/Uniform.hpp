@@ -10,7 +10,10 @@
 class Texture2D;
 class Texture3D;
 class Texture2DArray;
+class TextureCubemap;
+class TextureCubemapArray;
 class Texture;
+
 ///
 /// \brief The Uniform class represents an OpenGL ShaderProgram Uniform
 ///
@@ -209,6 +212,36 @@ class Uniform : public NonCopyable {
 		/// Uniform must be an 2D array sampler or a 2D array shadow sampler
 		///
 		void set(const Texture2DArray& val);
+
+		///
+		/// \brief Set contents of the uniform
+		/// \param val Cannot be nullptr
+		///
+		/// Uniform must be an Cubemap sampler
+		///
+		void set(const TextureCubemap* val);
+
+		///
+		/// \brief Set contents of the uniform
+		///
+		/// Uniform must be an Cubemap sampler
+		///
+		void set(const TextureCubemap& val);
+
+		///
+		/// \brief Set contents of the uniform
+		/// \param val Cannot be nullptr
+		///
+		/// Uniform must be an Cubemap array sampler
+		///
+		void set(const TextureCubemapArray* val);
+
+		///
+		/// \brief Set contents of the uniform
+		///
+		/// Uniform must be an Cubemap array sampler
+		///
+		void set(const TextureCubemapArray& val);
 
 #endif
 

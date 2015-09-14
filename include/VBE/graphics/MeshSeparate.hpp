@@ -14,6 +14,14 @@ class MeshSeparate : public MeshBase {
 		virtual void bindBuffers() const;
 		GLuint getVertexBuffer() const;
 
+		// instancing
+		void setInstanceAttribsFormat(const Vertex::Format& format);
+		void setInstancesData(const void* instancesData, unsigned int instanceCount);
+		const Vertex::Format& getInstanceAttribsFormat() const;
+		virtual void bindInstanceDataBuffer() const;
+		GLuint getInstanceDataBuffer() const;
+		virtual void drawInstanced(const ShaderProgram& program, unsigned int instanceCount) = 0;
+
 		friend void swap(MeshSeparate& a, MeshSeparate& b);
 	protected:
 		void setupShaderBinding(const ShaderProgram& program);
@@ -21,6 +29,9 @@ class MeshSeparate : public MeshBase {
 	private:
 		std::map<GLuint, const ShaderBinding*> bindingsCache;
 		GLuint vertexBuffer = 0;
+
+		Vertex::Format instanceDataFormat;
+		GLuint instanceDataBuffer = 0;
 };
 
 #endif // MESHSEPARATE_HPP

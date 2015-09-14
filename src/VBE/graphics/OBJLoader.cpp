@@ -4,8 +4,15 @@
 #include <VBE/math.hpp>
 #include <VBE/system/Log.hpp>
 
+AABB OBJLoader::lastLoadedBBox;
+
+std::string OBJLoader::positionAttribName = "position";
+std::string OBJLoader::normalAttribName = "normal";
+std::string OBJLoader::texcoordAttribName = "texcoord";
+std::string OBJLoader::tangentAttribName = "tangents";
+
 struct FunctorComparevec3i{
-		bool operator()(const vec3i& a, const vec3i& b) {
+		bool operator()(const vec3i& a, const vec3i& b) const {
 			if(a.x != b.x) return a.x < b.x;
 			if(a.y != b.y) return a.y < b.y;
 			if(a.z != b.z) return a.z < b.z;
@@ -13,12 +20,33 @@ struct FunctorComparevec3i{
 		}
 };
 
+
+void OBJLoader::setPositionAttribName(const std::string& name) {
+	positionAttribName = name;
+}
+
+void OBJLoader::setNormalAttribName(const std::string& name) {
+	normalAttribName = name;
+}
+
+void OBJLoader::setTexcoordAttribName(const std::string& name) {
+	texcoordAttribName = name;
+}
+
+void OBJLoader::setTangentAttribName(const std::string& name) {
+	tangentAttribName = name;
+}
+
+AABB OBJLoader::getLastLoadedBoundingBox() {
+	return lastLoadedBBox;
+}
+
 MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Attribute> elements;
-	elements.push_back(Vertex::Attribute("position" , Vertex::Attribute::Float, 3));
-	elements.push_back(Vertex::Attribute("normal", Vertex::Attribute::Float, 3));
-	elements.push_back(Vertex::Attribute("texcoord", Vertex::Attribute::Float, 2));
+	elements.push_back(Vertex::Attribute(positionAttribName, Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute(normalAttribName, Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute(texcoordAttribName, Vertex::Attribute::Float, 2));
 
 	struct vert {
 			vert(vec3f pos, vec3f nor, vec2f tex) : pos(pos) , nor(nor), tex(tex) {}
@@ -34,6 +62,8 @@ MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, M
 	std::vector<vert> dataNotIndexed;
 	std::map<vec3i, int, FunctorComparevec3i> indexMap;
 
+	lastLoadedBBox = AABB();
+
 	std::string line;
 	while (getline(*in, line)) {
 		if (line.substr(0, 2) == "v ") {
@@ -41,6 +71,8 @@ MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, M
 			vec3f v;
 			s >> v.x >> v.y >> v.z;
             vertices.push_back(v);
+
+			lastLoadedBBox.extend(v);
 		}
 		else if (line.substr(0, 3) == "vn ") {
 			std::istringstream s(line.substr(3));
@@ -101,10 +133,10 @@ MeshSeparate* OBJLoader::loadFromOBJStandard(std::unique_ptr<std::istream> in, M
 MeshSeparate* OBJLoader::loadFromOBJTangents(std::unique_ptr<std::istream> in, Mesh::BufferType bufferType) {
 	VBE_DLOG("* Loading new OBJ from file. Expected format: V/T/N");
 	std::vector<Vertex::Attribute> elements;
-	elements.push_back(Vertex::Attribute("position" , Vertex::Attribute::Float, 3));
-	elements.push_back(Vertex::Attribute("normal", Vertex::Attribute::Float, 3));
-	elements.push_back(Vertex::Attribute("tangent" , Vertex::Attribute::Float, 3));
-	elements.push_back(Vertex::Attribute("texcoord", Vertex::Attribute::Float, 2));
+	elements.push_back(Vertex::Attribute(positionAttribName, Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute(normalAttribName, Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute(tangentAttribName, Vertex::Attribute::Float, 3));
+	elements.push_back(Vertex::Attribute(texcoordAttribName, Vertex::Attribute::Float, 2));
 
 	struct vert {
 			vert(vec3f pos, vec3f nor, vec3f tan, vec2f tex) : pos(pos) , nor(nor), tan(tan), tex(tex) {}

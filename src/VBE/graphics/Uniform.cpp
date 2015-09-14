@@ -4,6 +4,7 @@
 #include <VBE/graphics/Texture3D.hpp>
 #include <VBE/graphics/Texture2DArray.hpp>
 #include <VBE/graphics/TextureCubemap.hpp>
+#include <VBE/graphics/TextureCubemapArray.hpp>
 #include <VBE/graphics/Uniform.hpp>
 #include <VBE/system/Log.hpp>
 
@@ -50,6 +51,8 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
 		case GL_SAMPLER_2D_ARRAY_SHADOW:
 		case GL_SAMPLER_2D_SHADOW:
 		case GL_SAMPLER_3D:
+		case GL_SAMPLER_CUBE:
+		case GL_SAMPLER_CUBE_MAP_ARRAY:
 #endif
 			size = sizeof(GLint);
 			break;
@@ -208,6 +211,28 @@ void Uniform::set(const Texture2DArray& val) {
 	Texture2DArray::bind(&val, texUnit);
 	setBytes((char*)&texUnit);
 }
+
+void Uniform::set(const TextureCubemap* val) {
+	VBE_ASSERT(val != nullptr, "Texture 'val' cannot be nullptr");
+	set(*val);
+}
+
+void Uniform::set(const TextureCubemap& val) {
+	VBE_ASSERT(type == GL_SAMPLER_CUBE, "Wrong uniform type. Location " << this->location);
+	TextureCubemap::bind(&val, texUnit);
+	setBytes((char*)&texUnit);
+}
+
+void Uniform::set(const TextureCubemapArray* val) {
+	VBE_ASSERT(val != nullptr, "Texture 'val' cannot be nullptr");
+	set(*val);
+}
+
+void Uniform::set(const TextureCubemapArray& val) {
+	VBE_ASSERT(type == GL_SAMPLER_CUBE_MAP_ARRAY, "Wrong uniform type. Location " << this->location);
+	TextureCubemapArray::bind(&val, texUnit);
+	setBytes((char*)&texUnit);
+}
 #endif
 
 void Uniform::ready() { //assumes program is binded already. Only to be called by ShaderProgram
@@ -227,6 +252,8 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
 		case GL_SAMPLER_2D_ARRAY_SHADOW:
 		case GL_SAMPLER_2D_SHADOW:
 		case GL_SAMPLER_3D:
+		case GL_SAMPLER_CUBE:
+		case GL_SAMPLER_CUBE_MAP_ARRAY:
 #endif
 		case GL_SAMPLER_2D:	GL_ASSERT(glUniform1iv(location, count, (GLint*)&lastValue[0])); break;
 		case GL_INT_VEC2:	GL_ASSERT(glUniform2iv(location, count, (GLint*)&lastValue[0])); break;
@@ -275,6 +302,8 @@ void Uniform::log() {
 		case GL_SAMPLER_2D_SHADOW: s = "GL_SAMPLER_2D_SHADOW"; break;
 		case GL_SAMPLER_2D_ARRAY: s = "GL_SAMPLER_2D_ARRAY"; break;
 		case GL_SAMPLER_3D: s = "GL_SAMPLER_3D"; break;
+		case GL_SAMPLER_CUBE: s = "GL_SAMPLER_CUBE"; break;
+		case GL_SAMPLER_CUBE_MAP_ARRAY: s = "GL_SAMPLER_CUBE_MAP_ARRAY"; break;
 #endif
 		default: s = "UNKNOWN_TYPE"; break;
 	}
@@ -293,6 +322,10 @@ bool Uniform::isSampler(GLenum uniformType) {
 		case GL_SAMPLER_2D_ARRAY_SHADOW:
 			return true;
 		case GL_SAMPLER_3D:
+			return true;
+		case GL_SAMPLER_CUBE:
+			return true;
+		case GL_SAMPLER_CUBE_MAP_ARRAY:
 			return true;
 #endif
 		default:

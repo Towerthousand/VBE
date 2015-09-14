@@ -43,12 +43,6 @@ void Texture2D::setData(
 	GL_ASSERT(glTexImage2D(GL_TEXTURE_2D, 0, getFormat(), size.x, size.y, 0, sourceFormat, sourceType, (GLvoid*) pixels));
 }
 
-void Texture2D::generateMipmap() {
-	Texture2D::bind(this, 0);
-	GL_ASSERT(glGenerateMipmap(GL_TEXTURE_2D));
-	setFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
-}
-
 vec2ui Texture2D::getSize() const {
 	return size;
 }

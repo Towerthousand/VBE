@@ -4,8 +4,8 @@
 #include <VBE/system/Log.hpp>
 
 namespace Vertex {
-	Attribute::Attribute(const std::string& name, Type type, unsigned int size, Conversion conv)
-		: name(name), type(type), size(size), conv(conv) {
+	Attribute::Attribute(const std::string& name, Type type, unsigned int size, Conversion conv, unsigned int divisor)
+		: name(name), type(type), size(size), divisor(divisor), conv(conv) {
 		calcDefaultConversion();
 	}
 
@@ -20,7 +20,7 @@ namespace Vertex {
 		}
 	}
 
-	Attribute::Attribute(const Attribute &element) : name(element.name), type(element.type), size(element.size), conv(element.conv) {
+	Attribute::Attribute(const Attribute &element) : name(element.name), type(element.type), size(element.size), conv(element.conv), divisor(element.divisor) {
 	}
 
 	bool Attribute::hasName(const std::string& name) const {
@@ -32,7 +32,7 @@ namespace Vertex {
 	}
 
 	bool Attribute::operator == (const Attribute& e) const {
-		return name == e.name && type == e.type && size == e.size && conv == e.conv;
+		return name == e.name && type == e.type && size == e.size && conv == e.conv && divisor == e.divisor;
 	}
 
 	bool Attribute::operator != (const Attribute& e) const {
