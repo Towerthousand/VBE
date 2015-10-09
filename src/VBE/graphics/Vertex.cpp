@@ -5,7 +5,7 @@
 
 namespace Vertex {
 	Attribute::Attribute(const std::string& name, Type type, unsigned int size, Conversion conv, unsigned int divisor)
-		: name(name), type(type), size(size), divisor(divisor), conv(conv) {
+		: name(name), type(type), size(size), conv(conv), divisor(divisor) {
 		calcDefaultConversion();
 	}
 
