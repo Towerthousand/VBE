@@ -56,6 +56,7 @@ void TextureCubemap::setData(
 		const void* pixels,
 		TextureFormat::Format sourceFormat,
 		TextureFormat::SourceType sourceType) {
+	VBE_ASSERT(TextureFormat::isBaseFormat(sourceFormat), "Only base formats are accepted as source format for pixel data on texture loads. Specify the sizing of your input through the sourceType only");
 
 	TextureCubemap::bind(this, 0);
 

@@ -59,6 +59,7 @@ void TextureCubemapArray::setData(
 		const void *pixels,
 		TextureFormat::Format sourceFormat,
 		TextureFormat::SourceType sourceType) {
+	VBE_ASSERT(TextureFormat::isBaseFormat(sourceFormat), "Only base formats are accepted as source format for pixel data on texture loads. Specify the sizing of your input through the sourceType only");
 
 	TextureCubemapArray::bind(this, 0);
 	GL_ASSERT(glTexImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, 0, getFormat(), size, size, 6*slices, 0, sourceFormat, sourceType, (GLvoid*) pixels));

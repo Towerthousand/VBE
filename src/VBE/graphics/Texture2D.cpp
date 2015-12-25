@@ -36,6 +36,7 @@ void Texture2D::setData(
 		const void *pixels,
 		TextureFormat::Format sourceFormat,
 		TextureFormat::SourceType sourceType) {
+	VBE_ASSERT(TextureFormat::isBaseFormat(sourceFormat), "Only base formats are accepted as source format for pixel data on texture loads. Specify the sizing of your input through the sourceType only");
 
 	Texture2D::bind(this, 0);
 	GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));

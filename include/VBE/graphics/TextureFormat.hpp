@@ -201,7 +201,7 @@ class TextureFormat {
 				case RGB32F:
 				case RGB32I:
 				case RGB32UI:
-					return RG;
+					return RGB;
 				case RGBA2:
 				case RGBA8:
 				case RGBA8_SNORM:
@@ -279,6 +279,13 @@ class TextureFormat {
                     return false;
             }
             return false;
+        }
+
+		///
+		/// \brief Returns wether the given format is a base format or not
+		///
+        inline static bool isBaseFormat(Format f) {
+			return f == TextureFormat::getBaseFormat(f);
         }
 #endif
 
