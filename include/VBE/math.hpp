@@ -33,39 +33,39 @@
 
 //math typedefs
 
-typedef glm::detail::tvec2<float> vec2f;
-typedef glm::detail::tvec3<float> vec3f;
-typedef glm::detail::tvec4<float> vec4f;
-typedef glm::detail::tvec2<double> vec2d;
-typedef glm::detail::tvec3<double> vec3d;
-typedef glm::detail::tvec4<double> vec4d;
-typedef glm::detail::tvec2<int> vec2i;
-typedef glm::detail::tvec3<int> vec3i;
-typedef glm::detail::tvec4<int> vec4i;
-typedef glm::detail::tvec2<unsigned int> vec2ui;
-typedef glm::detail::tvec3<unsigned int> vec3ui;
-typedef glm::detail::tvec4<unsigned int> vec4ui;
-typedef glm::detail::tvec2<short> vec2s;
-typedef glm::detail::tvec3<short> vec3s;
-typedef glm::detail::tvec4<short> vec4s;
-typedef glm::detail::tvec2<unsigned short> vec2us;
-typedef glm::detail::tvec3<unsigned short> vec3us;
-typedef glm::detail::tvec4<unsigned short> vec4us;
-typedef glm::detail::tvec2<char> vec2c;
-typedef glm::detail::tvec3<char> vec3c;
-typedef glm::detail::tvec4<char> vec4c;
-typedef glm::detail::tvec2<unsigned char> vec2uc;
-typedef glm::detail::tvec3<unsigned char> vec3uc;
-typedef glm::detail::tvec4<unsigned char> vec4uc;
-typedef glm::detail::tvec2<bool> vec2b;
-typedef glm::detail::tvec3<bool> vec3b;
-typedef glm::detail::tvec4<bool> vec4b;
-typedef glm::detail::tmat2x2<float> mat2f;
-typedef glm::detail::tmat3x3<float> mat3f;
-typedef glm::detail::tmat4x4<float> mat4f;
-typedef glm::detail::tmat2x2<double> mat2d;
-typedef glm::detail::tmat3x3<double> mat3d;
-typedef glm::detail::tmat4x4<double> mat4d;
+typedef glm::tvec2<float, glm::highp> vec2f;
+typedef glm::tvec3<float, glm::highp> vec3f;
+typedef glm::tvec4<float, glm::highp> vec4f;
+typedef glm::tvec2<double, glm::highp> vec2d;
+typedef glm::tvec3<double, glm::highp> vec3d;
+typedef glm::tvec4<double, glm::highp> vec4d;
+typedef glm::tvec2<int, glm::highp> vec2i;
+typedef glm::tvec3<int, glm::highp> vec3i;
+typedef glm::tvec4<int, glm::highp> vec4i;
+typedef glm::tvec2<unsigned int, glm::highp> vec2ui;
+typedef glm::tvec3<unsigned int, glm::highp> vec3ui;
+typedef glm::tvec4<unsigned int, glm::highp> vec4ui;
+typedef glm::tvec2<short, glm::highp> vec2s;
+typedef glm::tvec3<short, glm::highp> vec3s;
+typedef glm::tvec4<short, glm::highp> vec4s;
+typedef glm::tvec2<unsigned short, glm::highp> vec2us;
+typedef glm::tvec3<unsigned short, glm::highp> vec3us;
+typedef glm::tvec4<unsigned short, glm::highp> vec4us;
+typedef glm::tvec2<char, glm::highp> vec2c;
+typedef glm::tvec3<char, glm::highp> vec3c;
+typedef glm::tvec4<char, glm::highp> vec4c;
+typedef glm::tvec2<unsigned char, glm::highp> vec2uc;
+typedef glm::tvec3<unsigned char, glm::highp> vec3uc;
+typedef glm::tvec4<unsigned char, glm::highp> vec4uc;
+typedef glm::tvec2<bool, glm::highp> vec2b;
+typedef glm::tvec3<bool, glm::highp> vec3b;
+typedef glm::tvec4<bool, glm::highp> vec4b;
+typedef glm::tmat2x2<float, glm::highp> mat2f;
+typedef glm::tmat3x3<float, glm::highp> mat3f;
+typedef glm::tmat4x4<float, glm::highp> mat4f;
+typedef glm::tmat2x2<double, glm::highp> mat2d;
+typedef glm::tmat3x3<double, glm::highp> mat3d;
+typedef glm::tmat4x4<double, glm::highp> mat4d;
 
 #define DEG_TO_RAD (float(M_PI)/180.0f)
 

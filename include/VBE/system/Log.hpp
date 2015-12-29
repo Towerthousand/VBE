@@ -215,7 +215,7 @@ class Log {
 /// defines several generic GLM overrides for the operator like so:
 /// ~~~{.cpp}
 /// template<class T>
-/// const Log& operator<<(const Log& log, const glm::detail::tvec4<T>& v) {
+/// const Log& operator<<(const Log& log, const glm::tvec4<T>& v) {
 ///		log << "vec4(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
 ///		return log;
 /// }
@@ -253,25 +253,25 @@ template<> const Log& Log::operator<< (const Log::LogModifiers& t) const;
 //Templated, non-member operator overloaders that must be implemented where declared (templates suck at linking)
 //User can define them wherever they want for their own objects.
 template<class T>
-const Log&operator << (const Log& log, const glm::detail::tvec4<T>& v) {
+const Log&operator << (const Log& log, const glm::tvec4<T>& v) {
 	log << "vec4(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
 	return log;
 }
 
 template<class T>
-const Log&operator << (const Log& log, const glm::detail::tvec3<T>& v) {
+const Log&operator << (const Log& log, const glm::tvec3<T>& v) {
 	log << "vec3(" << v.x << ", " << v.y << ", " << v.z << ")";
 	return log;
 }
 
 template<class T>
-const Log&operator << (const Log& log, const glm::detail::tvec2<T>& v) {
+const Log&operator << (const Log& log, const glm::tvec2<T>& v) {
 	log << "vec2(" << v.x << ", " << v.y << ")";
 	return log;
 }
 
 template<class T>
-const Log&operator << (const Log& log, const glm::detail::tmat3x3<T>& m) {
+const Log&operator << (const Log& log, const glm::tmat3x3<T>& m) {
 	for(unsigned int i = 0; i < 3; ++i) {
 		for(unsigned int j = 0; j < 3; ++j) {
 			log << m[j][i];
@@ -283,7 +283,7 @@ const Log&operator << (const Log& log, const glm::detail::tmat3x3<T>& m) {
 }
 
 template<class T>
-const Log&operator << (const Log& log, const glm::detail::tmat4x4<T>& m) {
+const Log&operator << (const Log& log, const glm::tmat4x4<T>& m) {
 	for(unsigned int i = 0; i < 4; ++i) {
 		for(unsigned int j = 0; j < 4; ++j) {
 			log << m[j][i];
