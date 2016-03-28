@@ -38,11 +38,11 @@ void Mesh::draw(const ShaderProgram& program, unsigned int offset, unsigned int 
 	GL_ASSERT(glDrawArrays(getPrimitiveType(), offset, length));
 }
 
-void Mesh::drawInstanced(const ShaderProgram& program, unsigned int instanceCount) {
+void Mesh::drawInstanced(const ShaderProgram& program, unsigned int instanceCount) const {
 	drawInstanced(program, instanceCount, 0, getVertexCount());
 }
 
-void Mesh::drawInstanced(const ShaderProgram& program, unsigned int instanceCount, unsigned int offset, unsigned int length) {
+void Mesh::drawInstanced(const ShaderProgram& program, unsigned int instanceCount, unsigned int offset, unsigned int length) const {
 	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 	VBE_ASSERT(program.getHandle() != 0, "program cannot be null");
 	VBE_ASSERT(length != 0, "length must not be zero");

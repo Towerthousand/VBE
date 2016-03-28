@@ -20,7 +20,7 @@ class MeshSeparate : public MeshBase {
 		const Vertex::Format& getInstanceAttribsFormat() const;
 		virtual void bindInstanceDataBuffer() const;
 		GLuint getInstanceDataBuffer() const;
-		virtual void drawInstanced(const ShaderProgram& program, unsigned int instanceCount) = 0;
+		virtual void drawInstanced(const ShaderProgram& program, unsigned int instanceCount) const = 0;
 
 		friend void swap(MeshSeparate& a, MeshSeparate& b);
 	protected:
