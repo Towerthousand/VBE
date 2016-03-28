@@ -11,9 +11,9 @@ class Mesh final : public MeshSeparate {
 		Mesh(Mesh&& rhs);
 		Mesh& operator=(Mesh&& rhs);
 
-		void draw(const ShaderProgram& program) override;
+		void draw(const ShaderProgram& program) const override;
 		void draw(const ShaderProgram& program, unsigned int offset, unsigned int length);
-		void drawInstanced(const ShaderProgram& program, unsigned int instanceCount) override;
+		void drawInstanced(const ShaderProgram& program, unsigned int instanceCount) const override;
 		void drawInstanced(const ShaderProgram& program, unsigned int instanceCount, unsigned int offset, unsigned int length);
 
 		friend void swap(Mesh& a, Mesh& b);

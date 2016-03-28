@@ -22,11 +22,11 @@ Mesh& Mesh::operator=(Mesh&& rhs) {
 	return *this;
 }
 
-void Mesh::draw(const ShaderProgram& program) {
+void Mesh::draw(const ShaderProgram& program) const {
 	draw(program, 0, getVertexCount());
 }
 
-void Mesh::draw(const ShaderProgram& program, unsigned int offset, unsigned int length) {
+void Mesh::draw(const ShaderProgram& program, unsigned int offset, unsigned int length) const {
 	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 	VBE_ASSERT(program.getHandle() != 0, "program cannot be null");
 	VBE_ASSERT(length != 0, "length must not be zero");

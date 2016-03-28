@@ -25,7 +25,7 @@ void MeshSeparate::bindBuffers() const {
 	GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
 }
 
-void MeshSeparate::setupShaderBinding(const ShaderProgram& program) {
+void MeshSeparate::setupShaderBinding(const ShaderProgram& program) const {
 	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 
 	// Get the binding from the cache. If it does not exist, create it.

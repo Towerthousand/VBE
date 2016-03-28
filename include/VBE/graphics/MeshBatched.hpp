@@ -14,10 +14,10 @@ class MeshBatched final : public MeshBase {
 		MeshBatched(MeshBatched&& rhs);
 		MeshBatched& operator=(MeshBatched&& rhs);
 
-		void draw(const ShaderProgram& program) override;
-		void draw(const ShaderProgram& program, unsigned int offset, unsigned int length);
-		void drawBatched(const ShaderProgram& program);
-		void drawBatched(const ShaderProgram& program, unsigned int offset, unsigned int length);
+		void draw(const ShaderProgram& program) const override;
+		void draw(const ShaderProgram& program, unsigned int offset, unsigned int length) const;
+		void drawBatched(const ShaderProgram& program) const;
+		void drawBatched(const ShaderProgram& program, unsigned int offset, unsigned int length) const;
 		void setVertexData(const void* vertexData, unsigned int newVertexCount) override;
 
 		static void resetBatch();
@@ -34,8 +34,8 @@ class MeshBatched final : public MeshBase {
 				void addMesh(MeshBatched* mesh);
 				void deleteMesh(MeshBatched* mesh);
 				void submitData(MeshBatched* mesh, const void* data, unsigned int vCount);
-				unsigned int getMeshCount();
-				unsigned long int getMeshOffset(MeshBatched* mesh);
+				unsigned int getMeshCount() const;
+				unsigned long int getMeshOffset(const MeshBatched* mesh) const;
 				void setupBinding(const ShaderProgram* program);
 				void bindBuffers() const;
 
@@ -58,7 +58,7 @@ class MeshBatched final : public MeshBase {
 				GLuint vertexBuffer;
 				unsigned int totalBufferSize; //in vertices
 				std::set<Interval> freeIntervals; //in vertices
-				std::map<MeshBatched*,Interval> usedIntervals; //in vertices
+				std::map<const MeshBatched*,Interval> usedIntervals; //in vertices
 		};
 
 		struct DrawIndirectCommand {

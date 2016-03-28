@@ -33,7 +33,7 @@ class MeshBase : public NonCopyable {
 		MeshBase(const Vertex::Format& format, BufferType bufferType = STATIC);
 		virtual ~MeshBase();
 
-		virtual void draw(const ShaderProgram& program) = 0;
+		virtual void draw(const ShaderProgram& program) const = 0;
 
 		const Vertex::Format& getVertexFormat() const;
 		unsigned int getVertexCount() const;

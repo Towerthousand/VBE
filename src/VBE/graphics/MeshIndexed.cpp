@@ -33,11 +33,11 @@ void MeshIndexed::bindBuffers() const {
 	GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, getIndexBuffer()));
 }
 
-void MeshIndexed::draw(const ShaderProgram& program) {
+void MeshIndexed::draw(const ShaderProgram& program) const {
 	draw(program, 0, getIndexCount());
 }
 
-void MeshIndexed::draw(const ShaderProgram& program, unsigned int offset, unsigned int length) {
+void MeshIndexed::draw(const ShaderProgram& program, unsigned int offset, unsigned int length) const {
 	VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 	VBE_ASSERT(program.getHandle() != 0, "program cannot be null");
 

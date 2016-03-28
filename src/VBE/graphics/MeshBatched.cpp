@@ -45,11 +45,11 @@ MeshBatched& MeshBatched::operator=(MeshBatched&& rhs) {
 	return *this;
 }
 
-void MeshBatched::draw(const ShaderProgram& program) {
+void MeshBatched::draw(const ShaderProgram& program) const {
 	draw(program, 0, vertexCount);
 }
 
-void MeshBatched::draw(const ShaderProgram& program, unsigned int offset, unsigned int length) {
+void MeshBatched::draw(const ShaderProgram& program, unsigned int offset, unsigned int length) const {
 	VBE_ASSERT(program.getHandle() != 0, "program cannot be null");
 	VBE_ASSERT(length != 0, "length must not be zero");
 	VBE_ASSERT(offset < getVertexCount(), "offset must be smaller than vertex count");
@@ -61,11 +61,11 @@ void MeshBatched::draw(const ShaderProgram& program, unsigned int offset, unsign
 	GL_ASSERT(glDrawArrays(getPrimitiveType(), b->getMeshOffset(this) + offset, length));
 }
 
-void MeshBatched::drawBatched(const ShaderProgram& program) {
+void MeshBatched::drawBatched(const ShaderProgram& program) const {
 	drawBatched(program, 0, vertexCount);
 }
 
-void MeshBatched::drawBatched(const ShaderProgram& program, unsigned int offset, unsigned int length) {
+void MeshBatched::drawBatched(const ShaderProgram& program, unsigned int offset, unsigned int length) const {
 	VBE_ASSERT(batching, "Cannot draw a MeshBatched with batching without calling startBatch() first.");
 	Buffer* b = getBuffer();
 	if(batchingBuffer == nullptr) { //first command
@@ -179,11 +179,11 @@ void MeshBatched::Buffer::submitData(MeshBatched* mesh, const void* data, unsign
 	GL_ASSERT(glBufferSubData(GL_ARRAY_BUFFER, i.start*bufferFormat.vertexSize(), vCount*bufferFormat.vertexSize(), data));
 }
 
-unsigned int MeshBatched::Buffer::getMeshCount() {
+unsigned int MeshBatched::Buffer::getMeshCount() const {
 	return usedIntervals.size();
 }
 
-unsigned long MeshBatched::Buffer::getMeshOffset(MeshBatched* mesh) {
+unsigned long MeshBatched::Buffer::getMeshOffset(const MeshBatched* mesh) const {
 	return usedIntervals.at(mesh).start;
 }
 

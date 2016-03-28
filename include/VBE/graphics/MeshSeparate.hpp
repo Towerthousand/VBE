@@ -24,10 +24,10 @@ class MeshSeparate : public MeshBase {
 
 		friend void swap(MeshSeparate& a, MeshSeparate& b);
 	protected:
-		void setupShaderBinding(const ShaderProgram& program);
+		void setupShaderBinding(const ShaderProgram& program) const;
 
 	private:
-		std::map<GLuint, const ShaderBinding*> bindingsCache;
+		mutable std::map<GLuint, const ShaderBinding*> bindingsCache;
 		GLuint vertexBuffer = 0;
 
 		Vertex::Format instanceDataFormat;
