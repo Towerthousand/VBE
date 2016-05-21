@@ -185,6 +185,26 @@ void ShaderProgram::retrieveProgramInfo() {
 		}
 	}
 
+	//RETRIEVE UNIFORM BLOCK INFO
+	GLint activeUniformBlocks;
+	GL_ASSERT(glGetProgramInterfaceiv(programHandle, GL_SHADER_STORAGE_BLOCK, GL_ACTIVE_RESOURCES, &activeUniformBlocks));
+	VBE_DLOG(" - UNIFORM BLOCK INFO. NUMBLOCKS: " << activeUniformBlocks);
+	if (activeUniformBlocks > 0) {
+		GLint length;
+		GL_ASSERT(glGetProgramiv(programHandle, GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH, &length));
+		if (length > 0) {
+			GLchar* uniformBlockName = new GLchar[length + 1];
+			for (int i = 0; i < activeUniformBlocks; ++i) {
+				// Query uniform block info
+				GL_ASSERT(glGetActiveUniformBlockName(programHandle, i, length, nullptr, uniformBlockName));
+				uniformBlockName[length] = '\0';  // nullptr terminate
+				VBE_DLOG("  - UNIFORM BLOCK INFO FOR BLOCK: " << i);
+				VBE_DLOG("    Name: " << std::string(uniformBlockName));
+			}
+			delete[] uniformBlockName;
+		}
+	}
+
 	//PRINT ATTRIBUTE INFO
 	VBE_DLOG(" - Printing attribute info:" );
 	for(std::map<std::string, GLint>::iterator it = attributes.begin(); it != attributes.end(); ++it) {
