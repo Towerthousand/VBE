@@ -62,6 +62,8 @@ class MeshBatched final : public MeshBase {
                 unsigned int totalBufferSize; //in vertices
                 std::set<Interval> freeIntervals; //in vertices
                 std::map<const MeshBatched*,Interval> usedIntervals; //in vertices
+
+                friend void swap(MeshBatched& a, MeshBatched& b);
         };
 
         struct DrawIndirectCommand {
