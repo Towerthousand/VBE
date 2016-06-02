@@ -149,10 +149,10 @@ void swap(MeshBatched& a, MeshBatched& b) {
     VBE_ASSERT(bufA->containsMesh(&a), "Trying to get Mesh from batching buffer but the mesh is not in the Buffer");
     MeshBatched::Buffer* bufB = b.getBuffer();
     VBE_ASSERT(bufB->containsMesh(&b), "Trying to get Mesh from batching buffer but the mesh is not in the Buffer");
-    auto iA = bufA->usedIntervals.at(&a);
+    MeshBatched::Buffer::Interval iA = bufA->usedIntervals.at(&a);
     bufA->usedIntervals.erase(&a);
     bufA->usedIntervals.insert(std::pair<MeshBatched*, MeshBatched::Buffer::Interval>(&b, iA));
-    auto iB = bufB->usedIntervals.at(&b);
+    MeshBatched::Buffer::Interval iB = bufB->usedIntervals.at(&b);
     bufB->usedIntervals.erase(&b);
     bufB->usedIntervals.insert(std::pair<MeshBatched*, MeshBatched::Buffer::Interval>(&a, iB));
     swap(static_cast<MeshBase&>(a), static_cast<MeshBase&>(b));
