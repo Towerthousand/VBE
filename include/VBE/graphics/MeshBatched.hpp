@@ -38,6 +38,9 @@ class MeshBatched final : public MeshBase {
                 unsigned long int getMeshOffset(const MeshBatched* mesh) const;
                 void setupBinding(const ShaderProgram* program);
                 void bindBuffers() const;
+                bool containsMesh(const MeshBatched* mesh) const {
+                    return (usedIntervals.find(mesh) != usedIntervals.end());
+                }
 
                 const Vertex::Format bufferFormat;
             private:

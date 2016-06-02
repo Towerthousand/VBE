@@ -27,10 +27,12 @@ MeshBatched::MeshBatched(const Vertex::Format& format) : MeshBase(format, STREAM
 
 MeshBatched::~MeshBatched() {
     Buffer* b = getBuffer();
-    b->deleteMesh(this);
-    if(b->getMeshCount() == 0) {
-        buffers.erase(b);
-        delete b;
+    if(b->containsMesh(this)) {
+        b->deleteMesh(this);
+        if(b->getMeshCount() == 0) {
+            buffers.erase(b);
+            delete b;
+        }
     }
 }
 
@@ -100,7 +102,6 @@ void MeshBatched::endBatch() {
     batching = false;
     if(commands.size() == 0) return;
     uploadPerDrawData(commands.size());
-    //uploadIndirectCommands();
 
     batchingBuffer->setupBinding(batchingProgram);
     GL_ASSERT(glMultiDrawArraysIndirect(batchingPrimitive, &commands[0], commands.size(), 0));
@@ -166,11 +167,13 @@ void MeshBatched::Buffer::addMesh(MeshBatched* mesh) {
 }
 
 void MeshBatched::Buffer::deleteMesh(MeshBatched* mesh) {
+    VBE_ASSERT(this->containsMesh(mesh), "Trying to get Mesh from batching buffer but the mesh is not in the Buffer");
     freeInterval(usedIntervals.at(mesh));
     usedIntervals.erase(mesh);
 }
 
 void MeshBatched::Buffer::submitData(MeshBatched* mesh, const void* data, unsigned int vCount) {
+    VBE_ASSERT(this->containsMesh(mesh), "Trying to get Mesh from batching buffer but the mesh is not in the Buffer");
     Interval& i = usedIntervals.at(mesh);
     freeInterval(i);
     i = Interval(0,0);
@@ -184,6 +187,7 @@ unsigned int MeshBatched::Buffer::getMeshCount() const {
 }
 
 unsigned long MeshBatched::Buffer::getMeshOffset(const MeshBatched* mesh) const {
+    VBE_ASSERT(this->containsMesh(mesh), "Trying to get Mesh from batching buffer but the mesh is not in the Buffer");
     return usedIntervals.at(mesh).start;
 }
 
