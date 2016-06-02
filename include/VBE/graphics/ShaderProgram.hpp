@@ -14,43 +14,43 @@
 class Shader;
 class Uniform;
 class ShaderProgram : public NonCopyable {
-	public:
-		ShaderProgram();
+    public:
+        ShaderProgram();
 
-		ShaderProgram(std::vector<std::pair<Shader::Type, std::string>> shaders);
+        ShaderProgram(std::vector<std::pair<Shader::Type, std::string>> shaders);
 
-		ShaderProgram(const std::string &vert, const std::string &frag);
-		ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag);
+        ShaderProgram(const std::string &vert, const std::string &frag);
+        ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> frag);
 
 #ifndef VBE_GLES2
-		ShaderProgram(const std::string& vert, const std::string& geom, const std::string& frag);
-		ShaderProgram(const std::string& vert, const std::string& tessControl, const std::string& tessEval, const std::string& geom, const std::string& frag);
-		ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
-		ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
+        ShaderProgram(const std::string& vert, const std::string& geom, const std::string& frag);
+        ShaderProgram(const std::string& vert, const std::string& tessControl, const std::string& tessEval, const std::string& geom, const std::string& frag);
+        ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
+        ShaderProgram(std::unique_ptr<std::istream> vert, std::unique_ptr<std::istream> tessControl, std::unique_ptr<std::istream> tessEval, std::unique_ptr<std::istream> geom, std::unique_ptr<std::istream> frag);
 #endif
-		~ShaderProgram();
+        ~ShaderProgram();
 
-		GLuint getHandle() const {return programHandle;}
+        GLuint getHandle() const {return programHandle;}
 
-		void use() const;
-		bool hasUniform(const std::string& name) const;
-		Uniform* uniform(const std::string& name) const;
+        void use() const;
+        bool hasUniform(const std::string& name) const;
+        Uniform* uniform(const std::string& name) const;
 
-		const std::map<std::string, GLint>& getAttributes() const { return attributes; }
+        const std::map<std::string, GLint>& getAttributes() const { return attributes; }
 
-		ShaderProgram(ShaderProgram&& rhs);
-		ShaderProgram& operator=(ShaderProgram&& rhs);
-		friend void swap(ShaderProgram& a, ShaderProgram& b);
-	private:
-		void link();
-		void retrieveProgramInfo();
-		void printInfoLog();
+        ShaderProgram(ShaderProgram&& rhs);
+        ShaderProgram& operator=(ShaderProgram&& rhs);
+        friend void swap(ShaderProgram& a, ShaderProgram& b);
+    private:
+        void link();
+        void retrieveProgramInfo();
+        void printInfoLog();
 
-		GLuint programHandle = 0;
-		std::map<std::string, GLint> attributes;
-		std::map<std::string, Uniform*> uniforms;
+        GLuint programHandle = 0;
+        std::map<std::string, GLint> attributes;
+        std::map<std::string, Uniform*> uniforms;
 
-		static GLuint current;
+        static GLuint current;
 };
 
 

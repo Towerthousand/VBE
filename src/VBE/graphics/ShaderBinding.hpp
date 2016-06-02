@@ -12,29 +12,29 @@
 #endif
 
 class ShaderBinding : public NonCopyable {
-	public:
-		ShaderBinding(const ShaderProgram* program, const MeshSeparate* mesh);
-		ShaderBinding(const ShaderProgram* program, const MeshBatched::Buffer* buffer);
-		~ShaderBinding();
+    public:
+        ShaderBinding(const ShaderProgram* program, const MeshSeparate* mesh);
+        ShaderBinding(const ShaderProgram* program, const MeshBatched::Buffer* buffer);
+        ~ShaderBinding();
 
-		// Binds a ShaderBinding.
-		static void bind(const ShaderBinding* binding);
-	private:
-		void enableAttributes() const;
-		void disableAttributes() const;
+        // Binds a ShaderBinding.
+        static void bind(const ShaderBinding* binding);
+    private:
+        void enableAttributes() const;
+        void disableAttributes() const;
 
-		//TODO: Fix this with handles!
-		//Having pointers will wreck everything if the user moves the
-		//resource after assigning it. For safety, handles should be
-		//applied.
-		const ShaderProgram* program;
-		const MeshSeparate* mesh;
-		const MeshBatched::Buffer* buffer;
+        //TODO: Fix this with handles!
+        //Having pointers will wreck everything if the user moves the
+        //resource after assigning it. For safety, handles should be
+        //applied.
+        const ShaderProgram* program;
+        const MeshSeparate* mesh;
+        const MeshBatched::Buffer* buffer;
 
-		static const ShaderBinding* currentBind;
+        static const ShaderBinding* currentBind;
 
 #ifdef SHADERBINDING_USE_VAO
-		GLuint vertexArrayObject;
+        GLuint vertexArrayObject;
 #endif
 };
 

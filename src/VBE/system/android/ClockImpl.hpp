@@ -3,9 +3,9 @@
 
 class ClockImpl
 {
-	public:
-		static float getSeconds();
-		static void sleepSeconds(float seconds);
+    public:
+        static float getSeconds();
+        static void sleepSeconds(float seconds);
 };
 
 #endif // CLOCKIMPL_HPP

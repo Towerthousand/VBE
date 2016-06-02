@@ -11,40 +11,40 @@ bool InputImpl::relativeMouse;
 
 // static
 void InputImpl::init() {
-	mousePos = vec2i(0, 0);
-	mouseWheelPos = vec2i(0, 0);
-	relativeMouse = false;
+    mousePos = vec2i(0, 0);
+    mouseWheelPos = vec2i(0, 0);
+    relativeMouse = false;
 
-	for(int i = 0; i < Keyboard::KeyCount; i++)
-		keyPresses[i] = false;
-	for(int i = 0; i < Mouse::ButtonCount; i++)
-		mouseButtonPresses[i] = false;
+    for(int i = 0; i < Keyboard::KeyCount; i++)
+        keyPresses[i] = false;
+    for(int i = 0; i < Mouse::ButtonCount; i++)
+        mouseButtonPresses[i] = false;
 }
 
 // static
 const bool* InputImpl::getKeyPresses() {
-	return keyPresses;
+    return keyPresses;
 }
 
 // static
 const bool* InputImpl::getMouseButtonPresses() {
-	return mouseButtonPresses;
+    return mouseButtonPresses;
 }
 
 void InputImpl::setMousePosition(int x, int y) {
-	// There's no way to move the mouse in Android
+    // There's no way to move the mouse in Android
 }
 
 void InputImpl::setCursorVisible(bool visible) {
-	// TODO
+    // TODO
 }
 
 void InputImpl::setGrab(bool grab) {
-	// Not applicable in Android
+    // Not applicable in Android
 }
 
 void InputImpl::setRelativeMouseMode(bool relative) {
-	// TODO
-	relativeMouse = relative;
+    // TODO
+    relativeMouse = relative;
 }
 

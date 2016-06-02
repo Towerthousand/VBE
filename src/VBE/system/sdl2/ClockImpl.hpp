@@ -3,9 +3,9 @@
 
 class ClockImpl
 {
-	public:
-		static long long getMicroseconds();
-		static void sleepMicroseconds(long long useconds);
+    public:
+        static long long getMicroseconds();
+        static void sleepMicroseconds(long long useconds);
 };
 
 #endif // CLOCKIMPL_HPP

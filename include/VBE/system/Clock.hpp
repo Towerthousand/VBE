@@ -5,22 +5,22 @@
 /// \brief The Clock class represents the application's internal clock.
 ///
 class Clock {
-	public:
+    public:
 
-		///
-		/// \brief Gets the value of the clock in seconds.
-		/// The returned value increases by 1 every second. The origin
-		/// of the clock (the moment when it has the value 0) is unspecified.
-		///
-		static float getSeconds();
-		static long long getMicroseconds();
+        ///
+        /// \brief Gets the value of the clock in seconds.
+        /// The returned value increases by 1 every second. The origin
+        /// of the clock (the moment when it has the value 0) is unspecified.
+        ///
+        static float getSeconds();
+        static long long getMicroseconds();
 
-		///
-		/// \brief Sleeps for the specified amount of seconds.
-		/// \param seconds The number of seconds to sleep
-		///
-		static void sleepSeconds(float seconds);
-		static void sleepMicroseconds(long long useconds);
+        ///
+        /// \brief Sleeps for the specified amount of seconds.
+        /// \param seconds The number of seconds to sleep
+        ///
+        static void sleepSeconds(float seconds);
+        static void sleepMicroseconds(long long useconds);
 };
 ///
 /// \class Clock Clock.hpp <VBE/system/Clock.hpp>

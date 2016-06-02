@@ -6,31 +6,31 @@
 #include <string>
 
 class Shader : public NonCopyable  {
-	public:
+    public:
 
-		enum Type {
-			Vertex = GL_VERTEX_SHADER,
-			TessControl = GL_TESS_CONTROL_SHADER,
-			TessEval = GL_TESS_EVALUATION_SHADER,
-			Geometry = GL_GEOMETRY_SHADER,
-			Fragment = GL_FRAGMENT_SHADER,
-		};
+        enum Type {
+            Vertex = GL_VERTEX_SHADER,
+            TessControl = GL_TESS_CONTROL_SHADER,
+            TessEval = GL_TESS_EVALUATION_SHADER,
+            Geometry = GL_GEOMETRY_SHADER,
+            Fragment = GL_FRAGMENT_SHADER,
+        };
 
-		Shader();
-		Shader(Type type, const std::string& data);
-		~Shader();
+        Shader();
+        Shader(Type type, const std::string& data);
+        ~Shader();
 
-		void attach(GLuint program) const;
+        void attach(GLuint program) const;
 
-		Shader(Shader&& rhs);
-		Shader& operator=(Shader&& rhs);
-		friend void swap(Shader& a, Shader& b);
+        Shader(Shader&& rhs);
+        Shader& operator=(Shader&& rhs);
+        friend void swap(Shader& a, Shader& b);
 
-	private:
-		void loadFromString(const std::string& content);
-		void compile() const;
-		void printInfoLog() const;
+    private:
+        void loadFromString(const std::string& content);
+        void compile() const;
+        void printInfoLog() const;
 
-		GLuint shaderHandle = 0;
+        GLuint shaderHandle = 0;
 };
 #endif // SHADER_HPP

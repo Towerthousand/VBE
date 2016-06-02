@@ -3,10 +3,10 @@
 
 // static
 long long ClockImpl::getMicroseconds() {
-	return SDL_GetTicks() * 1000;
+    return SDL_GetTicks() * 1000;
 }
 
 // static
 void ClockImpl::sleepMicroseconds(long long useconds) {
-	SDL_Delay((useconds+500)/1000);
+    SDL_Delay((useconds+500)/1000);
 }

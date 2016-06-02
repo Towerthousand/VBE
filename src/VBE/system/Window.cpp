@@ -7,83 +7,83 @@
 
 // static
 std::vector<Window::DisplayMode> Window::getFullscreenModes() {
-	return WindowImpl::getFullscreenModes();
+    return WindowImpl::getFullscreenModes();
 }
 
 Window::Window(Window::DisplayMode mode, ContextSettings contextSettings) {
-	VBE_ASSERT(instance == nullptr, "Only one Window can exist at a time");
+    VBE_ASSERT(instance == nullptr, "Only one Window can exist at a time");
 
-	instance = this;
-	WindowImpl::create(mode, contextSettings);
+    instance = this;
+    WindowImpl::create(mode, contextSettings);
 
-	Keyboard::init();
-	Mouse::init();
-	Gamepad::init();
+    Keyboard::init();
+    Mouse::init();
+    Gamepad::init();
 }
 
 Window::~Window() {
-	VBE_ASSERT(instance == this, "wtf");
+    VBE_ASSERT(instance == this, "wtf");
 
-	instance = nullptr;
-	WindowImpl::destroy();
+    instance = nullptr;
+    WindowImpl::destroy();
 }
 
 void Window::update() {
-	// We first save the last frame's input
-	Keyboard::update();
-	Mouse::update();
-	Gamepad::update();
-	InputImpl::update();
+    // We first save the last frame's input
+    Keyboard::update();
+    Mouse::update();
+    Gamepad::update();
+    InputImpl::update();
 
-	// Then we process the events.
-	WindowImpl::update();
+    // Then we process the events.
+    WindowImpl::update();
 }
 
 vec2ui Window::getSize() const {
-	return WindowImpl::getSize();
+    return WindowImpl::getSize();
 }
 
 void Window::setDisplayMode(DisplayMode mode) {
-	WindowImpl::setDisplayMode(mode);
+    WindowImpl::setDisplayMode(mode);
 }
 
 void Window::setVsync(VsyncMode mode) {
-	WindowImpl::setVsync(mode);
+    WindowImpl::setVsync(mode);
 }
 
 std::string Window::getTitle() const {
-	return title;
+    return title;
 }
 
 void Window::setTitle(std::string newTitle) {
-	title = newTitle;
-	WindowImpl::setTitle(title);
+    title = newTitle;
+    WindowImpl::setTitle(title);
 }
 
 bool Window::isFocused() const {
-	return WindowImpl::isFocused();
+    return WindowImpl::isFocused();
 }
 
 bool Window::isClosing() const {
-	return WindowImpl::isClosing();
+    return WindowImpl::isClosing();
 }
 
 void Window::setClosing(bool newClosing) {
-	WindowImpl::setClosing(newClosing);
+    WindowImpl::setClosing(newClosing);
 }
 
 void Window::setPosition(unsigned int x, unsigned int y) {
-	WindowImpl::setPosition(x, y);
+    WindowImpl::setPosition(x, y);
 }
 
 void Window::swapBuffers() const {
-	WindowImpl::swapBuffers();
+    WindowImpl::swapBuffers();
 }
 
 Window* Window::instance = nullptr;
 
 // static
 Window* Window::getInstance() {
-	return instance;
+    return instance;
 }
 
