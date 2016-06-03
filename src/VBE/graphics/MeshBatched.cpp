@@ -9,6 +9,7 @@ const ShaderProgram* MeshBatched::batchingProgram = nullptr;
 MeshBase::PrimitiveType MeshBatched::batchingPrimitive = MeshBase::TRIANGLES;
 GLuint MeshBatched::perDrawAttribBuffer = 0;
 unsigned int MeshBatched::perDrawAttribBufferSize = 0;
+GLuint MeshBatched::indirectBuffer = 0;
 std::vector<MeshBatched::DrawIndirectCommand> MeshBatched::commands;
 std::set<MeshBatched::Buffer*> MeshBatched::buffers;
 
@@ -102,9 +103,10 @@ void MeshBatched::endBatch() {
     batching = false;
     if(commands.size() == 0) return;
     uploadPerDrawData(commands.size());
+    uploadIndirectCommands();
 
     batchingBuffer->setupBinding(batchingProgram);
-    GL_ASSERT(glMultiDrawArraysIndirect(batchingPrimitive, &commands[0], commands.size(), 0));
+    GL_ASSERT(glMultiDrawArraysIndirect(batchingPrimitive, 0, commands.size(), 0));
     commands.clear();
     batchingBuffer = nullptr;
     batchingProgram = nullptr;
@@ -122,6 +124,14 @@ void MeshBatched::ensureInitBuffers() {
         GL_ASSERT(glGenBuffers(1, &perDrawAttribBuffer));
         uploadPerDrawData(1);
     }
+    if(indirectBuffer == 0) {
+        GL_ASSERT(glGenBuffers(1, &indirectBuffer));
+    }
+}
+
+void MeshBatched::uploadIndirectCommands() {
+    GL_ASSERT(glBindBuffer(GL_DRAW_INDIRECT_BUFFER, indirectBuffer));
+    GL_ASSERT(glBufferData(GL_DRAW_INDIRECT_BUFFER, sizeof(DrawIndirectCommand)*commands.size(), &commands[0], STATIC));
 }
 
 void MeshBatched::uploadPerDrawData(unsigned int size) {
