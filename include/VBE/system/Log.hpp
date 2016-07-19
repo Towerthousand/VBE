@@ -22,6 +22,16 @@
     std::exit(-1); \
     } \
     } while (0)
+#define VBE_SIMPLE_ASSERT(expression) do \
+{ \
+    if(!(expression)) { \
+    Log::error() << "ASSERT FAILED, STOPPING " << Log::Line;\
+    Log::error() << "At file " << __FILE__ << " inside function " << __FUNCSIG__ << " on line " << __LINE__ << Log::Flush; \
+    std::cout << Log::getContents() << std::endl; \
+    assert(expression); \
+    std::exit(-1); \
+    } \
+    } while (0)
 #else
 #define VBE_ASSERT(expression, string) do \
 { \
@@ -34,9 +44,20 @@
     std::exit(-1); \
     } \
     } while (0)
+#define VBE_ASSERT_SIMPLE(expression) do \
+{ \
+    if(!(expression)) { \
+    Log::error() << "ASSERT FAILED, STOPPING " << Log::Line;\
+    Log::error() << "At file " << __FILE__ \
+    << " inside function " << __PRETTY_FUNCTION__ << " on line " << __LINE__ << Log::Flush; \
+    assert(expression); \
+    std::exit(-1); \
+    } \
+    } while (0)
 #endif
 #else
 #define VBE_ASSERT(expression , string) {}
+#define VBE_ASSERT_SIMPLE(expression) {}
 #endif
 
 //GL_ASSERT
