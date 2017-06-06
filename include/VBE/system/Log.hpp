@@ -22,7 +22,7 @@
     std::exit(-1); \
     } \
     } while (0)
-#define VBE_SIMPLE_ASSERT(expression) do \
+#define VBE_ASSERT_SIMPLE(expression) do \
 { \
     if(!(expression)) { \
     Log::error() << "ASSERT FAILED, STOPPING " << Log::Line;\
