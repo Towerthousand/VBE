@@ -109,6 +109,9 @@ class TextureFormat {
             DEPTH24_STENCIL8	= GL_DEPTH24_STENCIL8,
             DEPTH32F_STENCIL8	= GL_DEPTH32F_STENCIL8,
 
+            STENCIL             = GL_STENCIL_INDEX,
+            STENCIL8            = GL_STENCIL_INDEX8,
+
             SRGB8				= GL_SRGB8,
             SRGBA8				= GL_SRGB8_ALPHA8,
 #endif
@@ -223,6 +226,8 @@ class TextureFormat {
                 case DEPTH24_STENCIL8:
                 case DEPTH32F_STENCIL8:
                     return DEPTH_STENCIL;
+                case STENCIL8:
+                    return STENCIL;
                 case SRGB8:
                     return RGB;
                 case SRGBA8:
