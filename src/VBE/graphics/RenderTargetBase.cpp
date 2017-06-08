@@ -107,7 +107,7 @@ void RenderTargetBase::valid() const {
 #endif
     GLenum ret = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     (void)ret;
-    VBE_ASSERT(ret == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input");
+    VBE_ASSERT(ret == GL_FRAMEBUFFER_COMPLETE, "Can't create framebuffer, incorrect input. Got flag " << ret);
 }
 
 void RenderTargetBase::enableAttachment(RenderTargetBase::Attachment a) {
