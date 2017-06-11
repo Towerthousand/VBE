@@ -287,6 +287,21 @@ class TextureFormat {
         }
 
         ///
+        /// \brief Returns wether the given format has both depth and stencil channels
+        ///
+        inline static bool isDepthStencil(Format f) {
+            switch(f) {
+                case DEPTH24_STENCIL8:
+                case DEPTH32F_STENCIL8:
+                case DEPTH_STENCIL:
+                    return true;
+                default:
+                    return false;
+            }
+            return false;
+        }
+
+        ///
         /// \brief Returns wether the given format is a base format or not
         ///
         inline static bool isBaseFormat(Format f) {

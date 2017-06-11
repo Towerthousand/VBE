@@ -41,6 +41,8 @@ void Texture2D::setData(
     Texture2D::bind(this, 0);
     GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
     GL_ASSERT(glPixelStorei(GL_PACK_ALIGNMENT, 1));
+    if(sourceFormat == TextureFormat::DEPTH_COMPONENT || sourceFormat == TextureFormat::DEPTH_STENCIL)
+        sourceFormat = TextureFormat::DEPTH_COMPONENT;
     GL_ASSERT(glTexImage2D(GL_TEXTURE_2D, 0, getFormat(), size.x, size.y, 0, sourceFormat, sourceType, (GLvoid*) pixels));
 }
 

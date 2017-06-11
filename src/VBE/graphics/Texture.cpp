@@ -102,6 +102,12 @@ void Texture::setComparison(GLenum func, GLenum mode) {
 }
 #endif
 
+void Texture::setDepthStencilTextureMode(GLenum mode) {
+    VBE_ASSERT(TextureFormat::isDepthStencil(format), "Can't set depth stencil texture mode for a non depth-stencil texture");
+    Texture::bind(type, this, 0);
+    GL_ASSERT(glTexParameteri(typeToGL(type), GL_DEPTH_STENCIL_TEXTURE_MODE, mode));
+}
+
 void Texture::setFilter(GLenum min, GLenum mag) {
     Texture::bind(type, this, 0);
     GL_ASSERT(glTexParameteri(typeToGL(type), GL_TEXTURE_MIN_FILTER, min));

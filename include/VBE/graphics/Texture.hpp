@@ -50,6 +50,12 @@ class Texture : public NonCopyable {
         ///
         void setComparison(GLenum func, GLenum mode = GL_COMPARE_REF_TO_TEXTURE);
 #endif
+
+        ///
+        /// \brief Sets the depth stencil mode for depth stencil textures. Only works on 4.3 Core or higher.
+        ///
+        void setDepthStencilTextureMode(GLenum mode);
+
         ///
         /// \brief Sets the minification (when seen from afar) and magnification (when seen from up close) filter
         ///
