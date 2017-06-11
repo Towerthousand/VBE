@@ -47,12 +47,26 @@ Uniform::Uniform(unsigned int count, GLenum type, GLint location) :
             break;
         case GL_SAMPLER_2D:
 #ifndef VBE_GLES2
+        case GL_SAMPLER_1D:
+        case GL_SAMPLER_1D_ARRAY:
         case GL_SAMPLER_2D_ARRAY:
         case GL_SAMPLER_2D_ARRAY_SHADOW:
         case GL_SAMPLER_2D_SHADOW:
         case GL_SAMPLER_3D:
         case GL_SAMPLER_CUBE:
         case GL_SAMPLER_CUBE_MAP_ARRAY:
+        case GL_INT_SAMPLER_1D:
+        case GL_INT_SAMPLER_2D:
+        case GL_INT_SAMPLER_3D:
+        case GL_INT_SAMPLER_CUBE:
+        case GL_INT_SAMPLER_1D_ARRAY:
+        case GL_INT_SAMPLER_2D_ARRAY:
+        case GL_UNSIGNED_INT_SAMPLER_1D:
+        case GL_UNSIGNED_INT_SAMPLER_2D:
+        case GL_UNSIGNED_INT_SAMPLER_3D:
+        case GL_UNSIGNED_INT_SAMPLER_CUBE:
+        case GL_UNSIGNED_INT_SAMPLER_1D_ARRAY:
+        case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY:
 #endif
             size = sizeof(GLint);
             break;
@@ -183,7 +197,7 @@ void Uniform::set(const Texture2D& val) {
 #ifdef VBE_GLES2
     VBE_ASSERT(type == GL_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
 #else
-    VBE_ASSERT(type == GL_SAMPLER_2D || type == GL_SAMPLER_2D_SHADOW, "Wrong uniform type. Location " << this->location);
+    VBE_ASSERT(type == GL_SAMPLER_2D || type == GL_SAMPLER_2D_SHADOW || type == GL_INT_SAMPLER_2D || type == GL_UNSIGNED_INT_SAMPLER_2D, "Wrong uniform type. Location " << this->location);
 #endif
     Texture2D::bind(&val, texUnit);
     setBytes((char*)&texUnit);
@@ -196,7 +210,7 @@ void Uniform::set(const Texture3D* val) {
 }
 
 void Uniform::set(const Texture3D& val) {
-    VBE_ASSERT(type == GL_SAMPLER_3D, "Wrong uniform type. Location " << this->location);
+    VBE_ASSERT(type == GL_SAMPLER_3D || type == GL_INT_SAMPLER_3D || type == GL_UNSIGNED_INT_SAMPLER_3D, "Wrong uniform type. Location " << this->location);
     Texture3D::bind(&val, texUnit);
     setBytes((char*)&texUnit);
 }
@@ -207,7 +221,7 @@ void Uniform::set(const Texture2DArray* val) {
 }
 
 void Uniform::set(const Texture2DArray& val) {
-    VBE_ASSERT(type == GL_SAMPLER_2D_ARRAY || type == GL_SAMPLER_2D_ARRAY_SHADOW, "Wrong uniform type. Location " << this->location);
+    VBE_ASSERT(type == GL_SAMPLER_2D_ARRAY || type == GL_SAMPLER_2D_ARRAY_SHADOW || type == GL_INT_SAMPLER_2D_ARRAY || type == GL_UNSIGNED_INT_SAMPLER_2D_ARRAY, "Wrong uniform type. Location " << this->location);
     Texture2DArray::bind(&val, texUnit);
     setBytes((char*)&texUnit);
 }
@@ -218,7 +232,7 @@ void Uniform::set(const TextureCubemap* val) {
 }
 
 void Uniform::set(const TextureCubemap& val) {
-    VBE_ASSERT(type == GL_SAMPLER_CUBE, "Wrong uniform type. Location " << this->location);
+    VBE_ASSERT(type == GL_SAMPLER_CUBE || type == GL_INT_SAMPLER_CUBE || type == GL_UNSIGNED_INT_SAMPLER_CUBE, "Wrong uniform type. Location " << this->location);
     TextureCubemap::bind(&val, texUnit);
     setBytes((char*)&texUnit);
 }
@@ -229,7 +243,7 @@ void Uniform::set(const TextureCubemapArray* val) {
 }
 
 void Uniform::set(const TextureCubemapArray& val) {
-    VBE_ASSERT(type == GL_SAMPLER_CUBE_MAP_ARRAY, "Wrong uniform type. Location " << this->location);
+    VBE_ASSERT(type == GL_SAMPLER_CUBE_MAP_ARRAY || type == GL_INT_SAMPLER_CUBE_MAP_ARRAY || type == GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY, "Wrong uniform type. Location " << this->location);
     TextureCubemapArray::bind(&val, texUnit);
     setBytes((char*)&texUnit);
 }
@@ -254,6 +268,20 @@ void Uniform::ready() { //assumes program is binded already. Only to be called b
         case GL_SAMPLER_3D:
         case GL_SAMPLER_CUBE:
         case GL_SAMPLER_CUBE_MAP_ARRAY:
+        case GL_SAMPLER_1D:
+        case GL_SAMPLER_1D_ARRAY:
+        case GL_INT_SAMPLER_1D:
+        case GL_INT_SAMPLER_2D:
+        case GL_INT_SAMPLER_3D:
+        case GL_INT_SAMPLER_CUBE:
+        case GL_INT_SAMPLER_1D_ARRAY:
+        case GL_INT_SAMPLER_2D_ARRAY:
+        case GL_UNSIGNED_INT_SAMPLER_1D:
+        case GL_UNSIGNED_INT_SAMPLER_2D:
+        case GL_UNSIGNED_INT_SAMPLER_3D:
+        case GL_UNSIGNED_INT_SAMPLER_CUBE:
+        case GL_UNSIGNED_INT_SAMPLER_1D_ARRAY:
+        case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY:
 #endif
         case GL_SAMPLER_2D:	GL_ASSERT(glUniform1iv(location, count, (GLint*)&lastValue[0])); break;
         case GL_INT_VEC2:	GL_ASSERT(glUniform2iv(location, count, (GLint*)&lastValue[0])); break;
@@ -304,6 +332,21 @@ void Uniform::log() {
         case GL_SAMPLER_3D: s = "GL_SAMPLER_3D"; break;
         case GL_SAMPLER_CUBE: s = "GL_SAMPLER_CUBE"; break;
         case GL_SAMPLER_CUBE_MAP_ARRAY: s = "GL_SAMPLER_CUBE_MAP_ARRAY"; break;
+        case GL_SAMPLER_1D: s = "GL_SAMPLER_1D"; break;
+        case GL_SAMPLER_1D_ARRAY: s = "GL_SAMPLER_1D_ARRAY"; break;
+        case GL_SAMPLER_2D_ARRAY_SHADOW: s = "GL_SAMPLER_2D_ARRAY_SHADOW"; break;
+        case GL_INT_SAMPLER_1D: s = "GL_INT_SAMPLER_1D"; break;
+        case GL_INT_SAMPLER_2D: s = "GL_INT_SAMPLER_2D"; break;
+        case GL_INT_SAMPLER_3D: s = "GL_INT_SAMPLER_3D"; break;
+        case GL_INT_SAMPLER_CUBE: s = "GL_INT_SAMPLER_CUBE"; break;
+        case GL_INT_SAMPLER_1D_ARRAY: s = "GL_INT_SAMPLER_1D_ARRAY"; break;
+        case GL_INT_SAMPLER_2D_ARRAY: s = "GL_INT_SAMPLER_2D_ARRAY"; break;
+        case GL_UNSIGNED_INT_SAMPLER_1D: s = "GL_UNSIGNED_INT_SAMPLER_1D"; break;
+        case GL_UNSIGNED_INT_SAMPLER_2D: s = "GL_UNSIGNED_INT_SAMPLER_2D"; break;
+        case GL_UNSIGNED_INT_SAMPLER_3D: s = "GL_UNSIGNED_INT_SAMPLER_3D"; break;
+        case GL_UNSIGNED_INT_SAMPLER_CUBE: s = "GL_UNSIGNED_INT_SAMPLER_CUBE"; break;
+        case GL_UNSIGNED_INT_SAMPLER_1D_ARRAY: s = "GL_UNSIGNED_INT_SAMPLER_1D_ARRAY"; break;
+        case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY: s = "GL_UNSIGNED_INT_SAMPLER_2D_ARRAY"; break;
 #endif
         default: s = "UNKNOWN_TYPE"; break;
     }
@@ -312,22 +355,30 @@ void Uniform::log() {
 
 bool Uniform::isSampler(GLenum uniformType) {
     switch(uniformType) {
+#ifndef VBE_GLES2
+        case GL_SAMPLER_1D:
+        case GL_SAMPLER_1D_ARRAY:
+        case GL_SAMPLER_2D_ARRAY:
+        case GL_SAMPLER_2D_ARRAY_SHADOW:
+        case GL_SAMPLER_2D_SHADOW:
+        case GL_SAMPLER_3D:
+        case GL_SAMPLER_CUBE:
+        case GL_SAMPLER_CUBE_MAP_ARRAY:
+        case GL_INT_SAMPLER_1D:
+        case GL_INT_SAMPLER_2D:
+        case GL_INT_SAMPLER_3D:
+        case GL_INT_SAMPLER_CUBE:
+        case GL_INT_SAMPLER_1D_ARRAY:
+        case GL_INT_SAMPLER_2D_ARRAY:
+        case GL_UNSIGNED_INT_SAMPLER_1D:
+        case GL_UNSIGNED_INT_SAMPLER_2D:
+        case GL_UNSIGNED_INT_SAMPLER_3D:
+        case GL_UNSIGNED_INT_SAMPLER_CUBE:
+        case GL_UNSIGNED_INT_SAMPLER_1D_ARRAY:
+        case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY:
+#endif
         case GL_SAMPLER_2D:
             return true;
-#ifndef VBE_GLES2
-        case GL_SAMPLER_2D_SHADOW:
-            return true;
-        case GL_SAMPLER_2D_ARRAY:
-            return true;
-        case GL_SAMPLER_2D_ARRAY_SHADOW:
-            return true;
-        case GL_SAMPLER_3D:
-            return true;
-        case GL_SAMPLER_CUBE:
-            return true;
-        case GL_SAMPLER_CUBE_MAP_ARRAY:
-            return true;
-#endif
         default:
             break;
     }
