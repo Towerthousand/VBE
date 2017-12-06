@@ -6,9 +6,10 @@
 MeshIndexed::MeshIndexed() : MeshSeparate() {
 }
 
-MeshIndexed::MeshIndexed(const Vertex::Format& format, BufferType bufferType) :
+MeshIndexed::MeshIndexed(const Vertex::Format& format, BufferType bufferType, MeshIndexed::IndexFormat indexFormat) :
     MeshSeparate(format, bufferType) {
     GL_ASSERT(glGenBuffers(1, &indexBuffer));
+    this->indexFormat = indexFormat;
 }
 
 MeshIndexed::~MeshIndexed() {
@@ -43,7 +44,18 @@ void MeshIndexed::draw(const ShaderProgram& program, unsigned int offset, unsign
 
     setupShaderBinding(program);
 
-    GL_ASSERT(glDrawElements(getPrimitiveType(), length, GL_UNSIGNED_INT, (void*)(offset*sizeof(unsigned int))));
+    switch(indexFormat) {
+        case UNSIGNED_INT:
+            {
+                GL_ASSERT(glDrawElements(getPrimitiveType(), length, indexFormat, (void*)(offset*sizeof(unsigned int))));
+                break;
+            }
+        case UNSIGNED_SHORT:
+            {
+                GL_ASSERT(glDrawElements(getPrimitiveType(), length, indexFormat, (void*)(offset*sizeof(unsigned short))));
+                break;
+            }
+    }
 }
 
 void MeshIndexed::drawInstanced(const ShaderProgram& program, unsigned int instanceCount) const {
@@ -56,7 +68,18 @@ void MeshIndexed::drawInstanced(const ShaderProgram& program, unsigned int insta
 
     setupShaderBinding(program);
 
-    GL_ASSERT(glDrawElementsInstanced(getPrimitiveType(), length, GL_UNSIGNED_INT, (void*)(offset*sizeof(unsigned int)), instanceCount));
+    switch(indexFormat) {
+        case UNSIGNED_INT:
+            {
+                GL_ASSERT(glDrawElementsInstanced(getPrimitiveType(), length, indexFormat, (void*)(offset*sizeof(unsigned int)), instanceCount));
+                break;
+            }
+        case UNSIGNED_SHORT:
+            {
+                GL_ASSERT(glDrawElementsInstanced(getPrimitiveType(), length, indexFormat, (void*)(offset*sizeof(unsigned short)), instanceCount));
+                break;
+            }
+    }
 }
 
 
@@ -68,14 +91,25 @@ unsigned int MeshIndexed::getIndexCount() const {
     return indexCount;
 }
 
-void MeshIndexed::setIndexData(const unsigned int* indexData, unsigned int newIndexCount) {
+void MeshIndexed::setIndexData(const void* indexData, unsigned int newIndexCount) {
     VBE_ASSERT(getVertexBuffer() != 0, "Cannot use empty mesh");
 
     // Bind null shader binding, so we don't change the buffer of the previously bound one.
     ShaderBinding::bind(nullptr);
     indexCount = newIndexCount;
     GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer));
-    GL_ASSERT(glBufferData(GL_ELEMENT_ARRAY_BUFFER, newIndexCount * sizeof(unsigned int), indexData, getBufferType()));
+    switch(indexFormat) {
+        case UNSIGNED_INT:
+            {
+                GL_ASSERT(glBufferData(GL_ELEMENT_ARRAY_BUFFER, newIndexCount * sizeof(unsigned int), indexData, getBufferType()));
+                break;
+            }
+        case UNSIGNED_SHORT:
+            {
+                GL_ASSERT(glBufferData(GL_ELEMENT_ARRAY_BUFFER, newIndexCount * sizeof(unsigned short), indexData, getBufferType()));
+                break;
+            }
+    }
     GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
@@ -84,4 +118,5 @@ void swap(MeshIndexed& a, MeshIndexed& b) {
     swap(static_cast<MeshSeparate&>(a), static_cast<MeshSeparate&>(b));
     swap(a.indexCount, b.indexCount);
     swap(a.indexBuffer, b.indexBuffer);
+    swap(a.indexFormat, b.indexFormat);
 }
